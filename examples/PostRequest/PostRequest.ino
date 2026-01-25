@@ -1,12 +1,12 @@
 #include <Arduino.h>
 #include <WiFi.h>
-#include "ESP32RestClient.h"
+#include "ESP32HTTPClient.h"
 
 // WiFi Credentials
 const char* ssid = "YOUR_SSID";
 const char* password = "YOUR_PASSWORD";
 
-RestClient client("https://jsonplaceholder.typicode.com");
+ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
 
 void setup() {
   Serial.begin(115200);

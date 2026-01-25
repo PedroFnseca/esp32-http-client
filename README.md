@@ -1,9 +1,9 @@
-# ⚡ ESP32-REST-Client  
+# ⚡ ESP32-HTTP-Client  
 
-[![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-rest-client)](https://github.com/PedroFnseca/esp32-rest-client)
-[![Hits](https://hits.sh/github.com/PedroFnseca/esp32-rest-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-rest-client/)
-[![License](https://img.shields.io/github/license/PedroFnseca/esp32-rest-client)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-rest-client?style=social)](https://github.com/PedroFnseca/esp32-rest-client/stargazers)
+[![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
+[![Hits](https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-http-client/)
+[![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social)](https://github.com/PedroFnseca/esp32-http-client/stargazers)
 
 > **The modern, object-oriented way to consume REST APIs on ESP32.**
 
@@ -13,7 +13,7 @@
 
 Writing HTTP requests on embedded systems shouldn't feel like a chore. The standard approach forces you to manage connection states, handle string buffers manually, and worst of all—allocate massive chunks of RAM just to parse a simple JSON response.
 
-**ESP32-REST-Client changes the game.** It acts as a bridge between your variables and your API. You don't "parse" JSON; you simply tell the client where to put the data.
+**ESP32-HTTP-Client changes the game.** It acts as a bridge between your variables and your API. You don't "parse" JSON; you simply tell the client where to put the data.
 
 ### 🛑 The Problem: The "Standard" Way
 
@@ -27,7 +27,7 @@ You've probably written code like this a hundred times:
 7.  Extract values.
 8.  Hope you didn't run out of heap.
 
-### ✅ The Solution: ESP32-REST-Client
+### ✅ The Solution: ESP32-HTTP-Client
 
 ```cpp
 // One line. Zero intermediate strings. Direct memory binding.
@@ -40,7 +40,7 @@ client.get("/sensor").getBody("temperature", &myFloatVariable);
 
 Why switch? Because your ESP32 deserves better memory management.
 
-| Feature | 🐢 Standard (HTTPClient + ArduinoJson) | ⚡ ESP32-REST-Client |
+| Feature | 🐢 Standard (HTTPClient + ArduinoJson) | ⚡ ESP32-HTTP-Client |
 | :--- | :--- | :--- |
 | **Code Verbosity** | **High** (~15 lines of boilerplate) | **Low** (1 fluent chain) |
 | **Memory Usage** | **Heavy** (Stores full payload + JSON Tree) | **Lightweight** (Stream parsing, no buffering) |
@@ -64,9 +64,9 @@ Why switch? Because your ESP32 deserves better memory management.
 
 ```cpp
 #include <WiFi.h>
-#include "ESP32RestClient.h"
+#include "ESP32HTTPClient.h"
 
-RestClient client("https://jsonplaceholder.typicode.com");
+ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
 
 void setup() {
     Serial.begin(115200);
@@ -129,7 +129,7 @@ Complete control over your resources.
 client.update("/lights/1").body("state", "OFF");
 
 // DELETE: Remove a log
-client.delete("/logs/system_error.log");
+client.del("/logs/system_error.log");
 ```
 
 ---
