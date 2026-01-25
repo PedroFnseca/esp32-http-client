@@ -28,8 +28,14 @@ You request → it parses → it fills your variables.
 ---
 
 ### Creating a Client
-Create a REST client once and reuse it across your entire firmware.
+Create a REST client once and reuse it across your entire firmware. 
+
+> **Note:** You must include `<WiFi.h>` and ensure the device is connected to WiFi.
+
 ```cpp
+#include <WiFi.h>
+#include "ESP32RestClient.h"
+
 RestClient client("https://api.example.com");
 ```
 
@@ -132,6 +138,18 @@ Designed for IoT
 - [x] IoT APIs
 - [x] Fast firmware development
 - [x] REST-based cloud systems
+
+
+---
+
+## Examples
+
+Check the `/examples` folder for full working sketches demonstrating various features:
+
+- [**SimpleGET**](examples/SimpleGET/SimpleGET.ino): How to fetch and bind variables.
+- [**PostRequest**](examples/PostRequest/PostRequest.ino): How to send JSON data.
+- [**PutRequest**](examples/PutRequest/PutRequest.ino): How to update resources.
+- [**DeleteRequest**](examples/DeleteRequest/DeleteRequest.ino): How to delete resources.
 
 ---
 
