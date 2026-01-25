@@ -1,158 +1,150 @@
-# ESP32-REST-Client  
-> **Object-Oriented REST and HTTP Client for ESP32**
-> 
-> ESP32-REST-Client is a **lightweight, object-oriented REST library for ESP32 and Arduino** that simplifies HTTP and JSON handling for embedded systems.
-> 
-> It allows you to communicate with REST APIs using **clients, endpoints and variables** instead of raw HTTP and manual JSON parsing.
+# ⚡ ESP32-REST-Client  
 
-<p align="center">
-  <img src="https://img.shields.io/github/languages/top/PedroFnseca/esp32-rest-client" alt="Language">
-  <img src="https://hits.sh/github.com/PedroFnseca/esp32-rest-client.svg?view=today-total" alt="Hits">
-  <img src="https://img.shields.io/github/license/PedroFnseca/esp32-rest-client" alt="License">
-  <img src="https://img.shields.io/github/stars/PedroFnseca/esp32-rest-client?style=social" alt="Stars">
-</p>
+[![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-rest-client)](https://github.com/PedroFnseca/esp32-rest-client)
+[![Hits](https://hits.sh/github.com/PedroFnseca/esp32-rest-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-rest-client/)
+[![License](https://img.shields.io/github/license/PedroFnseca/esp32-rest-client)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-rest-client?style=social)](https://github.com/PedroFnseca/esp32-rest-client/stargazers)
 
-
-## Core Concept
-
-```cpp
-client.get("/endpoint").getBody("value", &var);
-```
-
-You request → it parses → it fills your variables.
-
-- No JSON decoding.
-- No String objects.
-- No boilerplate.
+> **The modern, object-oriented way to consume REST APIs on ESP32.**
 
 ---
 
-### Creating a Client
-Create a REST client once and reuse it across your entire firmware. 
+## 🚀 Why this library?
 
-> **Note:** You must include `<WiFi.h>` and ensure the device is connected to WiFi.
+Writing HTTP requests on embedded systems shouldn't feel like a chore. The standard approach forces you to manage connection states, handle string buffers manually, and worst of all—allocate massive chunks of RAM just to parse a simple JSON response.
+
+**ESP32-REST-Client changes the game.** It acts as a bridge between your variables and your API. You don't "parse" JSON; you simply tell the client where to put the data.
+
+### 🛑 The Problem: The "Standard" Way
+
+You've probably written code like this a hundred times:
+1.  Initialize `HTTPClient`.
+2.  Make the request.
+3.  Check error codes.
+4.  `http.getString()` (Allocating a huge String).
+5.  Create a `DynamicJsonDocument` (Allocating even more RAM).
+6.  `deserializeJson()`.
+7.  Extract values.
+8.  Hope you didn't run out of heap.
+
+### ✅ The Solution: ESP32-REST-Client
+
+```cpp
+// One line. Zero intermediate strings. Direct memory binding.
+client.get("/sensor").getBody("temperature", &myFloatVariable);
+```
+
+---
+
+## 📊 Performance & Comparison
+
+Why switch? Because your ESP32 deserves better memory management.
+
+| Feature | 🐢 Standard (HTTPClient + ArduinoJson) | ⚡ ESP32-REST-Client |
+| :--- | :--- | :--- |
+| **Code Verbosity** | **High** (~15 lines of boilerplate) | **Low** (1 fluent chain) |
+| **Memory Usage** | **Heavy** (Stores full payload + JSON Tree) | **Lightweight** (Stream parsing, no buffering) |
+| **Syntax** | Procedural & Clunky | Fluent & Object-Oriented |
+| **JSON Parsing** | Requires `deserializeJson()` | **Automatic** (Direct binding) |
+| **Developer Joy** | 😫 Frustrating | 🤩 Effortless |
+
+---
+
+## ✨ Key Features at a Glance
+
+*   🔗 **Fluent Chaining**: Build requests naturally: `.get().query().getBody()`.
+*   💉 **Direct Injection**: Key values from JSON are injected directly into standard C types (`int`, `float`, `bool`, `char*`).
+*   📉 **Zero Overhead**: We don't store the JSON. We read it as it arrives and extract what you need.
+*   🛠️ **Full REST Support**: `GET`, `POST`, `PUT`, `DELETE` are first-class citizens.
+*   🧩 **IoT Ready**: Perfect for connecting your ESP32 to cloud backends, Firebase, AWS API Gateway, or your custom Node.js/Python servers.
+
+---
+
+## ⚡ Hello World
 
 ```cpp
 #include <WiFi.h>
 #include "ESP32RestClient.h"
 
-RestClient client("https://api.example.com");
+RestClient client("https://jsonplaceholder.typicode.com");
+
+void setup() {
+    Serial.begin(115200);
+    WiFi.begin("SSID", "PASS");
+    
+    while (WiFi.status() != WL_CONNECTED) delay(100);
+
+    // Prepare a variable
+    int userId = 0;
+
+    // Fetch data
+    // API returns: { "userId": 1, "id": 1, "title": "..." }
+    client.get("/todos/1").getBody("userId", &userId);
+
+    Serial.printf("User ID fetched from API: %d\n", userId);
+}
+
+void loop() {}
 ```
 
-<br>
+---
 
-### GET with Query Parameters
-Send query parameters and map response fields directly into native C variables.
+## 📖 Deep Dive: Usage Scenarios
+
+### 🔍 GET with Query Params
+Don't mess with string concatenation (`?id=` + String(id) + `&val=`...). Let the builder do it.
+
 ```cpp
-int temp;
+float temperature;
+bool active;
 
-client.get("/sensor")
-      .query("id", 10)
-      .getBody("temperature", &temp);
+// Request: GET /climate?room=living_room&sensor=dht22
+client.get("/climate")
+      .query("room", "living_room")
+      .query("sensor", "dht22")
+      .getBody("temp", &temperature)  // Finds "temp": 24.5
+      .getBody("active", &active);    // Finds "active": true
 ```
 
-<br>
+### 📤 POST JSON Data
+Sending data is just as easy as receiving it.
 
-### POST with Body Data
-Build request bodies fluently and receive structured responses without parsing JSON manually.
 ```cpp
-int userId;
+int newId;
 
+// Request: POST /users
+// Body: { "name": "Pedro", "role": "admin", "age": 21 }
 client.post("/users")
       .body("name", "Pedro")
-      .body("age", 20)
-      .getBody("id", &userId);
+      .body("role", "admin")
+      .body("age", 21)
+      .getBody("id", &newId); // Get the ID created by the server
 ```
 
-<br>
+### 🔄 PUT (Update) & DELETE
+Complete control over your resources.
 
-### Update (PUT)
-Send updates using REST semantics with clean, readable code.
 ```cpp
-client.update("/device/1")
-      .body("status", "on");
-```
+// PUT: Update status
+client.update("/lights/1").body("state", "OFF");
 
-<br>
-
-### Delete
-Simple and explicit endpoint deletion.
-```cpp
-client.delete("/users/5");
+// DELETE: Remove a log
+client.delete("/logs/system_error.log");
 ```
 
 ---
 
-Why this model?
+## 📂 Examples
 
-Instead of handling HTTP and JSON manually, this library **binds JSON fields directly** to C variables.
-```cpp
-client.get("/status").getBody("online", &isOnline);
-```
+Explore the full capabilities in the `examples/` directory:
 
-## This makes code:
-- [x] Easier to read
-- [x] Faster to write
-- [x] More memory efficient
-- [x] Ideal for ESP32
-
-## Classic ESP32 HTTP vs ESP32-REST-Client
-
-### Classic way
-```cpp
-HTTPClient http;
-http.begin("https://api.example.com/sensor");
-http.GET();
-
-String payload = http.getString();
-
-DynamicJsonDocument doc(1024);
-deserializeJson(doc, payload);
-
-int temp = doc["temperature"];
-```
-
-This approach uses:
-- String buffers
-- Large JSON objects
-- More RAM
-- More code
-
-ESP32-REST-Client way
-```cpp
-int temp;
-client.get("/sensor").getBody("temperature", &temp);
-```
-
-- No strings.
-- No JSON objects.
-- Direct memory binding.
+*   [**SimpleGET**](examples/SimpleGET/SimpleGET.ino) - Basic data fetching.
+*   [**PostRequest**](examples/PostRequest/PostRequest.ino) - Sending data to an API.
+*   [**PutRequest**](examples/PutRequest/PutRequest.ino) - Updating server resources.
+*   [**DeleteRequest**](examples/DeleteRequest/DeleteRequest.ino) - Deleting data.
 
 ---
 
-Designed for IoT
-
-## ESP32-REST-Client is built for:
-
-- [x] Low RAM devices
-- [x] IoT APIs
-- [x] Fast firmware development
-- [x] REST-based cloud systems
-
-
----
-
-## Examples
-
-Check the `/examples` folder for full working sketches demonstrating various features:
-
-- [**SimpleGET**](examples/SimpleGET/SimpleGET.ino): How to fetch and bind variables.
-- [**PostRequest**](examples/PostRequest/PostRequest.ino): How to send JSON data.
-- [**PutRequest**](examples/PutRequest/PutRequest.ino): How to update resources.
-- [**DeleteRequest**](examples/DeleteRequest/DeleteRequest.ino): How to delete resources.
-
----
-
-### Keywords
-
-ESP32 REST Client, ESP32 HTTP Library, Arduino REST API, ESP32 JSON Parser, IoT REST Library, Embedded HTTP Client
+<p align="center">
+  <b>Don't forget to star ⭐ this repo if it saved you time!</b>
+</p>
