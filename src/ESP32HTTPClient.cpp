@@ -2,7 +2,8 @@
 
 #include <Arduino.h>
 
-ESP32HTTPClient::ESP32HTTPClient(const char* baseUrl) : _baseUrl(baseUrl), _lastStatusCode(0), _contentType("application/json") {
+ESP32HTTPClient::ESP32HTTPClient(const char* baseUrl, int port)
+    : _baseUrl(baseUrl), _port(port), _lastStatusCode(0), _contentType("application/json") {
 }
 
 void ESP32HTTPClient::setContentType(const char* contentType) {

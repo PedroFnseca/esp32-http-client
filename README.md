@@ -89,6 +89,21 @@ void loop() {}
 
 ---
 
+## ⚙️ Initialization Options
+
+### Default Port (80 for HTTP, 443 for HTTPS)
+```cpp
+ESP32HTTPClient client("https://api.example.com");
+```
+
+### Custom Port
+Specify the port as the second argument if your API runs on a non-standard port.
+```cpp
+ESP32HTTPClient client("http://my-local-server.local", 8080);
+```
+
+---
+
 ## 📖 Deep Dive: Usage Scenarios
 
 ### 🔍 GET with Query Params
@@ -142,6 +157,7 @@ Explore the full capabilities in the `examples/` directory:
 *   [**PostRequest**](examples/PostRequest/PostRequest.ino) - Sending data to an API.
 *   [**PutRequest**](examples/PutRequest/PutRequest.ino) - Updating server resources.
 *   [**DeleteRequest**](examples/DeleteRequest/DeleteRequest.ino) - Deleting data.
+*   [**PortSelection**](examples/PortSelection/PortSelection.ino) - Connecting to a custom port.
 
 ---
 

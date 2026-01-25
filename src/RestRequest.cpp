@@ -156,7 +156,21 @@ void RestRequest::execute() {
   if (!_client) return;
 
   HTTPClient http;
-  String url = String(_client->_baseUrl) + String(_path);
+  String urlBase = String(_client->_baseUrl);
+
+  if (_client->_port != 0) {
+    int protoEnd = urlBase.indexOf("://");
+    int startSearch = (protoEnd != -1) ? protoEnd + 3 : 0;
+    int slashPos = urlBase.indexOf("/", startSearch);
+
+    if (slashPos != -1) {
+      urlBase = urlBase.substring(0, slashPos) + ":" + String(_client->_port) + urlBase.substring(slashPos);
+    } else {
+      urlBase += ":" + String(_client->_port);
+    }
+  }
+
+  String url = urlBase + String(_path);
 
   if (!_queryParams.empty()) {
     url += "?";
