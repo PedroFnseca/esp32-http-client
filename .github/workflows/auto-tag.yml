@@ -1,0 +1,45 @@
+name: Auto Tag from library.properties
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'library.properties'
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Read version from library.properties
+        id: get_version
+        run: |
+          VERSION=$(grep '^version=' library.properties | cut -d'=' -f2 | xargs)
+          
+          if [ -z "$VERSION" ]; then
+            exit 1
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create and Push Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.get_version.outputs.version }}
+        run: |
+          TAG_NAME="v$VERSION"
+          
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+            exit 0
+          fi
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git tag -a "$TAG_NAME" -m "Auto-generated tag for version $VERSION"
+          git push origin "$TAG_NAME"
