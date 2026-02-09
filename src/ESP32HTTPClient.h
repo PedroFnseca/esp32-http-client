@@ -3,7 +3,10 @@
 
 #include <Arduino.h>
 
+#include <vector>
+
 #include "RestRequest.h"
+#include "RestTypes.h"
 
 class ESP32HTTPClient {
   friend class RestRequest;
@@ -20,16 +23,18 @@ class ESP32HTTPClient {
 
   void setContentType(const char* contentType);
   void setHeader(const char* name, const char* value);
+  void clearHeaders();
 
   int getStatusCode() const {
     return _lastStatusCode;
   }
 
  private:
-  const char* _baseUrl;
+  String _baseUrl;
   int _port;
   int _lastStatusCode;
-  const char* _contentType;
+  String _contentType;
+  std::vector<HttpHeader> _headers;
 };
 
 #endif

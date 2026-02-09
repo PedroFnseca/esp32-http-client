@@ -1,0 +1,24 @@
+name: Unit Tests
+
+on:
+  pull_request:
+    branches: ["**"]
+  push:
+    branches: ["main", "master", "work"]
+
+jobs:
+  host-unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build unit tests
+        run: |
+          g++ -std=c++17 -Wall -Wextra -pedantic \
+            tests/http_encoding_test.cpp src/HttpEncoding.cpp \
+            -o tests/http_encoding_test
+
+      - name: Run unit tests
+        run: ./tests/http_encoding_test

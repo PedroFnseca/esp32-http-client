@@ -3,6 +3,9 @@
 #include <HTTPClient.h>
 
 #include "ESP32HTTPClient.h"
+#include "HttpEncoding.h"
+
+namespace {
 
 void skipWhitespace(Stream* stream) {
   while (stream->available()) {
@@ -26,15 +29,16 @@ void readStringIntoBuffer(Stream* stream, char* buffer, size_t maxLen) {
     if (c == '\\') {
       if (stream->available()) {
         char escaped = stream->read();
-        if (idx < maxLen - 1) buffer[idx++] = escaped;
+        if (idx + 1 < maxLen) buffer[idx++] = escaped;
       }
     } else if (c == '"') {
       break;
-    } else {
-      if (idx < maxLen - 1) buffer[idx++] = c;
+    } else if (idx + 1 < maxLen) {
+      buffer[idx++] = c;
     }
   }
-  buffer[idx] = 0;
+
+  if (maxLen > 0) buffer[idx] = 0;
 }
 
 void skipValue(Stream* stream) {
@@ -61,8 +65,9 @@ void skipValue(Stream* stream) {
           char sc = stream->read();
           if (sc == '\\') {
             if (stream->available()) stream->read();
-          } else if (sc == '"')
+          } else if (sc == '"') {
             break;
+          }
         }
       } else if (ch == '{') {
         depth++;
@@ -79,8 +84,9 @@ void skipValue(Stream* stream) {
           char sc = stream->read();
           if (sc == '\\') {
             if (stream->available()) stream->read();
-          } else if (sc == '"')
+          } else if (sc == '"') {
             break;
+          }
         }
       } else if (ch == '[') {
         depth++;
@@ -91,13 +97,13 @@ void skipValue(Stream* stream) {
   } else {
     while (stream->available()) {
       char ch = stream->peek();
-      if (ch == ',' || ch == '}' || ch == ']' || isspace(ch)) {
-        break;
-      }
+      if (ch == ',' || ch == '}' || ch == ']' || isspace(ch)) break;
       stream->read();
     }
   }
 }
+
+}  // namespace
 
 RestRequest::RestRequest(ESP32HTTPClient* client, const char* path, HttpMethod method)
     : _client(client), _path(path), _method(method), _executed(false) {
@@ -150,58 +156,57 @@ RestRequest& RestRequest::getBody(const char* key, long* target) {
   return *this;
 }
 
-void RestRequest::execute() {
-  _executed = true;
+int RestRequest::send() {
+  return execute();
+}
 
-  if (!_client) return;
-
-  HTTPClient http;
-  String urlBase = String(_client->_baseUrl);
-
-  if (_client->_port != 0) {
-    int protoEnd = urlBase.indexOf("://");
-    int startSearch = (protoEnd != -1) ? protoEnd + 3 : 0;
-    int slashPos = urlBase.indexOf("/", startSearch);
-
-    if (slashPos != -1) {
-      urlBase = urlBase.substring(0, slashPos) + ":" + String(_client->_port) + urlBase.substring(slashPos);
-    } else {
-      urlBase += ":" + String(_client->_port);
-    }
+int RestRequest::execute() {
+  if (_executed) {
+    return _client ? _client->_lastStatusCode : 0;
   }
 
-  String url = urlBase + String(_path);
+  _executed = true;
+  if (!_client) return 0;
+
+  HTTPClient http;
+  String url = String(http_encoding::buildUrl(_client->_baseUrl.c_str(), _client->_port, _path ? _path : "").c_str());
 
   if (!_queryParams.empty()) {
     url += "?";
     for (size_t i = 0; i < _queryParams.size(); i++) {
-      url += _queryParams[i].key;
+      url += String(http_encoding::urlEncode(_queryParams[i].key.c_str()).c_str());
       url += "=";
-      url += _queryParams[i].valueBuffer;
-      if (i < _queryParams.size() - 1) url += "&";
+      url += String(http_encoding::urlEncode(_queryParams[i].value.c_str()).c_str());
+      if (i + 1 < _queryParams.size()) url += "&";
     }
   }
 
   http.begin(url);
 
-  String payload = "";
+  for (const auto& header : _client->_headers) {
+    if (header.name.length() > 0) {
+      http.addHeader(header.name, header.value);
+    }
+  }
+
+  String payload;
   if (!_bodyParams.empty()) {
-    http.addHeader("Content-Type", "application/json");
+    http.addHeader("Content-Type", _client->_contentType);
     payload += "{";
     for (size_t i = 0; i < _bodyParams.size(); i++) {
       payload += "\"";
-      payload += _bodyParams[i].key;
+      payload += String(http_encoding::escapeJson(_bodyParams[i].key.c_str()).c_str());
       payload += "\":";
 
       if (_bodyParams[i].quoteValue) {
         payload += "\"";
-        payload += _bodyParams[i].valueBuffer;
+        payload += String(http_encoding::escapeJson(_bodyParams[i].value.c_str()).c_str());
         payload += "\"";
       } else {
-        payload += _bodyParams[i].valueBuffer;
+        payload += _bodyParams[i].value;
       }
 
-      if (i < _bodyParams.size() - 1) payload += ",";
+      if (i + 1 < _bodyParams.size()) payload += ",";
     }
     payload += "}";
   }
@@ -227,13 +232,12 @@ void RestRequest::execute() {
 
   _client->_lastStatusCode = code;
 
-  if (code > 0) {
-    if (http.getSize() > 0 || http.getStreamPtr()) {
-      parseResponse(http.getStreamPtr());
-    }
+  if (code > 0 && http.getStreamPtr()) {
+    parseResponse(http.getStreamPtr());
   }
 
   http.end();
+  return code;
 }
 
 void RestRequest::parseResponse(Stream* stream) {
@@ -250,80 +254,87 @@ void RestRequest::parseResponse(Stream* stream) {
     char c = stream->read();
 
     if (c == '}') break;
-    if (c == '"') {
-      size_t kIdx = 0;
-      while (stream->available()) {
-        char k = stream->read();
-        if (k == '"') break;
-        if (kIdx < 63) keyBuffer[kIdx++] = k;
+    if (c != '"') continue;
+
+    size_t kIdx = 0;
+    while (stream->available()) {
+      char k = stream->read();
+      if (k == '"') break;
+      if (kIdx < sizeof(keyBuffer) - 1) keyBuffer[kIdx++] = k;
+    }
+    keyBuffer[kIdx] = 0;
+
+    skipWhitespace(stream);
+    if (stream->read() != ':') continue;
+
+    ResponseBinding* match = nullptr;
+    for (auto& binding : _responseBindings) {
+      if (strcmp(keyBuffer, binding.key) == 0) {
+        match = &binding;
+        break;
       }
-      keyBuffer[kIdx] = 0;
+    }
 
+    if (!match) {
+      skipValue(stream);
       skipWhitespace(stream);
-      if (stream->read() != ':') continue;
+      if (stream->peek() == ',') stream->read();
+      continue;
+    }
 
-      ResponseBinding* match = nullptr;
-      for (auto& binding : _responseBindings) {
-        if (strcmp(keyBuffer, binding.key) == 0) {
-          match = &binding;
+    skipWhitespace(stream);
+    char nextChar = stream->peek();
+
+    if (nextChar == '"') {
+      if (match->type == TYPE_STRING) {
+        readStringIntoBuffer(stream, (char*)match->target, match->size);
+      } else {
+        readStringIntoBuffer(stream, valueBuffer, sizeof(valueBuffer));
+        if (match->type == TYPE_INT)
+          *(int*)match->target = atoi(valueBuffer);
+        else if (match->type == TYPE_FLOAT)
+          *(float*)match->target = strtof(valueBuffer, nullptr);
+        else if (match->type == TYPE_DOUBLE)
+          *(double*)match->target = strtod(valueBuffer, nullptr);
+        else if (match->type == TYPE_LONG)
+          *(long*)match->target = atol(valueBuffer);
+      }
+    } else if (nextChar == 't' || nextChar == 'f') {
+      size_t bIdx = 0;
+      while (stream->available()) {
+        char b = stream->peek();
+        if (!isalpha(b)) break;
+        if (bIdx < sizeof(valueBuffer) - 1) valueBuffer[bIdx++] = stream->read();
+        else stream->read();
+      }
+      valueBuffer[bIdx] = 0;
+      if (match->type == TYPE_BOOL) *(bool*)match->target = strcmp(valueBuffer, "true") == 0;
+    } else if (nextChar == 'n') {
+      skipValue(stream);
+    } else {
+      size_t nIdx = 0;
+      while (stream->available()) {
+        char b = stream->peek();
+        if (isdigit(b) || b == '.' || b == '-' || b == '+' || b == 'e' || b == 'E') {
+          if (nIdx < sizeof(valueBuffer) - 1) valueBuffer[nIdx++] = stream->read();
+          else stream->read();
+        } else {
           break;
         }
       }
+      valueBuffer[nIdx] = 0;
 
-      if (match) {
-        skipWhitespace(stream);
-        char nextChar = stream->peek();
-
-        if (nextChar == '"') {
-          if (match->type == TYPE_STRING) {
-            readStringIntoBuffer(stream, (char*)match->target, match->size);
-          } else {
-            readStringIntoBuffer(stream, valueBuffer, sizeof(valueBuffer));
-            if (match->type == TYPE_INT)
-              *(int*)match->target = atoi(valueBuffer);
-            else if (match->type == TYPE_FLOAT)
-              *(float*)match->target = atof(valueBuffer);
-          }
-        } else if (nextChar == 't' || nextChar == 'f') {
-          size_t bIdx = 0;
-          while (stream->available()) {
-            char b = stream->peek();
-            if (isalpha(b)) {
-              char x = stream->read();
-              if (bIdx < 10) valueBuffer[bIdx++] = x;
-            } else
-              break;
-          }
-          valueBuffer[bIdx] = 0;
-          bool bVal = (strcmp(valueBuffer, "true") == 0);
-          if (match->type == TYPE_BOOL) *(bool*)match->target = bVal;
-        } else {
-          size_t nIdx = 0;
-          while (stream->available()) {
-            char b = stream->peek();
-            if (isdigit(b) || b == '.' || b == '-') {
-              char x = stream->read();
-              if (nIdx < 63) valueBuffer[nIdx++] = x;
-            } else
-              break;
-          }
-          valueBuffer[nIdx] = 0;
-
-          if (match->type == TYPE_INT)
-            *(int*)match->target = atoi(valueBuffer);
-          else if (match->type == TYPE_FLOAT)
-            *(float*)match->target = strtof(valueBuffer, nullptr);
-          else if (match->type == TYPE_DOUBLE)
-            *(double*)match->target = strtod(valueBuffer, nullptr);
-          else if (match->type == TYPE_LONG)
-            *(long*)match->target = atol(valueBuffer);
-        }
-      } else {
-        skipValue(stream);
-      }
-
-      skipWhitespace(stream);
-      if (stream->peek() == ',') stream->read();
+      if (match->type == TYPE_INT)
+        *(int*)match->target = atoi(valueBuffer);
+      else if (match->type == TYPE_FLOAT)
+        *(float*)match->target = strtof(valueBuffer, nullptr);
+      else if (match->type == TYPE_DOUBLE)
+        *(double*)match->target = strtod(valueBuffer, nullptr);
+      else if (match->type == TYPE_LONG)
+        *(long*)match->target = atol(valueBuffer);
     }
+
+    skipWhitespace(stream);
+    if (stream->peek() == ',') stream->read();
   }
 }

@@ -1,66 +1,36 @@
-# ⚡ ESP32-HTTP-Client  
+# ESP32-HTTP-Client
 
-[![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
-[![Hits](https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-http-client/)
+A lightweight, fluent HTTP client for ESP32 focused on simple REST consumption with direct response binding.
+
 [![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social)](https://github.com/PedroFnseca/esp32-http-client/stargazers)
-
-> **The modern, object-oriented way to consume REST APIs on ESP32.**
+[![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
 
 ---
 
-## 🚀 Why this library?
+## Overview
 
-Writing HTTP requests on embedded systems shouldn't feel like a chore. The standard approach forces you to manage connection states, handle string buffers manually, and worst of all—allocate massive chunks of RAM just to parse a simple JSON response.
+`ESP32-HTTP-Client` provides an object-oriented API to build HTTP requests and map JSON fields directly into native variables.
 
-**ESP32-HTTP-Client changes the game.** It acts as a bridge between your variables and your API. You don't "parse" JSON; you simply tell the client where to put the data.
-
-### 🛑 The Problem: The "Standard" Way
-
-You've probably written code like this a hundred times:
-1.  Initialize `HTTPClient`.
-2.  Make the request.
-3.  Check error codes.
-4.  `http.getString()` (Allocating a huge String).
-5.  Create a `DynamicJsonDocument` (Allocating even more RAM).
-6.  `deserializeJson()`.
-7.  Extract values.
-8.  Hope you didn't run out of heap.
-
-### ✅ The Solution: ESP32-HTTP-Client
-
-```cpp
-// One line. Zero intermediate strings. Direct memory binding.
-client.get("/sensor").getBody("temperature", &myFloatVariable);
-```
+Core goals:
+- Reduce boilerplate compared to manual `HTTPClient` usage.
+- Keep API usage intuitive with fluent chaining.
+- Offer lightweight streaming parsing for common JSON response patterns.
 
 ---
 
-## 📊 Performance & Comparison
+## Installation
 
-Why switch? Because your ESP32 deserves better memory management.
+### Arduino IDE (manual)
+1. Download the repository ZIP.
+2. Open **Sketch > Include Library > Add .ZIP Library...**
+3. Select the ZIP file.
 
-| Feature | 🐢 Standard (HTTPClient + ArduinoJson) | ⚡ ESP32-HTTP-Client |
-| :--- | :--- | :--- |
-| **Code Verbosity** | **High** (~15 lines of boilerplate) | **Low** (1 fluent chain) |
-| **Memory Usage** | **Heavy** (Stores full payload + JSON Tree) | **Lightweight** (Stream parsing, no buffering) |
-| **Syntax** | Procedural & Clunky | Fluent & Object-Oriented |
-| **JSON Parsing** | Requires `deserializeJson()` | **Automatic** (Direct binding) |
-| **Developer Joy** | 😫 Frustrating | 🤩 Effortless |
+### PlatformIO
+Add this repository as a dependency in `platformio.ini`.
 
 ---
 
-## ✨ Key Features at a Glance
-
-*   🔗 **Fluent Chaining**: Build requests naturally: `.get().query().getBody()`.
-*   💉 **Direct Injection**: Key values from JSON are injected directly into standard C types (`int`, `float`, `bool`, `char*`).
-*   📉 **Zero Overhead**: We don't store the JSON. We read it as it arrives and extract what you need.
-*   🛠️ **Full REST Support**: `GET`, `POST`, `PUT`, `DELETE` are first-class citizens.
-*   🧩 **IoT Ready**: Perfect for connecting your ESP32 to cloud backends, Firebase, AWS API Gateway, or your custom Node.js/Python servers.
-
----
-
-## ⚡ Hello World
+## Quick Start
 
 ```cpp
 #include <WiFi.h>
@@ -69,19 +39,16 @@ Why switch? Because your ESP32 deserves better memory management.
 ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
 
 void setup() {
-    Serial.begin(115200);
-    WiFi.begin("SSID", "PASS");
-    
-    while (WiFi.status() != WL_CONNECTED) delay(100);
+  Serial.begin(115200);
+  WiFi.begin("SSID", "PASSWORD");
+  while (WiFi.status() != WL_CONNECTED) delay(200);
 
-    // Prepare a variable
-    int userId = 0;
+  int userId = 0;
+  int status = client.get("/todos/1")
+                   .getBody("userId", &userId)
+                   .send();
 
-    // Fetch data
-    // API returns: { "userId": 1, "id": 1, "title": "..." }
-    client.get("/todos/1").getBody("userId", &userId);
-
-    Serial.printf("User ID fetched from API: %d\n", userId);
+  Serial.printf("HTTP: %d | userId: %d\n", status, userId);
 }
 
 void loop() {}
@@ -89,78 +56,102 @@ void loop() {}
 
 ---
 
-## ⚙️ Initialization Options
+## API Highlights
 
-### Default Port (80 for HTTP, 443 for HTTPS)
-```cpp
-ESP32HTTPClient client("https://api.example.com");
-```
+### HTTP Methods
+- `get(path)`
+- `post(path)`
+- `put(path)` / `update(path)`
+- `patch(path)`
+- `del(path)`
 
-### Custom Port
-Specify the port as the second argument if your API runs on a non-standard port.
+### Request Builder
+- `.query(key, value)` for query string parameters.
+- `.body(key, value)` for JSON payload fields.
+- `.send()` for explicit request execution.
+
+> If `.send()` is not called, the request is executed automatically when the temporary request object is destroyed.
+
+### Response Binding
+Bind fields directly from a JSON response object:
+- `getBody(const char*, int*)`
+- `getBody(const char*, long*)`
+- `getBody(const char*, float*)`
+- `getBody(const char*, double*)`
+- `getBody(const char*, bool*)`
+- `getBody(const char*, char*, size_t)`
+
+### Global Client Configuration
+- `setContentType("application/json")`
+- `setHeader("Authorization", "Bearer <token>")`
+- `clearHeaders()`
+- `getStatusCode()`
+
+---
+
+## Query Parameters (Improved)
+
+Query keys and values are URL-encoded automatically. This allows safe usage of reserved characters and spaces.
+
 ```cpp
-ESP32HTTPClient client("http://my-local-server.local", 8080);
+float temp = 0;
+
+client.get("/weather")
+      .query("city", "São Paulo")
+      .query("units", "metric")
+      .getBody("temperature", &temp)
+      .send();
 ```
 
 ---
 
-## 📖 Deep Dive: Usage Scenarios
-
-### 🔍 GET with Query Params
-Don't mess with string concatenation (`?id=` + String(id) + `&val=`...). Let the builder do it.
+## Headers and Content Type
 
 ```cpp
-float temperature;
-bool active;
+client.setHeader("Authorization", "Bearer token-123");
+client.setHeader("X-Device-Id", "esp32-kitchen");
+client.setContentType("application/json");
 
-// Request: GET /climate?room=living_room&sensor=dht22
-client.get("/climate")
-      .query("room", "living_room")
-      .query("sensor", "dht22")
-      .getBody("temp", &temperature)  // Finds "temp": 24.5
-      .getBody("active", &active);    // Finds "active": true
-```
-
-### 📤 POST JSON Data
-Sending data is just as easy as receiving it.
-
-```cpp
-int newId;
-
-// Request: POST /users
-// Body: { "name": "Pedro", "role": "admin", "age": 21 }
-client.post("/users")
-      .body("name", "Pedro")
-      .body("role", "admin")
-      .body("age", 21)
-      .getBody("id", &newId); // Get the ID created by the server
-```
-
-### 🔄 PUT (Update) & DELETE
-Complete control over your resources.
-
-```cpp
-// PUT: Update status
-client.update("/lights/1").body("state", "OFF");
-
-// DELETE: Remove a log
-client.del("/logs/system_error.log");
+int id = 0;
+client.post("/devices")
+      .body("name", "sensor-node")
+      .body("enabled", true)
+      .getBody("id", &id)
+      .send();
 ```
 
 ---
 
-## 📂 Examples
+## Limitations
 
-Explore the full capabilities in the `examples/` directory:
-
-*   [**SimpleGET**](examples/SimpleGET/SimpleGET.ino) - Basic data fetching.
-*   [**PostRequest**](examples/PostRequest/PostRequest.ino) - Sending data to an API.
-*   [**PutRequest**](examples/PutRequest/PutRequest.ino) - Updating server resources.
-*   [**DeleteRequest**](examples/DeleteRequest/DeleteRequest.ino) - Deleting data.
-*   [**PortSelection**](examples/PortSelection/PortSelection.ino) - Connecting to a custom port.
+- The response parser is optimized for JSON objects and direct field extraction.
+- Deep traversal by path (e.g. `data.items[0].id`) is not currently supported.
+- String bindings require pre-allocated buffers.
 
 ---
 
-<p align="center">
-  <b>Don't forget to star ⭐ this repo if it saved you time!</b>
-</p>
+
+## Quality and CI
+
+This repository includes host-side unit tests for critical encoding utilities (`urlEncode`, `escapeJson`, `buildUrl`).
+
+- Local run:
+  - `g++ -std=c++17 -Wall -Wextra -pedantic tests/http_encoding_test.cpp src/HttpEncoding.cpp -o tests/http_encoding_test`
+  - `./tests/http_encoding_test`
+- CI run: tests execute automatically on every Pull Request via GitHub Actions (`.github/workflows/unit-tests.yml`).
+
+---
+
+## Examples
+
+- [`examples/SimpleGET/SimpleGET.ino`](examples/SimpleGET/SimpleGET.ino)
+- [`examples/PostRequest/PostRequest.ino`](examples/PostRequest/PostRequest.ino)
+- [`examples/PutRequest/PutRequest.ino`](examples/PutRequest/PutRequest.ino)
+- [`examples/DeleteRequest/DeleteRequest.ino`](examples/DeleteRequest/DeleteRequest.ino)
+- [`examples/PortSelection/PortSelection.ino`](examples/PortSelection/PortSelection.ino)
+
+---
+
+## License
+
+MIT License. See [LICENSE](LICENSE).
