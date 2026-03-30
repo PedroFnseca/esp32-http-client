@@ -161,6 +161,46 @@ Explore the full capabilities in the `examples/` directory:
 
 ---
 
+## 🧪 Unit Tests
+
+This project includes host-side unit tests for request building and response parsing logic.
+
+### What is covered
+
+* Query/body parameter serialization.
+* HTTP method mapping (`get`, `post`, `put`, `update`, `patch`, `del`).
+* URL and JSON payload generation.
+* JSON response binding to `int`, `float`, `double`, `bool`, `long`, and `char*`.
+
+### Run tests on Linux
+
+From the project root:
+
+If your system does not have `g++` yet (common on fresh WSL/Ubuntu), install it first:
+
+```bash
+sudo apt update && sudo apt install -y build-essential
+```
+
+```bash
+chmod +x tests/run_tests.sh
+./tests/run_tests.sh
+```
+
+Or run manually:
+
+```bash
+mkdir -p tests/build
+g++ -std=c++17 \
+      -Itests/stubs \
+      -Isrc \
+      tests/test_rest_request.cpp src/RestRequest.cpp src/ESP32HTTPClient.cpp \
+      -o tests/build/unit-tests
+./tests/build/unit-tests
+```
+
+---
+
 <p align="center">
   <b>Don't forget to star ⭐ this repo if it saved you time!</b>
 </p>

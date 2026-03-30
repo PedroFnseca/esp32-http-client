@@ -1,0 +1,24 @@
+name: Unit Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: Run host unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Ensure compiler is available
+        run: |
+          g++ --version
+
+      - name: Build and run tests
+        env:
+          FORCE_COLOR: "1"
+        run: |
+          sh tests/run_tests.sh
