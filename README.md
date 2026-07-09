@@ -148,7 +148,34 @@ client.get("/nested")
       .getBody("level0.level1", val, sizeof(val)); // Finds "val2"
 ```
 
-> **Note:** If the requested nested field is missing, misspelled, or the path goes deeper than what exists in the API response, the library will gracefully ignore it. It will not crash, and your target variables will simply retain their initial default values.
+### 📋 Extracting from Arrays
+You can extract fields directly from JSON arrays by using the array index within the dot notation.
+
+```cpp
+char city[32];
+
+// Request: GET /users
+// Response: [ { "address": { "city": "Gwenborough" } }, { "address": { "city": "Wisokyburgh" } } ]
+client.get("/users")
+      .getBody("1.address.city", city, sizeof(city)); // Finds "Wisokyburgh" (from the second user)
+```
+
+### 📦 Extracting Complete Raw Arrays or Objects
+If you need to extract an entire array or object for manual manipulation (e.g., using `ArduinoJson`), you can bind it directly to an Arduino `String` object.
+
+```cpp
+String entireArray;
+String specificUser;
+
+client.get("/users")
+      .getBody("", &entireArray)      // Extracts the entire JSON array
+      .getBody("1", &specificUser);   // Extracts the second user object
+```
+
+> [!WARNING]
+> Pulling complete arrays or objects into an Arduino `String` will result in **dynamic memory reallocation** as the library copies the raw JSON. Be careful when fetching large JSON structures, as this can fragment or exhaust your device's RAM.
+ 
+> **Note:** If the requested nested field is missing, misspelled, or the path (or array index) goes deeper than what exists in the API response, the library will gracefully ignore it. It will not crash, and your target variables will simply retain their initial default values.
 
 ### 🔄 PUT (Update) & DELETE
 Complete control over your resources.
@@ -173,6 +200,8 @@ Explore the full capabilities in the `examples/` directory:
 *   [**DeleteRequest**](examples/DeleteRequest/DeleteRequest.ino) - Deleting data.
 *   [**PortSelection**](examples/PortSelection/PortSelection.ino) - Connecting to a custom port.
 *   [**NestedJSON**](examples/NestedJSON/NestedJSON.ino) - Extracting fields from deeply nested JSON objects.
+*   [**ArrayJSON**](examples/ArrayJSON/ArrayJSON.ino) - Extracting fields directly from JSON arrays using indices.
+*   [**RawArrayJSON**](examples/RawArrayJSON/RawArrayJSON.ino) - Extracting complete raw arrays or objects into Arduino Strings.
 
 ---
 
