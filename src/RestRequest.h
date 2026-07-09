@@ -46,6 +46,7 @@ class RestRequest {
 
   void execute();
   void parseResponse(Stream* stream);
+  void parseObject(Stream* stream, const char* basePath);
 
   template <typename T>
   void addParam(std::vector<KeyValue>& list, const char* key, T value);

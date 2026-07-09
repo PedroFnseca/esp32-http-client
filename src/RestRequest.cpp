@@ -242,8 +242,13 @@ void RestRequest::parseResponse(Stream* stream) {
   skipWhitespace(stream);
   if (stream->read() != '{') return;
 
+  parseObject(stream, "");
+}
+
+void RestRequest::parseObject(Stream* stream, const char* basePath) {
   char keyBuffer[64];
   char valueBuffer[128];
+  char fullPath[128];
 
   while (stream->available()) {
     skipWhitespace(stream);
@@ -259,67 +264,79 @@ void RestRequest::parseResponse(Stream* stream) {
       }
       keyBuffer[kIdx] = 0;
 
+      if (basePath[0] == '\0') {
+        strncpy(fullPath, keyBuffer, sizeof(fullPath) - 1);
+        fullPath[sizeof(fullPath) - 1] = 0;
+      } else {
+        snprintf(fullPath, sizeof(fullPath), "%s.%s", basePath, keyBuffer);
+      }
+
       skipWhitespace(stream);
       if (stream->read() != ':') continue;
 
-      ResponseBinding* match = nullptr;
-      for (auto& binding : _responseBindings) {
-        if (strcmp(keyBuffer, binding.key) == 0) {
-          match = &binding;
-          break;
+      skipWhitespace(stream);
+      char nextChar = stream->peek();
+
+      if (nextChar == '{') {
+        stream->read();
+        parseObject(stream, fullPath);
+      } else {
+        ResponseBinding* match = nullptr;
+        for (auto& binding : _responseBindings) {
+          if (strcmp(fullPath, binding.key) == 0) {
+            match = &binding;
+            break;
+          }
         }
-      }
 
-      if (match) {
-        skipWhitespace(stream);
-        char nextChar = stream->peek();
-
-        if (nextChar == '"') {
-          if (match->type == TYPE_STRING) {
-            readStringIntoBuffer(stream, (char*)match->target, match->size);
+        if (match) {
+          if (nextChar == '"') {
+            if (match->type == TYPE_STRING) {
+              readStringIntoBuffer(stream, (char*)match->target, match->size);
+            } else {
+              readStringIntoBuffer(stream, valueBuffer, sizeof(valueBuffer));
+              if (match->type == TYPE_INT)
+                *(int*)match->target = atoi(valueBuffer);
+              else if (match->type == TYPE_FLOAT)
+                *(float*)match->target = atof(valueBuffer);
+            }
+          } else if (nextChar == 't' || nextChar == 'f') {
+            size_t bIdx = 0;
+            while (stream->available()) {
+              char b = stream->peek();
+              if (isalpha(b)) {
+                char x = stream->read();
+                if (bIdx < 10) valueBuffer[bIdx++] = x;
+              } else
+                break;
+            }
+            valueBuffer[bIdx] = 0;
+            bool bVal = (strcmp(valueBuffer, "true") == 0);
+            if (match->type == TYPE_BOOL) *(bool*)match->target = bVal;
           } else {
-            readStringIntoBuffer(stream, valueBuffer, sizeof(valueBuffer));
+            size_t nIdx = 0;
+            while (stream->available()) {
+              char b = stream->peek();
+              if (isdigit(b) || b == '.' || b == '-') {
+                char x = stream->read();
+                if (nIdx < 63) valueBuffer[nIdx++] = x;
+              } else
+                break;
+            }
+            valueBuffer[nIdx] = 0;
+
             if (match->type == TYPE_INT)
               *(int*)match->target = atoi(valueBuffer);
             else if (match->type == TYPE_FLOAT)
-              *(float*)match->target = atof(valueBuffer);
+              *(float*)match->target = strtof(valueBuffer, nullptr);
+            else if (match->type == TYPE_DOUBLE)
+              *(double*)match->target = strtod(valueBuffer, nullptr);
+            else if (match->type == TYPE_LONG)
+              *(long*)match->target = atol(valueBuffer);
           }
-        } else if (nextChar == 't' || nextChar == 'f') {
-          size_t bIdx = 0;
-          while (stream->available()) {
-            char b = stream->peek();
-            if (isalpha(b)) {
-              char x = stream->read();
-              if (bIdx < 10) valueBuffer[bIdx++] = x;
-            } else
-              break;
-          }
-          valueBuffer[bIdx] = 0;
-          bool bVal = (strcmp(valueBuffer, "true") == 0);
-          if (match->type == TYPE_BOOL) *(bool*)match->target = bVal;
         } else {
-          size_t nIdx = 0;
-          while (stream->available()) {
-            char b = stream->peek();
-            if (isdigit(b) || b == '.' || b == '-') {
-              char x = stream->read();
-              if (nIdx < 63) valueBuffer[nIdx++] = x;
-            } else
-              break;
-          }
-          valueBuffer[nIdx] = 0;
-
-          if (match->type == TYPE_INT)
-            *(int*)match->target = atoi(valueBuffer);
-          else if (match->type == TYPE_FLOAT)
-            *(float*)match->target = strtof(valueBuffer, nullptr);
-          else if (match->type == TYPE_DOUBLE)
-            *(double*)match->target = strtod(valueBuffer, nullptr);
-          else if (match->type == TYPE_LONG)
-            *(long*)match->target = atol(valueBuffer);
+          skipValue(stream);
         }
-      } else {
-        skipValue(stream);
       }
 
       skipWhitespace(stream);
