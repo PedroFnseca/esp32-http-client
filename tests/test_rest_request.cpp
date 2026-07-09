@@ -189,6 +189,78 @@ void testParseResponseBindsTypes() {
 
   req._executed = true;
 }
+
+void testParseNestedJSON() {
+  ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
+  RestRequest req(&client, "/users/1", HTTP_GET_METHOD);
+
+  char street[64] = {0};
+  float lat = 0.0f;
+
+  req.getBody("address.street", street, sizeof(street))
+      .getBody("address.geo.lat", &lat);
+
+  StringStream stream(
+      R"({
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Bret",
+        "email": "Sincere@april.biz",
+        "address": {
+          "street": "Kulas Light",
+          "suite": "Apt. 556",
+          "city": "Gwenborough",
+          "zipcode": "92998-3874",
+          "geo": {
+            "lat": "-37.3159",
+            "lng": "81.1496"
+          }
+        },
+        "phone": "1-770-736-8031 x56442",
+        "website": "hildegard.org",
+        "company": {
+          "name": "Romaguera-Crona",
+          "catchPhrase": "Multi-layered client-server neural-net",
+          "bs": "harness real-time e-markets"
+        }
+      })");
+  
+  req.parseResponse(&stream);
+
+  expectTrue(strlen(street) > 0, "street should be populated");
+  expectTrue(lat != 0.0f, "lat should be populated and parsed as float");
+
+  req._executed = true;
+}
+
+void testParseNestedJSONMissingFields() {
+  ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
+  RestRequest req(&client, "/users/1", HTTP_GET_METHOD);
+
+  char invalidStreet[64] = {0};
+  float invalidLat = 0.0f;
+
+  // Requesting fields that don't exist in the JSON
+  req.getBody("address.unknown_street", invalidStreet, sizeof(invalidStreet))
+      .getBody("address.not_found.deep", &invalidLat);
+
+  StringStream stream(
+      R"({
+        "address": {
+          "street": "Kulas Light",
+          "geo": {
+            "lat": "-37.3159"
+          }
+        }
+      })");
+  
+  req.parseResponse(&stream);
+
+  expectTrue(strlen(invalidStreet) == 0, "missing string field should remain empty");
+  expectTrue(invalidLat == 0.0f, "missing float field should remain unchanged (0.0f)");
+
+  req._executed = true;
+}
 }  // namespace
 
 int main() {
@@ -196,6 +268,8 @@ int main() {
   runSuite("ExecuteBuildsUrlAndPayload", testExecuteBuildsUrlAndPayload);
   runSuite("MethodAliases", testMethodAliases);
   runSuite("ParseResponseBindsTypes", testParseResponseBindsTypes);
+  runSuite("ParseNestedJSON", testParseNestedJSON);
+  runSuite("ParseNestedJSONMissingFields", testParseNestedJSONMissingFields);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;

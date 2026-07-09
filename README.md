@@ -136,6 +136,20 @@ client.post("/users")
       .getBody("id", &newId); // Get the ID created by the server
 ```
 
+### 🪆 Extracting Nested Fields
+You can easily extract fields from deeply nested JSON objects by using dot notation.
+
+```cpp
+char val[32];
+
+// Request: GET /nested
+// Response: { "level0": { "level1": "val2" } }
+client.get("/nested")
+      .getBody("level0.level1", val, sizeof(val)); // Finds "val2"
+```
+
+> **Note:** If the requested nested field is missing, misspelled, or the path goes deeper than what exists in the API response, the library will gracefully ignore it. It will not crash, and your target variables will simply retain their initial default values.
+
 ### 🔄 PUT (Update) & DELETE
 Complete control over your resources.
 
@@ -158,6 +172,7 @@ Explore the full capabilities in the `examples/` directory:
 *   [**PutRequest**](examples/PutRequest/PutRequest.ino) - Updating server resources.
 *   [**DeleteRequest**](examples/DeleteRequest/DeleteRequest.ino) - Deleting data.
 *   [**PortSelection**](examples/PortSelection/PortSelection.ino) - Connecting to a custom port.
+*   [**NestedJSON**](examples/NestedJSON/NestedJSON.ino) - Extracting fields from deeply nested JSON objects.
 
 ---
 
