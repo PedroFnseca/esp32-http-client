@@ -32,6 +32,7 @@ class RestRequest {
   RestRequest& getBody(const char* key, bool* target);
   RestRequest& getBody(const char* key, char* target, size_t maxLength);
   RestRequest& getBody(const char* key, long* target);
+  RestRequest& getBody(const char* key, String* target);
 
  private:
   ESP32HTTPClient* _client;
@@ -47,6 +48,9 @@ class RestRequest {
   void execute();
   void parseResponse(Stream* stream);
   void parseObject(Stream* stream, const char* basePath);
+  void parseArray(Stream* stream, const char* basePath);
+  void parsePrimitive(Stream* stream, ResponseBinding* match);
+  void readRawJsonIntoString(Stream* stream, String* target, char openingBrace);
 
   template <typename T>
   void addParam(std::vector<KeyValue>& list, const char* key, T value);
