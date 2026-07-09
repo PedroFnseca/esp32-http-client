@@ -261,6 +261,68 @@ void testParseNestedJSONMissingFields() {
 
   req._executed = true;
 }
+
+void testParseRawArrayJSON() {
+  ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
+  RestRequest req(&client, "/users", HTTP_GET_METHOD);
+
+  String entireArray = "";
+  String specificObject = "";
+  String notFound = "original";
+
+  req.getBody("", &entireArray) // match the root array
+     .getBody("5.unknown", &notFound);
+
+  StringStream stream1(
+      R"([
+        {
+          "name": "Leanne Graham",
+          "address": { "city": "Gwenborough" }
+        },
+        {
+          "name": "Ervin Howell",
+          "address": {
+            "city": "Wisokyburgh",
+            "geo": { "lat": "-43.9509" }
+          }
+        }
+      ])");
+  
+  req.parseResponse(&stream1);
+
+  // Asserting successful cases for root array
+  expectTrue(entireArray.str().length() > 50, "entireArray should contain the raw JSON string of the root array");
+  expectTrue(entireArray.str().substr(0, 1) == "[", "entireArray should start with [");
+  
+  // Asserting failure case
+  expectEq(notFound.str(), "original", "notFound should remain unchanged if path does not exist");
+
+  // Now test nested object raw extraction independently (as root extraction consumes the whole stream)
+  RestRequest req2(&client, "/users", HTTP_GET_METHOD);
+  req2.getBody("1.address", &specificObject);
+
+  StringStream stream2(
+      R"([
+        {
+          "name": "Leanne Graham",
+          "address": { "city": "Gwenborough" }
+        },
+        {
+          "name": "Ervin Howell",
+          "address": {
+            "city": "Wisokyburgh",
+            "geo": { "lat": "-43.9509" }
+          }
+        }
+      ])");
+  
+  req2.parseResponse(&stream2);
+
+  expectTrue(specificObject.str().length() > 20, "specificObject should contain the raw JSON string of the nested object");
+  expectTrue(specificObject.str().substr(0, 1) == "{", "specificObject should start with {");
+
+  req._executed = true;
+}
 }  // namespace
 
 int main() {
@@ -270,6 +332,7 @@ int main() {
   runSuite("ParseResponseBindsTypes", testParseResponseBindsTypes);
   runSuite("ParseNestedJSON", testParseNestedJSON);
   runSuite("ParseNestedJSONMissingFields", testParseNestedJSONMissingFields);
+  runSuite("ParseRawArrayJSON", testParseRawArrayJSON);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;

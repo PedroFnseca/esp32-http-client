@@ -55,11 +55,14 @@ class HTTPClient {
   HTTPClient() : _stream(HttpClientStub::nextResponseBody) {
   }
 
-  void begin(const String& url) {
-    HttpClientStub::lastUrl = url.str();
+  bool begin(String url) {
+    HttpClientStub::lastUrl = url.c_str();
+    return true;
   }
 
-  void addHeader(const char* /*name*/, const char* /*value*/) {
+  void useHTTP10(bool usehttp10 = true) {}
+
+  void addHeader(const String& name, const String& value) {
   }
 
   int GET() {
