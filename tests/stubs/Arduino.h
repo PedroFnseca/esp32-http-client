@@ -7,6 +7,13 @@
 #include <cstring>
 #include <string>
 
+inline unsigned long millis() { 
+  static unsigned long time_ms = 0;
+  time_ms += 100; // Advance time artificially by 100ms per call
+  return time_ms;
+}
+inline void delay(unsigned long) {}
+
 class String {
  public:
   String() = default;
