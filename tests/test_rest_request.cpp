@@ -9,6 +9,7 @@
 #define private public
 #include "ESP32HTTPClient.h"
 #include "RestRequest.h"
+#include "BufferedStreamReader.h"
 #undef private
 
 namespace {
@@ -178,7 +179,8 @@ void testParseResponseBindsTypes() {
 
   StringStream stream(
       R"({"count":7,"temperature":24.5,"voltage":3.3001,"active":true,"timestamp":1710000010,"label":"sensor\"A","ignore":{"k":1}})");
-  req.parseResponse(&stream);
+  BufferedStreamReader reader(&stream);
+  req.parseResponse(reader);
 
   expectEqInt(count, 7, "count should be parsed as int");
   expectNear(temperature, 24.5, 0.001, "temperature should be parsed as float");
@@ -225,7 +227,8 @@ void testParseNestedJSON() {
         }
       })");
   
-  req.parseResponse(&stream);
+  BufferedStreamReader reader(&stream);
+  req.parseResponse(reader);
 
   expectTrue(strlen(street) > 0, "street should be populated");
   expectTrue(lat != 0.0f, "lat should be populated and parsed as float");
@@ -254,7 +257,8 @@ void testParseNestedJSONMissingFields() {
         }
       })");
   
-  req.parseResponse(&stream);
+  BufferedStreamReader reader(&stream);
+  req.parseResponse(reader);
 
   expectTrue(strlen(invalidStreet) == 0, "missing string field should remain empty");
   expectTrue(invalidLat == 0.0f, "missing float field should remain unchanged (0.0f)");
@@ -288,7 +292,8 @@ void testParseRawArrayJSON() {
         }
       ])");
   
-  req.parseResponse(&stream1);
+  BufferedStreamReader reader1(&stream1);
+  req.parseResponse(reader1);
 
   // Asserting successful cases for root array
   expectTrue(entireArray.str().length() > 50, "entireArray should contain the raw JSON string of the root array");
@@ -316,7 +321,8 @@ void testParseRawArrayJSON() {
         }
       ])");
   
-  req2.parseResponse(&stream2);
+  BufferedStreamReader reader2(&stream2);
+  req2.parseResponse(reader2);
 
   expectTrue(specificObject.str().length() > 20, "specificObject should contain the raw JSON string of the nested object");
   expectTrue(specificObject.str().substr(0, 1) == "{", "specificObject should start with {");
