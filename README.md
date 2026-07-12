@@ -1,33 +1,64 @@
-# ⚡ ESP32-HTTP-Client  
+# ESP32-HTTP-Client
+> A fluent, object-oriented HTTP client for ESP32 that binds JSON response fields directly into your variables.
 
 [![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
 [![Hits](https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-http-client/)
 [![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social)](https://github.com/PedroFnseca/esp32-http-client/stargazers)
 
-> **The modern, object-oriented way to consume REST APIs on ESP32.**
+---
+
+## Table of Contents
+
+- [Why this library?](#why-this-library)
+  - [The problem: the standard approach](#the-problem-the-standard-approach)
+  - [The solution](#the-solution)
+- [Performance & Comparison](#performance--comparison)
+- [Key Features](#key-features)
+- [Quick Start](#quick-start)
+- [Initialization](#initialization)
+  - [Default port](#default-port-80-for-http-443-for-https)
+  - [Custom port](#custom-port)
+- [Usage](#usage)
+  - [GET with query parameters](#get-with-query-parameters)
+  - [POST JSON data](#post-json-data)
+  - [Extracting nested fields](#extracting-nested-fields)
+  - [Extracting from arrays](#extracting-from-arrays)
+  - [Extracting complete raw objects or arrays](#extracting-complete-raw-objects-or-arrays)
+  - [PUT and DELETE](#put-and-delete)
+- [Examples](#examples)
+- [API Reference](#api-reference)
+  - [ESP32HTTPClient — Client class](#esp32httpclient--client-class)
+    - [Constructor](#constructor)
+    - [HTTP request methods](#http-request-methods)
+    - [Configuration methods](#configuration-methods)
+  - [RestRequest — Fluent request builder](#restrequest--fluent-request-builder)
+    - [Building the request](#building-the-request)
+    - [Extracting the response](#extracting-the-response)
+    - [Full chaining example](#full-chaining-example)
 
 ---
 
-## 🚀 Why this library?
+## Why this library?
 
-Writing HTTP requests on embedded systems shouldn't feel like a chore. The standard approach forces you to manage connection states, handle string buffers manually, and worst of all—allocate massive chunks of RAM just to parse a simple JSON response.
+Writing HTTP requests on embedded systems shouldn't feel like a chore. The standard approach forces you to manage connection states, handle string buffers manually, and allocate large chunks of RAM just to parse a simple JSON response.
 
-**ESP32-HTTP-Client changes the game.** It acts as a bridge between your variables and your API. You don't "parse" JSON; you simply tell the client where to put the data.
+**ESP32-HTTP-Client** acts as a bridge between your variables and your API. You don't "parse" JSON, you tell the client where to put the data.
 
-### 🛑 The Problem: The "Standard" Way
+### The problem: the standard approach
 
-You've probably written code like this a hundred times:
-1.  Initialize `HTTPClient`.
-2.  Make the request.
-3.  Check error codes.
-4.  `http.getString()` (Allocating a huge String).
-5.  Create a `DynamicJsonDocument` (Allocating even more RAM).
-6.  `deserializeJson()`.
-7.  Extract values.
-8.  Hope you didn't run out of heap.
+A typical request with the Arduino SDK looks like this:
 
-### ✅ The Solution: ESP32-HTTP-Client
+1. Initialize `HTTPClient`.
+2. Make the request.
+3. Check error codes.
+4. Call `http.getString()`, allocating a large `String` on the heap.
+5. Create a `DynamicJsonDocument`, allocating even more RAM.
+6. Call `deserializeJson()`.
+7. Extract values manually.
+8. Hope you didn't run out of heap.
+
+### The solution
 
 ```cpp
 // One line. Zero intermediate strings. Direct memory binding.
@@ -36,31 +67,28 @@ client.get("/sensor").getBody("temperature", &myFloatVariable);
 
 ---
 
-## 📊 Performance & Comparison
+## Performance & Comparison
 
-Why switch? Because your ESP32 deserves better memory management.
-
-| Feature | 🐢 Standard (HTTPClient + ArduinoJson) | ⚡ ESP32-HTTP-Client |
+| Feature | Standard (HTTPClient + ArduinoJson) | ESP32-HTTP-Client |
 | :--- | :--- | :--- |
-| **Code Verbosity** | **High** (~15 lines of boilerplate) | **Low** (1 fluent chain) |
-| **Memory Usage** | **Heavy** (Stores full payload + JSON Tree) | **Lightweight** (Stream parsing, no buffering) |
-| **Syntax** | Procedural & Clunky | Fluent & Object-Oriented |
-| **JSON Parsing** | Requires `deserializeJson()` | **Automatic** (Direct binding) |
-| **Developer Joy** | 😫 Frustrating | 🤩 Effortless |
+| **Code Verbosity** | High (~15 lines of boilerplate) | Low (1 fluent chain) |
+| **Memory Usage** | Heavy, stores full payload + JSON tree | Lightweight, stream parsing, no buffering |
+| **Syntax** | Procedural | Fluent, object-oriented |
+| **JSON Parsing** | Requires `deserializeJson()` | Automatic, direct variable binding |
 
 ---
 
-## ✨ Key Features at a Glance
+## Key Features
 
-*   🔗 **Fluent Chaining**: Build requests naturally: `.get().query().getBody()`.
-*   💉 **Direct Injection**: Key values from JSON are injected directly into standard C types (`int`, `float`, `bool`, `char*`).
-*   📉 **Zero Overhead**: We don't store the JSON. We read it as it arrives and extract what you need.
-*   🛠️ **Full REST Support**: `GET`, `POST`, `PUT`, `DELETE` are first-class citizens.
-*   🧩 **IoT Ready**: Perfect for connecting your ESP32 to cloud backends, Firebase, AWS API Gateway, or your custom Node.js/Python servers.
+- **Fluent chaining** — build requests naturally: `.get().query().getBody()`.
+- **Direct injection** — JSON values are written straight into standard C types (`int`, `float`, `bool`, `char*`).
+- **Zero buffering** — the response stream is parsed in place; the full payload is never stored.
+- **Full REST support** — `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` are all first-class citizens.
+- **IoT ready** — designed for connecting ESP32 devices to cloud backends, Firebase, AWS API Gateway, or custom servers.
 
 ---
 
-## ⚡ Hello World
+## Quick Start
 
 ```cpp
 #include <WiFi.h>
@@ -71,13 +99,11 @@ ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
 void setup() {
     Serial.begin(115200);
     WiFi.begin("SSID", "PASS");
-    
+
     while (WiFi.status() != WL_CONNECTED) delay(100);
 
-    // Prepare a variable
     int userId = 0;
 
-    // Fetch data
     // API returns: { "userId": 1, "id": 1, "title": "..." }
     client.get("/todos/1").getBody("userId", &userId);
 
@@ -89,162 +115,206 @@ void loop() {}
 
 ---
 
-## ⚙️ Initialization Options
+## Initialization
 
-### Default Port (80 for HTTP, 443 for HTTPS)
+### Default port (80 for HTTP, 443 for HTTPS)
+
 ```cpp
 ESP32HTTPClient client("https://api.example.com");
 ```
 
-### Custom Port
+### Custom port
+
 Specify the port as the second argument if your API runs on a non-standard port.
+
 ```cpp
 ESP32HTTPClient client("http://my-local-server.local", 8080);
 ```
 
 ---
 
-## 📖 Deep Dive: Usage Scenarios
+## Usage
 
-### 🔍 GET with Query Params
-Don't mess with string concatenation (`?id=` + String(id) + `&val=`...). Let the builder do it.
+### GET with query parameters
 
 ```cpp
 float temperature;
 bool active;
 
-// Request: GET /climate?room=living_room&sensor=dht22
+// Produces: GET /climate?room=living_room&sensor=dht22
 client.get("/climate")
       .query("room", "living_room")
       .query("sensor", "dht22")
-      .getBody("temp", &temperature)  // Finds "temp": 24.5
-      .getBody("active", &active);    // Finds "active": true
+      .getBody("temp", &temperature)  // binds "temp": 24.5
+      .getBody("active", &active);    // binds "active": true
 ```
 
-### 📤 POST JSON Data
-Sending data is just as easy as receiving it.
+### POST JSON data
 
 ```cpp
 int newId;
 
-// Request: POST /users
 // Body: { "name": "Pedro", "role": "admin", "age": 21 }
 client.post("/users")
       .body("name", "Pedro")
       .body("role", "admin")
       .body("age", 21)
-      .getBody("id", &newId); // Get the ID created by the server
+      .getBody("id", &newId);
 ```
 
-### 🪆 Extracting Nested Fields
-You can easily extract fields from deeply nested JSON objects by using dot notation.
+### Extracting nested fields
+
+Use dot notation to navigate nested objects.
 
 ```cpp
 char val[32];
 
-// Request: GET /nested
 // Response: { "level0": { "level1": "val2" } }
 client.get("/nested")
-      .getBody("level0.level1", val, sizeof(val)); // Finds "val2"
+      .getBody("level0.level1", val, sizeof(val));
 ```
 
-### 📋 Extracting from Arrays
-You can extract fields directly from JSON arrays by using the array index within the dot notation.
+### Extracting from arrays
+
+Use a numeric index as a path segment to address array elements.
 
 ```cpp
 char city[32];
 
-// Request: GET /users
 // Response: [ { "address": { "city": "Gwenborough" } }, { "address": { "city": "Wisokyburgh" } } ]
 client.get("/users")
-      .getBody("1.address.city", city, sizeof(city)); // Finds "Wisokyburgh" (from the second user)
+      .getBody("1.address.city", city, sizeof(city)); // resolves the second element
 ```
 
-### 📦 Extracting Complete Raw Arrays or Objects
-If you need to extract an entire array or object for manual manipulation (e.g., using `ArduinoJson`), you can bind it directly to an Arduino `String` object.
+### Extracting complete raw objects or arrays
+
+Bind to an Arduino `String` to capture an entire object or sub-array for manual processing.
 
 ```cpp
 String entireArray;
 String specificUser;
 
 client.get("/users")
-      .getBody("", &entireArray)      // Extracts the entire JSON array
-      .getBody("1", &specificUser);   // Extracts the second user object
+      .getBody("", &entireArray)    // captures the root-level array
+      .getBody("1", &specificUser); // captures the second user object
 ```
 
 > [!WARNING]
-> Pulling complete arrays or objects into an Arduino `String` will result in **dynamic memory reallocation** as the library copies the raw JSON. Be careful when fetching large JSON structures, as this can fragment or exhaust your device's RAM.
- 
-> **Note:** If the requested nested field is missing, misspelled, or the path (or array index) goes deeper than what exists in the API response, the library will gracefully ignore it. It will not crash, and your target variables will simply retain their initial default values.
+> Pulling complete objects or arrays into an Arduino `String` causes dynamic memory reallocation as the raw JSON is copied character by character. Avoid this pattern with large payloads, as it can fragment or exhaust the device heap.
 
-### 🔄 PUT (Update) & DELETE
-Complete control over your resources.
+> [!NOTE]
+> If a key is missing, misspelled, or the path does not exist in the response, the target variable is left unchanged. The library will not crash.
+
+### PUT and DELETE
 
 ```cpp
-// PUT: Update status
+// Update a resource
 client.update("/lights/1").body("state", "OFF");
 
-// DELETE: Remove a log
+// Delete a resource
 client.del("/logs/system_error.log");
 ```
 
 ---
 
-## 📂 Examples
+## Examples
 
-Explore the full capabilities in the `examples/` directory:
+Runnable sketches are available in the `examples/` directory:
 
-*   [**SimpleGET**](examples/SimpleGET/SimpleGET.ino) - Basic data fetching.
-*   [**PostRequest**](examples/PostRequest/PostRequest.ino) - Sending data to an API.
-*   [**PutRequest**](examples/PutRequest/PutRequest.ino) - Updating server resources.
-*   [**DeleteRequest**](examples/DeleteRequest/DeleteRequest.ino) - Deleting data.
-*   [**PortSelection**](examples/PortSelection/PortSelection.ino) - Connecting to a custom port.
-*   [**NestedJSON**](examples/NestedJSON/NestedJSON.ino) - Extracting fields from deeply nested JSON objects.
-*   [**ArrayJSON**](examples/ArrayJSON/ArrayJSON.ino) - Extracting fields directly from JSON arrays using indices.
-*   [**RawArrayJSON**](examples/RawArrayJSON/RawArrayJSON.ino) - Extracting complete raw arrays or objects into Arduino Strings.
+| Sketch | Description |
+| :--- | :--- |
+| [SimpleGET](examples/SimpleGET/SimpleGET.ino) | Basic data fetching with GET. |
+| [PostRequest](examples/PostRequest/PostRequest.ino) | Sending a JSON payload with POST. |
+| [PutRequest](examples/PutRequest/PutRequest.ino) | Updating a remote resource with PUT. |
+| [DeleteRequest](examples/DeleteRequest/DeleteRequest.ino) | Deleting a remote resource. |
+| [PortSelection](examples/PortSelection/PortSelection.ino) | Connecting to a server on a custom port. |
+| [NestedJSON](examples/NestedJSON/NestedJSON.ino) | Extracting fields from deeply nested objects. |
+| [ArrayJSON](examples/ArrayJSON/ArrayJSON.ino) | Addressing array elements by index. |
+| [RawArrayJSON](examples/RawArrayJSON/RawArrayJSON.ino) | Capturing raw arrays or objects into Arduino Strings. |
 
 ---
 
-## 🧪 Unit Tests
+## API Reference
 
-This project includes host-side unit tests for request building and response parsing logic.
+### `ESP32HTTPClient` — Client class
 
-### What is covered
+The main entry point. Instantiate once with your base URL and reuse across requests.
 
-* Query/body parameter serialization.
-* HTTP method mapping (`get`, `post`, `put`, `update`, `patch`, `del`).
-* URL and JSON payload generation.
-* JSON response binding to `int`, `float`, `double`, `bool`, `long`, and `char*`.
+#### Constructor
 
-### Run tests on Linux
+| Signature | Description | Example |
+| :--- | :--- | :--- |
+| `ESP32HTTPClient(baseUrl)` | Creates a client. Port defaults to 80 (HTTP) or 443 (HTTPS). | `ESP32HTTPClient client("https://api.example.com");` |
+| `ESP32HTTPClient(baseUrl, port)` | Creates a client targeting a custom port. | `ESP32HTTPClient client("http://192.168.1.100", 8080);` |
 
-From the project root:
+#### HTTP request methods
 
-If your system does not have `g++` yet (common on fresh WSL/Ubuntu), install it first:
+Each method returns a `RestRequest` that can be chained with `.query()`, `.body()`, and `.getBody()`.
 
-```bash
-sudo apt update && sudo apt install -y build-essential
-```
+| Method | Description | Example |
+| :--- | :--- | :--- |
+| `get(path)` | Sends a GET request to `baseUrl + path`. | `client.get("/todos/1")` |
+| `post(path)` | Sends a POST request to `baseUrl + path`. | `client.post("/users")` |
+| `put(path)` | Sends a PUT request to `baseUrl + path`. | `client.put("/users/1")` |
+| `update(path)` | Alias for `put()`. | `client.update("/lights/1")` |
+| `patch(path)` | Sends a PATCH request to `baseUrl + path`. | `client.patch("/config/wifi")` |
+| `del(path)` | Sends a DELETE request to `baseUrl + path`. | `client.del("/logs/old.log")` |
 
-```bash
-chmod +x tests/run_tests.sh
-./tests/run_tests.sh
-```
+#### Configuration methods
 
-Or run manually:
+| Method | Description | Example |
+| :--- | :--- | :--- |
+| `setContentType(contentType)` | Overrides the `Content-Type` header used for request bodies. Defaults to `application/json`. | `client.setContentType("application/x-www-form-urlencoded");` |
+| `setHeader(name, value)` | Registers a custom HTTP header that is sent with every subsequent request. | `client.setHeader("Authorization", "Bearer mytoken123");` |
+| `getStatusCode()` | Returns the HTTP status code of the last completed request. | `int code = client.getStatusCode();` |
 
-```bash
-mkdir -p tests/build
-g++ -std=c++17 \
-      -Itests/stubs \
-      -Isrc \
-      tests/test_rest_request.cpp src/RestRequest.cpp src/ESP32HTTPClient.cpp \
-      -o tests/build/unit-tests
-./tests/build/unit-tests
+---
+
+### `RestRequest` — Fluent request builder
+
+Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `RestRequest&`, enabling fluent chaining. The underlying HTTP request is dispatched on the first call to `.getBody()`, or automatically when the object goes out of scope.
+
+#### Building the request
+
+| Method | Description | Example |
+| :--- | :--- | :--- |
+| `query(key, value)` | Appends a URL query parameter. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/search").query("q", "esp32").query("limit", 10)` |
+| `body(key, value)` | Adds a field to the JSON request body. Supports the same types as `query()`. Chainable. | `client.post("/users").body("name", "Pedro").body("age", 21)` |
+
+#### Extracting the response
+
+`getBody()` is overloaded for each supported C type. It registers a binding between a JSON key path and a target variable. Use dot notation for nested fields and numeric segments for array indices.
+
+| Method | Description | Example |
+| :--- | :--- | :--- |
+| `getBody(key, int* target)` | Binds a JSON integer to `*target`. | `client.get("/data").getBody("count", &myInt)` |
+| `getBody(key, float* target)` | Binds a JSON number to a `float`. | `client.get("/sensor").getBody("temp", &myFloat)` |
+| `getBody(key, double* target)` | Binds a JSON number to a `double`. | `client.get("/sensor").getBody("voltage", &myDouble)` |
+| `getBody(key, bool* target)` | Binds a JSON boolean to `*target`. | `client.get("/status").getBody("active", &myBool)` |
+| `getBody(key, long* target)` | Binds a JSON integer to a `long`. | `client.get("/stats").getBody("timestamp", &myLong)` |
+| `getBody(key, char* target, size_t maxLen)` | Copies a JSON string into a char buffer, up to `maxLen` bytes. | `client.get("/user").getBody("name", myChar, sizeof(myChar))` |
+| `getBody(key, String* target)` | Copies a raw JSON object or array into an Arduino `String`. Pass `""` to capture the entire response. | `client.get("/users").getBody("", &entireJson)` |
+
+> [!NOTE]
+> If a key is missing or the path does not exist, the target variable is left unchanged. No exception is thrown and no crash occurs.
+
+#### Full chaining example
+
+```cpp
+int userId;
+float temperature;
+char city[32];
+
+client.post("/report")
+      .body("device", "esp32-cam")
+      .body("floor", 3)
+      .getBody("userId", &userId)            // int — root field
+      .getBody("sensor.temp", &temperature)  // float — nested object
+      .getBody("0.address.city", city, sizeof(city)); // char* — array index + nested
 ```
 
 ---
 
 <p align="center">
-  <b>Don't forget to star ⭐ this repo if it saved you time!</b>
+  If this library saved you time, consider leaving a star ⭐ on the repository.
 </p>
