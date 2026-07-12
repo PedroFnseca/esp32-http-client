@@ -69,12 +69,27 @@ client.get("/sensor").getBody("temperature", &myFloatVariable);
 
 ## Performance & Comparison
 
-| Feature | Standard (HTTPClient + ArduinoJson) | ESP32-HTTP-Client |
-| :--- | :--- | :--- |
-| **Code Verbosity** | High (~15 lines of boilerplate) | Low (1 fluent chain) |
-| **Memory Usage** | Heavy, stores full payload + JSON tree | Lightweight, stream parsing, no buffering |
-| **Syntax** | Procedural | Fluent, object-oriented |
-| **JSON Parsing** | Requires `deserializeJson()` | Automatic, direct variable binding |
+The following data is the result of a benchmark running 100 consecutive HTTP GET requests with JSON payloads on an ESP32 using the public `JSONPlaceholder` `/users` endpoint as the test source.
+[JSONPlaceholder /users endpoint](https://jsonplaceholder.typicode.com/users?utm_source=chatgpt.com)
+
+
+| Metric / Feature | Standard (HTTPClient + ArduinoJson) | ESP32-HTTP-Client | Comparison |
+| :--- | :--- | :--- | :--- |
+| **Memory Usage (Heap per request)** | ~58.8 KB | **~0.4 KB** | ⬇ **~99.3% less RAM used** |
+| **Heap Fragmentation (after 100 reqs)** | 34.7% | **0.7%** | ⬇ **Practically zero fragmentation** |
+| **Absolute Min. Free Heap** | 114.3 KB | **128.7 KB** | ⬆ **Safer for large applications** |
+| **Execution Time (Average)** | ~736 ms | ~880 ms | Slight overhead due to stream parsing |
+| **Code Verbosity** | High (~15 lines of boilerplate) | **Low (1 fluent chain)** | ⬇ **Clean & maintainable code** |
+| **JSON Parsing** | Requires `deserializeJson()` | **Automatic, direct binding**| ⬆ **No JSON document allocation** |
+
+> [!NOTE]
+> **Execution Time:** The slight increase in execution time for `ESP32-HTTP-Client` is a consequence of its *in-place stream parsing* architecture. Instead of allocating a large buffer and loading the entire payload into memory (as in the traditional approach), the library reads and parses the JSON token by token directly from the network stream. This design trades a small amount of execution time for a significant reduction in RAM usage and heap fragmentation, making the ESP32 far more resilient against Out-Of-Memory (OOM) crashes when handling large payloads.
+>
+> Performance optimizations for this parsing strategy are already planned for future releases, with the goal of reducing this overhead while preserving the library's low-memory footprint and stability advantages.
+
+
+<img width="2724" height="1949" alt="image" src="https://github.com/user-attachments/assets/b9e44066-f715-42d0-9de7-06c006b740ee" />
+
 
 ---
 
