@@ -166,12 +166,13 @@ void RestRequest::execute() {
 
   if (!_client) return;
 
-  HTTPClient http;
-  // Force HTTP/1.0 to prevent Transfer-Encoding: chunked.
-  // This ensures getStreamPtr() provides a clean JSON stream without hex headers.
-  http.useHTTP10(true);
+  HTTPClient& http = _client->_http;
+  // HTTP/1.1 is used to allow Connection: keep-alive.
+  // The BufferedStreamReader now handles Transfer-Encoding: chunked automatically.
 
-  String urlBase = String(_client->_baseUrl);
+  String urlBase;
+  urlBase.reserve(128);
+  urlBase = _client->_baseUrl;
 
   if (_client->_port != 0) {
     int protoEnd    = urlBase.indexOf("://");
@@ -185,7 +186,10 @@ void RestRequest::execute() {
     }
   }
 
-  String url = urlBase + String(_path);
+  String url;
+  url.reserve(256);
+  url = urlBase;
+  url += _path;
 
   if (!_queryParams.empty()) {
     url += "?";
@@ -205,6 +209,7 @@ void RestRequest::execute() {
 
   String payload = "";
   if (!_bodyParams.empty()) {
+    payload.reserve(_bodyParams.size() * 64);
     http.addHeader("Content-Type", _client->_contentType);
     payload += "{";
     for (size_t i = 0; i < _bodyParams.size(); i++) {
@@ -248,7 +253,8 @@ void RestRequest::execute() {
 
   if (code > 0) {
     if (http.getSize() > 0 || http.getStreamPtr()) {
-      BufferedStreamReader reader(http.getStreamPtr());
+      bool isChunked = (http.getSize() == -1);
+      BufferedStreamReader reader(http.getStreamPtr(), isChunked);
       parseResponse(reader);
     }
   }
@@ -296,13 +302,12 @@ void RestRequest::readRawJsonIntoString(BufferedStreamReader& r, String* target,
   bool inString = false;
   bool escaped  = false;
 
-  char buf[2] = {openingBrace, '\0'};
-  *target = buf;
+  target->reserve(256);
+  *target = openingBrace;
 
   while (r.available() && depth > 0) {
     char c = (char)r.read();
-    buf[0] = c;
-    *target += buf;
+    *target += c;
 
     if (inString) {
       if (c == '\\' && !escaped) {
