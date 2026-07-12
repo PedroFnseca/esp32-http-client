@@ -62,6 +62,8 @@ class HTTPClient {
 
   void useHTTP10(bool usehttp10 = true) {}
 
+  void setReuse(bool reuse) {}
+
   void addHeader(const String& name, const String& value) {
   }
 

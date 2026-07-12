@@ -23,6 +23,13 @@ class String {
   }
   String(int value) : _data(std::to_string(value)) {
   }
+  String(char c) : _data(1, c) {
+  }
+
+  String& operator=(char c) {
+    _data = std::string(1, c);
+    return *this;
+  }
 
   int indexOf(const char* needle, int fromIndex = 0) const {
     if (!needle) return -1;
@@ -45,6 +52,10 @@ class String {
     return String(_data.substr(static_cast<size_t>(beginIndex)));
   }
 
+  void reserve(size_t size) {
+    _data.reserve(size);
+  }
+
   String& operator+=(const String& other) {
     _data += other._data;
     return *this;
@@ -52,6 +63,11 @@ class String {
 
   String& operator+=(const char* other) {
     _data += (other ? other : "");
+    return *this;
+  }
+
+  String& operator+=(char c) {
+    _data += c;
     return *this;
   }
 
@@ -79,12 +95,24 @@ inline String operator+(const char* left, const String& right) {
   return String(std::string(left ? left : "") + right.str());
 }
 
+inline void yield() {}
+
 class Stream {
  public:
   virtual ~Stream() = default;
   virtual int available() = 0;
   virtual int read() = 0;
   virtual int peek() = 0;
+  
+  virtual size_t readBytes(char* buffer, size_t length) {
+    size_t count = 0;
+    while (count < length && available()) {
+      int c = read();
+      if (c < 0) break;
+      buffer[count++] = static_cast<char>(c);
+    }
+    return count;
+  }
 };
 
 #endif
