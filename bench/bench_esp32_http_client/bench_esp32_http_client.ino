@@ -123,9 +123,16 @@ static void printReport() {
 
   int32_t heapStart = g_metrics.heapBeforeBytes[0];
   int32_t heapEnd   = g_metrics.heapAfterBytes[NUM_REQUESTS - 1];
-  float   fragPct   = 0.0f;
+  
+  int64_t totalFootprint = 0;
+  for (int i = 0; i < NUM_REQUESTS; i++) {
+    totalFootprint += (heapStart - g_metrics.heapAfterBytes[i]);
+  }
+  float avgFootprint = (float)totalFootprint / NUM_REQUESTS;
+  
+  float fragPct = 0.0f;
   if (heapStart > 0) {
-    fragPct = ((float)(heapStart - heapEnd) / (float)heapStart) * 100.0f;
+    fragPct = (avgFootprint / (float)heapStart) * 100.0f;
     if (fragPct < 0) fragPct = 0;
   }
 
@@ -186,6 +193,9 @@ void setup() {
 
     delay(50);
   }
+
+  client.end();
+  g_metrics.heapAfterBytes[NUM_REQUESTS - 1] = (int32_t)esp_get_free_heap_size();
 
   printReport();
 }
