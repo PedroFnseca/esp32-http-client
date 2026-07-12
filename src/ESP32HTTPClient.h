@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <vector>
+#include <HTTPClient.h>
 
 #include "RestRequest.h"
 #include "RestTypes.h"
@@ -22,6 +23,7 @@ class ESP32HTTPClient {
 
   void setContentType(const char* contentType);
   void setHeader(const char* name, const char* value);
+  void end();
 
   int getStatusCode() const {
     return _lastStatusCode;
@@ -33,6 +35,7 @@ class ESP32HTTPClient {
   int _lastStatusCode;
   const char* _contentType;
   std::vector<HttpHeader> _headers;
+  HTTPClient _http;
 };
 
 #endif

@@ -4,6 +4,7 @@
 
 ESP32HTTPClient::ESP32HTTPClient(const char* baseUrl, int port)
     : _baseUrl(baseUrl), _port(port), _lastStatusCode(0), _contentType("application/json") {
+  _http.setReuse(true);
 }
 
 void ESP32HTTPClient::setContentType(const char* contentType) {
@@ -17,6 +18,12 @@ void ESP32HTTPClient::setHeader(const char* name, const char* value) {
   strncpy(header.value, value, sizeof(header.value) - 1);
   header.value[sizeof(header.value) - 1] = '\0';
   _headers.push_back(header);
+}
+
+void ESP32HTTPClient::end() {
+  _http.setReuse(false);
+  _http.end();
+  _http.setReuse(true);
 }
 
 RestRequest ESP32HTTPClient::get(const char* path) {
