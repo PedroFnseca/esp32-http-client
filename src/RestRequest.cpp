@@ -197,9 +197,13 @@ void RestRequest::execute() {
 
   http.begin(url);
 
+  for (const auto& header : _client->_headers) {
+    http.addHeader(header.name, header.value);
+  }
+
   String payload = "";
   if (!_bodyParams.empty()) {
-    http.addHeader("Content-Type", "application/json");
+    http.addHeader("Content-Type", _client->_contentType);
     payload += "{";
     for (size_t i = 0; i < _bodyParams.size(); i++) {
       payload += "\"";

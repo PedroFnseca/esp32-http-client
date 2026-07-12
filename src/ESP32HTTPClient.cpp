@@ -10,6 +10,15 @@ void ESP32HTTPClient::setContentType(const char* contentType) {
   _contentType = contentType;
 }
 
+void ESP32HTTPClient::setHeader(const char* name, const char* value) {
+  HttpHeader header;
+  strncpy(header.name, name, sizeof(header.name) - 1);
+  header.name[sizeof(header.name) - 1] = '\0';
+  strncpy(header.value, value, sizeof(header.value) - 1);
+  header.value[sizeof(header.value) - 1] = '\0';
+  _headers.push_back(header);
+}
+
 RestRequest ESP32HTTPClient::get(const char* path) {
   return RestRequest(this, path, HTTP_GET_METHOD);
 }

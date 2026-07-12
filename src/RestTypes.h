@@ -19,4 +19,9 @@ struct ResponseBinding {
   size_t size;
 };
 
+struct HttpHeader {
+  char name[64];
+  char value[256];
+};
+
 #endif

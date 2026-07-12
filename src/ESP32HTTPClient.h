@@ -2,8 +2,10 @@
 #define ESP32_HTTP_CLIENT_H
 
 #include <Arduino.h>
+#include <vector>
 
 #include "RestRequest.h"
+#include "RestTypes.h"
 
 class ESP32HTTPClient {
   friend class RestRequest;
@@ -30,6 +32,7 @@ class ESP32HTTPClient {
   int _port;
   int _lastStatusCode;
   const char* _contentType;
+  std::vector<HttpHeader> _headers;
 };
 
 #endif
