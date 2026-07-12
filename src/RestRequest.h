@@ -8,6 +8,7 @@
 #include "RestTypes.h"
 
 class ESP32HTTPClient;
+class BufferedStreamReader;
 
 class RestRequest {
   friend class ESP32HTTPClient;
@@ -46,11 +47,11 @@ class RestRequest {
   std::vector<ResponseBinding> _responseBindings;
 
   void execute();
-  void parseResponse(Stream* stream);
-  void parseObject(Stream* stream, const char* basePath);
-  void parseArray(Stream* stream, const char* basePath);
-  void parsePrimitive(Stream* stream, ResponseBinding* match);
-  void readRawJsonIntoString(Stream* stream, String* target, char openingBrace);
+  void parseResponse(BufferedStreamReader& r);
+  void parseObject(BufferedStreamReader& r, const char* basePath);
+  void parseArray(BufferedStreamReader& r, const char* basePath);
+  void parsePrimitive(BufferedStreamReader& r, ResponseBinding* match);
+  void readRawJsonIntoString(BufferedStreamReader& r, String* target, char openingBrace);
 
   template <typename T>
   void addParam(std::vector<KeyValue>& list, const char* key, T value);

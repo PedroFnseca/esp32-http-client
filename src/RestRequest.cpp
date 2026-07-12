@@ -3,38 +3,75 @@
 #include <HTTPClient.h>
 
 #include "ESP32HTTPClient.h"
+class BufferedStreamReader {
+ public:
+  static constexpr size_t   BUF_SIZE   = 512;
+  static constexpr uint32_t TIMEOUT_MS = 2000;
 
-bool waitAvailable(Stream* stream) {
-  if (stream->available()) return true;
-  unsigned long start = millis();
-  while (!stream->available() && (millis() - start < 2000)) {
-    delay(1);
+  explicit BufferedStreamReader(Stream* stream)
+      : _stream(stream), _pos(0), _len(0) {}
+
+  bool available() {
+    if (_pos < _len) return true;
+    return refill();
   }
-  return stream->available() > 0;
-}
 
-void skipWhitespace(Stream* stream) {
-  while (waitAvailable(stream)) {
-    char c = stream->peek();
-    if (isspace(c))
-      stream->read();
+  int read() {
+    if (_pos >= _len && !refill()) return -1;
+    return (uint8_t)_buf[_pos++];
+  }
+
+  int peek() {
+    if (_pos >= _len && !refill()) return -1;
+    return (uint8_t)_buf[_pos];
+  }
+
+ private:
+  Stream* _stream;
+  char    _buf[BUF_SIZE];
+  size_t  _pos;  // next byte to serve from _buf
+  size_t  _len;  // valid bytes currently in _buf
+
+  bool refill() {
+    _pos = 0;
+    _len = 0;
+
+    unsigned long start = millis();
+    while (!_stream->available()) {
+      if (millis() - start >= TIMEOUT_MS) return false;
+      delay(1);
+    }
+
+    while (_stream->available() && _len < BUF_SIZE) {
+      _buf[_len++] = (char)_stream->read();
+    }
+
+    return _len > 0;
+  }
+};
+
+static void skipWhitespace(BufferedStreamReader& r) {
+  while (r.available()) {
+    char c = (char)r.peek();
+    if (isspace((unsigned char)c))
+      r.read();
     else
       break;
   }
 }
 
-void readStringIntoBuffer(Stream* stream, char* buffer, size_t maxLen) {
+static void readStringIntoBuffer(BufferedStreamReader& r, char* buffer, size_t maxLen) {
   size_t idx = 0;
-  if (stream->read() != '"') {
+  if (r.read() != '"') {
     if (maxLen > 0) buffer[0] = 0;
     return;
   }
 
-  while (waitAvailable(stream)) {
-    char c = stream->read();
+  while (r.available()) {
+    char c = (char)r.read();
     if (c == '\\') {
-      if (waitAvailable(stream)) {
-        char escaped = stream->read();
+      if (r.available()) {
+        char escaped = (char)r.read();
         if (idx < maxLen - 1) buffer[idx++] = escaped;
       }
     } else if (c == '"') {
@@ -46,30 +83,30 @@ void readStringIntoBuffer(Stream* stream, char* buffer, size_t maxLen) {
   buffer[idx] = 0;
 }
 
-void skipValue(Stream* stream) {
-  skipWhitespace(stream);
-  if (!waitAvailable(stream)) return;
+static void skipValue(BufferedStreamReader& r) {
+  skipWhitespace(r);
+  if (!r.available()) return;
 
-  char c = stream->read();
+  char c = (char)r.read();
 
   if (c == '"') {
-    while (waitAvailable(stream)) {
-      char ch = stream->read();
+    while (r.available()) {
+      char ch = (char)r.read();
       if (ch == '\\') {
-        if (waitAvailable(stream)) stream->read();
+        if (r.available()) r.read();
       } else if (ch == '"') {
         break;
       }
     }
   } else if (c == '{') {
     int depth = 1;
-    while (depth > 0 && waitAvailable(stream)) {
-      char ch = stream->read();
+    while (depth > 0 && r.available()) {
+      char ch = (char)r.read();
       if (ch == '"') {
-        while (waitAvailable(stream)) {
-          char sc = stream->read();
+        while (r.available()) {
+          char sc = (char)r.read();
           if (sc == '\\') {
-            if (waitAvailable(stream)) stream->read();
+            if (r.available()) r.read();
           } else if (sc == '"')
             break;
         }
@@ -81,13 +118,13 @@ void skipValue(Stream* stream) {
     }
   } else if (c == '[') {
     int depth = 1;
-    while (depth > 0 && waitAvailable(stream)) {
-      char ch = stream->read();
+    while (depth > 0 && r.available()) {
+      char ch = (char)r.read();
       if (ch == '"') {
-        while (waitAvailable(stream)) {
-          char sc = stream->read();
+        while (r.available()) {
+          char sc = (char)r.read();
           if (sc == '\\') {
-            if (waitAvailable(stream)) stream->read();
+            if (r.available()) r.read();
           } else if (sc == '"')
             break;
         }
@@ -98,12 +135,12 @@ void skipValue(Stream* stream) {
       }
     }
   } else {
-    while (waitAvailable(stream)) {
-      char ch = stream->peek();
-      if (ch == ',' || ch == '}' || ch == ']' || isspace(ch)) {
+    while (r.available()) {
+      char ch = (char)r.peek();
+      if (ch == ',' || ch == '}' || ch == ']' || isspace((unsigned char)ch)) {
         break;
       }
-      stream->read();
+      r.read();
     }
   }
 }
@@ -159,22 +196,32 @@ RestRequest& RestRequest::getBody(const char* key, long* target) {
   return *this;
 }
 
+RestRequest& RestRequest::getBody(const char* key, String* target) {
+  ResponseBinding binding;
+  binding.key    = key;
+  binding.target = target;
+  binding.type   = TYPE_ARDUINO_STRING;
+  binding.size   = 0;
+  _responseBindings.push_back(binding);
+  return *this;
+}
+
 void RestRequest::execute() {
   _executed = true;
 
   if (!_client) return;
 
   HTTPClient http;
-  // Force HTTP/1.0 to prevent servers from using Transfer-Encoding: chunked.
+  // Force HTTP/1.0 to prevent Transfer-Encoding: chunked.
   // This ensures getStreamPtr() provides a clean JSON stream without hex headers.
   http.useHTTP10(true);
 
   String urlBase = String(_client->_baseUrl);
 
   if (_client->_port != 0) {
-    int protoEnd = urlBase.indexOf("://");
+    int protoEnd    = urlBase.indexOf("://");
     int startSearch = (protoEnd != -1) ? protoEnd + 3 : 0;
-    int slashPos = urlBase.indexOf("/", startSearch);
+    int slashPos    = urlBase.indexOf("/", startSearch);
 
     if (slashPos != -1) {
       urlBase = urlBase.substring(0, slashPos) + ":" + String(_client->_port) + urlBase.substring(slashPos);
@@ -246,29 +293,20 @@ void RestRequest::execute() {
 
   if (code > 0) {
     if (http.getSize() > 0 || http.getStreamPtr()) {
-      parseResponse(http.getStreamPtr());
+      BufferedStreamReader reader(http.getStreamPtr());
+      parseResponse(reader);
     }
   }
 
   http.end();
 }
 
-RestRequest& RestRequest::getBody(const char* key, String* target) {
-  ResponseBinding binding;
-  binding.key = key;
-  binding.target = target;
-  binding.type = TYPE_ARDUINO_STRING;
-  binding.size = 0;
-  _responseBindings.push_back(binding);
-  return *this;
-}
-
-void RestRequest::parseResponse(Stream* stream) {
+void RestRequest::parseResponse(BufferedStreamReader& r) {
   if (_responseBindings.empty()) return;
 
-  skipWhitespace(stream);
-  char c = stream->read();
-  
+  skipWhitespace(r);
+  char c = (char)r.read();
+
   if (c == '{') {
     ResponseBinding* match = nullptr;
     for (auto& binding : _responseBindings) {
@@ -278,9 +316,9 @@ void RestRequest::parseResponse(Stream* stream) {
       }
     }
     if (match && match->type == TYPE_ARDUINO_STRING) {
-      readRawJsonIntoString(stream, (String*)match->target, '{');
+      readRawJsonIntoString(r, (String*)match->target, '{');
     } else {
-      parseObject(stream, "");
+      parseObject(r, "");
     }
   } else if (c == '[') {
     ResponseBinding* match = nullptr;
@@ -291,23 +329,23 @@ void RestRequest::parseResponse(Stream* stream) {
       }
     }
     if (match && match->type == TYPE_ARDUINO_STRING) {
-      readRawJsonIntoString(stream, (String*)match->target, '[');
+      readRawJsonIntoString(r, (String*)match->target, '[');
     } else {
-      parseArray(stream, "");
+      parseArray(r, "");
     }
   }
 }
 
-void RestRequest::readRawJsonIntoString(Stream* stream, String* target, char openingBrace) {
-  int depth = 1;
+void RestRequest::readRawJsonIntoString(BufferedStreamReader& r, String* target, char openingBrace) {
+  int  depth    = 1;
   bool inString = false;
-  bool escaped = false;
-  
+  bool escaped  = false;
+
   char buf[2] = {openingBrace, '\0'};
   *target = buf;
 
-  while (waitAvailable(stream) && depth > 0) {
-    char c = stream->read();
+  while (r.available() && depth > 0) {
+    char c = (char)r.read();
     buf[0] = c;
     *target += buf;
 
@@ -315,9 +353,7 @@ void RestRequest::readRawJsonIntoString(Stream* stream, String* target, char ope
       if (c == '\\' && !escaped) {
         escaped = true;
       } else {
-        if (c == '"' && !escaped) {
-          inString = false;
-        }
+        if (c == '"' && !escaped) inString = false;
         escaped = false;
       }
     } else {
@@ -332,19 +368,19 @@ void RestRequest::readRawJsonIntoString(Stream* stream, String* target, char ope
   }
 }
 
-void RestRequest::parsePrimitive(Stream* stream, ResponseBinding* match) {
+void RestRequest::parsePrimitive(BufferedStreamReader& r, ResponseBinding* match) {
   char valueBuffer[128];
-  char nextChar = stream->peek();
+  char nextChar = (char)r.peek();
 
   if (nextChar == '"') {
     if (match->type == TYPE_STRING) {
-      readStringIntoBuffer(stream, (char*)match->target, match->size);
+      readStringIntoBuffer(r, (char*)match->target, match->size);
     } else if (match->type == TYPE_ARDUINO_STRING) {
       char tmp[256];
-      readStringIntoBuffer(stream, tmp, sizeof(tmp));
+      readStringIntoBuffer(r, tmp, sizeof(tmp));
       *((String*)match->target) = tmp;
     } else {
-      readStringIntoBuffer(stream, valueBuffer, sizeof(valueBuffer));
+      readStringIntoBuffer(r, valueBuffer, sizeof(valueBuffer));
       if (match->type == TYPE_INT)
         *(int*)match->target = atoi(valueBuffer);
       else if (match->type == TYPE_FLOAT)
@@ -352,24 +388,24 @@ void RestRequest::parsePrimitive(Stream* stream, ResponseBinding* match) {
     }
   } else if (nextChar == 't' || nextChar == 'f') {
     size_t bIdx = 0;
-    while (waitAvailable(stream)) {
-      char b = stream->peek();
-      if (isalpha(b)) {
-        char x = stream->read();
+    while (r.available()) {
+      char b = (char)r.peek();
+      if (isalpha((unsigned char)b)) {
+        char x = (char)r.read();
         if (bIdx < 10) valueBuffer[bIdx++] = x;
       } else
         break;
     }
     valueBuffer[bIdx] = 0;
     bool bVal = (strcmp(valueBuffer, "true") == 0);
-    if (match->type == TYPE_BOOL) *(bool*)match->target = bVal;
+    if (match->type == TYPE_BOOL)           *(bool*)match->target   = bVal;
     if (match->type == TYPE_ARDUINO_STRING) *((String*)match->target) = valueBuffer;
   } else {
     size_t nIdx = 0;
-    while (waitAvailable(stream)) {
-      char b = stream->peek();
-      if (isdigit(b) || b == '.' || b == '-') {
-        char x = stream->read();
+    while (r.available()) {
+      char b = (char)r.peek();
+      if (isdigit((unsigned char)b) || b == '.' || b == '-') {
+        char x = (char)r.read();
         if (nIdx < 63) valueBuffer[nIdx++] = x;
       } else
         break;
@@ -389,19 +425,19 @@ void RestRequest::parsePrimitive(Stream* stream, ResponseBinding* match) {
   }
 }
 
-void RestRequest::parseObject(Stream* stream, const char* basePath) {
+void RestRequest::parseObject(BufferedStreamReader& r, const char* basePath) {
   char keyBuffer[64];
   char fullPath[128];
 
-  while (waitAvailable(stream)) {
-    skipWhitespace(stream);
-    char c = stream->read();
+  while (r.available()) {
+    skipWhitespace(r);
+    char c = (char)r.read();
 
     if (c == '}') break;
     if (c == '"') {
       size_t kIdx = 0;
-      while (waitAvailable(stream)) {
-        char k = stream->read();
+      while (r.available()) {
+        char k = (char)r.read();
         if (k == '"') break;
         if (kIdx < 63) keyBuffer[kIdx++] = k;
       }
@@ -414,11 +450,11 @@ void RestRequest::parseObject(Stream* stream, const char* basePath) {
         snprintf(fullPath, sizeof(fullPath), "%s.%s", basePath, keyBuffer);
       }
 
-      skipWhitespace(stream);
-      if (stream->read() != ':') continue;
+      skipWhitespace(r);
+      if (r.read() != ':') continue;
 
-      skipWhitespace(stream);
-      char nextChar = stream->peek();
+      skipWhitespace(r);
+      char nextChar = (char)r.peek();
 
       if (nextChar == '{' || nextChar == '[') {
         ResponseBinding* match = nullptr;
@@ -428,16 +464,16 @@ void RestRequest::parseObject(Stream* stream, const char* basePath) {
             break;
           }
         }
-        
+
         if (match && match->type == TYPE_ARDUINO_STRING) {
-          stream->read(); // consume '{' or '['
-          readRawJsonIntoString(stream, (String*)match->target, nextChar);
+          r.read();  // consume '{' or '['
+          readRawJsonIntoString(r, (String*)match->target, nextChar);
         } else {
-          stream->read();
+          r.read();
           if (nextChar == '{') {
-            parseObject(stream, fullPath);
+            parseObject(r, fullPath);
           } else {
-            parseArray(stream, fullPath);
+            parseArray(r, fullPath);
           }
         }
       } else {
@@ -450,28 +486,28 @@ void RestRequest::parseObject(Stream* stream, const char* basePath) {
         }
 
         if (match) {
-          parsePrimitive(stream, match);
+          parsePrimitive(r, match);
         } else {
-          skipValue(stream);
+          skipValue(r);
         }
       }
 
-      skipWhitespace(stream);
-      if (stream->peek() == ',') stream->read();
+      skipWhitespace(r);
+      if (r.peek() == ',') r.read();
     }
   }
 }
 
-void RestRequest::parseArray(Stream* stream, const char* basePath) {
-  int index = 0;
+void RestRequest::parseArray(BufferedStreamReader& r, const char* basePath) {
+  int  index = 0;
   char fullPath[128];
 
-  while (waitAvailable(stream)) {
-    skipWhitespace(stream);
-    char nextChar = stream->peek();
+  while (r.available()) {
+    skipWhitespace(r);
+    char nextChar = (char)r.peek();
 
     if (nextChar == ']') {
-      stream->read();
+      r.read();
       break;
     }
 
@@ -489,16 +525,16 @@ void RestRequest::parseArray(Stream* stream, const char* basePath) {
           break;
         }
       }
-      
+
       if (match && match->type == TYPE_ARDUINO_STRING) {
-        stream->read(); // consume '{' or '['
-        readRawJsonIntoString(stream, (String*)match->target, nextChar);
+        r.read();  // consume '{' or '['
+        readRawJsonIntoString(r, (String*)match->target, nextChar);
       } else {
-        stream->read();
+        r.read();
         if (nextChar == '{') {
-          parseObject(stream, fullPath);
+          parseObject(r, fullPath);
         } else {
-          parseArray(stream, fullPath);
+          parseArray(r, fullPath);
         }
       }
     } else {
@@ -511,15 +547,15 @@ void RestRequest::parseArray(Stream* stream, const char* basePath) {
       }
 
       if (match) {
-        parsePrimitive(stream, match);
+        parsePrimitive(r, match);
       } else {
-        skipValue(stream);
+        skipValue(r);
       }
     }
 
-    skipWhitespace(stream);
-    if (stream->peek() == ',') {
-      stream->read();
+    skipWhitespace(r);
+    if (r.peek() == ',') {
+      r.read();
     }
     index++;
   }
