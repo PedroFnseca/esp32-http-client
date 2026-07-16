@@ -1,0 +1,87 @@
+site_name: ESP32-HTTP-Client
+site_url: https://pedrofnseca.github.io/esp32-http-client
+site_description: Lightweight, fluent HTTP client for ESP32 with direct JSON stream parsing into variables. No ArduinoJson required.
+site_author: Pedro Fonseca
+repo_name: PedroFnseca/esp32-http-client
+repo_url: https://github.com/PedroFnseca/esp32-http-client
+edit_uri: ""
+
+theme:
+  icon:
+    logo: material/memory
+  name: material
+  palette:
+    - scheme: slate
+      primary: teal
+      accent: orange
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+    - scheme: default
+      primary: teal
+      accent: orange
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  font:
+    text: Inter
+    code: Cascadia Code
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - navigation.prune
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - getting-started/index.md
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quickstart.md
+  - Guide:
+    - guide/index.md
+    - Initialization: guide/initialization.md
+    - Making Requests: guide/requests.md
+    - Reading Responses: guide/responses.md
+    - Advanced Usage: guide/advanced.md
+  - Examples:
+    - examples/index.md
+    - Simple GET: examples/simple-get.md
+    - POST Request: examples/post-request.md
+    - Nested JSON: examples/nested-json.md
+    - Array JSON: examples/array-json.md
+    - Raw JSON: examples/raw-json.md
+    - PUT & DELETE: examples/put-delete.md
+    - Unix Timestamp: examples/unix-timestamp.md
+    - Custom Port: examples/port-selection.md
+  - API Reference:
+    - api/index.md
+    - ESP32HTTPClient: api/esp32httpclient.md
+    - RestRequest: api/restrequest.md
+  - Performance: performance.md
+
