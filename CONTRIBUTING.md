@@ -2,7 +2,7 @@
 
 First of all, thank you so much for your interest in contributing to our project! 🎉
 
-To keep our commit history organized and ensure our automated versioning and release system (powered by `release-please`) works flawlessly, we have adopted the **Conventional Commits** standard.
+To keep our commit history organized and ensure our automated versioning and release system works flawlessly, we have adopted the **Conventional Commits** standard.
 
 ## Commit Rules
 

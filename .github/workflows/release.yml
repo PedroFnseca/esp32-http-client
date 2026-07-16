@@ -8,41 +8,46 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+
     permissions:
       contents: write
-      pull-requests: write
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Read version from library.properties
-        id: get_version
+        id: version
         run: |
           VERSION=$(grep '^version=' library.properties | cut -d'=' -f2 | xargs)
-          
-          if [ -z "$VERSION" ]; then
-            exit 1
-          fi
-          
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Create and Push Tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ steps.get_version.outputs.version }}
+      - name: Check if tag exists
+        id: tag
         run: |
-          TAG_NAME="v$VERSION"
-          
-          if git ls-remote --exit-code --tags origin "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
-            exit 0
+          TAG="v${{ steps.version.outputs.version }}"
+
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
           fi
-          
+
+      - name: Create tag
+        if: steps.tag.outputs.exists == 'false'
+        run: |
+          TAG="v${{ steps.version.outputs.version }}"
+
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git tag -a "$TAG_NAME" -m "Auto-generated tag for version $VERSION"
-          git push origin "$TAG_NAME"
-      - name: Release Please
-        uses: google-github-actions/release-please-action@v4
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git tag "$TAG"
+          git push origin "$TAG"
+
+      - name: Create GitHub Release
+        if: steps.tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
         with:
-          release-type: simple
+          tag_name: v${{ steps.version.outputs.version }}
+          generate_release_notes: true
