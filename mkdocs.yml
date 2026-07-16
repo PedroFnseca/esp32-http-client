@@ -6,6 +6,11 @@ repo_name: PedroFnseca/esp32-http-client
 repo_url: https://github.com/PedroFnseca/esp32-http-client
 edit_uri: ""
 
+extra:
+  analytics:
+    provider: google
+    property: G-TFXJLYGKZM
+
 theme:
   icon:
     logo: material/memory
