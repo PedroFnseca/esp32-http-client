@@ -45,9 +45,65 @@ jobs:
           git tag "$TAG"
           git push origin "$TAG"
 
+      - name: Generate Release Notes
+        if: steps.tag.outputs.exists == 'false'
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            RANGE="HEAD"
+          else
+            RANGE="$PREVIOUS_TAG..HEAD"
+          fi
+
+          echo "# What's Changed" > RELEASE_NOTES.md
+          echo "" >> RELEASE_NOTES.md
+
+          create_section() {
+            TITLE="$1"
+            PREFIX="$2"
+
+            COMMITS=$(git log $RANGE --pretty=format:"%s (%h)" \
+              | grep "^$PREFIX:" \
+              | sed "s/^$PREFIX: /- /")
+
+            if [ -n "$COMMITS" ]; then
+              echo "## $TITLE" >> RELEASE_NOTES.md
+              echo "" >> RELEASE_NOTES.md
+              echo "$COMMITS" >> RELEASE_NOTES.md
+              echo "" >> RELEASE_NOTES.md
+            fi
+          }
+
+          create_section "Features" "feat"
+          create_section "Bug Fixes" "fix"
+          create_section "Performance Improvements" "perf"
+          create_section "Documentation" "docs"
+          create_section "Code Refactoring" "refactor"
+          create_section "Tests" "test"
+          create_section "Styles" "style"
+
+          CHORES=$(git log $RANGE --pretty=format:"%s (%h)" \
+            | grep "^chore:" \
+            | grep -v "bump version" \
+            | sed 's/^chore: /- /')
+
+          if [ -n "$CHORES" ]; then
+            echo "## Miscellaneous Chores" >> RELEASE_NOTES.md
+            echo "" >> RELEASE_NOTES.md
+            echo "$CHORES" >> RELEASE_NOTES.md
+            echo "" >> RELEASE_NOTES.md
+          fi
+
+          if [ -n "$PREVIOUS_TAG" ]; then
+            echo "---" >> RELEASE_NOTES.md
+            echo "" >> RELEASE_NOTES.md
+            echo "**Full Changelog:** https://github.com/${{ github.repository }}/compare/${PREVIOUS_TAG}...v${{ steps.version.outputs.version }}" >> RELEASE_NOTES.md
+          fi
+
       - name: Create GitHub Release
         if: steps.tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.version }}
-          generate_release_notes: true
+          body_path: RELEASE_NOTES.md
