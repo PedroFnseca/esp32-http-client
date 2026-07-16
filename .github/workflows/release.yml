@@ -57,10 +57,23 @@ jobs:
               sys.exit(0)
           with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
               content = f.read()
-          sections = re.split(r'^##\s+(v\d+\.\d+\.\d+)', content, flags=re.MULTILINE)
-          for i in range(1, len(sections), 2):
-              tag = sections[i]
-              body = sections[i+1].strip()
+          sections = {
+              'feat': 'Features',
+              'fix': 'Bug Fixes',
+              'perf': 'Performance Improvements',
+              'docs': 'Documentation',
+              'chore': 'Miscellaneous Chores',
+              'test': 'Tests',
+              'style': 'Styles',
+              'refactor': 'Code Refactoring',
+              'ci': 'CI/CD'
+          }
+          with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
+              content = f.read()
+          sections_split = re.split(r'^##\s+(v\d+\.\d+\.\d+)', content, flags=re.MULTILINE)
+          for i in range(1, len(sections_split), 2):
+              tag = sections_split[i]
+              body = sections_split[i+1].strip()
               try:
                   subprocess.check_call(['gh', 'release', 'view', tag], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                   print(f"Release {tag} already exists.")

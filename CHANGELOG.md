@@ -14,6 +14,10 @@
 
 * bump version to 1.3.2 ([80b319f](https://github.com/PedroFnseca/esp32-http-client/commit/80b319f))
 
+### Tests
+
+* expand test suites to improve code coverage ([4b93534](https://github.com/PedroFnseca/esp32-http-client/commit/4b93534))
+
 ## v1.3.1
 
 ### Features
@@ -34,11 +38,19 @@
 * bump version to 1.3.0 ([3aa6705](https://github.com/PedroFnseca/esp32-http-client/commit/3aa6705))
 * improve benchmark accuracy with average RAM footprint calculation ([5a493ce](https://github.com/PedroFnseca/esp32-http-client/commit/5a493ce))
 
+### Tests
+
+* update mocks to support recent library optimizations ([0a0f270](https://github.com/PedroFnseca/esp32-http-client/commit/0a0f270))
+
 ## v1.2.4
 
 ### Miscellaneous Chores
 
 * bump to 1.2.4 ([99f3008](https://github.com/PedroFnseca/esp32-http-client/commit/99f3008))
+
+### Tests
+
+* fix source BufferedStreamReader class test ([b3d88b3](https://github.com/PedroFnseca/esp32-http-client/commit/b3d88b3))
 
 ## v1.2.3
 
@@ -91,6 +103,11 @@
 ### Miscellaneous Chores
 
 * bump to 1.2.0 version ([ea1c275](https://github.com/PedroFnseca/esp32-http-client/commit/ea1c275))
+
+### Tests
+
+* add test suites for raw json and array parsing ([37e587f](https://github.com/PedroFnseca/esp32-http-client/commit/37e587f))
+* add cases for nested JSON fields parsing ([c03cb19](https://github.com/PedroFnseca/esp32-http-client/commit/c03cb19))
 
 ## v1.0.1
 
