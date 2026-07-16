@@ -47,9 +47,11 @@ jobs:
           # Replace the badge URL in README.md
           sed -i "s|https://img.shields.io/badge/Coverage-[0-9.]*%25-[a-zA-Z]*|https://img.shields.io/badge/Coverage-${COVERAGE}%25-${COLOR}|g" README.md
 
+          sed -i "s|https://img.shields.io/badge/Coverage-[0-9.]*%25-[a-zA-Z]*|https://img.shields.io/badge/Coverage-${COVERAGE}%25-${COLOR}|g" docs/index.md
+
       - name: Commit and Push Badge Update
         if: github.ref == 'refs/heads/main'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "docs: auto-update coverage badge"
-          file_pattern: README.md
+          file_pattern: README.md docs/index.md
