@@ -42,10 +42,6 @@ jobs:
           
           git tag -a "$TAG_NAME" -m "Auto-generated tag for version $VERSION"
           git push origin "$TAG_NAME"
-          fi
-
-
-
       - name: Release Please
         uses: google-github-actions/release-please-action@v4
         with:
