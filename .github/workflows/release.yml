@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Read version from library.properties
         id: get_version
@@ -46,46 +44,7 @@ jobs:
           git push origin "$TAG_NAME"
           fi
 
-      - name: Create retroactive GitHub Releases from CHANGELOG (Temp)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cat << 'EOF' > create_releases.py
-          import sys, re, subprocess, os
-          if not os.path.exists('CHANGELOG.md'):
-              print("CHANGELOG.md not found! Make sure to commit it.")
-              sys.exit(0)
-          with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
-              content = f.read()
-          sections = {
-              'feat': 'Features',
-              'fix': 'Bug Fixes',
-              'perf': 'Performance Improvements',
-              'docs': 'Documentation',
-              'chore': 'Miscellaneous Chores',
-              'test': 'Tests',
-              'style': 'Styles',
-              'refactor': 'Code Refactoring',
-              'ci': 'CI/CD'
-          }
-          with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
-              content = f.read()
-          sections_split = re.split(r'^##\s+(v\d+\.\d+\.\d+)', content, flags=re.MULTILINE)
-          for i in range(1, len(sections_split), 2):
-              tag = sections_split[i]
-              body = sections_split[i+1].strip()
-              try:
-                  subprocess.check_call(['gh', 'release', 'view', tag], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                  print(f"Release {tag} already exists.")
-                  continue
-              except subprocess.CalledProcessError:
-                  pass
-              print(f"Creating release for {tag}...")
-              with open('temp_notes.md', 'w', encoding='utf-8') as f:
-                  f.write(body)
-              subprocess.check_call(['gh', 'release', 'create', tag, '--notes-file', 'temp_notes.md'])
-          EOF
-          python3 create_releases.py
+
 
       - name: Release Please
         uses: google-github-actions/release-please-action@v4
