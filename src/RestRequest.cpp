@@ -231,22 +231,42 @@ void RestRequest::execute() {
   }
 
   int code = 0;
-  switch (_method) {
-    case HTTP_GET_METHOD:
-      code = http.GET();
+  int retries = 0;
+
+  while (retries < 2) {
+    switch (_method) {
+      case HTTP_GET_METHOD:
+        code = http.GET();
+        break;
+      case HTTP_POST_METHOD:
+        code = http.POST(payload);
+        break;
+      case HTTP_PUT_METHOD:
+        code = http.PUT(payload);
+        break;
+      case HTTP_PATCH_METHOD:
+        code = http.PATCH(payload);
+        break;
+      case HTTP_DELETE_METHOD:
+        code = http.sendRequest("DELETE", payload);
+        break;
+    }
+
+    // If connection fails (code < 0), it might be a stale Keep-Alive connection.
+    // Close the socket, re-initiate the connection, and retry once.
+    if (code < 0 && retries == 0) {
+      http.end();
+      http.begin(url);
+      for (const auto& header : _client->_headers) {
+        http.addHeader(header.name, header.value);
+      }
+      if (!_bodyParams.empty()) {
+        http.addHeader("Content-Type", _client->_contentType);
+      }
+      retries++;
+    } else {
       break;
-    case HTTP_POST_METHOD:
-      code = http.POST(payload);
-      break;
-    case HTTP_PUT_METHOD:
-      code = http.PUT(payload);
-      break;
-    case HTTP_PATCH_METHOD:
-      code = http.PATCH(payload);
-      break;
-    case HTTP_DELETE_METHOD:
-      code = http.sendRequest("DELETE", payload);
-      break;
+    }
   }
 
   _client->_lastStatusCode = code;

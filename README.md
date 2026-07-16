@@ -2,6 +2,7 @@
 > A fluent, object-oriented HTTP client for ESP32 that binds JSON response fields directly into your variables.
 
 [![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
+[![Coverage](https://img.shields.io/badge/Coverage-88.05%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
 [![Hits](https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-http-client/)
 [![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social)](https://github.com/PedroFnseca/esp32-http-client/stargazers)
@@ -252,6 +253,7 @@ Runnable sketches are available in the `examples/` directory:
 | [NestedJSON](examples/NestedJSON/NestedJSON.ino) | Extracting fields from deeply nested objects. |
 | [ArrayJSON](examples/ArrayJSON/ArrayJSON.ino) | Addressing array elements by index. |
 | [RawArrayJSON](examples/RawArrayJSON/RawArrayJSON.ino) | Capturing raw arrays or objects into Arduino Strings. |
+| [UnixTimestamp](examples/UnixTimestamp/UnixTimestamp.ino) | Fetching the current Unix Timestamp from an API. |
 
 ---
 
