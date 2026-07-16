@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version from library.properties
+        id: get_version
+        run: |
+          VERSION=$(grep '^version=' library.properties | cut -d'=' -f2 | xargs)
+          
+          if [ -z "$VERSION" ]; then
+            exit 1
+          fi
+          
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create and Push Tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.get_version.outputs.version }}
+        run: |
+          TAG_NAME="v$VERSION"
+          
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG_NAME" >/dev/null 2>&1; then
+            exit 0
+          fi
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git tag -a "$TAG_NAME" -m "Auto-generated tag for version $VERSION"
+          git push origin "$TAG_NAME"
+          fi
+
+      - name: Create retroactive GitHub Releases from CHANGELOG (Temp)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat << 'EOF' > create_releases.py
+          import sys, re, subprocess, os
+          if not os.path.exists('CHANGELOG.md'):
+              print("CHANGELOG.md not found! Make sure to commit it.")
+              sys.exit(0)
+          with open('CHANGELOG.md', 'r', encoding='utf-8') as f:
+              content = f.read()
+          sections = re.split(r'^##\s+(v\d+\.\d+\.\d+)', content, flags=re.MULTILINE)
+          for i in range(1, len(sections), 2):
+              tag = sections[i]
+              body = sections[i+1].strip()
+              try:
+                  subprocess.check_call(['gh', 'release', 'view', tag], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                  print(f"Release {tag} already exists.")
+                  continue
+              except subprocess.CalledProcessError:
+                  pass
+              print(f"Creating release for {tag}...")
+              with open('temp_notes.md', 'w', encoding='utf-8') as f:
+                  f.write(body)
+              subprocess.check_call(['gh', 'release', 'create', tag, '--notes-file', 'temp_notes.md'])
+          EOF
+          python3 create_releases.py
+
+      - name: Release Please
+        uses: google-github-actions/release-please-action@v4
+        with:
+          release-type: simple
