@@ -329,6 +329,218 @@ void testParseRawArrayJSON() {
 
   req._executed = true;
 }
+void testUnixTimestampFetch() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, R"({"unix_timestamp":1781301337})");
+
+  ESP32HTTPClient client("https://timeapi.io");
+  
+  long ts = 0;
+  {
+    client.get("/api/v1/time/current/unix")
+          .getBody("unix_timestamp", &ts);
+  }
+
+  expectEq(HttpClientStub::lastMethod, "GET", "should use GET method");
+  expectEq(HttpClientStub::lastUrl, "https://timeapi.io/api/v1/time/current/unix", "url should be correct");
+  expectEqInt(ts, 1781301337L, "unix_timestamp should be successfully parsed");
+}
+void testClientConfiguration() {
+  ESP32HTTPClient client("https://example.com");
+  client.setContentType("text/plain");
+  client.setHeader("X-Custom", "value1");
+  
+  HttpClientStub::reset();
+  client.post("/upload").body("data", "hello").getBody("ignored", (int*)nullptr);
+  
+  expectEq(HttpClientStub::lastUrl, "https://example.com/upload", "url matches");
+  expectEq(HttpClientStub::lastMethod, "POST", "method matches");
+  
+  client.end(); // covers the end() method
+}
+
+void testAllHttpMethods() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("http://test", 8080);
+  
+  client.put("/").getBody("i", (int*)nullptr);
+  expectEq(HttpClientStub::lastMethod, "PUT", "put uses PUT");
+  
+  client.patch("/").getBody("i", (int*)nullptr);
+  expectEq(HttpClientStub::lastMethod, "PATCH", "patch uses PATCH");
+  
+  client.del("/").getBody("i", (int*)nullptr);
+  expectEq(HttpClientStub::lastMethod, "DELETE", "del uses DELETE");
+}
+
+void testAutoRetry() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(-1, ""); // first attempt fails
+  
+  ESP32HTTPClient client("http://retry");
+  client.get("/").getBody("i", (int*)nullptr);
+  
+  expectEqInt(client.getStatusCode(), -1, "status code propagates from retry loop");
+}
+
+void testChunkedTransferEncoding() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req(&client, "/chunked", HTTP_GET_METHOD);
+  char buf[32] = {0};
+  req.getBody("msg", buf, sizeof(buf));
+  
+  StringStream stream("e\r\n{\"msg\":\"hello \r\n7\r\nworld\"}\r\n0\r\n\r\n");
+  BufferedStreamReader reader(&stream, true);
+  req.parseResponse(reader);
+  
+  expectEq(buf, "hello world", "chunked data should be correctly reassembled inside parseResponse");
+  req._executed = true;
+}
+
+void testLargePayloadRefill() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req(&client, "/large", HTTP_GET_METHOD);
+  char buf[32] = {0};
+  req.getBody("end", buf, sizeof(buf));
+  
+  std::string largeData = "{\"pad\":\"";
+  largeData.append(600, 'A');
+  largeData += "\",\"end\":\"found\"}";
+  
+  StringStream stream(largeData);
+  BufferedStreamReader reader(&stream, false);
+  req.parseResponse(reader);
+  
+  expectEq(buf, "found", "should successfully read beyond 512 bytes buffer size in parseResponse");
+  req._executed = true;
+}
+
+void testMoreParseEdgeCases() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req(&client, "/edge", HTTP_GET_METHOD);
+
+  bool active = true;
+  String strVal;
+  long lval = 0;
+  char charbuf[10] = {0};
+
+  req.getBody("active", &active)
+     .getBody("strVal", &strVal)
+     .getBody("lval", &lval)
+     .getBody("charbuf", charbuf, sizeof(charbuf));
+
+  StringStream stream(R"({"active":false,"strVal":"hello","lval":-12345,"charbuf":"1234567890123","ignore_arr":[1,2,3],"ignore_obj":{"a":1}})");
+  BufferedStreamReader reader(&stream);
+  req.parseResponse(reader);
+
+  expectTrue(!active, "boolean false should be parsed");
+  expectEq(strVal.str(), "hello", "arduino string should be parsed");
+  expectEqInt(lval, -12345, "negative long should be parsed");
+  expectEq(charbuf, "123456789", "char buffer should be truncated to max length");
+  req._executed = true;
+}
+
+void testParseEmptyObjectOrArray() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req(&client, "/empty", HTTP_GET_METHOD);
+
+  int x = 10;
+  req.getBody("x", &x);
+
+  StringStream stream(R"({})");
+  BufferedStreamReader reader1(&stream);
+  req.parseResponse(reader1);
+  expectEqInt(x, 10, "empty object shouldn't crash");
+
+  StringStream stream2(R"([])");
+  BufferedStreamReader reader2(&stream2);
+  req.parseResponse(reader2);
+  expectEqInt(x, 10, "empty array shouldn't crash");
+  
+  req._executed = true;
+}
+
+void testAddParamAdvanced() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req(&client, "/test", HTTP_GET_METHOD);
+  
+  req.query("d", 3.14159265);
+  req.body("f", 2.5f);
+  
+  expectEqInt((long long)req._queryParams.size(), 1, "query params size");
+  expectEqInt((long long)req._bodyParams.size(), 1, "body params size");
+  
+  expectEq(req._queryParams[0].valueBuffer, "3.14159265", "double formatting");
+  expectEq(req._bodyParams[0].valueBuffer, "2.5", "float formatting");
+  req._executed = true;
+}
+
+void testExecuteCustomPortWithPath() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{}");
+  ESP32HTTPClient client("http://test.com/api", 8080);
+  client.get("/data").getBody("x", (int*)nullptr);
+  
+  expectEq(HttpClientStub::lastUrl, "http://test.com:8080/api/data", "port injection with path");
+}
+
+void testParseEscapedStringsSimple() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req(&client, "/edge", HTTP_GET_METHOD);
+  char buf[32] = {0};
+  req.getBody("escaped", buf, sizeof(buf));
+  StringStream stream(R"({"escaped":"a\"b\\c"})");
+  BufferedStreamReader reader(&stream);
+  req.parseResponse(reader);
+  expectEq(buf, "a\"b\\c", "escaped char buffer");
+  req._executed = true;
+}
+
+void testSkipValueAdvanced() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req(&client, "/skip", HTTP_GET_METHOD);
+
+  int x = 0;
+  req.getBody("x", &x);
+
+  StringStream stream(R"({"skip_obj":{"a":"b\"c", "d":[1,2,{"e":"f"}]},"skip_arr":[1,"[","]",{"x":"y"}],"x":42})");
+  BufferedStreamReader reader(&stream);
+  req.parseResponse(reader);
+
+  expectEqInt(x, 42, "x should be parsed after skipping complex structures");
+  req._executed = true;
+}
+
+void testMoveConstructor() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req1(&client, "/move", HTTP_GET_METHOD);
+  req1.query("a", 1);
+  
+  RestRequest req2(std::move(req1));
+  
+  expectTrue(req1._executed, "req1 should be marked executed after move");
+  expectEqInt((long long)req2._queryParams.size(), 1, "req2 should have params");
+  req2._executed = true;
+}
+
+void testParsePrimitiveTypes() {
+  ESP32HTTPClient client("https://example.com");
+  RestRequest req(&client, "/prim", HTTP_GET_METHOD);
+  
+  double dVal = 0.0;
+  String bStr;
+  
+  req.getBody("dVal", &dVal)
+     .getBody("bStr", &bStr);
+     
+  StringStream stream(R"({"dVal":3.1415926535,"bStr":true})");
+  BufferedStreamReader reader(&stream);
+  req.parseResponse(reader);
+  
+  expectNear(dVal, 3.1415926535, 0.000001, "double precision parsing");
+  expectEq(bStr.str(), "true", "boolean to String parsing");
+  req._executed = true;
+}
 }  // namespace
 
 int main() {
@@ -339,6 +551,20 @@ int main() {
   runSuite("ParseNestedJSON", testParseNestedJSON);
   runSuite("ParseNestedJSONMissingFields", testParseNestedJSONMissingFields);
   runSuite("ParseRawArrayJSON", testParseRawArrayJSON);
+  runSuite("UnixTimestampFetch", testUnixTimestampFetch);
+  runSuite("ClientConfiguration", testClientConfiguration);
+  runSuite("AllHttpMethods", testAllHttpMethods);
+  runSuite("AutoRetry", testAutoRetry);
+  runSuite("ChunkedTransferEncoding", testChunkedTransferEncoding);
+  runSuite("LargePayloadRefill", testLargePayloadRefill);
+  runSuite("MoreParseEdgeCases", testMoreParseEdgeCases);
+  runSuite("ParseEmptyObjectOrArray", testParseEmptyObjectOrArray);
+  runSuite("AddParamAdvanced", testAddParamAdvanced);
+  runSuite("ExecuteCustomPortWithPath", testExecuteCustomPortWithPath);
+  runSuite("ParseEscapedStringsSimple", testParseEscapedStringsSimple);
+  runSuite("SkipValueAdvanced", testSkipValueAdvanced);
+  runSuite("MoveConstructor", testMoveConstructor);
+  runSuite("ParsePrimitiveTypes", testParsePrimitiveTypes);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;
