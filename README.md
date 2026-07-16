@@ -1,5 +1,7 @@
-# ESP32-HTTP-Client
-> A fluent, object-oriented HTTP client for ESP32 that binds JSON response fields directly into your variables.
+# ESP32 HTTP Client the Easy Way & Low Memory Footprint
+> **A high-performance, fluent, and object-oriented HTTP client for ESP32 with direct JSON binding capabilities.**
+
+**[Official Documentation](https://pedrofnseca.github.io/esp32-http-client/)** Get started quickly with the [Quick Start Guide](https://pedrofnseca.github.io/esp32-http-client/getting-started/quickstart) or explore the [API Reference](https://pedrofnseca.github.io/esp32-http-client/api/esp32httpclient/) for detailed usage.
 
 [![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
 [![Coverage](https://img.shields.io/badge/Coverage-88.18%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
