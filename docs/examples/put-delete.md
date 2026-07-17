@@ -1,3 +1,10 @@
+---
+tags:
+  - example
+  - put
+  - delete
+  - http
+---
 # PUT & DELETE
 
 Demonstrates how to update and delete remote resources using `PUT` and `DELETE` methods.

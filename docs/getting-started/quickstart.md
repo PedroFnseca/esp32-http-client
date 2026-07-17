@@ -1,3 +1,9 @@
+---
+tags:
+  - getting-started
+  - quickstart
+  - tutorial
+---
 # Quick Start
 
 This guide walks you through your first HTTP request using **ESP32-HTTP-Client** in under 2 minutes.

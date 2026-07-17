@@ -1,3 +1,8 @@
+---
+tags:
+  - api
+  - reference
+---
 # API Reference
 
 Complete reference for all public classes and methods in **ESP32-HTTP-Client**.

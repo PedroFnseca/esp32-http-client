@@ -1,3 +1,9 @@
+---
+tags:
+  - example
+  - json
+  - array
+---
 # Array JSON
 
 Demonstrates how to extract specific elements from a **JSON array** response using **numeric index path segments**.

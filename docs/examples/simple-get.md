@@ -1,3 +1,9 @@
+---
+tags:
+  - example
+  - get
+  - http
+---
 # Simple GET
 
 Demonstrates a basic HTTP GET request and binding multiple fields from a JSON response into typed C variables.

@@ -1,3 +1,8 @@
+---
+tags:
+  - performance
+  - benchmark
+---
 # Performance
 
 ## Benchmark Setup

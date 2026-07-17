@@ -1,3 +1,8 @@
+---
+tags:
+  - guide
+  - overview
+---
 # Guide
 
 This section covers every aspect of the library from initialization to advanced patterns.

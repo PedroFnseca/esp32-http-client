@@ -1,3 +1,9 @@
+---
+tags:
+  - guide
+  - init
+  - setup
+---
 # Initialization
 
 ## Creating the Client

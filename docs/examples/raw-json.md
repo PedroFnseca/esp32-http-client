@@ -1,3 +1,9 @@
+---
+tags:
+  - example
+  - json
+  - raw
+---
 # Raw JSON
 
 Demonstrates how to capture an **entire JSON object or array** into an Arduino `String` for manual processing.

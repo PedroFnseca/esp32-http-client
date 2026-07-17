@@ -1,3 +1,9 @@
+---
+tags:
+  - api
+  - request
+  - class
+---
 # RestRequest
 
 The fluent request builder returned by every HTTP method on [`ESP32HTTPClient`](esp32httpclient.md). All builder methods return `RestRequest&`, enabling fluent chaining.

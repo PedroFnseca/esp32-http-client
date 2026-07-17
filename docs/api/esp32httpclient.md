@@ -1,3 +1,9 @@
+---
+tags:
+  - api
+  - client
+  - class
+---
 # ESP32HTTPClient
 
 The main entry point for the library. Create one instance per server base URL and reuse it across all requests.

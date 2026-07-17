@@ -1,3 +1,9 @@
+---
+tags:
+  - example
+  - post
+  - http
+---
 # POST Request
 
 Demonstrates sending a JSON body with a POST request and reading the ID of the newly created resource from the response.

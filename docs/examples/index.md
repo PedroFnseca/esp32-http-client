@@ -1,3 +1,8 @@
+---
+tags:
+  - example
+  - overview
+---
 # Examples
 
 All examples are available in the [`examples/`](https://github.com/PedroFnseca/esp32-http-client/tree/main/examples) directory and can be opened directly from the Arduino IDE via **File → Examples → ESP32-HTTP-Client**.

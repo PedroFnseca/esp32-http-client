@@ -1,3 +1,9 @@
+---
+tags:
+  - example
+  - json
+  - nested
+---
 # Nested JSON
 
 Demonstrates extracting fields from deeply nested JSON objects using **dot notation** paths.

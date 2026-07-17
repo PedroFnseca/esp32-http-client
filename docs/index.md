@@ -1,3 +1,8 @@
+---
+tags:
+  - home
+  - overview
+---
 # ESP32-HTTP-Client
 
 > A fluent, object-oriented HTTP client for ESP32 that **binds JSON response fields directly into your variables** — no `ArduinoJson`, no intermediate strings, no boilerplate.

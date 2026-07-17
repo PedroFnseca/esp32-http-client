@@ -1,3 +1,9 @@
+---
+tags:
+  - getting-started
+  - install
+  - setup
+---
 # Installation
 
 ## Requirements

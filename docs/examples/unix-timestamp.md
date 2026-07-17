@@ -1,3 +1,9 @@
+---
+tags:
+  - example
+  - timestamp
+  - time
+---
 # Unix Timestamp
 
 Demonstrates how to fetch a **Unix timestamp** (a large `long` integer) from a public time API.

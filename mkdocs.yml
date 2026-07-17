@@ -1,6 +1,6 @@
 site_name: ESP32-HTTP-Client
 site_url: https://pedrofnseca.github.io/esp32-http-client
-site_description: Lightweight, fluent HTTP client for ESP32 with direct JSON stream parsing into variables. No ArduinoJson required.
+site_description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling.
 site_author: Pedro Fonseca
 repo_name: PedroFnseca/esp32-http-client
 repo_url: https://github.com/PedroFnseca/esp32-http-client
@@ -10,8 +10,13 @@ extra:
   analytics:
     provider: google
     property: G-TFXJLYGKZM
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/PedroFnseca/esp32-http-client/
+      name: GitHub Repository
 
 theme:
+  custom_dir: overrides
   icon:
     logo: material/memory
   name: material
@@ -33,11 +38,8 @@ theme:
     text: Inter
     code: Cascadia Code
   features:
-    - navigation.sections
-    - navigation.expand
     - navigation.top
     - navigation.indexes
-    - navigation.prune
     - search.suggest
     - search.highlight
     - content.code.copy
@@ -61,6 +63,16 @@ markdown_extensions:
 
 plugins:
   - search
+  - tags
+  - git-revision-date-localized
+  - social:
+      cards_layout_options:
+        background_color: "#00897B"
+        background_image: docs/assets/preview.png
+        description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling.
+
+extra_javascript:
+  - javascripts/extra.js
 
 nav:
   - Home: index.md
@@ -89,4 +101,6 @@ nav:
     - ESP32HTTPClient: api/esp32httpclient.md
     - RestRequest: api/restrequest.md
   - Performance: performance.md
+  - Repository: https://github.com/PedroFnseca/esp32-http-client/
+  - Releases: https://github.com/PedroFnseca/esp32-http-client/releases
 

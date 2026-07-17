@@ -1,3 +1,9 @@
+---
+tags:
+  - example
+  - port
+  - network
+---
 # Custom Port
 
 Demonstrates how to connect to a server running on a **non-standard port** (anything other than 80 for HTTP or 443 for HTTPS).

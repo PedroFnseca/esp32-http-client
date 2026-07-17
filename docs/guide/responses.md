@@ -1,3 +1,9 @@
+---
+tags:
+  - guide
+  - response
+  - json
+---
 # Reading Responses
 
 The core of ESP32-HTTP-Client is the **response binding** system. Instead of parsing a JSON string yourself, you register bindings that tell the library exactly which variables to populate.

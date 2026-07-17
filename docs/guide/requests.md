@@ -1,3 +1,9 @@
+---
+tags:
+  - guide
+  - request
+  - http
+---
 # Making Requests
 
 Every HTTP method on `ESP32HTTPClient` returns a `RestRequest` object. You can chain `.query()`, `.body()`, and `.getBody()` calls on it. The request is dispatched automatically when the chain goes out of scope (i.e., at the end of the statement).

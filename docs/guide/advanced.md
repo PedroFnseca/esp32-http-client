@@ -1,3 +1,8 @@
+---
+tags:
+  - guide
+  - advanced
+---
 # Advanced Usage
 
 ## Custom HTTP Headers

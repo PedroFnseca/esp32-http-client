@@ -1,3 +1,8 @@
+---
+tags:
+  - getting-started
+  - overview
+---
 # Getting Started
 
 Welcome to **ESP32-HTTP-Client**! This section will get you up and running in a few minutes.
