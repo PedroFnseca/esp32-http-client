@@ -3,3 +3,4 @@ tests/build/*
 bench/results
 result.txt
 site/
+.cache
