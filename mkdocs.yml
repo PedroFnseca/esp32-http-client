@@ -61,6 +61,9 @@ markdown_extensions:
   - pymdownx.details
   - attr_list
   - md_in_html
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - tables
   - toc:
       permalink: true
@@ -104,6 +107,7 @@ nav:
     - api/index.md
     - ESP32HTTPClient: api/esp32httpclient.md
     - RestRequest: api/restrequest.md
+  - FAQ: faq.md
   - Performance: performance.md
   - Repository: https://github.com/PedroFnseca/esp32-http-client/
   - Releases: https://github.com/PedroFnseca/esp32-http-client/releases
