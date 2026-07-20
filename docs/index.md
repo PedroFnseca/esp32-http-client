@@ -16,7 +16,7 @@ tags:
 
 ## What is it?
 
-**ESP32-HTTP-Client** is a lightweight Arduino library for the ESP32 that rethinks how you interact with REST APIs. Instead of fetching a raw JSON string and then parsing it, you simply tell the client _where_ to put the data — it handles the rest.
+**ESP32-HTTP-Client** is a lightweight Arduino library for the ESP32 that rethinks how you interact with REST APIs. Instead of fetching a raw JSON string and then parsing it, you simply tell the client _where_ to put the data, it handles the rest.
 
 ```cpp
 int userId;
@@ -30,6 +30,37 @@ client.get("/report")
 ```
 
 One fluent chain. Direct memory binding. Zero heap allocations for the response.
+
+### How it Works
+
+```mermaid
+sequenceDiagram
+    box rgba(0, 150, 136, 0.15) ESP32 Device
+    participant App as Your App
+    participant Client as ESP32HTTPClient
+    end
+    box rgba(255, 152, 0, 0.15) External API
+    participant Server as API
+    end
+
+    App->>Client: 1. Configure Request & Bind Variables
+    Note over App,Client: e.g., getBody("temp", &temperature)
+    Client->>Server: 2. Send HTTP Request
+    Server-->>Client: 3. Stream JSON Response
+    
+    rect rgba(0, 150, 136, 0.1)
+    loop Zero-Allocation Parsing
+        Client->>Client: Read Stream Byte-by-Byte
+        Client->>Client: Identify Keys On-The-Fly
+        rect rgba(255, 152, 0, 0.15)
+        alt Key Matches Target
+            Client->>App: 4. Inject Value directly into Variable
+        end
+        end
+    end
+    end
+    Client-->>App: 5. Request Complete
+```
 
 ---
 
