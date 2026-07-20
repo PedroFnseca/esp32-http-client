@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -31,7 +31,7 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ec1eaa64.min.css">
       
         
         <link rel="stylesheet" href="assets/stylesheets/palette.ab4e12ef.min.css">
@@ -352,6 +352,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="What is it?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1268,6 +1285,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="What is it?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it Works
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1348,7 +1382,7 @@
 <a href="https://github.com/PedroFnseca/esp32-http-client/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social" /></a></p>
 <hr />
 <h2 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h2>
-<p><strong>ESP32-HTTP-Client</strong> is a lightweight Arduino library for the ESP32 that rethinks how you interact with REST APIs. Instead of fetching a raw JSON string and then parsing it, you simply tell the client <em>where</em> to put the data — it handles the rest.</p>
+<p><strong>ESP32-HTTP-Client</strong> is a lightweight Arduino library for the ESP32 that rethinks how you interact with REST APIs. Instead of fetching a raw JSON string and then parsing it, you simply tell the client <em>where</em> to put the data, it handles the rest.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">userId</span><span class="p">;</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="p">;</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
@@ -1359,6 +1393,33 @@
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;0.address.city&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
 </code></pre></div>
 <p>One fluent chain. Direct memory binding. Zero heap allocations for the response.</p>
+<h3 id="how-it-works">How it Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    box rgba(0, 150, 136, 0.15) ESP32 Device
+    participant App as Your App
+    participant Client as ESP32HTTPClient
+    end
+    box rgba(255, 152, 0, 0.15) External API
+    participant Server as API
+    end
+
+    App-&gt;&gt;Client: 1. Configure Request &amp; Bind Variables
+    Note over App,Client: e.g., getBody("temp", &amp;temperature)
+    Client-&gt;&gt;Server: 2. Send HTTP Request
+    Server--&gt;&gt;Client: 3. Stream JSON Response
+
+    rect rgba(0, 150, 136, 0.1)
+    loop Zero-Allocation Parsing
+        Client-&gt;&gt;Client: Read Stream Byte-by-Byte
+        Client-&gt;&gt;Client: Identify Keys On-The-Fly
+        rect rgba(255, 152, 0, 0.15)
+        alt Key Matches Target
+            Client-&gt;&gt;App: 4. Inject Value directly into Variable
+        end
+        end
+    end
+    end
+    Client--&gt;&gt;App: 5. Request Complete</code></pre>
 <hr />
 <h2 id="performance-at-a-glance">Performance at a Glance<a class="headerlink" href="#performance-at-a-glance" title="Permanent link">&para;</a></h2>
 <p>Benchmarked over <strong>100 consecutive HTTP GET requests</strong> with JSON payloads on a real ESP32 device:</p>
@@ -1454,7 +1515,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 17, 2026 04:00:45 UTC">July 17, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 20, 2026 11:37:23 UTC">July 20, 2026</span>
   </span>
 
     
@@ -1528,7 +1589,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "toc.follow"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
       
         <script src="javascripts/extra.js"></script>
       

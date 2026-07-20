@@ -2,90 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/performance/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/api/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/api/esp32httpclient/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/api/restrequest/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/array-json/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/nested-json/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/port-selection/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/post-request/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/put-delete/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/raw-json/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/simple-get/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/examples/unix-timestamp/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/getting-started/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/getting-started/installation/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/getting-started/quickstart/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/guide/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/guide/advanced/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/guide/initialization/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/guide/requests/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
     <url>
          <loc>https://pedrofnseca.github.io/esp32-http-client/guide/responses/</loc>
-         <lastmod>2026-07-17</lastmod>
+         <lastmod>2026-07-20</lastmod>
     </url>
 </urlset>
