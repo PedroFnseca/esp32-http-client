@@ -1,7 +1,7 @@
-# ESP32 HTTP Client the Easy Way & Low Memory Footprint
-> **A high-performance, fluent, and object-oriented HTTP client for ESP32 with direct JSON binding capabilities.**
+# [ESP32 HTTP Client](https://pedrofnseca.github.io/esp32-http-client/) the Easy Way & Low Memory Footprint
+**A high-performance, fluent, and object-oriented HTTP client for ESP32 with direct JSON binding capabilities.**
 
-**[Official Documentation](https://pedrofnseca.github.io/esp32-http-client/)** Get started quickly with the [Quick Start Guide](https://pedrofnseca.github.io/esp32-http-client/getting-started/quickstart) or explore the [API Reference](https://pedrofnseca.github.io/esp32-http-client/api/esp32httpclient/) for detailed usage.
+## **[Official Documentation](https://pedrofnseca.github.io/esp32-http-client/)** Get started quickly with the [Quick Start Guide](https://pedrofnseca.github.io/esp32-http-client/getting-started/quickstart) or explore the [API Reference](https://pedrofnseca.github.io/esp32-http-client/api/esp32httpclient/) for detailed usage.
 
 [![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
 [![Coverage](https://img.shields.io/badge/Coverage-88.18%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
@@ -14,31 +14,13 @@
 ## Table of Contents
 
 - [Why this library?](#why-this-library)
-  - [The problem: the standard approach](#the-problem-the-standard-approach)
-  - [The solution](#the-solution)
 - [Performance & Comparison](#performance--comparison)
 - [Key Features](#key-features)
 - [Quick Start](#quick-start)
 - [Initialization](#initialization)
-  - [Default port](#default-port-80-for-http-443-for-https)
-  - [Custom port](#custom-port)
 - [Usage](#usage)
-  - [GET with query parameters](#get-with-query-parameters)
-  - [POST JSON data](#post-json-data)
-  - [Extracting nested fields](#extracting-nested-fields)
-  - [Extracting from arrays](#extracting-from-arrays)
-  - [Extracting complete raw objects or arrays](#extracting-complete-raw-objects-or-arrays)
-  - [PUT and DELETE](#put-and-delete)
 - [Examples](#examples)
 - [API Reference](#api-reference)
-  - [ESP32HTTPClient — Client class](#esp32httpclient--client-class)
-    - [Constructor](#constructor)
-    - [HTTP request methods](#http-request-methods)
-    - [Configuration methods](#configuration-methods)
-  - [RestRequest — Fluent request builder](#restrequest--fluent-request-builder)
-    - [Building the request](#building-the-request)
-    - [Extracting the response](#extracting-the-response)
-    - [Full chaining example](#full-chaining-example)
 
 ---
 
