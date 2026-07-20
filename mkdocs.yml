@@ -81,6 +81,9 @@ plugins:
 extra_javascript:
   - javascripts/extra.js
 
+extra_css:
+  - stylesheets/extra.css
+
 nav:
   - Home: index.md
   - Getting Started:
