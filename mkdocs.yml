@@ -19,6 +19,7 @@ theme:
   custom_dir: overrides
   icon:
     logo: material/memory
+    alternate: material/translate
   name: material
   palette:
     - scheme: slate
@@ -69,7 +70,45 @@ markdown_extensions:
       permalink: true
 
 plugins:
-  - search
+  - i18n:
+      reconfigure_search: true
+      languages:
+        - locale: en
+          name: 🇺🇸 English
+          default: true
+        - locale: pt
+          name: 🇧🇷 Português
+          build: true
+          nav_translations:
+            Home: Início
+            Getting Started: Primeiros Passos
+            Installation: Instalação
+            Quick Start: Início Rápido
+            Guide: Guia
+            Initialization: Inicialização
+            Making Requests: Fazendo Requisições
+            Reading Responses: Lendo Respostas
+            Advanced Usage: Uso Avançado
+            Examples: Exemplos
+            Simple GET: GET Simples
+            POST Request: Requisição POST
+            Nested JSON: JSON Aninhado
+            Array JSON: JSON Array
+            Raw JSON: JSON Bruto
+            PUT & DELETE: PUT & DELETE
+            Unix Timestamp: Timestamp Unix
+            Custom Port: Porta Personalizada
+            API Reference: Referência da API
+            ESP32HTTPClient: ESP32HTTPClient
+            RestRequest: RestRequest
+            FAQ: Perguntas Frequentes
+            Performance: Desempenho
+            Repository: Repositório
+            Releases: Lançamentos
+  - search:
+      lang:
+        - en
+        - pt
   - tags
   - git-revision-date-localized
   - social:
