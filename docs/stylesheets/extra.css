@@ -1,3 +1,64 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* ==========================================================================
+   Header Layout: Left (Logo/Title), Center (Search), Right (Dark Mode, i18n, GitHub)
+   ========================================================================== */
+@media screen and (min-width: 60em) {
+  .md-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .md-header__title {
+    flex: 0 0 auto !important;
+    order: 1 !important;
+    margin-right: 1rem;
+  }
+
+  .md-search {
+    order: 2 !important;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    margin: 0 auto !important;
+    flex: 0 1 460px !important;
+    max-width: 480px !important;
+    width: 100% !important;
+  }
+
+  .md-search__form {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    transition: all 0.25s ease !important;
+  }
+
+  .md-search__form:hover,
+  .md-search__form:focus-within {
+    background-color: rgba(255, 255, 255, 0.22) !important;
+    border-color: #ff9800 !important;
+    box-shadow: 0 0 12px rgba(255, 152, 0, 0.35) !important;
+  }
+
+  .md-search__input::placeholder {
+    color: rgba(255, 255, 255, 0.75) !important;
+  }
+
+  form.md-header__option[data-md-component="palette"] {
+    order: 3 !important;
+    margin-left: 0.5rem !important;
+  }
+
+  div.md-header__option {
+    order: 4 !important;
+    margin-left: 0.25rem !important;
+  }
+
+  .md-header__source {
+    order: 5 !important;
+    margin-left: 0.5rem !important;
+  }
+}
