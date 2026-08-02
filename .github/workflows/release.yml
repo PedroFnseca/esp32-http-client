@@ -114,5 +114,5 @@ jobs:
           PLATFORMIO_AUTH_TOKEN: ${{ secrets.PLATFORMIO_AUTH_TOKEN }}
         run: |
           python -m pip install --upgrade platformio
-          pio pkg publish --no-silent
+          pio pkg publish --no-interactive
 
