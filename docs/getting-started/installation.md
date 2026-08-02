@@ -13,7 +13,7 @@ Before installing, make sure your environment meets the following requirements:
 | Requirement | Details |
 | :--- | :--- |
 | **Board** | ESP32 (any variant: ESP32-S2, S3, C3, etc.) |
-| **Arduino IDE** | 1.8.x or 2.x |
+| **IDE / Core** | Arduino IDE 1.8.x/2.x or PlatformIO |
 | **ESP32 Arduino Core** | v2.x or later |
 | **Dependencies** | None — no external libraries required |
 
@@ -28,7 +28,28 @@ Before installing, make sure your environment meets the following requirements:
 
 ---
 
-## Method 2: Manual Installation
+## Method 2: PlatformIO
+
+Add `ESP32-HTTP-Client` to the `lib_deps` section of your `platformio.ini` project configuration file:
+
+```ini
+[env:esp32dev]
+platform = espressif32
+board = esp32dev
+framework = arduino
+lib_deps =
+    PedroFnseca/ESP32-HTTP-Client@^1.4.0
+```
+
+Alternatively, install it via PlatformIO CLI:
+
+```bash
+pio pkg install --library "PedroFnseca/ESP32-HTTP-Client"
+```
+
+---
+
+## Method 3: Manual Installation
 
 1. Download the [latest release ZIP](https://github.com/PedroFnseca/esp32-http-client/releases/latest) from GitHub.
 2. In the Arduino IDE, go to **Sketch → Include Library → Add .ZIP Library...**.

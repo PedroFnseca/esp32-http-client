@@ -3,6 +3,8 @@
 
 ## **[Official Documentation](https://pedrofnseca.github.io/esp32-http-client/)** Get started quickly with the [Quick Start Guide](https://pedrofnseca.github.io/esp32-http-client/getting-started/quickstart) or explore the [API Reference](https://pedrofnseca.github.io/esp32-http-client/api/esp32httpclient/) for detailed usage.
 
+[![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
+[![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
 [![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
 [![Coverage](https://img.shields.io/badge/Coverage-88.18%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
 [![Hits](https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-http-client/)
@@ -16,6 +18,7 @@
 - [Why this library?](#why-this-library)
 - [Performance & Comparison](#performance--comparison)
 - [Key Features](#key-features)
+- [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Initialization](#initialization)
 - [Usage](#usage)
@@ -82,6 +85,25 @@ The following data is the result of a benchmark running 100 consecutive HTTP GET
 - **Zero buffering** — the response stream is parsed in place; the full payload is never stored.
 - **Full REST support** — `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` are all first-class citizens.
 - **IoT ready** — designed for connecting ESP32 devices to cloud backends, Firebase, AWS API Gateway, or custom servers.
+
+---
+
+## Installation
+
+### PlatformIO
+
+Add `ESP32-HTTP-Client` to the `lib_deps` section of your `platformio.ini`:
+
+```ini
+lib_deps =
+    PedroFnseca/ESP32-HTTP-Client@^1.4.0
+```
+
+### Arduino Library Manager
+
+1. Open Arduino IDE and go to **Sketch → Include Library → Manage Libraries...**.
+2. Search for `ESP32-HTTP-Client`.
+3. Click **Install**.
 
 ---
 

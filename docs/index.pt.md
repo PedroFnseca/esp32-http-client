@@ -7,6 +7,8 @@ tags:
 
 > Um cliente HTTP fluente e orientado a objetos para ESP32 que **vincula os campos da resposta JSON diretamente às suas variáveis** — sem `ArduinoJson`, sem strings intermediárias, sem código clichê.
 
+[![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
+[![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
 [![Idioma](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
 [![Cobertura](https://img.shields.io/badge/Coverage-88.18%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
 [![Licença](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client/blob/main/LICENSE)
@@ -84,6 +86,14 @@ Comparativo medido em **100 requisições HTTP GET consecutivas** com cargas JSO
 === "Gerenciador de Bibliotecas do Arduino"
 
     Procure por **ESP32-HTTP-Client** no Gerenciador de Bibliotecas do Arduino IDE e clique em **Instalar**.
+
+=== "PlatformIO"
+
+    Adicione `ESP32-HTTP-Client` ao seu `platformio.ini`:
+    ```ini
+    lib_deps =
+        PedroFnseca/ESP32-HTTP-Client@^1.4.0
+    ```
 
 === "Manual"
 
