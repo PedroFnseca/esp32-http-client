@@ -107,3 +107,12 @@ jobs:
         with:
           tag_name: v${{ steps.version.outputs.version }}
           body_path: RELEASE_NOTES.md
+
+      - name: Publish to PlatformIO Registry
+        if: steps.tag.outputs.exists == 'false'
+        env:
+          PLATFORMIO_AUTH_TOKEN: ${{ secrets.PLATFORMIO_AUTH_TOKEN }}
+        run: |
+          python -m pip install --upgrade platformio
+          pio pkg publish --no-silent
+
