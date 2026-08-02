@@ -4,3 +4,5 @@ bench/results
 result.txt
 site/
 .cache
+*.tar.gz
+.pio/
