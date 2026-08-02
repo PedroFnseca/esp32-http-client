@@ -2,322 +2,322 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/faq/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/faq/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/faq/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/performance/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/performance/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/performance/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/api/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/api/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/api/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/api/esp32httpclient/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/api/esp32httpclient/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/api/esp32httpclient/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/api/restrequest/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/api/restrequest/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/api/restrequest/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/array-json/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/array-json/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/array-json/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/nested-json/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/nested-json/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/nested-json/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/port-selection/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/port-selection/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/port-selection/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/post-request/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/post-request/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/post-request/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/put-delete/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/put-delete/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/put-delete/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/raw-json/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/raw-json/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/raw-json/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/simple-get/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/simple-get/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/simple-get/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/examples/unix-timestamp/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/unix-timestamp/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/unix-timestamp/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/getting-started/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/getting-started/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/getting-started/installation/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/getting-started/installation/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/installation/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/getting-started/quickstart/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/getting-started/quickstart/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/quickstart/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/guide/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/guide/advanced/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/advanced/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/advanced/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/guide/initialization/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/initialization/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/initialization/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/guide/requests/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/requests/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/requests/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/guide/responses/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/responses/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/responses/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/faq/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/faq/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/faq/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/performance/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/performance/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/performance/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/api/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/api/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/api/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/api/esp32httpclient/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/api/esp32httpclient/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/api/esp32httpclient/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/api/restrequest/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/api/restrequest/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/api/restrequest/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/array-json/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/array-json/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/array-json/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/nested-json/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/nested-json/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/nested-json/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/port-selection/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/port-selection/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/port-selection/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/post-request/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/post-request/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/post-request/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/put-delete/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/put-delete/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/put-delete/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/raw-json/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/raw-json/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/raw-json/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/simple-get/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/simple-get/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/simple-get/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/examples/unix-timestamp/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/examples/unix-timestamp/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/examples/unix-timestamp/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/getting-started/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/installation/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/installation/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/getting-started/installation/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/quickstart/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/getting-started/quickstart/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/getting-started/quickstart/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/guide/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/guide/advanced/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/advanced/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/advanced/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/guide/initialization/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/initialization/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/initialization/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/guide/requests/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/requests/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/requests/"/>
     </url>
     <url>
         <loc>https://pedrofnseca.github.io/esp32-http-client/pt/guide/responses/</loc>
-        <lastmod>2026-07-31</lastmod>
+        <lastmod>2026-08-02</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://pedrofnseca.github.io/esp32-http-client/pt/guide/responses/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://pedrofnseca.github.io/esp32-http-client/guide/responses/"/>
