@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
+  "name": "ESP32-HTTP-Client",
+  "version": "1.4.1",
+  "description": "Lightweight HTTP client for ESP32 with direct JSON stream parsing into variables.",
+  "keywords": [
+    "esp32",
+    "http",
+    "https",
+    "rest",
+    "json",
+    "api",
+    "stream",
+    "embedded"
+  ],
+  "homepage": "https://pedrofnseca.github.io/esp32-http-client/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PedroFnseca/esp32-http-client.git"
+  },
+  "authors": [
+    {
+      "name": "Pedro Fonseca",
+      "email": "pedropereira.pp26@gmail.com",
+      "url": "https://github.com/PedroFnseca",
+      "maintainer": true
+    }
+  ],
+  "license": "MIT",
+  "frameworks": [
+    "arduino"
+  ],
+  "platforms": [
+    "espressif32"
+  ],
+  "headers": [
+    "ESP32HTTPClient.h"
+  ],
+  "examples": [
+    "examples/*/*.ino"
+  ]
+}
