@@ -4,7 +4,7 @@ site_description: ESP32 HTTP client library designed for embedded applications, 
 site_author: Pedro Fonseca
 repo_name: PedroFnseca/esp32-http-client
 repo_url: https://github.com/PedroFnseca/esp32-http-client
-edit_uri: ""
+edit_uri: edit/main/docs/
 
 extra:
   analytics:
@@ -45,6 +45,7 @@ theme:
     - search.highlight
     - content.code.copy
     - content.code.annotate
+    - content.action.edit
     - toc.follow
 
 markdown_extensions:
