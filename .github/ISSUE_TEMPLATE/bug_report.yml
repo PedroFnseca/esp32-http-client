@@ -1,0 +1,113 @@
+name: Bug Report
+description: Create a report to help us fix a bug or unexpected behavior in ESP32-HTTP-Client
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug! Please fill out the form below to help us reproduce and fix the issue.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe what happened...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Explain the steps required to reproduce the behavior.
+      placeholder: |
+        1. Code setup / request method (e.g. client.get(...))
+        2. Target endpoint or payload size
+        3. Call execution
+        4. Observe error / crash / unexpected result
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Example
+      description: Provide a minimal, reproducible code example (Arduino sketch).
+      render: cpp
+      placeholder: |
+        #include <ESP32HTTPClient.h>
+
+        void setup() {
+          // Minimal code reproducing the bug
+        }
+
+        void loop() {}
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Actual Behavior / Serial Monitor Logs
+      description: Paste serial logs, crash backtraces, or error output.
+      render: text
+      placeholder: Paste logs / backtrace here
+    validations:
+      required: false
+
+  - type: input
+    id: esp32-core
+    attributes:
+      label: ESP32 Core Version
+      description: e.g., 2.0.14, 3.0.0
+      placeholder: 3.0.0
+    validations:
+      required: false
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      options:
+        - Arduino IDE
+        - PlatformIO
+        - ESP-IDF
+        - Other
+    validations:
+      required: false
+
+  - type: input
+    id: board
+    attributes:
+      label: Board
+      description: e.g., ESP32 Dev Module, ESP32-S3, ESP32-C3
+      placeholder: ESP32 Dev Module
+    validations:
+      required: false
+
+  - type: input
+    id: library-version
+    attributes:
+      label: Library Version
+      description: e.g., 1.4.1 or main branch
+      placeholder: 1.4.1
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem (e.g., HTTPS vs HTTP, payload size, WiFi stability).
+    validations:
+      required: false

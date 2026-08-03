@@ -1,0 +1,67 @@
+name: Question / Help
+description: Ask a question or request help using ESP32-HTTP-Client
+title: "[QUESTION]: "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before asking a question, please check our [Documentation](https://pedrofnseca.github.io/esp32-http-client/) first.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question Description
+      description: Describe what you need help with or what you are trying to achieve.
+      placeholder: How do I...
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code / Implementation Details
+      description: Include relevant snippets of your code or configuration.
+      render: cpp
+      placeholder: |
+        #include <ESP32HTTPClient.h>
+
+        // Your code snippet
+    validations:
+      required: false
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      options:
+        - Arduino IDE
+        - PlatformIO
+        - ESP-IDF
+        - Other
+    validations:
+      required: false
+
+  - type: input
+    id: board
+    attributes:
+      label: Board
+      placeholder: ESP32 Dev Module
+    validations:
+      required: false
+
+  - type: input
+    id: library-version
+    attributes:
+      label: Library Version
+      placeholder: 1.4.1
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other details or context (server specs, auth methods, headers).
+    validations:
+      required: false
