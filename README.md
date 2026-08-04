@@ -318,8 +318,19 @@ Each method returns a `RestRequest` that can be chained with `.query()`, `.body(
 | `basic(user, password)` | Sets persistent Basic authorization header (auto Base64 encoded). | `client.basic("admin", "123456");` |
 | `apiKey(name, key)` | Sets persistent API key header. | `client.apiKey("x-api-key", "my-key");` |
 | `setHeader(name, value)` | Registers a custom HTTP header that is sent with every subsequent request. | `client.setHeader("Authorization", "Bearer mytoken123");` |
+| `setBaseUrl(url, port)` | Changes the base URL and target port at runtime. | `client.setBaseUrl("https://api.v2.com", 443);` |
+| `setUrl(url)` | Changes the base URL at runtime. | `client.setUrl("http://192.168.1.100");` |
+| `setPort(port)` | Changes the target TCP port at runtime. | `client.setPort(8080);` |
+| `setTimeout(timeoutMs)` | Sets default request timeout in milliseconds (default: 60000, 1 min). | `client.setTimeout(10000);` |
+| `setMaxRetry(maxRetry)` | Sets default max retries on network failure (default: 1). | `client.setMaxRetry(3);` |
 | `setContentType(contentType)` | Overrides the `Content-Type` header used for request bodies. Defaults to `application/json`. | `client.setContentType("application/x-www-form-urlencoded");` |
 | `getStatusCode()` | Returns the HTTP status code of the last completed request. | `int code = client.getStatusCode();` |
+| `isSuccess()` | Returns `true` if last request status was 2xx (`200 <= code < 300`). | `if (client.isSuccess()) { ... }` |
+| `hasError()` | Returns `true` if last request had network error or HTTP error (`code >= 400`). | `if (client.hasError()) { ... }` |
+| `getErrorMessage()` | Returns descriptive error string for last status or error code. | `String err = client.getErrorMessage();` |
+| `onSuccess(cb)` | Registers client-level callback for successful requests (2xx). | `client.onSuccess([](int code){ ... });` |
+| `onError(cb)` | Registers client-level callback for failed requests. | `client.onError([](int code, const char* msg){ ... });` |
+| `onResponse(cb)` | Registers client-level callback executed on every completed request. | `client.onResponse([](int code){ ... });` |
 | `end()` | Closes the persistent TCP/TLS connection and frees its memory buffers. Useful after a burst of requests. | `client.end();` |
 
 ---
@@ -335,6 +346,11 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 | `path(key, value)` | Replaces a `{placeholder}` in the URL path. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/users/{id}").path("id", 15)` |
 | `query(key, value)` | Appends a URL query parameter. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/users").query("page", 2).query("limit", 20)` |
 | `body(key, value)` | Adds a field to the JSON request body. Supports the same types as `query()`. Chainable. | `client.post("/users").body("name", "Pedro").body("age", 21)` |
+| `timeout(ms)` | Overrides timeout for this specific request in milliseconds. Chainable. | `client.get("/data").timeout(2000)` |
+| `retry(maxRetry)` | Overrides max retry attempts for this specific request. Chainable. | `client.get("/data").retry(3)` |
+| `onSuccess(cb)` | Per-request success callback (2xx). Chainable. | `client.get("/users").onSuccess([](int c){ ... })` |
+| `onError(cb)` | Per-request error callback (`code < 200 \|\| code >= 400`). Chainable. | `client.get("/users").onError([](int c, const char* m){ ... })` |
+| `onResponse(cb)` | Per-request callback executed on completion. Chainable. | `client.get("/users").onResponse([](int c){ ... })` |
 
 #### Extracting the response
 
@@ -363,10 +379,37 @@ char city[32];
 client.post("/report")
       .body("device", "esp32-cam")
       .body("floor", 3)
+      .timeout(3000)
+      .retry(2)
+      .onSuccess([](int code) { Serial.printf("OK: %d\n", code); })
+      .onError([](int code, const char* msg) { Serial.printf("Fail (%d): %s\n", code, msg); })
       .getBody("userId", &userId)            // int — root field
       .getBody("sensor.temp", &temperature)  // float — nested object
       .getBody("0.address.city", city, sizeof(city)); // char* — array index + nested
 ```
+
+---
+
+## Error Codes Reference
+
+| Error Code | Constant / Status | Description |
+| :--- | :--- | :--- |
+| `-1` | `HTTPC_ERROR_CONNECTION_REFUSED` | Target host rejected the TCP connection. |
+| `-2` | `HTTPC_ERROR_SEND_HEADER_FAILED` | Failed to write HTTP headers to the socket. |
+| `-3` | `HTTPC_ERROR_SEND_PAYLOAD_FAILED` | Failed to transmit request body payload. |
+| `-4` | `HTTPC_ERROR_NOT_CONNECTED` | Client is not connected to a network/socket. |
+| `-5` | `HTTPC_ERROR_CONNECTION_LOST` | TCP connection terminated unexpectedly. |
+| `-6` | `HTTPC_ERROR_NO_STREAM` | No response stream available from client. |
+| `-7` | `HTTPC_ERROR_NO_HTTP_SERVER` | Server did not respond with valid HTTP. |
+| `-8` | `HTTPC_ERROR_TOO_LESS_RAM` | Insufficient free heap memory for operation. |
+| `-9` | `HTTPC_ERROR_ENCODING` | Transfer encoding or decoding error. |
+| `-10` | `HTTPC_ERROR_STREAM_WRITE` | Stream write operation failed. |
+| `-11` | `HTTPC_ERROR_READ_TIMEOUT` | Exceeded timeout waiting for server data. |
+| `200` | OK | Request succeeded normally. |
+| `400` | Bad Request | Malformed request or invalid payload syntax. |
+| `401` | Unauthorized | Missing or invalid authentication credentials. |
+| `404` | Not Found | Requested endpoint path does not exist on server. |
+| `500` | Internal Server Error | Generic unhandled server-side error. |
 
 ---
 

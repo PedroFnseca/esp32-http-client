@@ -93,6 +93,95 @@ client.post("/users")
 
 ---
 
+### `timeout(timeoutMs)`
+
+Define um tempo limite (timeout) de rede em milissegundos específico para esta requisição, sobrescrevendo o padrão do cliente. Encadeável.
+
+```cpp
+RestRequest& timeout(uint16_t timeoutMs);
+```
+
+**Exemplo:**
+```cpp
+client.get("/quick-data").timeout(1500);
+```
+
+---
+
+### `retry(maxRetry)` / `maxRetry(maxRetry)`
+
+Define a quantidade máxima de tentativas automáticas em caso de falha de rede para esta requisição específica. Encadeável.
+
+```cpp
+RestRequest& retry(int maxRetry);
+RestRequest& maxRetry(int maxRetry);
+```
+
+**Exemplo:**
+```cpp
+client.get("/critical-data").retry(3);
+```
+
+---
+
+### `onSuccess(callback)`
+
+Registra um callback específico da requisição executado se o código de status HTTP for 2xx (`200 <= code < 300`). Encadeável.
+
+```cpp
+RestRequest& onSuccess(HttpResponseCallback cb);
+```
+
+**Exemplo:**
+```cpp
+client.get("/users")
+      .onSuccess([](int code) {
+          Serial.printf("Requisição bem-sucedida com status %d\n", code);
+      })
+      .getBody("id", &id);
+```
+
+---
+
+### `onError(callback)`
+
+Registra um callback específico da requisição executado se a requisição falhar (`code < 200 || code >= 400`). Recebe o código de status e a descrição do erro. Encadeável.
+
+```cpp
+RestRequest& onError(HttpErrorCallback cb);
+RestRequest& onError(HttpResponseCallback cb);
+```
+
+**Exemplo:**
+```cpp
+client.get("/users")
+      .onError([](int code, const char* message) {
+          Serial.printf("Requisição falhou (%d): %s\n", code, message);
+      })
+      .getBody("id", &id);
+```
+
+---
+
+### `onResponse(callback)`
+
+Registra um callback específico executado quando a requisição for concluída, independentemente de sucesso ou falha. Encadeável.
+
+```cpp
+RestRequest& onResponse(HttpResponseCallback cb);
+```
+
+**Exemplo:**
+```cpp
+client.get("/users")
+      .onResponse([](int code) {
+          Serial.printf("Finalizada com código %d\n", code);
+      })
+      .getBody("id", &id);
+```
+
+---
+
 ## Extraindo a Resposta
 
 `getBody()` é sobrecarregado para cada tipo C suportado. Ele registra uma vinculação entre um **caminho de chave JSON** e uma **variável alvo**. Todas as sobrecargas são encadeáveis.

@@ -93,6 +93,95 @@ client.post("/users")
 
 ---
 
+### `timeout(timeoutMs)`
+
+Sets a per-request network timeout in milliseconds, overriding the client's default timeout. Chainable.
+
+```cpp
+RestRequest& timeout(uint16_t timeoutMs);
+```
+
+**Example:**
+```cpp
+client.get("/quick-data").timeout(1500);
+```
+
+---
+
+### `retry(maxRetry)` / `maxRetry(maxRetry)`
+
+Sets the maximum number of automatic retries on network failure for this specific request, overriding the client default. Chainable.
+
+```cpp
+RestRequest& retry(int maxRetry);
+RestRequest& maxRetry(int maxRetry);
+```
+
+**Example:**
+```cpp
+client.get("/critical-data").retry(3);
+```
+
+---
+
+### `onSuccess(callback)`
+
+Registers a per-request callback executed if the response HTTP status code is 2xx (`200 <= code < 300`). Chainable.
+
+```cpp
+RestRequest& onSuccess(HttpResponseCallback cb);
+```
+
+**Example:**
+```cpp
+client.get("/users")
+      .onSuccess([](int code) {
+          Serial.printf("Request succeeded with HTTP %d\n", code);
+      })
+      .getBody("id", &id);
+```
+
+---
+
+### `onError(callback)`
+
+Registers a per-request callback executed if the request fails (`code < 200 || code >= 400`). Receives status code and an optional error description message. Chainable.
+
+```cpp
+RestRequest& onError(HttpErrorCallback cb);
+RestRequest& onError(HttpResponseCallback cb);
+```
+
+**Example:**
+```cpp
+client.get("/users")
+      .onError([](int code, const char* message) {
+          Serial.printf("Request failed (%d): %s\n", code, message);
+      })
+      .getBody("id", &id);
+```
+
+---
+
+### `onResponse(callback)`
+
+Registers a per-request callback executed when the request completes, regardless of success or failure. Chainable.
+
+```cpp
+RestRequest& onResponse(HttpResponseCallback cb);
+```
+
+**Example:**
+```cpp
+client.get("/users")
+      .onResponse([](int code) {
+          Serial.printf("Finished with code %d\n", code);
+      })
+      .getBody("id", &id);
+```
+
+---
+
 ## Extracting the Response
 
 `getBody()` is overloaded for each supported C type. It registers a binding between a **JSON key path** and a **target variable**. All overloads are chainable.

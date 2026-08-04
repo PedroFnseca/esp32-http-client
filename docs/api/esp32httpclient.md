@@ -240,6 +240,111 @@ client.apiKey("x-api-key", "my-secret-api-key");
 
 ---
 
+### `setBaseUrl(baseUrl, port)`
+
+Changes the base URL and target port at runtime for subsequent requests.
+
+```cpp
+void setBaseUrl(const char* baseUrl, int port = 0);
+```
+
+**Example:**
+```cpp
+client.setBaseUrl("https://api.v2.example.com", 443);
+```
+
+---
+
+### `setUrl(baseUrl)`
+
+Convenience alias for updating only the base URL at runtime.
+
+```cpp
+void setUrl(const char* baseUrl);
+```
+
+---
+
+### `setPort(port)`
+
+Updates the target TCP port at runtime.
+
+```cpp
+void setPort(int port);
+```
+
+---
+
+### `getBaseUrl()`
+
+Returns the current base URL string.
+
+```cpp
+const char* getBaseUrl() const;
+```
+
+---
+
+### `getPort()`
+
+Returns the current target TCP port (or 0 if default).
+
+```cpp
+int getPort() const;
+```
+
+---
+
+### `setTimeout(timeoutMs)`
+
+Configures the default network timeout in milliseconds for all requests made by this client. Default is `60000` ms (1 minute).
+
+```cpp
+void setTimeout(uint16_t timeoutMs);
+```
+
+**Example:**
+```cpp
+client.setTimeout(10000); // 10 seconds
+```
+
+---
+
+### `getTimeout()`
+
+Returns the configured default timeout in milliseconds.
+
+```cpp
+uint16_t getTimeout() const;
+```
+
+---
+
+### `setMaxRetry(maxRetry)`
+
+Configures the default maximum number of automatic retries on network failures. Default is `1` retry.
+
+```cpp
+void setMaxRetry(int maxRetry);
+```
+
+**Example:**
+```cpp
+client.setMaxRetry(3); // Up to 3 retries
+```
+
+---
+
+### `getMaxRetry()`
+
+Returns the configured default max retry count.
+
+```cpp
+int getMaxRetry() const;
+```
+
+---
+
 ### `setContentType(contentType)`
 
 Overrides the `Content-Type` header used for request bodies. Defaults to `application/json`.
@@ -252,6 +357,10 @@ void setContentType(const char* contentType);
 ```cpp
 client.setContentType("application/x-www-form-urlencoded");
 ```
+
+---
+
+## Response & Error Inspection
 
 ---
 
@@ -271,13 +380,123 @@ int getStatusCode() const;
 | `< 0` | Network-level error (no connection, timeout, etc.) |
 | `0` | No request has been made yet |
 
+---
+
+### `isSuccess()`
+
+Returns `true` if the last request completed with a 2xx HTTP status code (`200 <= code < 300`).
+
+```cpp
+bool isSuccess() const;
+```
+
 **Example:**
 ```cpp
-client.get("/health");
-if (client.getStatusCode() == 200) {
-    Serial.println("OK");
+client.get("/data").getBody("val", &val);
+if (client.isSuccess()) {
+    Serial.println("Request succeeded!");
 }
 ```
+
+---
+
+### `hasError()`
+
+Returns `true` if the last request failed due to a network error (`code < 0`) or an HTTP client/server error (`code >= 400`).
+
+```cpp
+bool hasError() const;
+```
+
+**Example:**
+```cpp
+client.get("/data").getBody("val", &val);
+if (client.hasError()) {
+    Serial.printf("Error (%d): %s\n", client.getStatusCode(), client.getErrorMessage().c_str());
+}
+```
+
+---
+
+### `getErrorMessage()`
+
+Returns a human-readable description of the last status or error code.
+
+```cpp
+String getErrorMessage() const;
+```
+
+---
+
+### `errorToString(code)`
+
+Static helper that converts any HTTP status code or client negative error code into a descriptive string.
+
+```cpp
+static String errorToString(int code);
+```
+
+---
+
+## Callbacks
+
+You can register global callbacks on the client instance that are executed whenever any request completes.
+
+---
+
+### `onSuccess(callback)`
+
+Registers a callback executed when any request finishes with a 2xx HTTP status code (`200 <= code < 300`).
+
+```cpp
+void onSuccess(HttpResponseCallback cb);
+```
+
+**Example:**
+```cpp
+client.onSuccess([](int code) {
+    Serial.printf("Client request succeeded with status %d\n", code);
+});
+```
+
+---
+
+### `onError(callback)`
+
+Registers a callback executed when any request fails with an error (`code < 200 || code >= 400`).
+
+```cpp
+void onError(HttpErrorCallback cb);
+void onError(HttpResponseCallback cb);
+```
+
+**Example:**
+```cpp
+client.onError([](int code, const char* message) {
+    Serial.printf("Client request failed (%d): %s\n", code, message);
+});
+```
+
+---
+
+### `onResponse(callback)`
+
+Registers a callback executed on **any** completed request, regardless of whether it succeeded or failed.
+
+```cpp
+void onResponse(HttpResponseCallback cb);
+```
+
+**Example:**
+```cpp
+client.onResponse([](int code) {
+    Serial.printf("Response received with code %d\n", code);
+});
+```
+
+---
+
+## Connection Management
 
 ---
 
@@ -301,3 +520,42 @@ delay(60000);
 
 client.get("/data3").getBody("v", &v3); // reconnects automatically
 ```
+
+---
+
+## Error Codes Reference Table
+
+### Network / Client Error Codes (`code < 0`)
+
+| Code | Constant | Description |
+| :--- | :--- | :--- |
+| `-1` | `HTTPC_ERROR_CONNECTION_REFUSED` | Target host rejected the TCP connection. |
+| `-2` | `HTTPC_ERROR_SEND_HEADER_FAILED` | Failed to write HTTP headers to the socket. |
+| `-3` | `HTTPC_ERROR_SEND_PAYLOAD_FAILED` | Failed to transmit request body payload. |
+| `-4` | `HTTPC_ERROR_NOT_CONNECTED` | Client is not connected to a network/socket. |
+| `-5` | `HTTPC_ERROR_CONNECTION_LOST` | TCP connection terminated unexpectedly. |
+| `-6` | `HTTPC_ERROR_NO_STREAM` | No response stream available from client. |
+| `-7` | `HTTPC_ERROR_NO_HTTP_SERVER` | Server did not respond with valid HTTP. |
+| `-8` | `HTTPC_ERROR_TOO_LESS_RAM` | Insufficient free heap memory for operation. |
+| `-9` | `HTTPC_ERROR_ENCODING` | Transfer encoding or decoding error. |
+| `-10` | `HTTPC_ERROR_STREAM_WRITE` | Stream write operation failed. |
+| `-11` | `HTTPC_ERROR_READ_TIMEOUT` | Exceeded timeout waiting for server data. |
+
+### Common HTTP Status Codes (`code > 0`)
+
+| Code | Status | Description |
+| :--- | :--- | :--- |
+| `200` | OK | Request succeeded normally. |
+| `201` | Created | Resource was created successfully. |
+| `202` | Accepted | Request accepted for asynchronous processing. |
+| `204` | No Content | Request succeeded, server returned empty response. |
+| `400` | Bad Request | Malformed request or invalid payload syntax. |
+| `401` | Unauthorized | Missing or invalid authentication credentials. |
+| `403` | Forbidden | Authenticated, but lacking permissions for resource. |
+| `404` | Not Found | Requested endpoint path does not exist on server. |
+| `408` | Request Timeout | Server timed out waiting for request completion. |
+| `429` | Too Many Requests | Rate limit exceeded. |
+| `500` | Internal Server Error | Generic unhandled server-side error. |
+| `502` | Bad Gateway | Upstream server returned an invalid response. |
+| `503` | Service Unavailable | Server overloaded or down for maintenance. |
+| `504` | Gateway Timeout | Upstream gateway timed out waiting for response. |

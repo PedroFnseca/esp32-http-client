@@ -93,20 +93,151 @@ client.get("/data4").getBody("val", &v4);
 
 ---
 
-## Automatic Stale Connection Recovery
+## Changing Server URL at Runtime
 
-If a Keep-Alive connection becomes stale (e.g., the server closed it on its end), the library automatically detects the failure, closes the socket, re-establishes the connection, and retries the request **once** — transparently to your code.
+You can change the target host URL or port on the fly without recreating the `ESP32HTTPClient` instance:
 
 ```cpp
-// This works even if the server dropped the connection
-client.get("/sensor").getBody("temp", &temperature);
+ESP32HTTPClient client("https://api.v1.example.com");
+
+// Switch to v2 endpoint or a local staging server
+client.setBaseUrl("https://api.v2.example.com", 443);
+
+// Or change port independently
+client.setUrl("http://192.168.1.100");
+client.setPort(8080);
 ```
 
 ---
 
-## Handling `Transfer-Encoding: chunked`
+## Timeout Configuration
 
-Many modern servers (including those behind load balancers or API gateways) respond with `Transfer-Encoding: chunked`. The library's internal `BufferedStreamReader` handles chunked decoding automatically and transparently. No configuration is needed.
+By default, the client uses a timeout of **60000 ms** (1 minute / 60 seconds). You can configure the global default or override it on individual requests:
+
+### Global Timeout
+
+```cpp
+// Set default timeout to 10 seconds for all future requests
+client.setTimeout(10000);
+```
+
+### Per-Request Timeout
+
+```cpp
+// Fast ping with 1.5s timeout
+client.get("/quick-ping")
+      .timeout(1500)
+      .getBody("ok", &isOk);
+```
+
+---
+
+## Retries & Network Recovery
+
+`ESP32HTTPClient` automatically handles network drops and stale Keep-Alive connections by retrying failed attempts up to a configured threshold. The default is `1` retry.
+
+### Global Max Retry
+
+```cpp
+// Allow up to 3 retry attempts on connection failures
+client.setMaxRetry(3);
+```
+
+### Per-Request Retry
+
+```cpp
+// Disable retry for non-idempotent operation
+client.post("/payment/charge")
+      .retry(0)
+      .body("amount", 100);
+```
+
+---
+
+## Callbacks (`onSuccess`, `onError`, `onResponse`)
+
+Callbacks allow you to attach clean, asynchronous-style handlers to your requests or at the client level.
+
+### Request-Level Callbacks
+
+```cpp
+client.get("/sensors/temp")
+      .onSuccess([](int code) {
+          Serial.printf("Success: HTTP %d\n", code);
+      })
+      .onError([](int code, const char* message) {
+          Serial.printf("Request failed (%d): %s\n", code, message);
+      })
+      .onResponse([](int code) {
+          Serial.printf("Completed with code %d\n", code);
+      })
+      .getBody("temperature", &temp);
+```
+
+### Client-Level Callbacks
+
+Client-level callbacks are triggered on every request executed by that client instance:
+
+```cpp
+client.onError([](int code, const char* message) {
+    Serial.printf("[Global Error Handler] Code %d: %s\n", code, message);
+});
+```
+
+---
+
+## Error Handling & Inspection
+
+You can inspect the result of any request using the built-in helper methods:
+
+```cpp
+client.get("/users/1").getBody("name", name, sizeof(name));
+
+if (client.isSuccess()) {
+    Serial.println("User loaded successfully");
+} else if (client.hasError()) {
+    int code = client.getStatusCode();
+    String errorMsg = client.getErrorMessage();
+    Serial.printf("Failed with code %d: %s\n", code, errorMsg.c_str());
+}
+```
+
+### Error Code Reference Table
+
+#### Network / Client Errors (`code < 0`)
+
+| Code | Constant | Description |
+| :--- | :--- | :--- |
+| `-1` | `HTTPC_ERROR_CONNECTION_REFUSED` | Target host refused the connection. |
+| `-2` | `HTTPC_ERROR_SEND_HEADER_FAILED` | Failed to write HTTP headers to the socket. |
+| `-3` | `HTTPC_ERROR_SEND_PAYLOAD_FAILED` | Failed to send request body payload. |
+| `-4` | `HTTPC_ERROR_NOT_CONNECTED` | Not connected to network or socket. |
+| `-5` | `HTTPC_ERROR_CONNECTION_LOST` | TCP connection terminated unexpectedly. |
+| `-6` | `HTTPC_ERROR_NO_STREAM` | No response stream available. |
+| `-7` | `HTTPC_ERROR_NO_HTTP_SERVER` | Server did not respond with valid HTTP. |
+| `-8` | `HTTPC_ERROR_TOO_LESS_RAM` | Insufficient free RAM on ESP32. |
+| `-9` | `HTTPC_ERROR_ENCODING` | Transfer encoding error. |
+| `-10` | `HTTPC_ERROR_STREAM_WRITE` | Stream write failed. |
+| `-11` | `HTTPC_ERROR_READ_TIMEOUT` | Timed out waiting for response data from server. |
+
+#### HTTP Status Codes (`code > 0`)
+
+| Code | Status | Description |
+| :--- | :--- | :--- |
+| `200` | OK | Request succeeded normally. |
+| `201` | Created | Resource created successfully. |
+| `202` | Accepted | Request accepted for processing. |
+| `204` | No Content | Success, server returned empty response. |
+| `400` | Bad Request | Invalid request parameters or payload. |
+| `401` | Unauthorized | Missing or invalid authentication credentials. |
+| `403` | Forbidden | Insufficient permissions for resource. |
+| `404` | Not Found | Requested endpoint path does not exist. |
+| `408` | Request Timeout | Server timed out waiting for request. |
+| `429` | Too Many Requests | Rate limit exceeded. |
+| `500` | Internal Server Error | Generic server-side error. |
+| `502` | Bad Gateway | Invalid response from upstream server. |
+| `503` | Service Unavailable | Server overloaded or down for maintenance. |
+| `504` | Gateway Timeout | Upstream gateway timed out. |
 
 ---
 
@@ -121,23 +252,4 @@ client.get("/api/v1/time/current/unix")
       .getBody("unix_timestamp", &unixTimestamp);
 
 Serial.printf("Unix time: %ld\n", unixTimestamp);
-```
-
----
-
-## Checking Connection Status
-
-While the library manages connections automatically, you can always inspect the result of a request using `getStatusCode()`:
-
-```cpp
-client.get("/health");
-int code = client.getStatusCode();
-
-if (code == 200) {
-    Serial.println("Server is healthy");
-} else if (code < 0) {
-    Serial.println("Network error — could not reach server");
-} else {
-    Serial.printf("Server responded with HTTP %d\n", code);
-}
 ```
