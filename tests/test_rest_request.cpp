@@ -733,6 +733,178 @@ void testPathEdgeCases() {
   }
   expectEq(HttpClientStub::lastUrl, "https://example.com/users/99", "move constructor preserves path params");
 }
+
+void testRuntimeUrlChange() {
+  ESP32HTTPClient client("https://api.initial.com", 80);
+  expectEq(client.getBaseUrl(), "https://api.initial.com", "initial baseUrl");
+  expectEqInt(client.getPort(), 80, "initial port");
+
+  HttpClientStub::reset();
+  int id = 0;
+  client.get("/users").getBody("id", &id);
+  expectEq(HttpClientStub::lastUrl, "https://api.initial.com:80/users", "request to initial url");
+
+  client.setBaseUrl("https://api.newhost.org", 443);
+  expectEq(client.getBaseUrl(), "https://api.newhost.org", "updated baseUrl");
+  expectEqInt(client.getPort(), 443, "updated port");
+
+  HttpClientStub::reset();
+  client.get("/v1/data").getBody("id", &id);
+  expectEq(HttpClientStub::lastUrl, "https://api.newhost.org:443/v1/data", "request to updated url and port");
+
+  client.setUrl("http://192.168.1.50");
+  client.setPort(8080);
+  HttpClientStub::reset();
+  client.get("/sensors").getBody("id", &id);
+  expectEq(HttpClientStub::lastUrl, "http://192.168.1.50:8080/sensors", "request after setUrl and setPort");
+}
+
+void testTimeout() {
+  ESP32HTTPClient client("https://example.com");
+  expectEqInt(client.getTimeout(), 60000, "default timeout is 60000ms (1 minute)");
+
+  client.setTimeout(8000);
+  expectEqInt(client.getTimeout(), 8000, "custom client timeout");
+
+  HttpClientStub::reset();
+  int id = 0;
+  client.get("/data").getBody("id", &id);
+  expectEqInt(HttpClientStub::lastTimeout, 8000, "client timeout applied to request");
+
+  HttpClientStub::reset();
+  client.get("/quick").timeout(1500).getBody("id", &id);
+  expectEqInt(HttpClientStub::lastTimeout, 1500, "per-request timeout overrides client timeout");
+}
+
+void testMaxRetry() {
+  ESP32HTTPClient client("https://example.com");
+  expectEqInt(client.getMaxRetry(), 1, "default maxRetry is 1");
+
+  client.setMaxRetry(3);
+  expectEqInt(client.getMaxRetry(), 3, "custom maxRetry");
+
+  HttpClientStub::reset();
+  HttpClientStub::queueResponse(-1, "");
+  HttpClientStub::queueResponse(-1, "");
+  HttpClientStub::queueResponse(200, "{\"success\":true}");
+
+  bool success = false;
+  client.get("/retry-ok").getBody("success", &success);
+  expectTrue(success, "succeeded after retrying");
+  expectEqInt(HttpClientStub::requestCount, 3, "made 3 attempts");
+  expectEqInt(client.getStatusCode(), 200, "status code 200 after recovery");
+
+  HttpClientStub::reset();
+  HttpClientStub::queueResponse(-1, "");
+  HttpClientStub::queueResponse(-1, "");
+  HttpClientStub::queueResponse(200, "{\"success\":true}");
+
+  success = false;
+  client.get("/retry-fail").retry(0).getBody("success", &success);
+  expectTrue(!success, "failed when retry is 0");
+  expectEqInt(HttpClientStub::requestCount, 1, "only 1 attempt when retry is 0");
+  expectEqInt(client.getStatusCode(), -1, "status code is -1");
+}
+
+void testErrorHandlingAndMessages() {
+  ESP32HTTPClient client("https://example.com");
+
+  expectEq(ESP32HTTPClient::errorToString(-1).c_str(), "Connection Refused", "errorToString -1");
+  expectEq(ESP32HTTPClient::errorToString(-2).c_str(), "Send Header Failed", "errorToString -2");
+  expectEq(ESP32HTTPClient::errorToString(-11).c_str(), "Read Timeout", "errorToString -11");
+  expectEq(ESP32HTTPClient::errorToString(200).c_str(), "OK", "errorToString 200");
+  expectEq(ESP32HTTPClient::errorToString(201).c_str(), "Created", "errorToString 201");
+  expectEq(ESP32HTTPClient::errorToString(400).c_str(), "Bad Request", "errorToString 400");
+  expectEq(ESP32HTTPClient::errorToString(401).c_str(), "Unauthorized", "errorToString 401");
+  expectEq(ESP32HTTPClient::errorToString(404).c_str(), "Not Found", "errorToString 404");
+  expectEq(ESP32HTTPClient::errorToString(500).c_str(), "Internal Server Error", "errorToString 500");
+
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(404, "{\"error\":\"not found\"}");
+  int id = 0;
+  client.get("/missing").getBody("id", &id);
+
+  expectEqInt(client.getStatusCode(), 404, "statusCode is 404");
+  expectTrue(client.hasError(), "hasError() is true on 404");
+  expectTrue(!client.isSuccess(), "isSuccess() is false on 404");
+  expectEq(client.getErrorMessage().c_str(), "Not Found", "getErrorMessage() on 404");
+
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(-1, "");
+  client.get("/offline").retry(0).getBody("id", &id);
+
+  expectEqInt(client.getStatusCode(), -1, "statusCode is -1");
+  expectTrue(client.hasError(), "hasError() is true on -1");
+  expectTrue(!client.isSuccess(), "isSuccess() is false on -1");
+  expectEq(client.getErrorMessage().c_str(), "Connection Refused", "getErrorMessage() on -1");
+
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"id\":10}");
+  client.get("/ok").getBody("id", &id);
+
+  expectEqInt(client.getStatusCode(), 200, "statusCode is 200");
+  expectTrue(!client.hasError(), "hasError() is false on 200");
+  expectTrue(client.isSuccess(), "isSuccess() is true on 200");
+  expectEq(client.getErrorMessage().c_str(), "OK", "getErrorMessage() on 200");
+}
+
+void testCallbacks() {
+  ESP32HTTPClient client("https://example.com");
+
+  int successCode = 0;
+  int errCode = 0;
+  int respCode = 0;
+  std::string errMsg;
+
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"id\":123}");
+  int id = 0;
+
+  client.get("/success")
+      .onSuccess([&](int code) { successCode = code; })
+      .onError([&](int code, const char* msg) { errCode = code; errMsg = msg; })
+      .onResponse([&](int code) { respCode = code; })
+      .getBody("id", &id);
+
+  expectEqInt(successCode, 200, "onSuccess called on 200");
+  expectEqInt(respCode, 200, "onResponse called on 200");
+  expectEqInt(errCode, 0, "onError not called on 200");
+  expectEqInt(id, 123, "body parsed on 200");
+
+  successCode = 0;
+  errCode = 0;
+  respCode = 0;
+  errMsg.clear();
+
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(500, "{\"error\":\"fail\"}");
+
+  client.get("/error")
+      .onSuccess([&](int code) { successCode = code; })
+      .onError([&](int code, const char* msg) { errCode = code; errMsg = msg; })
+      .onResponse([&](int code) { respCode = code; })
+      .getBody("id", &id);
+
+  expectEqInt(successCode, 0, "onSuccess not called on 500");
+  expectEqInt(respCode, 500, "onResponse called on 500");
+  expectEqInt(errCode, 500, "onError called on 500");
+  expectEq(errMsg, "Internal Server Error", "onError received correct message on 500");
+
+  int clientSuccess = 0;
+  int clientError = 0;
+  int clientResponse = 0;
+  client.onSuccess([&](int code) { clientSuccess = code; });
+  client.onError([&](int code, const char*) { clientError = code; });
+  client.onResponse([&](int code) { clientResponse = code; });
+
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"id\":456}");
+  client.get("/client-level").getBody("id", &id);
+
+  expectEqInt(clientSuccess, 200, "client onSuccess triggered");
+  expectEqInt(clientResponse, 200, "client onResponse triggered");
+  expectEqInt(clientError, 0, "client onError not triggered on 200");
+}
 }  // namespace
 
 int main() {
@@ -765,6 +937,11 @@ int main() {
   runSuite("PathParameters", testPathParameters);
   runSuite("PathAndQueryCombined", testPathAndQueryCombined);
   runSuite("PathEdgeCases", testPathEdgeCases);
+  runSuite("RuntimeUrlChange", testRuntimeUrlChange);
+  runSuite("Timeout", testTimeout);
+  runSuite("MaxRetry", testMaxRetry);
+  runSuite("ErrorHandlingAndMessages", testErrorHandlingAndMessages);
+  runSuite("Callbacks", testCallbacks);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;

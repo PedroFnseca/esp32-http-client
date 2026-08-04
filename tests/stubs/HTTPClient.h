@@ -3,17 +3,33 @@
 
 #include "Arduino.h"
 
+#include <deque>
 #include <string>
 #include <vector>
 #include <utility>
+
+#define HTTPC_ERROR_CONNECTION_REFUSED  (-1)
+#define HTTPC_ERROR_SEND_HEADER_FAILED  (-2)
+#define HTTPC_ERROR_SEND_PAYLOAD_FAILED (-3)
+#define HTTPC_ERROR_NOT_CONNECTED       (-4)
+#define HTTPC_ERROR_CONNECTION_LOST     (-5)
+#define HTTPC_ERROR_NO_STREAM           (-6)
+#define HTTPC_ERROR_NO_HTTP_SERVER      (-7)
+#define HTTPC_ERROR_TOO_LESS_RAM        (-8)
+#define HTTPC_ERROR_ENCODING            (-9)
+#define HTTPC_ERROR_STREAM_WRITE        (-10)
+#define HTTPC_ERROR_READ_TIMEOUT        (-11)
 
 namespace HttpClientStub {
 inline std::string lastUrl;
 inline std::string lastPayload;
 inline std::string lastMethod;
 inline std::vector<std::pair<std::string, std::string>> lastHeaders;
+inline int lastTimeout = 0;
+inline int requestCount = 0;
 inline int nextStatusCode = 200;
 inline std::string nextResponseBody = "{}";
+inline std::deque<std::pair<int, std::string>> responseQueue;
 
 class InMemoryStream : public Stream {
  public:
@@ -44,13 +60,33 @@ inline void reset() {
   lastPayload.clear();
   lastMethod.clear();
   lastHeaders.clear();
+  lastTimeout = 0;
+  requestCount = 0;
   nextStatusCode = 200;
   nextResponseBody = "{}";
+  responseQueue.clear();
 }
 
 inline void setResponse(int statusCode, const std::string& body) {
   nextStatusCode = statusCode;
   nextResponseBody = body;
+  responseQueue.clear();
+}
+
+inline void queueResponse(int statusCode, const std::string& body) {
+  responseQueue.push_back({statusCode, body});
+}
+
+inline int getNextStatusAndBody(std::string& body) {
+  requestCount++;
+  if (!responseQueue.empty()) {
+    auto item = responseQueue.front();
+    responseQueue.pop_front();
+    body = item.second;
+    return item.first;
+  }
+  body = nextResponseBody;
+  return nextStatusCode;
 }
 }  // namespace HttpClientStub
 
@@ -68,6 +104,10 @@ class HTTPClient {
 
   void setReuse(bool reuse) {}
 
+  void setTimeout(uint16_t timeout) {
+    HttpClientStub::lastTimeout = timeout;
+  }
+
   void addHeader(const String& name, const String& value) {
     HttpClientStub::lastHeaders.push_back({name.str(), value.str()});
   }
@@ -75,36 +115,46 @@ class HTTPClient {
   int GET() {
     HttpClientStub::lastMethod = "GET";
     HttpClientStub::lastPayload.clear();
-    _stream = HttpClientStub::InMemoryStream(HttpClientStub::nextResponseBody);
-    return HttpClientStub::nextStatusCode;
+    std::string body;
+    int code = HttpClientStub::getNextStatusAndBody(body);
+    _stream = HttpClientStub::InMemoryStream(body);
+    return code;
   }
 
   int POST(const String& payload) {
     HttpClientStub::lastMethod = "POST";
     HttpClientStub::lastPayload = payload.str();
-    _stream = HttpClientStub::InMemoryStream(HttpClientStub::nextResponseBody);
-    return HttpClientStub::nextStatusCode;
+    std::string body;
+    int code = HttpClientStub::getNextStatusAndBody(body);
+    _stream = HttpClientStub::InMemoryStream(body);
+    return code;
   }
 
   int PUT(const String& payload) {
     HttpClientStub::lastMethod = "PUT";
     HttpClientStub::lastPayload = payload.str();
-    _stream = HttpClientStub::InMemoryStream(HttpClientStub::nextResponseBody);
-    return HttpClientStub::nextStatusCode;
+    std::string body;
+    int code = HttpClientStub::getNextStatusAndBody(body);
+    _stream = HttpClientStub::InMemoryStream(body);
+    return code;
   }
 
   int PATCH(const String& payload) {
     HttpClientStub::lastMethod = "PATCH";
     HttpClientStub::lastPayload = payload.str();
-    _stream = HttpClientStub::InMemoryStream(HttpClientStub::nextResponseBody);
-    return HttpClientStub::nextStatusCode;
+    std::string body;
+    int code = HttpClientStub::getNextStatusAndBody(body);
+    _stream = HttpClientStub::InMemoryStream(body);
+    return code;
   }
 
   int sendRequest(const char* method, const String& payload) {
     HttpClientStub::lastMethod = method ? method : "";
     HttpClientStub::lastPayload = payload.str();
-    _stream = HttpClientStub::InMemoryStream(HttpClientStub::nextResponseBody);
-    return HttpClientStub::nextStatusCode;
+    std::string body;
+    int code = HttpClientStub::getNextStatusAndBody(body);
+    _stream = HttpClientStub::InMemoryStream(body);
+    return code;
   }
 
   int getSize() {
@@ -116,6 +166,23 @@ class HTTPClient {
   }
 
   void end() {
+  }
+
+  static String errorToString(int error) {
+    switch (error) {
+      case HTTPC_ERROR_CONNECTION_REFUSED: return "connection refused";
+      case HTTPC_ERROR_SEND_HEADER_FAILED: return "send header failed";
+      case HTTPC_ERROR_SEND_PAYLOAD_FAILED: return "send payload failed";
+      case HTTPC_ERROR_NOT_CONNECTED: return "not connected";
+      case HTTPC_ERROR_CONNECTION_LOST: return "connection lost";
+      case HTTPC_ERROR_NO_STREAM: return "no stream";
+      case HTTPC_ERROR_NO_HTTP_SERVER: return "no HTTP server";
+      case HTTPC_ERROR_TOO_LESS_RAM: return "too less ram";
+      case HTTPC_ERROR_ENCODING: return "encoding";
+      case HTTPC_ERROR_STREAM_WRITE: return "stream write";
+      case HTTPC_ERROR_READ_TIMEOUT: return "read Timeout";
+      default: return "";
+    }
   }
 
  private:
