@@ -633,6 +633,106 @@ void testAuthEdgeCases() {
   client.apiKey("X-Custom-Key", nullptr);
   expectEq(client._headers[1].value, "", "apiKey with null key");
 }
+
+void testQueryParameters() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  int id = 0;
+  client.get("/users")
+      .query("page", 2)
+      .query("limit", 20)
+      .query("search", "pedro")
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/users?page=2&limit=20&search=pedro", "query params built in url");
+
+  HttpClientStub::reset();
+  client.get("/sensors")
+      .query("active", true)
+      .query("threshold", 4.5f)
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/sensors?active=true&threshold=4.5", "typed query params built in url");
+}
+
+void testPathParameters() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  int id = 0;
+  client.get("/users/{id}")
+      .path("id", 15)
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/users/15", "path parameter {id} replaced with 15");
+
+  HttpClientStub::reset();
+  client.get("/users/{id}")
+      .path("{id}", 15)
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/users/15", "path parameter with explicit {id} format");
+
+  HttpClientStub::reset();
+  client.get("/orgs/{org}/users/{userId}/posts/{postId}")
+      .path("org", "google")
+      .path("userId", 42)
+      .path("postId", 101)
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/orgs/google/users/42/posts/101", "multiple path parameters");
+
+  HttpClientStub::reset();
+  client.get("/devices/{uuid}/telemetry")
+      .path("uuid", "123e4567-e89b-12d3-a456-426614174000")
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/devices/123e4567-e89b-12d3-a456-426614174000/telemetry", "uuid path parameter");
+}
+
+void testPathAndQueryCombined() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  int id = 0;
+  client.get("/users/{id}/orders")
+      .path("id", 15)
+      .query("page", 2)
+      .query("limit", 20)
+      .query("search", "pedro")
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/users/15/orders?page=2&limit=20&search=pedro", "combined path and query params");
+}
+
+void testPathEdgeCases() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  int id = 0;
+  client.get("/static/path")
+      .path("none", 123)
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/static/path", "path without placeholders unaffected");
+
+  HttpClientStub::reset();
+  client.get(nullptr)
+      .path("id", 10)
+      .getBody("id", &id);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com", "null path handled safely");
+
+  HttpClientStub::reset();
+  {
+    RestRequest req1(&client, "/users/{id}", HTTP_GET_METHOD);
+    req1.path("id", 99);
+    RestRequest req2(std::move(req1));
+    req2.getBody("id", &id);
+  }
+  expectEq(HttpClientStub::lastUrl, "https://example.com/users/99", "move constructor preserves path params");
+}
 }  // namespace
 
 int main() {
@@ -661,6 +761,10 @@ int main() {
   runSuite("AuthBasic", testAuthBasic);
   runSuite("AuthApiKey", testAuthApiKey);
   runSuite("AuthEdgeCases", testAuthEdgeCases);
+  runSuite("QueryParameters", testQueryParameters);
+  runSuite("PathParameters", testPathParameters);
+  runSuite("PathAndQueryCombined", testPathAndQueryCombined);
+  runSuite("PathEdgeCases", testPathEdgeCases);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;

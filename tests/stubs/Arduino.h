@@ -52,6 +52,24 @@ class String {
     return String(_data.substr(static_cast<size_t>(beginIndex)));
   }
 
+  bool replace(const String& find, const String& replaceStr) {
+    return replace(find.c_str(), replaceStr.c_str());
+  }
+
+  bool replace(const char* find, const char* replaceStr) {
+    if (!find || !replaceStr) return false;
+    size_t findLen = strlen(find);
+    if (findLen == 0) return false;
+    size_t pos = 0;
+    bool replaced = false;
+    while ((pos = _data.find(find, pos)) != std::string::npos) {
+      _data.replace(pos, findLen, replaceStr);
+      pos += strlen(replaceStr);
+      replaced = true;
+    }
+    return replaced;
+  }
+
   void reserve(size_t size) {
     _data.reserve(size);
   }
