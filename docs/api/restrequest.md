@@ -17,6 +17,26 @@ The fluent request builder returned by every HTTP method on [`ESP32HTTPClient`](
 
 ## Building the Request
 
+### `path(key, value)`
+
+Replaces a placeholder (e.g. `{id}` or `id`) in the URL path. Chainable.
+
+```cpp
+template <typename T>
+RestRequest& path(const char* key, T value);
+```
+
+**Supported types for `value`:** `int`, `long`, `float`, `double`, `bool`, `const char*`, `char*`
+
+**Example:**
+```cpp
+// Produces: GET /users/15
+client.get("/users/{id}")
+      .path("id", 15);
+```
+
+---
+
 ### `query(key, value)`
 
 Appends a URL query parameter. Chainable.
@@ -30,12 +50,11 @@ RestRequest& query(const char* key, T value);
 
 **Example:**
 ```cpp
-// Produces: GET /search?q=esp32&limit=10&active=true
-client.get("/search")
-      .query("q",      "esp32")
-      .query("limit",  10)
-      .query("active", true)
-      .getBody("count", &count);
+// Produces: GET /users?page=2&limit=20&search=pedro
+client.get("/users")
+      .query("page",   2)
+      .query("limit",  20)
+      .query("search", "pedro");
 ```
 
 ---

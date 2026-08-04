@@ -16,16 +16,26 @@ Every HTTP method on `ESP32HTTPClient` returns a `RestRequest` object. You can c
 client.get("/todos/1");
 ```
 
-### With Query Parameters
+### Path Parameters
+
+Use `.path(key, value)` to dynamically substitute `{placeholder}` parameters in the URL path. Supports `int`, `float`, `double`, `long`, `bool`, and `const char*`.
+
+```cpp
+// Produces: GET /users/15
+client.get("/users/{id}")
+      .path("id", 15);
+```
+
+### Query Parameters
 
 Use `.query(key, value)` to append URL parameters. Supports `int`, `float`, `double`, `long`, `bool`, and `const char*`.
 
 ```cpp
-// Produces: GET /climate?room=living_room&sensor=dht22
-client.get("/climate")
-      .query("room", "living_room")
-      .query("sensor", "dht22")
-      .getBody("temp", &temperature);
+// Produces: GET /users?page=2&limit=20&search=pedro
+client.get("/users")
+      .query("page", 2)
+      .query("limit", 20)
+      .query("search", "pedro");
 ```
 
 ---
@@ -89,7 +99,7 @@ client.del("/sessions")
 
 ---
 
-## Supported Value Types for `.query()` and `.body()`
+## Supported Value Types for `.path()`, `.query()`, and `.body()`
 
 | C Type | JSON output | Example |
 | :--- | :--- | :--- |

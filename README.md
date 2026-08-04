@@ -154,18 +154,24 @@ ESP32HTTPClient client("http://my-local-server.local", 8080);
 
 ## Usage
 
-### GET with query parameters
+### Query Parameters
 
 ```cpp
-float temperature;
-bool active;
+// Produces: GET /users?page=2&limit=20&search=pedro
+client.get("/users")
+      .query("page", 2)
+      .query("limit", 20)
+      .query("search", "pedro");
+```
 
-// Produces: GET /climate?room=living_room&sensor=dht22
-client.get("/climate")
-      .query("room", "living_room")
-      .query("sensor", "dht22")
-      .getBody("temp", &temperature)  // binds "temp": 24.5
-      .getBody("active", &active);    // binds "active": true
+### Path Parameters
+
+Replace `{placeholder}` segments dynamically in the request path:
+
+```cpp
+// Produces: GET /users/15
+client.get("/users/{id}")
+      .path("id", 15);
 ```
 
 ### POST JSON data
@@ -326,7 +332,8 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 
 | Method | Description | Example |
 | :--- | :--- | :--- |
-| `query(key, value)` | Appends a URL query parameter. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/search").query("q", "esp32").query("limit", 10)` |
+| `path(key, value)` | Replaces a `{placeholder}` in the URL path. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/users/{id}").path("id", 15)` |
+| `query(key, value)` | Appends a URL query parameter. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/users").query("page", 2).query("limit", 20)` |
 | `body(key, value)` | Adds a field to the JSON request body. Supports the same types as `query()`. Chainable. | `client.post("/users").body("name", "Pedro").body("age", 21)` |
 
 #### Extracting the response

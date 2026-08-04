@@ -17,6 +17,26 @@ O construtor fluente de requisições retornado por todos os métodos HTTP no [`
 
 ## Construindo a Requisição
 
+### `path(key, value)`
+
+Substitui um espaço reservado (placeholder, ex: `{id}` ou `id`) no caminho da URL. Encadeável.
+
+```cpp
+template <typename T>
+RestRequest& path(const char* key, T value);
+```
+
+**Tipos suportados para `value`:** `int`, `long`, `float`, `double`, `bool`, `const char*`, `char*`
+
+**Exemplo:**
+```cpp
+// Produz: GET /users/15
+client.get("/users/{id}")
+      .path("id", 15);
+```
+
+---
+
 ### `query(key, value)`
 
 Anexa um parâmetro de consulta na URL. Encadeável.
@@ -30,12 +50,11 @@ RestRequest& query(const char* key, T value);
 
 **Exemplo:**
 ```cpp
-// Produz: GET /search?q=esp32&limit=10&active=true
-client.get("/search")
-      .query("q",      "esp32")
-      .query("limit",  10)
-      .query("active", true)
-      .getBody("count", &count);
+// Produz: GET /users?page=2&limit=20&search=pedro
+client.get("/users")
+      .query("page",   2)
+      .query("limit",  20)
+      .query("search", "pedro");
 ```
 
 ---

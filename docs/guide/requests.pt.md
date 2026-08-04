@@ -16,16 +16,26 @@ Cada método HTTP no `ESP32HTTPClient` retorna um objeto `RestRequest`. Você po
 client.get("/todos/1");
 ```
 
-### Com Parâmetros de Consulta (Query Params)
+### Parâmetros de Rota (Path Parameters)
+
+Use `.path(chave, valor)` para substituir dinamicamente parâmetros `{placeholder}` no caminho da URL. Suporta `int`, `float`, `double`, `long`, `bool` e `const char*`.
+
+```cpp
+// Produz: GET /users/15
+client.get("/users/{id}")
+      .path("id", 15);
+```
+
+### Parâmetros de Consulta (Query Parameters)
 
 Use `.query(chave, valor)` para anexar parâmetros na URL. Suporta `int`, `float`, `double`, `long`, `bool` e `const char*`.
 
 ```cpp
-// Produz: GET /climate?room=living_room&sensor=dht22
-client.get("/climate")
-      .query("room", "living_room")
-      .query("sensor", "dht22")
-      .getBody("temp", &temperature);
+// Produz: GET /users?page=2&limit=20&search=pedro
+client.get("/users")
+      .query("page", 2)
+      .query("limit", 20)
+      .query("search", "pedro");
 ```
 
 ---
@@ -89,7 +99,7 @@ client.del("/sessions")
 
 ---
 
-## Tipos de Valores Suportados para `.query()` e `.body()`
+## Tipos de Valores Suportados para `.path()`, `.query()` e `.body()`
 
 | Tipo C | Saída JSON | Exemplo |
 | :--- | :--- | :--- |
