@@ -4,11 +4,14 @@
 #include "Arduino.h"
 
 #include <string>
+#include <vector>
+#include <utility>
 
 namespace HttpClientStub {
 inline std::string lastUrl;
 inline std::string lastPayload;
 inline std::string lastMethod;
+inline std::vector<std::pair<std::string, std::string>> lastHeaders;
 inline int nextStatusCode = 200;
 inline std::string nextResponseBody = "{}";
 
@@ -40,6 +43,7 @@ inline void reset() {
   lastUrl.clear();
   lastPayload.clear();
   lastMethod.clear();
+  lastHeaders.clear();
   nextStatusCode = 200;
   nextResponseBody = "{}";
 }
@@ -65,6 +69,7 @@ class HTTPClient {
   void setReuse(bool reuse) {}
 
   void addHeader(const String& name, const String& value) {
+    HttpClientStub::lastHeaders.push_back({name.str(), value.str()});
   }
 
   int GET() {

@@ -541,6 +541,98 @@ void testParsePrimitiveTypes() {
   expectEq(bStr.str(), "true", "boolean to String parsing");
   req._executed = true;
 }
+
+void testAuthBearer() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+  client.bearer("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
+
+  expectEqInt(static_cast<long long>(client._headers.size()), 1, "headers size after bearer");
+  expectEq(client._headers[0].name, "Authorization", "header name should be Authorization");
+  expectEq(client._headers[0].value, "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9", "bearer token format");
+
+  int id = 0;
+  client.get("/secure").getBody("id", &id);
+
+  bool found = false;
+  for (const auto& h : HttpClientStub::lastHeaders) {
+    if (h.first == "Authorization" && h.second == "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9") {
+      found = true;
+      break;
+    }
+  }
+  expectTrue(found, "Authorization header should be sent with request");
+
+  client.bearer("new-token-456");
+  expectEqInt(static_cast<long long>(client._headers.size()), 1, "bearer overwrite should not duplicate header");
+  expectEq(client._headers[0].value, "Bearer new-token-456", "bearer header updated");
+}
+
+void testAuthBasic() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+  client.basic("admin", "123456");
+
+  expectEqInt(static_cast<long long>(client._headers.size()), 1, "headers size after basic");
+  expectEq(client._headers[0].name, "Authorization", "header name should be Authorization");
+  expectEq(client._headers[0].value, "Basic YWRtaW46MTIzNDU2", "basic auth encoding for admin:123456");
+
+  int id = 0;
+  client.get("/admin").getBody("id", &id);
+
+  bool found = false;
+  for (const auto& h : HttpClientStub::lastHeaders) {
+    if (h.first == "Authorization" && h.second == "Basic YWRtaW46MTIzNDU2") {
+      found = true;
+      break;
+    }
+  }
+  expectTrue(found, "Basic Authorization header should be sent with request");
+
+  client.basic("user", "pass");
+  expectEq(client._headers[0].value, "Basic dXNlcjpwYXNz", "basic auth encoding for user:pass");
+
+  client.basic("Aladdin", "open sesame");
+  expectEq(client._headers[0].value, "Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "basic auth encoding for Aladdin:open sesame");
+}
+
+void testAuthApiKey() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+  client.apiKey("x-api-key", "secret-key-123");
+
+  expectEqInt(static_cast<long long>(client._headers.size()), 1, "headers size after apiKey");
+  expectEq(client._headers[0].name, "x-api-key", "api key header name");
+  expectEq(client._headers[0].value, "secret-key-123", "api key header value");
+
+  int val = 0;
+  client.get("/api/v1").getBody("v", &val);
+
+  bool found = false;
+  for (const auto& h : HttpClientStub::lastHeaders) {
+    if (h.first == "x-api-key" && h.second == "secret-key-123") {
+      found = true;
+      break;
+    }
+  }
+  expectTrue(found, "API key header should be sent with request");
+
+  client.apiKey("x-api-key", "new-secret-456");
+  expectEqInt(static_cast<long long>(client._headers.size()), 1, "apiKey overwrite should not duplicate header");
+  expectEq(client._headers[0].value, "new-secret-456", "apiKey header updated");
+}
+
+void testAuthEdgeCases() {
+  ESP32HTTPClient client("https://example.com");
+  client.bearer(nullptr);
+  expectEq(client._headers[0].value, "Bearer ", "bearer with null token");
+
+  client.basic(nullptr, nullptr);
+  expectEq(client._headers[0].value, "Basic Og==", "basic with null creds");
+
+  client.apiKey("X-Custom-Key", nullptr);
+  expectEq(client._headers[1].value, "", "apiKey with null key");
+}
 }  // namespace
 
 int main() {
@@ -565,6 +657,10 @@ int main() {
   runSuite("SkipValueAdvanced", testSkipValueAdvanced);
   runSuite("MoveConstructor", testMoveConstructor);
   runSuite("ParsePrimitiveTypes", testParsePrimitiveTypes);
+  runSuite("AuthBearer", testAuthBearer);
+  runSuite("AuthBasic", testAuthBasic);
+  runSuite("AuthApiKey", testAuthApiKey);
+  runSuite("AuthEdgeCases", testAuthEdgeCases);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;
