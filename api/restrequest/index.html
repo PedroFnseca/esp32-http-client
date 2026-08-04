@@ -686,6 +686,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -742,14 +746,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../examples/simple-get/" class="md-nav__link">
+      <a href="../../examples/crud-operations/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Simple GET
+    CRUD Operations
   
 
     
@@ -770,14 +774,98 @@
   
   
     <li class="md-nav__item">
-      <a href="../../examples/post-request/" class="md-nav__link">
+      <a href="../../examples/struct-json/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    POST Request
+    Struct <-> JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/url-parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    URL Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/auth-helpers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../examples/callbacks-and-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Callbacks & Errors
   
 
     
@@ -862,34 +950,6 @@
     
   
     Raw JSON
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../examples/put-delete/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PUT & DELETE
   
 
     
@@ -1141,6 +1201,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#pathkey-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        path(key, value)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#querykey-value" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1156,6 +1227,72 @@
     <span class="md-ellipsis">
       
         body(key, value)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bodystruct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        body(struct)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeouttimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeout(timeoutMs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrymaxretry-maxretrymaxretry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retry(maxRetry) / maxRetry(maxRetry)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onsuccesscallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        onSuccess(callback)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onerrorcallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        onError(callback)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onresponsecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        onResponse(callback)
       
     </span>
   </a>
@@ -1250,6 +1387,28 @@
     <span class="md-ellipsis">
       
         getBody(key, String* target)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getbodystruct-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        getBody(struct* target)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getbodykey-struct-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        getBody(key, struct* target)
       
     </span>
   </a>
@@ -1435,6 +1594,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#pathkey-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        path(key, value)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#querykey-value" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1450,6 +1620,72 @@
     <span class="md-ellipsis">
       
         body(key, value)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bodystruct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        body(struct)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeouttimeoutms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        timeout(timeoutMs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrymaxretry-maxretrymaxretry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        retry(maxRetry) / maxRetry(maxRetry)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onsuccesscallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        onSuccess(callback)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onerrorcallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        onError(callback)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onresponsecallback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        onResponse(callback)
       
     </span>
   </a>
@@ -1550,6 +1786,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#getbodystruct-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        getBody(struct* target)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getbodykey-struct-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        getBody(key, struct* target)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1625,25 +1883,36 @@
 </div>
 <hr />
 <h2 id="building-the-request">Building the Request<a class="headerlink" href="#building-the-request" title="Permanent link">&para;</a></h2>
-<h3 id="querykey-value"><code>query(key, value)</code><a class="headerlink" href="#querykey-value" title="Permanent link">&para;</a></h3>
-<p>Appends a URL query parameter. Chainable.</p>
+<h3 id="pathkey-value"><code>path(key, value)</code><a class="headerlink" href="#pathkey-value" title="Permanent link">&para;</a></h3>
+<p>Replaces a placeholder (e.g. <code>{id}</code> or <code>id</code>) in the URL path. Chainable.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="n">query</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="n">path</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Supported types for <code>value</code>:</strong> <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>bool</code>, <code>const char*</code>, <code>char*</code></p>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Produces: GET /search?q=esp32&amp;limit=10&amp;active=true</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/search&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">      </span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">,</span><span class="w">      </span><span class="s">&quot;esp32&quot;</span><span class="p">)</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">&quot;limit&quot;</span><span class="p">,</span><span class="w">  </span><span class="mi">10</span><span class="p">)</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">&quot;active&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;count&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">count</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Produces: GET /users/15</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users/{id}&quot;</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">      </span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h3 id="querykey-value"><code>query(key, value)</code><a class="headerlink" href="#querykey-value" title="Permanent link">&para;</a></h3>
+<p>Appends a URL query parameter. Chainable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="n">query</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Supported types for <code>value</code>:</strong> <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>bool</code>, <code>const char*</code>, <code>char*</code></p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Produces: GET /users?page=2&amp;limit=20&amp;search=pedro</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">      </span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">&quot;page&quot;</span><span class="p">,</span><span class="w">   </span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">&quot;limit&quot;</span><span class="p">,</span><span class="w">  </span><span class="mi">20</span><span class="p">)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">&quot;search&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pedro&quot;</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="bodykey-value"><code>body(key, value)</code><a class="headerlink" href="#bodykey-value" title="Permanent link">&para;</a></h3>
 <p>Adds a field to the JSON request body. Automatically sets <code>Content-Type: application/json</code>. Chainable.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="n">body</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="n">body</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Supported types for <code>value</code>:</strong> <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>bool</code>, <code>const char*</code>, <code>char*</code></p>
 <p><strong>Type serialization:</strong></p>
@@ -1682,12 +1951,76 @@
 </tbody>
 </table>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Body: {&quot;name&quot;:&quot;Pedro&quot;,&quot;age&quot;:21,&quot;active&quot;:true,&quot;score&quot;:9.87}</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">client</span><span class="p">.</span><span class="k">post</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">)</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w">   </span><span class="s">&quot;Pedro&quot;</span><span class="p">)</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">,</span><span class="w">    </span><span class="mi">21</span><span class="p">)</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;active&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;score&quot;</span><span class="p">,</span><span class="w">  </span><span class="mf">9.87f</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// Body: {&quot;name&quot;:&quot;Pedro&quot;,&quot;age&quot;:21,&quot;active&quot;:true,&quot;score&quot;:9.87}</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">client</span><span class="p">.</span><span class="k">post</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w">   </span><span class="s">&quot;Pedro&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">,</span><span class="w">    </span><span class="mi">21</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;active&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;score&quot;</span><span class="p">,</span><span class="w">  </span><span class="mf">9.87f</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h3 id="bodystruct"><code>body(struct)</code><a class="headerlink" href="#bodystruct" title="Permanent link">&para;</a></h3>
+<p>Serializes a C++ struct mapped with <code>REST_JSON_MAP</code> and sets it as the full JSON request body. Chainable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="n">body</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pedro&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">9.8f</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">};</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">client</span><span class="p">.</span><span class="k">post</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="n">user</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h3 id="timeouttimeoutms"><code>timeout(timeoutMs)</code><a class="headerlink" href="#timeouttimeoutms" title="Permanent link">&para;</a></h3>
+<p>Sets a per-request network timeout in milliseconds, overriding the client's default timeout. Chainable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">timeout</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">timeoutMs</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/quick-data&quot;</span><span class="p">).</span><span class="n">timeout</span><span class="p">(</span><span class="mi">1500</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h3 id="retrymaxretry-maxretrymaxretry"><code>retry(maxRetry)</code> / <code>maxRetry(maxRetry)</code><a class="headerlink" href="#retrymaxretry-maxretrymaxretry" title="Permanent link">&para;</a></h3>
+<p>Sets the maximum number of automatic retries on network failure for this specific request, overriding the client default. Chainable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">retry</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">maxRetry</span><span class="p">);</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">maxRetry</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">maxRetry</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/critical-data&quot;</span><span class="p">).</span><span class="n">retry</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h3 id="onsuccesscallback"><code>onSuccess(callback)</code><a class="headerlink" href="#onsuccesscallback" title="Permanent link">&para;</a></h3>
+<p>Registers a per-request callback executed if the response HTTP status code is 2xx (<code>200 &lt;= code &lt; 300</code>). Chainable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">onSuccess</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">      </span><span class="p">.</span><span class="n">onSuccess</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">          </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Request succeeded with HTTP %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">      </span><span class="p">})</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">id</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h3 id="onerrorcallback"><code>onError(callback)</code><a class="headerlink" href="#onerrorcallback" title="Permanent link">&para;</a></h3>
+<p>Registers a per-request callback executed if the request fails (<code>code &lt; 200 || code &gt;= 400</code>). Receives status code and an optional error description message. Chainable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">onError</span><span class="p">(</span><span class="n">HttpErrorCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">onError</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">      </span><span class="p">.</span><span class="n">onError</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">          </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Request failed (%d): %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">);</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">      </span><span class="p">})</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">id</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h3 id="onresponsecallback"><code>onResponse(callback)</code><a class="headerlink" href="#onresponsecallback" title="Permanent link">&para;</a></h3>
+<p>Registers a per-request callback executed when the request completes, regardless of success or failure. Chainable.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">onResponse</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">      </span><span class="p">.</span><span class="n">onResponse</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">          </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Finished with code %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">      </span><span class="p">})</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">id</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h2 id="extracting-the-response">Extracting the Response<a class="headerlink" href="#extracting-the-response" title="Permanent link">&para;</a></h2>
@@ -1696,56 +2029,56 @@
 <hr />
 <h3 id="getbodykey-int-target"><code>getBody(key, int* target)</code><a class="headerlink" href="#getbodykey-int-target" title="Permanent link">&para;</a></h3>
 <p>Binds a JSON number to a C <code>int</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/stats&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;count&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">count</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/stats&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;count&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">count</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="getbodykey-float-target"><code>getBody(key, float* target)</code><a class="headerlink" href="#getbodykey-float-target" title="Permanent link">&para;</a></h3>
 <p>Binds a JSON number to a C <code>float</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kt">float</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/sensor&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;temperature&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">temp</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kt">float</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/sensor&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;temperature&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">temp</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="getbodykey-double-target"><code>getBody(key, double* target)</code><a class="headerlink" href="#getbodykey-double-target" title="Permanent link">&para;</a></h3>
 <p>Binds a JSON number to a C <code>double</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kt">double</span><span class="w"> </span><span class="n">voltage</span><span class="p">;</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/meter&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;voltage&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">voltage</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kt">double</span><span class="w"> </span><span class="n">voltage</span><span class="p">;</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/meter&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;voltage&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">voltage</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="getbodykey-long-target"><code>getBody(key, long* target)</code><a class="headerlink" href="#getbodykey-long-target" title="Permanent link">&para;</a></h3>
 <p>Binds a JSON integer to a C <code>long</code>. Use for Unix timestamps and other large integers.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kt">long</span><span class="w"> </span><span class="n">unixTs</span><span class="p">;</span>
-<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/time&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;unix_timestamp&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">unixTs</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="kt">long</span><span class="w"> </span><span class="n">unixTs</span><span class="p">;</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/time&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;unix_timestamp&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">unixTs</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="getbodykey-bool-target"><code>getBody(key, bool* target)</code><a class="headerlink" href="#getbodykey-bool-target" title="Permanent link">&para;</a></h3>
 <p>Binds a JSON boolean (<code>true</code> / <code>false</code>) to a C <code>bool</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">bool</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">active</span><span class="p">;</span>
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/status&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;active&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">active</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="kt">bool</span><span class="w"> </span><span class="n">active</span><span class="p">;</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/status&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;active&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">active</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="getbodykey-char-target-size_t-maxlength"><code>getBody(key, char* target, size_t maxLength)</code><a class="headerlink" href="#getbodykey-char-target-size_t-maxlength" title="Permanent link">&para;</a></h3>
 <p>Copies a JSON string into a C <code>char</code> buffer. Writes at most <code>maxLength - 1</code> bytes and always null-terminates.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">maxLength</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">maxLength</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/user/1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;address.city&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/user/1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;address.city&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
 </code></pre></div></p>
 <hr />
 <h3 id="getbodykey-string-target"><code>getBody(key, String* target)</code><a class="headerlink" href="#getbodykey-string-target" title="Permanent link">&para;</a></h3>
@@ -1755,17 +2088,37 @@
 <li>For JSON objects or arrays, the raw JSON is captured character by character.</li>
 <li>Pass <code>""</code> (empty string) as <code>key</code> to capture the entire root-level value.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">String</span><span class="w"> </span><span class="n">raw</span><span class="p">;</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">raw</span><span class="p">);</span><span class="w">      </span><span class="c1">// entire response</span>
-<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">firstUser</span><span class="p">);</span><span class="w"> </span><span class="c1">// first array element</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">String</span><span class="w"> </span><span class="n">raw</span><span class="p">;</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">raw</span><span class="p">);</span><span class="w">      </span><span class="c1">// entire response</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;0&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">firstUser</span><span class="p">);</span><span class="w"> </span><span class="c1">// first array element</span>
 </code></pre></div></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Use this with care for large payloads. Each character is heap-allocated individually, which can cause memory fragmentation.</p>
 </div>
+<hr />
+<h3 id="getbodystruct-target"><code>getBody(struct* target)</code><a class="headerlink" href="#getbodystruct-target" title="Permanent link">&para;</a></h3>
+<p>Binds and populates a C++ struct mapped with <code>REST_JSON_MAP</code> directly from the root JSON response stream.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="n">getBody</span><span class="p">(</span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="p">;</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/users/1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="o">&amp;</span><span class="n">user</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
+<h3 id="getbodykey-struct-target"><code>getBody(key, struct* target)</code><a class="headerlink" href="#getbodykey-struct-target" title="Permanent link">&para;</a></h3>
+<p>Binds and populates a C++ struct mapped with <code>REST_JSON_MAP</code> from a nested JSON object path.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="n">RestRequest</span><span class="o">&amp;</span><span class="w"> </span><span class="n">getBody</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="p">;</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/profile&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;data.user&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">user</span><span class="p">);</span>
+</code></pre></div></p>
 <hr />
 <h2 id="path-notation-reference">Path Notation Reference<a class="headerlink" href="#path-notation-reference" title="Permanent link">&para;</a></h2>
 <table>
@@ -1822,7 +2175,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 17, 2026 04:00:45 UTC">July 17, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 19:08:30 UTC">August 4, 2026</span>
   </span>
 
     

@@ -18,7 +18,7 @@
         <link rel="prev" href="../guide/advanced/">
       
       
-        <link rel="next" href="simple-get/">
+        <link rel="next" href="crud-operations/">
       
       
         
@@ -688,6 +688,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -744,14 +748,14 @@
   
   
     <li class="md-nav__item">
-      <a href="simple-get/" class="md-nav__link">
+      <a href="crud-operations/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Simple GET
+    CRUD Operations
   
 
     
@@ -772,14 +776,98 @@
   
   
     <li class="md-nav__item">
-      <a href="post-request/" class="md-nav__link">
+      <a href="struct-json/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    POST Request
+    Struct <-> JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="url-parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    URL Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth-helpers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="callbacks-and-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Callbacks & Errors
   
 
     
@@ -864,34 +952,6 @@
     
   
     Raw JSON
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="put-delete/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PUT & DELETE
   
 
     
@@ -1277,12 +1337,24 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><a href="simple-get/">Simple GET</a></td>
-<td style="text-align: left;">Basic data fetching, binding multiple fields from a JSON response.</td>
+<td style="text-align: left;"><a href="crud-operations/">CRUD Operations</a></td>
+<td style="text-align: left;">Full suite of REST methods (<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>) in a single sketch.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="post-request/">POST Request</a></td>
-<td style="text-align: left;">Sending a JSON payload and reading the created resource's ID.</td>
+<td style="text-align: left;"><a href="struct-json/">Struct &lt;-&gt; JSON</a></td>
+<td style="text-align: left;">Bi-directional C++ <code>struct</code> to JSON serialization and deserialization.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="url-parameters/">URL Parameters</a></td>
+<td style="text-align: left;">Dynamic path parameter replacement (<code>/users/{id}</code>) and query parameters.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="auth-helpers/">Authentication</a></td>
+<td style="text-align: left;">Authenticating requests using Bearer / JWT, HTTP Basic Auth, and API Key headers.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="callbacks-and-errors/">Callbacks &amp; Errors</a></td>
+<td style="text-align: left;">Request callbacks, timeouts, automatic retries, error handling, and runtime URL change.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><a href="nested-json/">Nested JSON</a></td>
@@ -1295,10 +1367,6 @@
 <tr>
 <td style="text-align: left;"><a href="raw-json/">Raw JSON</a></td>
 <td style="text-align: left;">Capturing entire objects or sub-arrays into an Arduino <code>String</code>.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="put-delete/">PUT &amp; DELETE</a></td>
-<td style="text-align: left;">Updating and deleting remote resources.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><a href="unix-timestamp/">Unix Timestamp</a></td>
@@ -1330,7 +1398,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="July 17, 2026 04:00:45 UTC">July 17, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 19:17:51 UTC">August 4, 2026</span>
   </span>
 
     

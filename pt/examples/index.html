@@ -18,7 +18,7 @@
         <link rel="prev" href="../guide/advanced/">
       
       
-        <link rel="next" href="simple-get/">
+        <link rel="next" href="crud-operations/">
       
       
         
@@ -688,6 +688,10 @@
       
         
       
+        
+      
+        
+      
     
     
     
@@ -744,14 +748,14 @@
   
   
     <li class="md-nav__item">
-      <a href="simple-get/" class="md-nav__link">
+      <a href="crud-operations/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    GET Simples
+    Operações CRUD
   
 
     
@@ -772,14 +776,98 @@
   
   
     <li class="md-nav__item">
-      <a href="post-request/" class="md-nav__link">
+      <a href="struct-json/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Requisição POST
+    Mapeamento Struct/JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="url-parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Parâmetros de URL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="auth-helpers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Autenticação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="callbacks-and-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Callbacks e Erros
   
 
     
@@ -864,34 +952,6 @@
     
   
     JSON Bruto
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="put-delete/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    PUT & DELETE
   
 
     
@@ -1267,7 +1327,7 @@
 
 
 <h1 id="exemplos">Exemplos<a class="headerlink" href="#exemplos" title="Permanent link">&para;</a></h1>
-<p>Todos os exemplos estão disponíveis no diretório <a href="https://github.com/PedroFnseca/esp32-http-client/tree/main/examples"><code>examples/</code></a> e podem ser abertos diretamente do Arduino IDE em <strong>Arquivo → Exemplos → ESP32-HTTP-Client</strong>.</p>
+<p>Todos os exemplos estão disponíveis no diretório <a href="https://github.com/PedroFnseca/esp32-http-client/tree/main/examples"><code>examples/</code></a> e podem ser abertos diretamente na Arduino IDE através de <strong>File → Examples → ESP32-HTTP-Client</strong>.</p>
 <table>
 <thead>
 <tr>
@@ -1277,36 +1337,44 @@
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;"><a href="simple-get/">GET Simples</a></td>
-<td style="text-align: left;">Busca básica de dados, vinculando múltiplos campos de uma resposta JSON.</td>
+<td style="text-align: left;"><a href="crud-operations/">Operações CRUD</a></td>
+<td style="text-align: left;">Conjunto completo dos métodos REST (<code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, <code>DELETE</code>) em um único sketch.</td>
 </tr>
 <tr>
-<td style="text-align: left;"><a href="post-request/">Requisição POST</a></td>
-<td style="text-align: left;">Enviando um corpo JSON e lendo o ID do recurso criado.</td>
+<td style="text-align: left;"><a href="struct-json/">Mapeamento Struct &lt;-&gt; JSON</a></td>
+<td style="text-align: left;">Serialização e desserialização bidirecional entre <code>struct</code> C++ e JSON.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="url-parameters/">Parâmetros de URL</a></td>
+<td style="text-align: left;">Substituição de parâmetros de rota (<code>/users/{id}</code>) e parâmetros de consulta.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="auth-helpers/">Autenticação</a></td>
+<td style="text-align: left;">Autenticação com Bearer / JWT, HTTP Basic Auth e cabeçalhos de API Key.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="callbacks-and-errors/">Callbacks e Tratamento de Erros</a></td>
+<td style="text-align: left;">Callbacks, timeouts, retries automáticos, tratativas de erro e troca de URL em runtime.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><a href="nested-json/">JSON Aninhado</a></td>
-<td style="text-align: left;">Extraindo campos profundamente aninhados usando caminhos com notação de ponto.</td>
+<td style="text-align: left;">Extração de campos profundamente aninhados utilizando notação por ponto.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><a href="array-json/">JSON Array</a></td>
-<td style="text-align: left;">Endereçando elementos específicos de um array JSON por índice.</td>
+<td style="text-align: left;">Acesso direto a elementos de arrays JSON por índice.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><a href="raw-json/">JSON Bruto</a></td>
-<td style="text-align: left;">Capturando objetos inteiros ou sub-arrays em uma <code>String</code> do Arduino.</td>
-</tr>
-<tr>
-<td style="text-align: left;"><a href="put-delete/">PUT &amp; DELETE</a></td>
-<td style="text-align: left;">Atualizando e excluindo recursos remotos.</td>
+<td style="text-align: left;">Captura de objetos ou arrays inteiros diretamente em uma <code>String</code> Arduino.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><a href="unix-timestamp/">Timestamp Unix</a></td>
-<td style="text-align: left;">Buscando um timestamp Unix do tipo <code>long</code> de uma API de horário.</td>
+<td style="text-align: left;">Leitura de timestamp Unix de 64 bits (<code>long</code>) a partir de uma API de tempo.</td>
 </tr>
 <tr>
 <td style="text-align: left;"><a href="port-selection/">Porta Personalizada</a></td>
-<td style="text-align: left;">Conectando a um servidor rodando em uma porta não padrão.</td>
+<td style="text-align: left;">Conexão com servidores executando em portas não padronizadas.</td>
 </tr>
 </tbody>
 </table>
@@ -1330,7 +1398,7 @@
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="31 de julho de 2026 15:30:51 UTC">31 de julho de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="4 de agosto de 2026 19:17:51 UTC">4 de agosto de 2026</span>
   </span>
 
     
