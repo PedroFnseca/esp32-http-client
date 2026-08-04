@@ -93,6 +93,23 @@ client.post("/users")
 
 ---
 
+### `body(struct)`
+
+Serializa uma struct C++ mapeada com `REST_JSON_MAP` e a define como o corpo JSON da requisição. Encadeável.
+
+```cpp
+template <typename T>
+RestRequest& body(const T& obj);
+```
+
+**Exemplo:**
+```cpp
+User user = {15, "Pedro", 9.8f, true};
+client.post("/users").body(user);
+```
+
+---
+
 ### `timeout(timeoutMs)`
 
 Define um tempo limite (timeout) de rede em milissegundos específico para esta requisição, sobrescrevendo o padrão do cliente. Encadeável.
@@ -307,6 +324,40 @@ client.get("/users").getBody("0", &firstUser); // primeiro elemento do array
 
 !!! warning
     Use com cuidado para respostas grandes. Cada caractere é alocado individualmente na heap, o que pode causar fragmentação de memória.
+
+---
+
+### `getBody(struct* target)`
+
+Vincula e preenche uma struct C++ mapeada com `REST_JSON_MAP` diretamente a partir do stream da resposta JSON na raiz.
+
+```cpp
+template <typename T>
+RestRequest& getBody(T* target);
+```
+
+**Exemplo:**
+```cpp
+User user;
+client.get("/users/1").getBody(&user);
+```
+
+---
+
+### `getBody(key, struct* target)`
+
+Vincula e preenche uma struct C++ mapeada com `REST_JSON_MAP` a partir de um caminho de objeto JSON aninhado.
+
+```cpp
+template <typename T>
+RestRequest& getBody(const char* key, T* target);
+```
+
+**Exemplo:**
+```cpp
+User user;
+client.get("/profile").getBody("data.user", &user);
+```
 
 ---
 

@@ -93,6 +93,23 @@ client.post("/users")
 
 ---
 
+### `body(struct)`
+
+Serializes a C++ struct mapped with `REST_JSON_MAP` and sets it as the full JSON request body. Chainable.
+
+```cpp
+template <typename T>
+RestRequest& body(const T& obj);
+```
+
+**Example:**
+```cpp
+User user = {15, "Pedro", 9.8f, true};
+client.post("/users").body(user);
+```
+
+---
+
 ### `timeout(timeoutMs)`
 
 Sets a per-request network timeout in milliseconds, overriding the client's default timeout. Chainable.
@@ -307,6 +324,40 @@ client.get("/users").getBody("0", &firstUser); // first array element
 
 !!! warning
     Use this with care for large payloads. Each character is heap-allocated individually, which can cause memory fragmentation.
+
+---
+
+### `getBody(struct* target)`
+
+Binds and populates a C++ struct mapped with `REST_JSON_MAP` directly from the root JSON response stream.
+
+```cpp
+template <typename T>
+RestRequest& getBody(T* target);
+```
+
+**Example:**
+```cpp
+User user;
+client.get("/users/1").getBody(&user);
+```
+
+---
+
+### `getBody(key, struct* target)`
+
+Binds and populates a C++ struct mapped with `REST_JSON_MAP` from a nested JSON object path.
+
+```cpp
+template <typename T>
+RestRequest& getBody(const char* key, T* target);
+```
+
+**Example:**
+```cpp
+User user;
+client.get("/profile").getBody("data.user", &user);
+```
 
 ---
 

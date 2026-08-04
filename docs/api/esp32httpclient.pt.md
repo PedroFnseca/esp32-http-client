@@ -438,6 +438,48 @@ static String errorToString(int code);
 
 ---
 
+## Serialização & Desserialização de Structs
+
+Métodos utilitários estáticos para conversão entre structs C++ mapeadas e strings JSON.
+
+---
+
+### `toJson(struct)`
+
+Serializa uma struct mapeada com `REST_JSON_MAP` em uma string JSON.
+
+```cpp
+template <typename T>
+static String toJson(const T& obj);
+```
+
+**Exemplo:**
+```cpp
+User user = {15, "Pedro", 9.5f, true};
+String json = ESP32HTTPClient::toJson(user);
+```
+
+---
+
+### `fromJson(json, struct)`
+
+Preenche uma struct mapeada com `REST_JSON_MAP` a partir de uma string JSON.
+
+```cpp
+template <typename T>
+static void fromJson(const String& json, T* target);
+template <typename T>
+static void fromJson(const char* json, T* target);
+```
+
+**Exemplo:**
+```cpp
+User user;
+ESP32HTTPClient::fromJson("{\"id\":15,\"name\":\"Pedro\"}", &user);
+```
+
+---
+
 ## Callbacks
 
 Você pode registrar callbacks globais na instância do cliente que são executados sempre que qualquer requisição é finalizada.

@@ -81,8 +81,9 @@ The following data is the result of a benchmark running 100 consecutive HTTP GET
 ## Key Features
 
 - **Fluent chaining** — build requests naturally: `.get().query().getBody()`.
-- **Direct injection** — JSON values are written straight into standard C types (`int`, `float`, `bool`, `char*`).
+- **Direct injection** — JSON values are written straight into standard C types (`int`, `float`, `bool`, `char*`) or C++ `struct`s.
 - **Zero buffering** — the response stream is parsed in place; the full payload is never stored.
+- **Struct <-> JSON mapping** — direct bidirectional struct serialization/deserialization without dynamic document allocations.
 - **Full REST support** — `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` are all first-class citizens.
 - **IoT ready** — designed for connecting ESP32 devices to cloud backends, Firebase, AWS API Gateway, or custom servers.
 
@@ -254,6 +255,32 @@ client.basic("admin", "secret123");
 client.apiKey("x-api-key", "my-secret-api-key");
 ```
 
+### Struct <-> JSON Mapping
+
+Direct bidirectional mapping between C++ `struct`s and JSON payloads:
+
+```cpp
+struct User {
+    int id = 0;
+    char name[32] = {0};
+    bool active = false;
+
+    REST_JSON_MAP(
+        REST_FIELD(id),
+        REST_FIELD(name),
+        REST_FIELD(active)
+    )
+};
+
+// Send struct as JSON body
+User newUser = {1, "Pedro", true};
+client.post("/users").body(newUser);
+
+// Receive response directly into struct
+User fetchedUser;
+client.get("/users/1").getBody(&fetchedUser);
+```
+
 ### PUT and DELETE
 
 ```cpp
@@ -281,6 +308,7 @@ Runnable sketches are available in the `examples/` directory:
 | [ArrayJSON](examples/ArrayJSON/ArrayJSON.ino) | Addressing array elements by index. |
 | [RawArrayJSON](examples/RawArrayJSON/RawArrayJSON.ino) | Capturing raw arrays or objects into Arduino Strings. |
 | [UnixTimestamp](examples/UnixTimestamp/UnixTimestamp.ino) | Fetching the current Unix Timestamp from an API. |
+| [StructJson](examples/StructJson/StructJson.ino) | Bidirectional C++ Struct <-> JSON serialization and HTTP transfer. |
 
 ---
 
@@ -331,6 +359,8 @@ Each method returns a `RestRequest` that can be chained with `.query()`, `.body(
 | `onSuccess(cb)` | Registers client-level callback for successful requests (2xx). | `client.onSuccess([](int code){ ... });` |
 | `onError(cb)` | Registers client-level callback for failed requests. | `client.onError([](int code, const char* msg){ ... });` |
 | `onResponse(cb)` | Registers client-level callback executed on every completed request. | `client.onResponse([](int code){ ... });` |
+| `toJson(struct)` | Static utility to serialize a mapped struct into JSON string. | `String json = ESP32HTTPClient::toJson(user);` |
+| `fromJson(json, struct)` | Static utility to populate a struct from a JSON string. | `ESP32HTTPClient::fromJson(json, &user);` |
 | `end()` | Closes the persistent TCP/TLS connection and frees its memory buffers. Useful after a burst of requests. | `client.end();` |
 
 ---
@@ -346,6 +376,7 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 | `path(key, value)` | Replaces a `{placeholder}` in the URL path. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/users/{id}").path("id", 15)` |
 | `query(key, value)` | Appends a URL query parameter. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/users").query("page", 2).query("limit", 20)` |
 | `body(key, value)` | Adds a field to the JSON request body. Supports the same types as `query()`. Chainable. | `client.post("/users").body("name", "Pedro").body("age", 21)` |
+| `body(struct)` | Sets full JSON request body serialized from a mapped struct. Chainable. | `client.post("/users").body(user)` |
 | `timeout(ms)` | Overrides timeout for this specific request in milliseconds. Chainable. | `client.get("/data").timeout(2000)` |
 | `retry(maxRetry)` | Overrides max retry attempts for this specific request. Chainable. | `client.get("/data").retry(3)` |
 | `onSuccess(cb)` | Per-request success callback (2xx). Chainable. | `client.get("/users").onSuccess([](int c){ ... })` |
@@ -365,6 +396,8 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 | `getBody(key, long* target)` | Binds a JSON integer to a `long`. | `client.get("/stats").getBody("timestamp", &myLong)` |
 | `getBody(key, char* target, size_t maxLen)` | Copies a JSON string into a char buffer, up to `maxLen` bytes. | `client.get("/user").getBody("name", myChar, sizeof(myChar))` |
 | `getBody(key, String* target)` | Copies a raw JSON object or array into an Arduino `String`. Pass `""` to capture the entire response. | `client.get("/users").getBody("", &entireJson)` |
+| `getBody(struct* target)` | Binds and populates a mapped struct directly from root JSON response. | `client.get("/users/1").getBody(&user)` |
+| `getBody(key, struct* target)` | Binds and populates a mapped struct from nested JSON object path. | `client.get("/profile").getBody("data.user", &user)` |
 
 > [!NOTE]
 > If a key is missing or the path does not exist, the target variable is left unchanged. No exception is thrown and no crash occurs.

@@ -253,3 +253,120 @@ client.get("/api/v1/time/current/unix")
 
 Serial.printf("Unix time: %ld\n", unixTimestamp);
 ```
+
+---
+
+## Struct <-> JSON Mapping
+
+`ESP32-HTTP-Client` provides direct bidirectional mapping between C++ `struct`s and JSON payloads with zero dynamic document allocations, reflection overhead, or external dependencies.
+
+### Declaring Mappable Structs
+
+Use the `REST_JSON_MAP` macro inside your struct to define its JSON fields:
+
+```cpp
+struct User {
+    int id = 0;
+    char name[32] = {0};
+    float score = 0.0f;
+    bool active = false;
+    String email = "";
+
+    REST_JSON_MAP(
+        REST_FIELD(id),
+        REST_FIELD(name),
+        REST_FIELD(score),
+        REST_FIELD(active),
+        REST_FIELD(email)
+    )
+};
+```
+
+If your JSON keys differ from the C++ member names, use `REST_FIELD_NAMED`:
+
+```cpp
+struct Profile {
+    int userId = 0;
+    char fullName[32] = {0};
+
+    REST_JSON_MAP(
+        REST_FIELD_NAMED("user_id", userId),
+        REST_FIELD_NAMED("full_name", fullName)
+    )
+};
+```
+
+For structs defined in external or 3rd-party libraries, use `REST_JSON_MAP_EXT`:
+
+```cpp
+struct ExternalDevice {
+    int deviceId;
+    String status;
+};
+
+REST_JSON_MAP_EXT(ExternalDevice,
+    REST_FIELD_EXT(deviceId),
+    REST_FIELD_EXT(status)
+)
+```
+
+### Sending Structs in Request Body
+
+Pass the struct directly into `.body()`:
+
+```cpp
+User user;
+user.id = 15;
+strncpy(user.name, "Pedro", sizeof(user.name));
+user.score = 9.8f;
+user.active = true;
+user.email = "pedro@example.com";
+
+// Automatically serialized to JSON: {"id":15,"name":"Pedro","score":9.8,"active":true,"email":"pedro@example.com"}
+client.post("/users").body(user);
+```
+
+### Receiving Structs from Response Body
+
+Populate your struct directly from the HTTP response stream:
+
+```cpp
+User user;
+// Binds and populates struct directly from the root JSON response
+client.get("/users/15").getBody(&user);
+
+Serial.printf("User: ID=%d, Name=%s, Active=%d\n", user.id, user.name, user.active);
+```
+
+You can also bind to nested objects within the response JSON:
+
+```cpp
+User nestedUser;
+// Binds fields to "data.user.id", "data.user.name", etc.
+client.get("/profile").getBody("data.user", &nestedUser);
+```
+
+### Missing and Null Fields Handling
+
+- If the JSON response is **missing** fields that exist in the struct, those struct members keep their default values.
+- If the JSON contains **extra** fields that are not in the struct, they are safely ignored.
+- If a JSON field has a `null` value, primitive numbers are reset to `0`, booleans to `false`, char buffers to `""`, and Strings to `""`.
+
+### Standalone Serialization & Deserialization (`RestJson` / `toJson` / `fromJson`)
+
+You can also convert structs to and from JSON strings independently of HTTP requests:
+
+```cpp
+User user;
+user.id = 42;
+strncpy(user.name, "Ana", sizeof(user.name));
+
+// Struct -> JSON String
+String jsonStr = ESP32HTTPClient::toJson(user);
+// Or: String jsonStr = RestJson::toJson(user);
+
+// JSON String -> Struct
+User parsedUser;
+ESP32HTTPClient::fromJson(jsonStr, &parsedUser);
+// Or: RestJson::fromJson(jsonStr, &parsedUser);
+```
