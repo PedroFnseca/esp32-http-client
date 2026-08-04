@@ -8,7 +8,7 @@ enum DataType { TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_DOUBLE, TYPE_
 struct KeyValue {
   const char* key;
   const char* value;
-  char valueBuffer[32];
+  char valueBuffer[64];
   bool quoteValue;
 };
 

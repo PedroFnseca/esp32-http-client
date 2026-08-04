@@ -109,6 +109,7 @@ RestRequest::RestRequest(RestRequest&& other)
       _path(other._path),
       _method(other._method),
       _executed(other._executed),
+      _pathParams(std::move(other._pathParams)),
       _queryParams(std::move(other._queryParams)),
       _bodyParams(std::move(other._bodyParams)),
       _responseBindings(std::move(other._responseBindings)) {
@@ -167,8 +168,6 @@ void RestRequest::execute() {
   if (!_client) return;
 
   HTTPClient& http = _client->_http;
-  // HTTP/1.1 is used to allow Connection: keep-alive.
-  // The BufferedStreamReader now handles Transfer-Encoding: chunked automatically.
 
   String urlBase;
   urlBase.reserve(128);
@@ -186,10 +185,22 @@ void RestRequest::execute() {
     }
   }
 
+  String resolvedPath = _path ? _path : "";
+  for (const auto& param : _pathParams) {
+    if (!param.key) continue;
+    String placeholder;
+    if (param.key[0] == '{') {
+      placeholder = param.key;
+    } else {
+      placeholder = "{" + String(param.key) + "}";
+    }
+    resolvedPath.replace(placeholder, param.valueBuffer);
+  }
+
   String url;
   url.reserve(256);
   url = urlBase;
-  url += _path;
+  url += resolvedPath;
 
   if (!_queryParams.empty()) {
     url += "?";
