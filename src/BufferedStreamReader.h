@@ -9,9 +9,29 @@ class BufferedStreamReader {
   static constexpr uint32_t TIMEOUT_MS = 2000;
 
   explicit BufferedStreamReader(Stream* stream, bool isChunked = false)
-      : _stream(stream), _pos(0), _len(0), _isChunked(isChunked), _chunkRemaining(0), _eof(false) {}
+      : _stream(stream),
+        _strBuf(nullptr),
+        _strLen(0),
+        _pos(0),
+        _len(0),
+        _isChunked(isChunked),
+        _chunkRemaining(0),
+        _eof(false) {}
+
+  explicit BufferedStreamReader(const char* str)
+      : _stream(nullptr),
+        _strBuf(str),
+        _strLen(str ? strlen(str) : 0),
+        _pos(0),
+        _len(0),
+        _isChunked(false),
+        _chunkRemaining(0),
+        _eof(false) {}
 
   bool available() {
+    if (_strBuf) {
+      return _pos < _strLen;
+    }
     if (_pos < _len) return true;
     if (_eof) return false;
     return refill();
@@ -19,19 +39,27 @@ class BufferedStreamReader {
 
   int read() {
     if (!available()) return -1;
+    if (_strBuf) {
+      return (uint8_t)_strBuf[_pos++];
+    }
     return (uint8_t)_buf[_pos++];
   }
 
   int peek() {
     if (!available()) return -1;
+    if (_strBuf) {
+      return (uint8_t)_strBuf[_pos];
+    }
     return (uint8_t)_buf[_pos];
   }
 
  private:
-  Stream* _stream;
-  char    _buf[BUF_SIZE];
-  size_t  _pos;
-  size_t  _len;
+  Stream*     _stream;
+  const char* _strBuf;
+  size_t      _strLen;
+  char        _buf[BUF_SIZE];
+  size_t      _pos;
+  size_t      _len;
   
   bool   _isChunked;
   size_t _chunkRemaining;

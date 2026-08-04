@@ -5,6 +5,7 @@
 #include <vector>
 #include <HTTPClient.h>
 
+#include "BufferedStreamReader.h"
 #include "RestRequest.h"
 #include "RestTypes.h"
 
@@ -51,6 +52,30 @@ class ESP32HTTPClient {
   void onError(HttpResponseCallback cb);
   void onResponse(HttpResponseCallback cb);
 
+  template <typename T>
+  static String toJson(const T& obj) {
+    RestJsonSerializer serializer;
+    invokeRestJsonMap(obj, serializer);
+    return serializer.finish();
+  }
+
+  template <typename T>
+  static bool fromJson(const char* json, T* target) {
+    if (!target || !json || json[0] == '\0') return false;
+    BufferedStreamReader reader(json);
+    std::vector<ResponseBinding> bindings;
+    std::vector<String> storage;
+    RestJsonBinder binder(bindings, storage);
+    invokeRestJsonMap(*target, binder);
+    RestRequest::parseJsonWithBindings(reader, bindings);
+    return true;
+  }
+
+  template <typename T>
+  static bool fromJson(const String& json, T* target) {
+    return fromJson(json.c_str(), target);
+  }
+
  private:
   const char* _baseUrl;
   int _port;
@@ -65,5 +90,27 @@ class ESP32HTTPClient {
   HttpErrorCallback _onErrorCb;
   HttpResponseCallback _onResponseCb;
 };
+
+namespace RestJson {
+  template <typename T>
+  inline String stringify(const T& obj) {
+    return ESP32HTTPClient::toJson(obj);
+  }
+
+  template <typename T>
+  inline String toJson(const T& obj) {
+    return ESP32HTTPClient::toJson(obj);
+  }
+
+  template <typename T>
+  inline bool parse(const String& json, T* target) {
+    return ESP32HTTPClient::fromJson(json, target);
+  }
+
+  template <typename T>
+  inline bool fromJson(const String& json, T* target) {
+    return ESP32HTTPClient::fromJson(json, target);
+  }
+}
 
 #endif

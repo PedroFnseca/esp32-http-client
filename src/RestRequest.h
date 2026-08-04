@@ -39,6 +39,10 @@ class RestRequest {
   template <typename T>
   RestRequest& body(const char* key, T value);
 
+  template <typename T>
+  typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
+  body(const T& obj);
+
   RestRequest& getBody(const char* key, int* target);
   RestRequest& getBody(const char* key, float* target);
   RestRequest& getBody(const char* key, double* target);
@@ -46,6 +50,20 @@ class RestRequest {
   RestRequest& getBody(const char* key, char* target, size_t maxLength);
   RestRequest& getBody(const char* key, long* target);
   RestRequest& getBody(const char* key, String* target);
+
+  template <typename T>
+  typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
+  getBody(T* target);
+
+  template <typename T>
+  typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
+  getBody(const char* key, T* target);
+
+  static void parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings);
+  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings);
+  static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings);
+  static void parsePrimitiveWithBinding(BufferedStreamReader& r, ResponseBinding* match);
+  static void readRawJson(BufferedStreamReader& r, String* target, char openingBrace);
 
  private:
   ESP32HTTPClient* _client;
@@ -60,6 +78,9 @@ class RestRequest {
   HttpErrorCallback _onErrorCb;
   HttpResponseCallback _onResponseCb;
 
+  String _rawBody;
+  std::vector<String> _keyStorage;
+
   std::vector<KeyValue> _pathParams;
   std::vector<KeyValue> _queryParams;
   std::vector<KeyValue> _bodyParams;
@@ -67,10 +88,6 @@ class RestRequest {
 
   void execute();
   void parseResponse(BufferedStreamReader& r);
-  void parseObject(BufferedStreamReader& r, const char* basePath);
-  void parseArray(BufferedStreamReader& r, const char* basePath);
-  void parsePrimitive(BufferedStreamReader& r, ResponseBinding* match);
-  void readRawJsonIntoString(BufferedStreamReader& r, String* target, char openingBrace);
 
   template <typename T>
   void addParam(std::vector<KeyValue>& list, const char* key, T value);
@@ -91,6 +108,35 @@ RestRequest& RestRequest::query(const char* key, T value) {
 template <typename T>
 RestRequest& RestRequest::body(const char* key, T value) {
   addParam(_bodyParams, key, value);
+  return *this;
+}
+
+template <typename T>
+typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
+RestRequest::body(const T& obj) {
+  RestJsonSerializer serializer;
+  invokeRestJsonMap(obj, serializer);
+  _rawBody = serializer.finish();
+  return *this;
+}
+
+template <typename T>
+typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
+RestRequest::getBody(T* target) {
+  if (target) {
+    RestJsonBinder binder(_responseBindings, _keyStorage, "");
+    invokeRestJsonMap(*target, binder);
+  }
+  return *this;
+}
+
+template <typename T>
+typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
+RestRequest::getBody(const char* key, T* target) {
+  if (target) {
+    RestJsonBinder binder(_responseBindings, _keyStorage, key);
+    invokeRestJsonMap(*target, binder);
+  }
   return *this;
 }
 
