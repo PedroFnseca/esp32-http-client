@@ -9,11 +9,13 @@ All examples are available in the [`examples/`](https://github.com/PedroFnseca/e
 
 | Example | Description |
 | :--- | :--- |
-| [Simple GET](simple-get.md) | Basic data fetching, binding multiple fields from a JSON response. |
-| [POST Request](post-request.md) | Sending a JSON payload and reading the created resource's ID. |
+| [CRUD Operations](crud-operations.md) | Full suite of REST methods (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) in a single sketch. |
+| [Struct <-> JSON](struct-json.md) | Bi-directional C++ `struct` to JSON serialization and deserialization. |
+| [URL Parameters](url-parameters.md) | Dynamic path parameter replacement (`/users/{id}`) and query parameters. |
+| [Authentication](auth-helpers.md) | Authenticating requests using Bearer / JWT, HTTP Basic Auth, and API Key headers. |
+| [Callbacks & Errors](callbacks-and-errors.md) | Request callbacks, timeouts, automatic retries, error handling, and runtime URL change. |
 | [Nested JSON](nested-json.md) | Extracting deeply nested fields using dot-notation paths. |
 | [Array JSON](array-json.md) | Addressing specific elements of a JSON array by index. |
 | [Raw JSON](raw-json.md) | Capturing entire objects or sub-arrays into an Arduino `String`. |
-| [PUT & DELETE](put-delete.md) | Updating and deleting remote resources. |
 | [Unix Timestamp](unix-timestamp.md) | Fetching a `long` Unix timestamp from a time API. |
 | [Custom Port](port-selection.md) | Connecting to a server running on a non-standard port. |

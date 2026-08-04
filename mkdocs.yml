@@ -91,12 +91,14 @@ plugins:
             Reading Responses: Lendo Respostas
             Advanced Usage: Uso Avançado
             Examples: Exemplos
-            Simple GET: GET Simples
-            POST Request: Requisição POST
+            CRUD Operations: Operações CRUD
+            Struct <-> JSON: Mapeamento Struct/JSON
+            URL Parameters: Parâmetros de URL
+            Authentication: Autenticação
+            Callbacks & Errors: Callbacks e Erros
             Nested JSON: JSON Aninhado
             Array JSON: JSON Array
             Raw JSON: JSON Bruto
-            PUT & DELETE: PUT & DELETE
             Unix Timestamp: Timestamp Unix
             Custom Port: Porta Personalizada
             API Reference: Referência da API
@@ -138,12 +140,14 @@ nav:
     - Advanced Usage: guide/advanced.md
   - Examples:
     - examples/index.md
-    - Simple GET: examples/simple-get.md
-    - POST Request: examples/post-request.md
+    - CRUD Operations: examples/crud-operations.md
+    - Struct <-> JSON: examples/struct-json.md
+    - URL Parameters: examples/url-parameters.md
+    - Authentication: examples/auth-helpers.md
+    - Callbacks & Errors: examples/callbacks-and-errors.md
     - Nested JSON: examples/nested-json.md
     - Array JSON: examples/array-json.md
     - Raw JSON: examples/raw-json.md
-    - PUT & DELETE: examples/put-delete.md
     - Unix Timestamp: examples/unix-timestamp.md
     - Custom Port: examples/port-selection.md
   - API Reference:

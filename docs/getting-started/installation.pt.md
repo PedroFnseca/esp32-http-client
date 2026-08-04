@@ -79,7 +79,7 @@ Arduino/
 
 Após instalar, verifique carregando um dos exemplos integrados:
 
-**Arquivo → Exemplos → ESP32-HTTP-Client → SimpleGET**
+**Arquivo → Exemplos → ESP32-HTTP-Client → RestCrud**
 
 Envie para o seu ESP32 (com suas credenciais de WiFi preenchidas) e abra o Monitor Serial a `115200` baud.
 

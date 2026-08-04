@@ -299,16 +299,16 @@ Runnable sketches are available in the `examples/` directory:
 
 | Sketch | Description |
 | :--- | :--- |
-| [SimpleGET](examples/SimpleGET/SimpleGET.ino) | Basic data fetching with GET. |
-| [PostRequest](examples/PostRequest/PostRequest.ino) | Sending a JSON payload with POST. |
-| [PutRequest](examples/PutRequest/PutRequest.ino) | Updating a remote resource with PUT. |
-| [DeleteRequest](examples/DeleteRequest/DeleteRequest.ino) | Deleting a remote resource. |
+| [RestCrud](examples/RestCrud/RestCrud.ino) | Full suite of REST CRUD operations (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) in a single sketch. |
+| [StructJson](examples/StructJson/StructJson.ino) | Bidirectional C++ Struct <-> JSON serialization and HTTP transfer. |
+| [UrlParameters](examples/UrlParameters/UrlParameters.ino) | Path parameters (`/users/{id}`) and query parameters (`?page=2`). |
+| [AuthHelpers](examples/AuthHelpers/AuthHelpers.ino) | Bearer token, Basic Auth, and API Key authentication headers. |
+| [CallbacksAndErrors](examples/CallbacksAndErrors/CallbacksAndErrors.ino) | Callbacks, timeouts, automatic retries, error handling, and runtime URL change. |
 | [PortSelection](examples/PortSelection/PortSelection.ino) | Connecting to a server on a custom port. |
 | [NestedJSON](examples/NestedJSON/NestedJSON.ino) | Extracting fields from deeply nested objects. |
 | [ArrayJSON](examples/ArrayJSON/ArrayJSON.ino) | Addressing array elements by index. |
 | [RawArrayJSON](examples/RawArrayJSON/RawArrayJSON.ino) | Capturing raw arrays or objects into Arduino Strings. |
 | [UnixTimestamp](examples/UnixTimestamp/UnixTimestamp.ino) | Fetching the current Unix Timestamp from an API. |
-| [StructJson](examples/StructJson/StructJson.ino) | Bidirectional C++ Struct <-> JSON serialization and HTTP transfer. |
 
 ---
 
