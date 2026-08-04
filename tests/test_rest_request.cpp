@@ -905,6 +905,175 @@ void testCallbacks() {
   expectEqInt(clientResponse, 200, "client onResponse triggered");
   expectEqInt(clientError, 0, "client onError not triggered on 200");
 }
+
+struct UserTestStruct {
+  int id = 0;
+  char name[32] = {0};
+  float score = 0.0f;
+  bool active = false;
+  String email = "";
+
+  REST_JSON_MAP(
+    REST_FIELD(id),
+    REST_FIELD(name),
+    REST_FIELD(score),
+    REST_FIELD(active),
+    REST_FIELD(email)
+  )
+};
+
+struct CustomKeyStruct {
+  int userId = 0;
+  char fullName[32] = {0};
+
+  REST_JSON_MAP(
+    REST_FIELD_NAMED("user_id", userId),
+    REST_FIELD_NAMED("full_name", fullName)
+  )
+};
+
+struct ExternalUserStruct {
+  int id = 0;
+  String role = "";
+};
+
+REST_JSON_MAP_EXT(ExternalUserStruct,
+  REST_FIELD_EXT(id),
+  REST_FIELD_EXT(role)
+)
+
+void testStructSerializationToJson() {
+  UserTestStruct user;
+  user.id = 15;
+  strncpy(user.name, "Pedro", sizeof(user.name));
+  user.score = 9.5f;
+  user.active = true;
+  user.email = "pedro@test.com";
+
+  String json = ESP32HTTPClient::toJson(user);
+  expectEq(json.c_str(), "{\"id\":15,\"name\":\"Pedro\",\"score\":9.5,\"active\":true,\"email\":\"pedro@test.com\"}", "toJson produces correct json");
+
+  String json2 = RestJson::toJson(user);
+  expectEq(json2.c_str(), json.c_str(), "RestJson::toJson matches ESP32HTTPClient::toJson");
+}
+
+void testStructDeserializationFromJson() {
+  const char* json = "{\"id\":42,\"name\":\"Ana\",\"score\":8.75,\"active\":true,\"email\":\"ana@domain.com\"}";
+  UserTestStruct user;
+  bool ok = ESP32HTTPClient::fromJson(json, &user);
+
+  expectTrue(ok, "fromJson returned true");
+  expectEqInt(user.id, 42, "deserialized id");
+  expectEq(user.name, "Ana", "deserialized name");
+  expectTrue(std::abs(user.score - 8.75f) < 0.001f, "deserialized score");
+  expectTrue(user.active, "deserialized active");
+  expectEq(user.email.c_str(), "ana@domain.com", "deserialized email");
+}
+
+void testStructMissingFieldsAndDefaults() {
+  const char* json = "{\"id\":100,\"extra_unmapped\":\"ignored\",\"tags\":[1,2,3]}";
+  UserTestStruct user;
+  user.id = 0;
+  strncpy(user.name, "DefaultName", sizeof(user.name));
+  user.score = 5.0f;
+  user.active = true;
+  user.email = "default@email.com";
+
+  bool ok = ESP32HTTPClient::fromJson(json, &user);
+  expectTrue(ok, "fromJson parsed partially matching json");
+  expectEqInt(user.id, 100, "updated id");
+  expectEq(user.name, "DefaultName", "missing name field preserved as default");
+  expectTrue(std::abs(user.score - 5.0f) < 0.001f, "missing score field preserved");
+  expectTrue(user.active, "missing active field preserved");
+  expectEq(user.email.c_str(), "default@email.com", "missing email field preserved");
+}
+
+void testStructNullFields() {
+  const char* json = "{\"id\":null,\"name\":null,\"score\":null,\"active\":null,\"email\":null}";
+  UserTestStruct user;
+  user.id = 99;
+  strncpy(user.name, "Old", sizeof(user.name));
+  user.score = 7.0f;
+  user.active = true;
+  user.email = "old@test.com";
+
+  bool ok = ESP32HTTPClient::fromJson(json, &user);
+  expectTrue(ok, "fromJson parsed null values");
+  expectEqInt(user.id, 0, "null id set to 0");
+  expectEq(user.name, "", "null char array set to empty string");
+  expectTrue(std::abs(user.score - 0.0f) < 0.001f, "null score set to 0");
+  expectTrue(!user.active, "null active set to false");
+  expectEq(user.email.c_str(), "", "null email String set to empty");
+}
+
+void testStructRequestBody() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  UserTestStruct user;
+  user.id = 7;
+  strncpy(user.name, "Lucas", sizeof(user.name));
+  user.score = 10.0f;
+  user.active = false;
+  user.email = "lucas@test.com";
+
+  int resId = 0;
+  HttpClientStub::setResponse(201, "{\"id\":7}");
+  client.post("/users").body(user).getBody("id", &resId);
+
+  expectEq(HttpClientStub::lastUrl, "https://example.com/users", "post url");
+  expectEq(HttpClientStub::lastPayload, "{\"id\":7,\"name\":\"Lucas\",\"score\":10,\"active\":false,\"email\":\"lucas@test.com\"}", "struct serialized as post payload");
+  expectEqInt(resId, 7, "response bound successfully");
+}
+
+void testStructResponseBodyGetBody() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  HttpClientStub::setResponse(200, "{\"id\":88,\"name\":\"Julia\",\"score\":9.9,\"active\":true,\"email\":\"j@test.com\"}");
+  UserTestStruct user;
+  client.get("/users/88").getBody(&user);
+
+  expectEqInt(user.id, 88, "getBody(&struct) populated id");
+  expectEq(user.name, "Julia", "getBody(&struct) populated name");
+  expectTrue(user.active, "getBody(&struct) populated active");
+  expectEq(user.email.c_str(), "j@test.com", "getBody(&struct) populated email");
+
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"status\":\"success\",\"data\":{\"user\":{\"id\":99,\"name\":\"Carlos\",\"score\":8.0,\"active\":false,\"email\":\"c@test.com\"}}}");
+  UserTestStruct nestedUser;
+  client.get("/profile").getBody("data.user", &nestedUser);
+
+  expectEqInt(nestedUser.id, 99, "nested getBody(\"data.user\", &struct) id");
+  expectEq(nestedUser.name, "Carlos", "nested getBody(\"data.user\", &struct) name");
+  expectTrue(!nestedUser.active, "nested getBody(\"data.user\", &struct) active");
+  expectEq(nestedUser.email.c_str(), "c@test.com", "nested getBody(\"data.user\", &struct) email");
+}
+
+void testStructCustomAndExternalMapping() {
+  CustomKeyStruct custom;
+  custom.userId = 55;
+  strncpy(custom.fullName, "Custom Name", sizeof(custom.fullName));
+
+  String json = ESP32HTTPClient::toJson(custom);
+  expectEq(json.c_str(), "{\"user_id\":55,\"full_name\":\"Custom Name\"}", "custom named field serialization");
+
+  CustomKeyStruct customIn;
+  ESP32HTTPClient::fromJson("{\"user_id\":77,\"full_name\":\"Another Name\"}", &customIn);
+  expectEqInt(customIn.userId, 77, "custom named field deserialization userId");
+  expectEq(customIn.fullName, "Another Name", "custom named field deserialization fullName");
+
+  ExternalUserStruct ext;
+  ext.id = 12;
+  ext.role = "admin";
+  String extJson = ESP32HTTPClient::toJson(ext);
+  expectEq(extJson.c_str(), "{\"id\":12,\"role\":\"admin\"}", "external struct mapping serialization");
+
+  ExternalUserStruct extIn;
+  ESP32HTTPClient::fromJson("{\"id\":34,\"role\":\"guest\"}", &extIn);
+  expectEqInt(extIn.id, 34, "external struct mapping deserialization id");
+  expectEq(extIn.role.c_str(), "guest", "external struct mapping deserialization role");
+}
 }  // namespace
 
 int main() {
@@ -942,6 +1111,13 @@ int main() {
   runSuite("MaxRetry", testMaxRetry);
   runSuite("ErrorHandlingAndMessages", testErrorHandlingAndMessages);
   runSuite("Callbacks", testCallbacks);
+  runSuite("StructSerializationToJson", testStructSerializationToJson);
+  runSuite("StructDeserializationFromJson", testStructDeserializationFromJson);
+  runSuite("StructMissingFieldsAndDefaults", testStructMissingFieldsAndDefaults);
+  runSuite("StructNullFields", testStructNullFields);
+  runSuite("StructRequestBody", testStructRequestBody);
+  runSuite("StructResponseBodyGetBody", testStructResponseBodyGetBody);
+  runSuite("StructCustomAndExternalMapping", testStructCustomAndExternalMapping);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;

@@ -9,7 +9,7 @@
 
 inline unsigned long millis() { 
   static unsigned long time_ms = 0;
-  time_ms += 100; // Advance time artificially by 100ms per call
+  time_ms += 100;
   return time_ms;
 }
 inline void delay(unsigned long) {}
@@ -17,14 +17,14 @@ inline void delay(unsigned long) {}
 class String {
  public:
   String() = default;
-  String(const char* value) : _data(value ? value : "") {
-  }
-  String(const std::string& value) : _data(value) {
-  }
-  String(int value) : _data(std::to_string(value)) {
-  }
-  String(char c) : _data(1, c) {
-  }
+  String(const char* value) : _data(value ? value : "") {}
+  String(const std::string& value) : _data(value) {}
+  String(int value) : _data(std::to_string(value)) {}
+  String(long value) : _data(std::to_string(value)) {}
+  String(unsigned long value) : _data(std::to_string(value)) {}
+  String(float value) : _data(std::to_string(value)) {}
+  String(double value) : _data(std::to_string(value)) {}
+  String(char c) : _data(1, c) {}
 
   String& operator=(char c) {
     _data = std::string(1, c);
@@ -36,6 +36,34 @@ class String {
     if (fromIndex < 0) fromIndex = 0;
     size_t pos = _data.find(needle, static_cast<size_t>(fromIndex));
     return pos == std::string::npos ? -1 : static_cast<int>(pos);
+  }
+
+  int indexOf(char c, int fromIndex = 0) const {
+    if (fromIndex < 0) fromIndex = 0;
+    size_t pos = _data.find(c, static_cast<size_t>(fromIndex));
+    return pos == std::string::npos ? -1 : static_cast<int>(pos);
+  }
+
+  bool startsWith(const char* prefix) const {
+    if (!prefix) return false;
+    size_t len = strlen(prefix);
+    if (len > _data.size()) return false;
+    return _data.compare(0, len, prefix) == 0;
+  }
+
+  bool startsWith(const String& prefix) const {
+    return startsWith(prefix.c_str());
+  }
+
+  bool endsWith(const char* suffix) const {
+    if (!suffix) return false;
+    size_t len = strlen(suffix);
+    if (len > _data.size()) return false;
+    return _data.compare(_data.size() - len, len, suffix) == 0;
+  }
+
+  bool endsWith(const String& suffix) const {
+    return endsWith(suffix.c_str());
   }
 
   String substring(int beginIndex, int endIndex) const {
@@ -87,6 +115,34 @@ class String {
   String& operator+=(char c) {
     _data += c;
     return *this;
+  }
+
+  size_t length() const {
+    return _data.length();
+  }
+
+  bool isEmpty() const {
+    return _data.empty();
+  }
+
+  void clear() {
+    _data.clear();
+  }
+
+  bool operator==(const String& other) const {
+    return _data == other._data;
+  }
+
+  bool operator==(const char* other) const {
+    return _data == (other ? other : "");
+  }
+
+  bool operator!=(const String& other) const {
+    return _data != other._data;
+  }
+
+  bool operator!=(const char* other) const {
+    return _data != (other ? other : "");
   }
 
   const char* c_str() const {
