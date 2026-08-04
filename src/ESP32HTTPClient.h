@@ -23,6 +23,9 @@ class ESP32HTTPClient {
 
   void setContentType(const char* contentType);
   void setHeader(const char* name, const char* value);
+  void bearer(const char* token);
+  void basic(const char* user, const char* password);
+  void apiKey(const char* name, const char* key);
   void end();
 
   int getStatusCode() const {
