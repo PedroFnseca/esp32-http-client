@@ -181,6 +181,65 @@ client.setHeader("X-Device-ID",   "ESP32-001");
 
 ---
 
+### `bearer(token)`
+
+Sets the `Authorization: Bearer <token>` header sent with **every subsequent request**.
+
+```cpp
+void bearer(const char* token);
+```
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `token` | `const char*` | The Bearer / JWT token string. |
+
+**Example:**
+```cpp
+client.bearer("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+```
+
+---
+
+### `basic(user, password)`
+
+Encodes credentials into Base64 and sets the `Authorization: Basic <base64>` header sent with **every subsequent request**.
+
+```cpp
+void basic(const char* user, const char* password);
+```
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `user` | `const char*` | Username. |
+| `password` | `const char*` | Password. |
+
+**Example:**
+```cpp
+client.basic("admin", "secret123");
+```
+
+---
+
+### `apiKey(name, key)`
+
+Sets an API key header (e.g. `X-API-Key`) sent with **every subsequent request**.
+
+```cpp
+void apiKey(const char* name, const char* key);
+```
+
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `name` | `const char*` | Header name (e.g., `"X-API-Key"` or `"x-api-key"`). |
+| `key` | `const char*` | API key string. |
+
+**Example:**
+```cpp
+client.apiKey("x-api-key", "my-secret-api-key");
+```
+
+---
+
 ### `setContentType(contentType)`
 
 Overrides the `Content-Type` header used for request bodies. Defaults to `application/json`.

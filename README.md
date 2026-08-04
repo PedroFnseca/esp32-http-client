@@ -233,6 +233,21 @@ To manually close the connection and free this memory when you are done making r
 client.end(); // Closes the connection and frees TLS RAM
 ```
 
+### Authentication Helpers
+
+Easily authenticate requests using built-in helpers for Bearer tokens, Basic Auth, or API keys:
+
+```cpp
+// Bearer / JWT Token
+client.bearer("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+
+// HTTP Basic Auth (automatically Base64 encoded)
+client.basic("admin", "secret123");
+
+// API Key header
+client.apiKey("x-api-key", "my-secret-api-key");
+```
+
 ### PUT and DELETE
 
 ```cpp
@@ -289,12 +304,15 @@ Each method returns a `RestRequest` that can be chained with `.query()`, `.body(
 | `patch(path)` | Sends a PATCH request to `baseUrl + path`. | `client.patch("/config/wifi")` |
 | `del(path)` | Sends a DELETE request to `baseUrl + path`. | `client.del("/logs/old.log")` |
 
-#### Configuration methods
+#### Configuration & Authentication methods
 
 | Method | Description | Example |
 | :--- | :--- | :--- |
-| `setContentType(contentType)` | Overrides the `Content-Type` header used for request bodies. Defaults to `application/json`. | `client.setContentType("application/x-www-form-urlencoded");` |
+| `bearer(token)` | Sets persistent Bearer token authorization header. | `client.bearer("my-token");` |
+| `basic(user, password)` | Sets persistent Basic authorization header (auto Base64 encoded). | `client.basic("admin", "123456");` |
+| `apiKey(name, key)` | Sets persistent API key header. | `client.apiKey("x-api-key", "my-key");` |
 | `setHeader(name, value)` | Registers a custom HTTP header that is sent with every subsequent request. | `client.setHeader("Authorization", "Bearer mytoken123");` |
+| `setContentType(contentType)` | Overrides the `Content-Type` header used for request bodies. Defaults to `application/json`. | `client.setContentType("application/x-www-form-urlencoded");` |
 | `getStatusCode()` | Returns the HTTP status code of the last completed request. | `int code = client.getStatusCode();` |
 | `end()` | Closes the persistent TCP/TLS connection and frees its memory buffers. Useful after a burst of requests. | `client.end();` |
 

@@ -5,23 +5,52 @@ tags:
 ---
 # Advanced Usage
 
-## Custom HTTP Headers
+## Authentication Helpers
 
-Use `setHeader()` to register a persistent header that will be sent with **every subsequent request** from that client instance. This is the standard way to pass authentication tokens, API keys, or any custom header your server requires.
+`ESP32HTTPClient` provides dedicated helper methods for common authentication schemes. Like `setHeader()`, these helpers configure persistent headers sent with **every subsequent request**.
+
+### Bearer Token (JWT / OAuth)
 
 ```cpp
-// Authorization header (Bearer token)
-client.setHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+client.bearer("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+client.get("/api/profile").getBody("username", username, sizeof(username));
+```
 
-// API key header
-client.setHeader("X-API-Key", "my-secret-api-key");
+### HTTP Basic Auth
+
+Pass your username and password; the library automatically formats and Base64-encodes the credentials:
+
+```cpp
+client.basic("admin", "secret123");
+client.get("/admin/metrics").getBody("uptime", &uptime);
+```
+
+### API Key
+
+Pass the header name and your API key:
+
+```cpp
+client.apiKey("x-api-key", "my-secret-api-key");
+client.get("/v1/sensors").getBody("temperature", &temp);
+```
+
+---
+
+## Custom HTTP Headers
+
+Use `setHeader()` to register any arbitrary persistent header that will be sent with **every subsequent request** from that client instance:
+
+```cpp
+// Custom headers
+client.setHeader("X-Device-ID", "ESP32-001");
+client.setHeader("X-Custom-Header", "custom-value");
 
 // Custom headers are sent on all subsequent requests
 client.get("/protected/resource").getBody("data", &myVar);
 ```
 
 !!! note "Header persistence"
-    Headers registered with `setHeader()` persist for the lifetime of the client object. They are sent on every request. To change a header, call `setHeader()` again with the same name and a new value.
+    Headers registered with `setHeader()`, `bearer()`, `basic()`, or `apiKey()` persist for the lifetime of the client object. They are sent on every request. To change a header, call the method again with the new value.
 
 ---
 

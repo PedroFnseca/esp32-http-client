@@ -249,20 +249,29 @@ Encontre respostas rápidas para as perguntas mais comuns sobre o **ESP32-HTTP-C
         client.patch("/config/wifi").body("ssid", "MinhaRede");
         ```
 
-??? question "Como posso adicionar cabeçalhos HTTP personalizados como Authorization ou Content-Type?"
+??? question "Como posso adicionar autenticação ou cabeçalhos HTTP personalizados?"
 
-    Use `.setHeader()` na instância do cliente. O cabeçalho será enviado com **todas as requisições subsequentes**.
+    Use os helpers dedicados de autenticação ou o `.setHeader()` na instância do cliente. Os cabeçalhos serão enviados com **todas as requisições subsequentes**.
 
     ```cpp
-    // Cabeçalho de autorização personalizado
-    client.setHeader("Authorization", "Bearer meutoken123");
+    // Bearer / Token JWT
+    client.bearer("meu-jwt-token");
+
+    // HTTP Basic Auth (codificado em Base64 automaticamente)
+    client.basic("usuario", "senha");
+
+    // Chave de API (API Key)
+    client.apiKey("x-api-key", "minha-chave-api");
+
+    // Cabeçalho HTTP personalizado
+    client.setHeader("X-Custom-Header", "custom-value");
 
     // Sobrescrever Content-Type
     client.setContentType("application/x-www-form-urlencoded");
     ```
 
     !!! tip
-        Chame `setHeader()` uma vez durante o `setup()` e ele persistirá para todas as requisições.
+        Configure a autenticação ou cabeçalhos uma vez durante o `setup()` e eles persistirão para todas as requisições.
 
 ??? question "É possível definir uma porta personalizada para a conexão?"
 

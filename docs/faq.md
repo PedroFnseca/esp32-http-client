@@ -249,20 +249,29 @@ Find quick answers to the most common questions about **ESP32-HTTP-Client**. Use
         client.patch("/config/wifi").body("ssid", "MyNetwork");
         ```
 
-??? question "How can I add custom HTTP headers like Authorization or Content-Type?"
+??? question "How can I add authentication or custom HTTP headers?"
 
-    Use `.setHeader()` on the client instance. The header is sent with **every subsequent request**.
+    Use the dedicated authentication helpers or `.setHeader()` on the client instance. The headers are sent with **every subsequent request**.
 
     ```cpp
-    // Custom Authorization header
-    client.setHeader("Authorization", "Bearer mytoken123");
+    // Bearer / JWT token
+    client.bearer("my-jwt-token");
+
+    // HTTP Basic Auth (automatically base64 encoded)
+    client.basic("username", "password");
+
+    // API Key
+    client.apiKey("x-api-key", "my-api-key");
+
+    // Custom HTTP Header
+    client.setHeader("X-Custom-Header", "custom-value");
 
     // Override Content-Type
     client.setContentType("application/x-www-form-urlencoded");
     ```
 
     !!! tip
-        Call `setHeader()` once during `setup()` and it will persist for all requests.
+        Configure authentication or headers once during `setup()` and they will persist for all requests.
 
 ??? question "Is it possible to set a custom port for the connection?"
 

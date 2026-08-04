@@ -5,23 +5,52 @@ tags:
 ---
 # Uso Avançado
 
-## Cabeçalhos HTTP Personalizados
+## Helpers de Autenticação
+ 
+O `ESP32HTTPClient` fornece métodos auxiliares dedicados para os esquemas de autenticação mais comuns. Assim como o `setHeader()`, esses helpers configuram cabeçalhos persistentes enviados com **todas as requisições subsequentes**.
 
-Use `setHeader()` para registrar um cabeçalho persistente que será enviado com **todas as requisições subsequentes** dessa instância do cliente. Esta é a forma padrão de passar tokens de autenticação, chaves de API ou qualquer cabeçalho personalizado exigido pelo seu servidor.
+### Bearer Token (JWT / OAuth)
 
 ```cpp
-// Cabeçalho de autorização (Bearer token)
-client.setHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+client.bearer("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...");
+client.get("/api/profile").getBody("username", username, sizeof(username));
+```
 
-// Cabeçalho de chave de API
-client.setHeader("X-API-Key", "minha-chave-api-secreta");
+### HTTP Basic Auth
+
+Passe seu usuário e senha; a biblioteca formata e codifica as credenciais em Base64 automaticamente:
+
+```cpp
+client.basic("admin", "secret123");
+client.get("/admin/metrics").getBody("uptime", &uptime);
+```
+
+### Chave de API (API Key)
+
+Passe o nome do cabeçalho e sua chave de API:
+
+```cpp
+client.apiKey("x-api-key", "minha-chave-api-secreta");
+client.get("/v1/sensors").getBody("temperature", &temp);
+```
+
+---
+
+## Cabeçalhos HTTP Personalizados
+
+Use `setHeader()` para registrar qualquer cabeçalho persistente personalizado que será enviado com **todas as requisições subsequentes** dessa instância do cliente:
+
+```cpp
+// Cabeçalhos personalizados
+client.setHeader("X-Device-ID", "ESP32-001");
+client.setHeader("X-Custom-Header", "custom-value");
 
 // Cabeçalhos personalizados são enviados em todas as requisições subsequentes
 client.get("/protected/resource").getBody("data", &minhaVar);
 ```
 
 !!! note "Persistência de cabeçalhos"
-    Cabeçalhos registrados com `setHeader()` persistem durante todo o ciclo de vida do objeto cliente. Eles são enviados a cada requisição. Para alterar um cabeçalho, chame `setHeader()` novamente com o mesmo nome e um novo valor.
+    Cabeçalhos registrados com `setHeader()`, `bearer()`, `basic()` ou `apiKey()` persistem durante todo o ciclo de vida do objeto cliente. Eles são enviados a cada requisição. Para alterar um cabeçalho ou token, chame o método novamente com o novo valor.
 
 ---
 
