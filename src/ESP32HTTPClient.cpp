@@ -3,8 +3,55 @@
 #include <Arduino.h>
 
 ESP32HTTPClient::ESP32HTTPClient(const char* baseUrl, int port)
-    : _baseUrl(baseUrl), _port(port), _lastStatusCode(0), _contentType("application/json") {
+    : _baseUrl(baseUrl),
+      _port(port),
+      _lastStatusCode(0),
+      _timeout(60000),
+      _maxRetry(1),
+      _contentType("application/json"),
+      _onSuccessCb(nullptr),
+      _onErrorCb(nullptr),
+      _onResponseCb(nullptr) {
   _http.setReuse(true);
+}
+
+void ESP32HTTPClient::setBaseUrl(const char* baseUrl, int port) {
+  end();
+  _baseUrl = baseUrl;
+  _port = port;
+}
+
+void ESP32HTTPClient::setUrl(const char* baseUrl, int port) {
+  setBaseUrl(baseUrl, port);
+}
+
+void ESP32HTTPClient::setPort(int port) {
+  end();
+  _port = port;
+}
+
+const char* ESP32HTTPClient::getBaseUrl() const {
+  return _baseUrl;
+}
+
+int ESP32HTTPClient::getPort() const {
+  return _port;
+}
+
+void ESP32HTTPClient::setTimeout(uint16_t timeoutMs) {
+  _timeout = timeoutMs;
+}
+
+uint16_t ESP32HTTPClient::getTimeout() const {
+  return _timeout;
+}
+
+void ESP32HTTPClient::setMaxRetry(int maxRetry) {
+  _maxRetry = (maxRetry < 0) ? 0 : maxRetry;
+}
+
+int ESP32HTTPClient::getMaxRetry() const {
+  return _maxRetry;
 }
 
 void ESP32HTTPClient::setContentType(const char* contentType) {
@@ -80,6 +127,83 @@ void ESP32HTTPClient::end() {
   _http.setReuse(false);
   _http.end();
   _http.setReuse(true);
+}
+
+int ESP32HTTPClient::getStatusCode() const {
+  return _lastStatusCode;
+}
+
+String ESP32HTTPClient::errorToString(int code) {
+  switch (code) {
+    case -1: return "Connection Refused";
+    case -2: return "Send Header Failed";
+    case -3: return "Send Payload Failed";
+    case -4: return "Not Connected";
+    case -5: return "Connection Lost";
+    case -6: return "No Stream";
+    case -7: return "No HTTP Server";
+    case -8: return "Too Less RAM";
+    case -9: return "Encoding Error";
+    case -10: return "Stream Write Error";
+    case -11: return "Read Timeout";
+    case 200: return "OK";
+    case 201: return "Created";
+    case 202: return "Accepted";
+    case 204: return "No Content";
+    case 400: return "Bad Request";
+    case 401: return "Unauthorized";
+    case 403: return "Forbidden";
+    case 404: return "Not Found";
+    case 405: return "Method Not Allowed";
+    case 408: return "Request Timeout";
+    case 409: return "Conflict";
+    case 429: return "Too Many Requests";
+    case 500: return "Internal Server Error";
+    case 501: return "Not Implemented";
+    case 502: return "Bad Gateway";
+    case 503: return "Service Unavailable";
+    case 504: return "Gateway Timeout";
+    case 0: return "Not Executed";
+    default:
+      if (code < 0) return "Unknown Client Error";
+      if (code >= 200 && code < 300) return "Success";
+      if (code >= 300 && code < 400) return "Redirection";
+      if (code >= 400 && code < 500) return "Client Error";
+      if (code >= 500 && code < 600) return "Server Error";
+      return "Unknown HTTP Status";
+  }
+}
+
+String ESP32HTTPClient::getErrorMessage() const {
+  return errorToString(_lastStatusCode);
+}
+
+bool ESP32HTTPClient::isSuccess() const {
+  return _lastStatusCode >= 200 && _lastStatusCode < 300;
+}
+
+bool ESP32HTTPClient::hasError() const {
+  return _lastStatusCode < 200 || _lastStatusCode >= 400;
+}
+
+void ESP32HTTPClient::onSuccess(HttpResponseCallback cb) {
+  _onSuccessCb = cb;
+}
+
+void ESP32HTTPClient::onError(HttpErrorCallback cb) {
+  _onErrorCb = cb;
+}
+
+void ESP32HTTPClient::onError(HttpResponseCallback cb) {
+  if (cb) {
+    _onErrorCb = [cb](int code, const char*) { cb(code); };
+  } else {
+    _onErrorCb = nullptr;
+  }
+}
+
+void ESP32HTTPClient::onResponse(HttpResponseCallback cb) {
+  _onResponseCb = cb;
 }
 
 RestRequest ESP32HTTPClient::get(const char* path) {

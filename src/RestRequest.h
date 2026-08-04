@@ -21,6 +21,15 @@ class RestRequest {
   RestRequest& operator=(const RestRequest&) = delete;
   RestRequest(RestRequest&& other);
 
+  RestRequest& timeout(uint16_t timeoutMs);
+  RestRequest& maxRetry(int maxRetry);
+  RestRequest& retry(int maxRetry);
+
+  RestRequest& onSuccess(HttpResponseCallback cb);
+  RestRequest& onError(HttpErrorCallback cb);
+  RestRequest& onError(HttpResponseCallback cb);
+  RestRequest& onResponse(HttpResponseCallback cb);
+
   template <typename T>
   RestRequest& path(const char* key, T value);
 
@@ -44,6 +53,12 @@ class RestRequest {
 
   HttpMethod _method;
   bool _executed;
+  uint16_t _timeout;
+  int _maxRetry;
+
+  HttpResponseCallback _onSuccessCb;
+  HttpErrorCallback _onErrorCb;
+  HttpResponseCallback _onResponseCb;
 
   std::vector<KeyValue> _pathParams;
   std::vector<KeyValue> _queryParams;

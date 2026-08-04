@@ -101,7 +101,15 @@ static void skipValue(BufferedStreamReader& r) {
 }
 
 RestRequest::RestRequest(ESP32HTTPClient* client, const char* path, HttpMethod method)
-    : _client(client), _path(path), _method(method), _executed(false) {
+    : _client(client),
+      _path(path),
+      _method(method),
+      _executed(false),
+      _timeout(0),
+      _maxRetry(-1),
+      _onSuccessCb(nullptr),
+      _onErrorCb(nullptr),
+      _onResponseCb(nullptr) {
 }
 
 RestRequest::RestRequest(RestRequest&& other)
@@ -109,6 +117,11 @@ RestRequest::RestRequest(RestRequest&& other)
       _path(other._path),
       _method(other._method),
       _executed(other._executed),
+      _timeout(other._timeout),
+      _maxRetry(other._maxRetry),
+      _onSuccessCb(std::move(other._onSuccessCb)),
+      _onErrorCb(std::move(other._onErrorCb)),
+      _onResponseCb(std::move(other._onResponseCb)),
       _pathParams(std::move(other._pathParams)),
       _queryParams(std::move(other._queryParams)),
       _bodyParams(std::move(other._bodyParams)),
@@ -120,6 +133,44 @@ RestRequest::~RestRequest() {
   if (!_executed) {
     execute();
   }
+}
+
+RestRequest& RestRequest::timeout(uint16_t timeoutMs) {
+  _timeout = timeoutMs;
+  return *this;
+}
+
+RestRequest& RestRequest::maxRetry(int maxRetry) {
+  _maxRetry = (maxRetry < 0) ? 0 : maxRetry;
+  return *this;
+}
+
+RestRequest& RestRequest::retry(int maxRetry) {
+  return this->maxRetry(maxRetry);
+}
+
+RestRequest& RestRequest::onSuccess(HttpResponseCallback cb) {
+  _onSuccessCb = cb;
+  return *this;
+}
+
+RestRequest& RestRequest::onError(HttpErrorCallback cb) {
+  _onErrorCb = cb;
+  return *this;
+}
+
+RestRequest& RestRequest::onError(HttpResponseCallback cb) {
+  if (cb) {
+    _onErrorCb = [cb](int code, const char*) { cb(code); };
+  } else {
+    _onErrorCb = nullptr;
+  }
+  return *this;
+}
+
+RestRequest& RestRequest::onResponse(HttpResponseCallback cb) {
+  _onResponseCb = cb;
+  return *this;
 }
 
 RestRequest& RestRequest::getBody(const char* key, int* target) {
@@ -168,6 +219,11 @@ void RestRequest::execute() {
   if (!_client) return;
 
   HTTPClient& http = _client->_http;
+
+  uint16_t effectiveTimeout = (_timeout > 0) ? _timeout : _client->_timeout;
+  if (effectiveTimeout > 0) {
+    http.setTimeout(effectiveTimeout);
+  }
 
   String urlBase;
   urlBase.reserve(128);
@@ -243,8 +299,10 @@ void RestRequest::execute() {
 
   int code = 0;
   int retries = 0;
+  int maxRetries = (_maxRetry >= 0) ? _maxRetry : _client->_maxRetry;
+  int maxAttempts = 1 + maxRetries;
 
-  while (retries < 2) {
+  while (retries < maxAttempts) {
     switch (_method) {
       case HTTP_GET_METHOD:
         code = http.GET();
@@ -263,9 +321,7 @@ void RestRequest::execute() {
         break;
     }
 
-    // If connection fails (code < 0), it might be a stale Keep-Alive connection.
-    // Close the socket, re-initiate the connection, and retry once.
-    if (code < 0 && retries == 0) {
+    if (code < 0 && retries < maxRetries) {
       http.end();
       http.begin(url);
       for (const auto& header : _client->_headers) {
@@ -291,6 +347,30 @@ void RestRequest::execute() {
   }
 
   http.end();
+
+  if (_onResponseCb) {
+    _onResponseCb(code);
+  }
+  if (_client->_onResponseCb) {
+    _client->_onResponseCb(code);
+  }
+
+  if (code >= 200 && code < 300) {
+    if (_onSuccessCb) {
+      _onSuccessCb(code);
+    }
+    if (_client->_onSuccessCb) {
+      _client->_onSuccessCb(code);
+    }
+  } else if (code < 200 || code >= 400) {
+    String errMsg = _client->getErrorMessage();
+    if (_onErrorCb) {
+      _onErrorCb(code, errMsg.c_str());
+    }
+    if (_client->_onErrorCb) {
+      _client->_onErrorCb(code, errMsg.c_str());
+    }
+  }
 }
 
 void RestRequest::parseResponse(BufferedStreamReader& r) {
@@ -457,7 +537,7 @@ void RestRequest::parseObject(BufferedStreamReader& r, const char* basePath) {
         }
 
         if (match && match->type == TYPE_ARDUINO_STRING) {
-          r.read();  // consume '{' or '['
+          r.read();
           readRawJsonIntoString(r, (String*)match->target, nextChar);
         } else {
           r.read();
@@ -518,7 +598,7 @@ void RestRequest::parseArray(BufferedStreamReader& r, const char* basePath) {
       }
 
       if (match && match->type == TYPE_ARDUINO_STRING) {
-        r.read();  // consume '{' or '['
+        r.read();
         readRawJsonIntoString(r, (String*)match->target, nextChar);
       } else {
         r.read();

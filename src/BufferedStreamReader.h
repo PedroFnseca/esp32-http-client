@@ -66,7 +66,6 @@ class BufferedStreamReader {
       return _len > 0;
     }
 
-    // Chunked mode
     while (_len < BUF_SIZE) {
       if (_chunkRemaining == 0) {
         char hexBuf[16];
@@ -90,8 +89,8 @@ class BufferedStreamReader {
         _chunkRemaining = strtoul(hexBuf, nullptr, 16);
         
         if (_chunkRemaining == 0) {
-          readRawByte(); // \r
-          readRawByte(); // \n
+          readRawByte();
+          readRawByte();
           _eof = true;
           return _len > 0;
         }
@@ -116,8 +115,8 @@ class BufferedStreamReader {
       _chunkRemaining -= bytesRead;
 
       if (_chunkRemaining == 0) {
-        readRawByte(); // \r
-        readRawByte(); // \n
+        readRawByte();
+        readRawByte();
       }
     }
 
