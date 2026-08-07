@@ -718,6 +718,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#lendo-cabecalhos-de-resposta-com-getheader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lendo Cabeçalhos de Resposta com getHeader()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#garantias-de-seguranca" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1471,6 +1482,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#lendo-cabecalhos-de-resposta-com-getheader" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lendo Cabeçalhos de Resposta com getHeader()
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#garantias-de-seguranca" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1653,17 +1675,33 @@
 <p>Puxar objetos ou arrays completos para uma <code>String</code> do Arduino causa alocação dinâmica na heap. Evite esse padrão com cargas úteis grandes, pois isso pode fragmentar ou esgotar a memória heap do dispositivo. Use vinculações tipadas sempre que possível.</p>
 </div>
 <hr />
+<h2 id="lendo-cabecalhos-de-resposta-com-getheader">Lendo Cabeçalhos de Resposta com <code>getHeader()</code><a class="headerlink" href="#lendo-cabecalhos-de-resposta-com-getheader" title="Permanent link">&para;</a></h2>
+<p>Além dos campos do corpo JSON, você pode extrair cabeçalhos HTTP da resposta diretamente usando <code>getHeader()</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kt">char</span><span class="w"> </span><span class="n">contentType</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kt">int</span><span class="w"> </span><span class="n">contentLength</span><span class="p">;</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/auth&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">,</span><span class="w">          </span><span class="o">&amp;</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">&quot;Content-Type&quot;</span><span class="p">,</span><span class="w">   </span><span class="n">contentType</span><span class="p">)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">&quot;Content-Length&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">contentLength</span><span class="p">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">id</span><span class="p">);</span>
+</code></pre></div>
+<p>As buscas por cabeçalhos <strong>não diferenciam maiúsculas de minúsculas</strong>, portanto <code>"token"</code>, <code>"TOKEN"</code> e <code>"Token"</code> funcionam de forma idêntica.</p>
+<hr />
 <h2 id="garantias-de-seguranca">Garantias de Segurança<a class="headerlink" href="#garantias-de-seguranca" title="Permanent link">&para;</a></h2>
 <div class="admonition note">
-<p class="admonition-title">Chaves ausentes são seguras</p>
-<p>Se o caminho de uma chave não existir na resposta, estiver com erro de digitação ou o tipo não corresponder, a variável alvo é <strong>mantida inalterada</strong>. Nenhuma exceção é lançada, nenhum travamento ocorre e a biblioteca continua analisando o restante da resposta.</p>
+<p class="admonition-title">Chaves e cabeçalhos ausentes são seguros</p>
+<p>Se o caminho de uma chave ou um cabeçalho HTTP não existir na resposta, estiver com erro de digitação ou o tipo não corresponder, a variável alvo é <strong>mantida inalterada</strong>. Nenhuma exceção é lançada, nenhum travamento ocorre e a biblioteca continua analisando o restante da resposta.</p>
 </div>
-<p>Isso torna seguro adicionar campos opcionais aos seus vínculos sem checagens defensivas:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">optionalField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="c1">// valor padrão</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data&quot;</span><span class="p">)</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;requiredField&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">myVar</span><span class="p">)</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;optionalField&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">optionalField</span><span class="p">);</span><span class="w"> </span><span class="c1">// inalterado se ausente</span>
+<p>Isso torna seguro adicionar campos ou cabeçalhos opcionais aos seus vínculos sem checagens defensivas:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">optionalField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="c1">// valor padrão</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">String</span><span class="w"> </span><span class="n">optionalToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data&quot;</span><span class="p">)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">,</span><span class="w">         </span><span class="o">&amp;</span><span class="n">optionalToken</span><span class="p">)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;requiredField&quot;</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="n">myVar</span><span class="p">)</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;optionalField&quot;</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="n">optionalField</span><span class="p">);</span><span class="w"> </span><span class="c1">// inalterado se ausente</span>
 </code></pre></div>
 <hr />
 <h2 id="proximo-passo">Próximo Passo<a class="headerlink" href="#proximo-passo" title="Permanent link">&para;</a></h2>
@@ -1688,7 +1726,7 @@
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="31 de julho de 2026 15:30:51 UTC">31 de julho de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="7 de agosto de 2026 17:31:11 UTC">7 de agosto de 2026</span>
   </span>
 
     

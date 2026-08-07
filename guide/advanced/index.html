@@ -2146,6 +2146,10 @@
 <p class="admonition-title">Header persistence</p>
 <p>Headers registered with <code>setHeader()</code>, <code>bearer()</code>, <code>basic()</code>, or <code>apiKey()</code> persist for the lifetime of the client object. They are sent on every request. To change a header, call the method again with the new value.</p>
 </div>
+<div class="admonition tip">
+<p class="admonition-title">Reading response headers</p>
+<p><code>setHeader()</code> sets headers to send with the request. To read or collect headers returned by the server in the response (such as <code>token</code>, <code>Content-Length</code>, <code>Date</code>, etc.), use the <code>.getHeader()</code> method on <code>RestRequest</code>. See how to collect them in the <a href="../responses/#reading-response-headers-with-getheader">Reading Response Headers</a> guide or the <a href="../../api/restrequest/#extracting-response-headers">RestRequest::getHeader</a> API reference.</p>
+</div>
 <hr />
 <h2 id="custom-content-type">Custom Content-Type<a class="headerlink" href="#custom-content-type" title="Permanent link">&para;</a></h2>
 <p>By default, the <code>Content-Type</code> header is set to <code>application/json</code> for all requests with a body. Override it with <code>setContentType()</code>:</p>
@@ -2516,7 +2520,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 4, 2026 19:08:30 UTC">August 4, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 7, 2026 17:31:11 UTC">August 7, 2026</span>
   </span>
 
     
