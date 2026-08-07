@@ -6,7 +6,7 @@
 [![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
 [![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
 [![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
-[![Coverage](https://img.shields.io/badge/Coverage-86.49%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
+[![Coverage](https://img.shields.io/badge/Coverage-87.45%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
 [![Hits](https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-http-client/)
 [![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social)](https://github.com/PedroFnseca/esp32-http-client/stargazers)
