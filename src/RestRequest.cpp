@@ -119,7 +119,8 @@ RestRequest::RestRequest(RestRequest&& other)
       _pathParams(std::move(other._pathParams)),
       _queryParams(std::move(other._queryParams)),
       _bodyParams(std::move(other._bodyParams)),
-      _responseBindings(std::move(other._responseBindings)) {
+      _responseBindings(std::move(other._responseBindings)),
+      _headerBindings(std::move(other._headerBindings)) {
   other._executed = true;
 }
 
@@ -202,6 +203,41 @@ RestRequest& RestRequest::getBody(const char* key, String* target) {
   return *this;
 }
 
+RestRequest& RestRequest::getHeader(const char* name, int* target) {
+  _headerBindings.push_back({name, target, TYPE_INT, 0});
+  return *this;
+}
+
+RestRequest& RestRequest::getHeader(const char* name, float* target) {
+  _headerBindings.push_back({name, target, TYPE_FLOAT, 0});
+  return *this;
+}
+
+RestRequest& RestRequest::getHeader(const char* name, double* target) {
+  _headerBindings.push_back({name, target, TYPE_DOUBLE, 0});
+  return *this;
+}
+
+RestRequest& RestRequest::getHeader(const char* name, bool* target) {
+  _headerBindings.push_back({name, target, TYPE_BOOL, 0});
+  return *this;
+}
+
+RestRequest& RestRequest::getHeader(const char* name, char* target, size_t maxLength) {
+  _headerBindings.push_back({name, target, TYPE_STRING, maxLength});
+  return *this;
+}
+
+RestRequest& RestRequest::getHeader(const char* name, long* target) {
+  _headerBindings.push_back({name, target, TYPE_LONG, 0});
+  return *this;
+}
+
+RestRequest& RestRequest::getHeader(const char* name, String* target) {
+  _headerBindings.push_back({name, target, TYPE_ARDUINO_STRING, 0});
+  return *this;
+}
+
 void RestRequest::execute() {
   _executed = true;
 
@@ -257,7 +293,21 @@ void RestRequest::execute() {
     }
   }
 
+  std::vector<const char*> headerKeys;
+  if (!_headerBindings.empty()) {
+    headerKeys.reserve(_headerBindings.size());
+    for (const auto& binding : _headerBindings) {
+      if (binding.key && binding.key[0] != '\0') {
+        headerKeys.push_back(binding.key);
+      }
+    }
+  }
+
   http.begin(url);
+
+  if (!headerKeys.empty()) {
+    http.collectHeaders(headerKeys.data(), headerKeys.size());
+  }
 
   for (const auto& header : _client->_headers) {
     http.addHeader(header.name, header.value);
@@ -316,6 +366,9 @@ void RestRequest::execute() {
     if (code < 0 && retries < maxRetries) {
       http.end();
       http.begin(url);
+      if (!headerKeys.empty()) {
+        http.collectHeaders(headerKeys.data(), headerKeys.size());
+      }
       for (const auto& header : _client->_headers) {
         http.addHeader(header.name, header.value);
       }
@@ -331,6 +384,31 @@ void RestRequest::execute() {
   _client->_lastStatusCode = code;
 
   if (code > 0) {
+    for (const auto& binding : _headerBindings) {
+      if (binding.key && binding.target && http.hasHeader(binding.key)) {
+        String val = http.header(binding.key);
+        if (binding.type == TYPE_ARDUINO_STRING) {
+          *((String*)binding.target) = val;
+        } else if (binding.type == TYPE_STRING) {
+          char* dst = (char*)binding.target;
+          if (binding.size > 0) {
+            strncpy(dst, val.c_str(), binding.size - 1);
+            dst[binding.size - 1] = '\0';
+          }
+        } else if (binding.type == TYPE_INT) {
+          *(int*)binding.target = atoi(val.c_str());
+        } else if (binding.type == TYPE_LONG) {
+          *(long*)binding.target = atol(val.c_str());
+        } else if (binding.type == TYPE_FLOAT) {
+          *(float*)binding.target = strtof(val.c_str(), nullptr);
+        } else if (binding.type == TYPE_DOUBLE) {
+          *(double*)binding.target = strtod(val.c_str(), nullptr);
+        } else if (binding.type == TYPE_BOOL) {
+          *(bool*)binding.target = (val.equalsIgnoreCase("true") || val == "1");
+        }
+      }
+    }
+
     if (http.getSize() > 0 || http.getStreamPtr()) {
       bool isChunked = (http.getSize() == -1);
       BufferedStreamReader reader(http.getStreamPtr(), isChunked);

@@ -59,6 +59,17 @@ class RestRequest {
   typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
   getBody(const char* key, T* target);
 
+  RestRequest& getHeader(const char* name, int* target);
+  RestRequest& getHeader(const char* name, float* target);
+  RestRequest& getHeader(const char* name, double* target);
+  RestRequest& getHeader(const char* name, bool* target);
+  RestRequest& getHeader(const char* name, char* target, size_t maxLength);
+  RestRequest& getHeader(const char* name, long* target);
+  RestRequest& getHeader(const char* name, String* target);
+
+  template <size_t N>
+  RestRequest& getHeader(const char* name, char (&target)[N]);
+
   static void parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings);
   static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings);
   static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings);
@@ -85,6 +96,7 @@ class RestRequest {
   std::vector<KeyValue> _queryParams;
   std::vector<KeyValue> _bodyParams;
   std::vector<ResponseBinding> _responseBindings;
+  std::vector<ResponseBinding> _headerBindings;
 
   void execute();
   void parseResponse(BufferedStreamReader& r);
@@ -92,6 +104,11 @@ class RestRequest {
   template <typename T>
   void addParam(std::vector<KeyValue>& list, const char* key, T value);
 };
+
+template <size_t N>
+inline RestRequest& RestRequest::getHeader(const char* name, char (&target)[N]) {
+  return getHeader(name, target, N);
+}
 
 template <typename T>
 RestRequest& RestRequest::path(const char* key, T value) {
