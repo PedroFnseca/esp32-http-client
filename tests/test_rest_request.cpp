@@ -1074,7 +1074,224 @@ void testStructCustomAndExternalMapping() {
   expectEqInt(extIn.id, 34, "external struct mapping deserialization id");
   expectEq(extIn.role.c_str(), "guest", "external struct mapping deserialization role");
 }
-}  // namespace
+
+void testGetHeaderString() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+
+  HttpClientStub::setResponse(200, "{\"status\":\"ok\"}");
+  HttpClientStub::setResponseHeaders({
+      {"token", "\"33a64df551425fcc55e4d42a148795d9f25f89f4\""},
+      {"Content-Type", "application/json; charset=utf-8"},
+      {"X-Server-Id", "srv-node-01"}
+  });
+
+  String token;
+  String contentType;
+  String serverId;
+
+  client.get("/resource")
+      .getHeader("token", &token)
+      .getHeader("Content-Type", &contentType)
+      .getHeader("X-Server-Id", &serverId);
+
+  expectEq(token.c_str(), "\"33a64df551425fcc55e4d42a148795d9f25f89f4\"", "getHeader token String");
+  expectEq(contentType.c_str(), "application/json; charset=utf-8", "getHeader Content-Type String");
+  expectEq(serverId.c_str(), "srv-node-01", "getHeader custom header String");
+}
+
+void testGetHeaderCharArray() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+
+  HttpClientStub::setResponse(200, "{}");
+  HttpClientStub::setResponseHeaders({
+      {"token", "W/\"123456789\""},
+      {"X-Auth-Token", "secret-token-value"}
+  });
+
+  char tokenArr[32] = {0};
+  char token[64] = {0};
+
+  client.get("/item")
+      .getHeader("token", tokenArr)
+      .getHeader("X-Auth-Token", token, sizeof(token));
+
+  expectEq(tokenArr, "W/\"123456789\"", "getHeader char array reference");
+  expectEq(token, "secret-token-value", "getHeader char pointer with max size");
+}
+
+void testGetHeaderNumericAndBool() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+
+  HttpClientStub::setResponse(200, "{}");
+  HttpClientStub::setResponseHeaders({
+      {"X-Rate-Limit-Remaining", "42"},
+      {"X-Timestamp", "1710000050"},
+      {"X-Temperature", "25.75"},
+      {"X-Factor", "1.234567"},
+      {"X-Is-Cached", "true"},
+      {"X-Is-Admin", "1"}
+  });
+
+  int remaining = 0;
+  long timestamp = 0;
+  float temp = 0.0f;
+  double factor = 0.0;
+  bool isCached = false;
+  bool isAdmin = false;
+
+  client.get("/status")
+      .getHeader("X-Rate-Limit-Remaining", &remaining)
+      .getHeader("X-Timestamp", &timestamp)
+      .getHeader("X-Temperature", &temp)
+      .getHeader("X-Factor", &factor)
+      .getHeader("X-Is-Cached", &isCached)
+      .getHeader("X-Is-Admin", &isAdmin);
+
+  expectEqInt(remaining, 42, "getHeader int parsed");
+  expectEqInt(timestamp, 1710000050L, "getHeader long parsed");
+  expectNear(temp, 25.75f, 0.01f, "getHeader float parsed");
+  expectNear(factor, 1.234567, 0.00001, "getHeader double parsed");
+  expectTrue(isCached, "getHeader bool true string");
+  expectTrue(isAdmin, "getHeader bool 1 string");
+}
+
+void testGetHeaderCaseInsensitiveAndMissing() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+
+  HttpClientStub::setResponse(200, "{}");
+  HttpClientStub::setResponseHeaders({
+      {"token", "token-lowercase-val"}
+  });
+
+  String token;
+  String missing = "default_val";
+  int missingInt = 999;
+
+  client.get("/data")
+      .getHeader("TOKEN", &token)
+      .getHeader("X-Missing-Header", &missing)
+      .getHeader("X-Missing-Int", &missingInt);
+
+  expectEq(token.c_str(), "token-lowercase-val", "getHeader case-insensitive match");
+  expectEq(missing.c_str(), "default_val", "missing header leaves string untouched");
+  expectEqInt(missingInt, 999, "missing header leaves int untouched");
+}
+
+void testGetHeaderCombinedWithGetBody() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+
+  HttpClientStub::setResponse(200, "{\"id\":101,\"name\":\"Sensor Node\"}");
+  HttpClientStub::setResponseHeaders({
+      {"token", "\"token-abc\""},
+      {"X-Server", "nginx"}
+  });
+
+  int id = 0;
+  char name[32] = {0};
+  String token;
+  String server;
+
+  client.post("/todos/1")
+      .body("title", "Check status")
+      .getBody("id", &id)
+      .getBody("name", name, sizeof(name))
+      .getHeader("token", &token)
+      .getHeader("X-Server", &server);
+
+  expectEqInt(id, 101, "getBody id extracted alongside headers");
+  expectEq(name, "Sensor Node", "getBody name extracted alongside headers");
+  expectEq(token.c_str(), "\"token-abc\"", "getHeader token extracted with getBody");
+  expectEq(server.c_str(), "nginx", "getHeader server extracted with getBody");
+}
+
+void testGetHeaderRetries() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+
+  HttpClientStub::queueResponse(HTTPC_ERROR_CONNECTION_LOST, "");
+  HttpClientStub::queueResponseHeaders({});
+
+  HttpClientStub::queueResponse(200, "{\"success\":true}");
+  HttpClientStub::queueResponseHeaders({{"X-Retry-Header", "after-retry-value"}});
+
+  String headerVal;
+  bool success = false;
+
+  client.get("/retry-target")
+      .retry(2)
+      .getHeader("X-Retry-Header", &headerVal)
+      .getBody("success", &success);
+
+  expectTrue(success, "request succeeded on retry");
+  expectEq(headerVal.c_str(), "after-retry-value", "header parsed on retry");
+  expectEqInt(HttpClientStub::requestCount, 2, "2 attempts made");
+}
+
+void testGetHeaderMoveConstructor() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+
+  HttpClientStub::setResponse(200, "{\"msg\":\"ok\"}");
+  HttpClientStub::setResponseHeaders({{"token", "moved-token"}});
+
+  String token;
+  String msg;
+
+  {
+    RestRequest req1 = client.get("/moved");
+    req1.getHeader("token", &token).getBody("msg", &msg);
+    RestRequest req2 = std::move(req1);
+  }
+
+  expectEq(token.c_str(), "moved-token", "header binding moved and executed");
+  expectEq(msg.c_str(), "ok", "body binding moved and executed");
+}
+
+void testGetHeaderAllHttpMethods() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+
+  String postToken;
+  HttpClientStub::setResponse(201, "{\"id\":1}");
+  HttpClientStub::setResponseHeaders({{"token", "post-token-1"}});
+  client.post("/items").body("name", "widget").getHeader("token", &postToken);
+  expectEq(postToken.c_str(), "post-token-1", "getHeader on POST");
+  expectEq(HttpClientStub::lastMethod.c_str(), "POST", "HTTP method POST");
+
+  String putToken;
+  HttpClientStub::setResponse(200, "{\"id\":1}");
+  HttpClientStub::setResponseHeaders({{"token", "put-token-2"}});
+  client.put("/items/1").body("name", "widget-updated").getHeader("token", &putToken);
+  expectEq(putToken.c_str(), "put-token-2", "getHeader on PUT");
+  expectEq(HttpClientStub::lastMethod.c_str(), "PUT", "HTTP method PUT");
+
+  String patchToken;
+  HttpClientStub::setResponse(200, "{\"id\":1}");
+  HttpClientStub::setResponseHeaders({{"token", "patch-token-3"}});
+  client.patch("/items/1").body("name", "widget-patched").getHeader("token", &patchToken);
+  expectEq(patchToken.c_str(), "patch-token-3", "getHeader on PATCH");
+  expectEq(HttpClientStub::lastMethod.c_str(), "PATCH", "HTTP method PATCH");
+
+  String deleteToken;
+  HttpClientStub::setResponse(200, "{\"deleted\":true}");
+  HttpClientStub::setResponseHeaders({{"token", "delete-token-4"}});
+  client.del("/items/1").getHeader("token", &deleteToken);
+  expectEq(deleteToken.c_str(), "delete-token-4", "getHeader on DELETE");
+  expectEq(HttpClientStub::lastMethod.c_str(), "DELETE", "HTTP method DELETE");
+
+  String updateToken;
+  HttpClientStub::setResponse(200, "{\"id\":1}");
+  HttpClientStub::setResponseHeaders({{"token", "update-token-5"}});
+  client.update("/items/1").body("name", "widget-updated-alias").getHeader("token", &updateToken);
+  expectEq(updateToken.c_str(), "update-token-5", "getHeader on update alias");
+  expectEq(HttpClientStub::lastMethod.c_str(), "PUT", "HTTP method update calls PUT");
+}
+}
 
 int main() {
   runSuite("AddParamFormatting", testAddParamFormatting);
@@ -1118,6 +1335,14 @@ int main() {
   runSuite("StructRequestBody", testStructRequestBody);
   runSuite("StructResponseBodyGetBody", testStructResponseBodyGetBody);
   runSuite("StructCustomAndExternalMapping", testStructCustomAndExternalMapping);
+  runSuite("GetHeaderString", testGetHeaderString);
+  runSuite("GetHeaderCharArray", testGetHeaderCharArray);
+  runSuite("GetHeaderNumericAndBool", testGetHeaderNumericAndBool);
+  runSuite("GetHeaderCaseInsensitiveAndMissing", testGetHeaderCaseInsensitiveAndMissing);
+  runSuite("GetHeaderCombinedWithGetBody", testGetHeaderCombinedWithGetBody);
+  runSuite("GetHeaderRetries", testGetHeaderRetries);
+  runSuite("GetHeaderMoveConstructor", testGetHeaderMoveConstructor);
+  runSuite("GetHeaderAllHttpMethods", testGetHeaderAllHttpMethods);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;

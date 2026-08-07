@@ -145,6 +145,15 @@ class String {
     return _data != (other ? other : "");
   }
 
+  bool equalsIgnoreCase(const char* other) const {
+    if (!other) return false;
+    return strcasecmp(_data.c_str(), other) == 0;
+  }
+
+  bool equalsIgnoreCase(const String& other) const {
+    return equalsIgnoreCase(other.c_str());
+  }
+
   const char* c_str() const {
     return _data.c_str();
   }

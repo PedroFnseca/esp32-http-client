@@ -30,6 +30,9 @@ inline int requestCount = 0;
 inline int nextStatusCode = 200;
 inline std::string nextResponseBody = "{}";
 inline std::deque<std::pair<int, std::string>> responseQueue;
+inline std::vector<std::pair<std::string, std::string>> nextResponseHeaders;
+inline std::deque<std::vector<std::pair<std::string, std::string>>> responseHeaderQueue;
+inline std::vector<std::string> collectedHeaderKeys;
 
 class InMemoryStream : public Stream {
  public:
@@ -65,6 +68,9 @@ inline void reset() {
   nextStatusCode = 200;
   nextResponseBody = "{}";
   responseQueue.clear();
+  nextResponseHeaders.clear();
+  responseHeaderQueue.clear();
+  collectedHeaderKeys.clear();
 }
 
 inline void setResponse(int statusCode, const std::string& body) {
@@ -73,12 +79,28 @@ inline void setResponse(int statusCode, const std::string& body) {
   responseQueue.clear();
 }
 
+inline void setResponseHeaders(const std::vector<std::pair<std::string, std::string>>& headers) {
+  nextResponseHeaders = headers;
+  responseHeaderQueue.clear();
+}
+
 inline void queueResponse(int statusCode, const std::string& body) {
   responseQueue.push_back({statusCode, body});
 }
 
-inline int getNextStatusAndBody(std::string& body) {
+inline void queueResponseHeaders(const std::vector<std::pair<std::string, std::string>>& headers) {
+  responseHeaderQueue.push_back(headers);
+}
+
+inline int getNextStatusAndBody(std::string& body, std::vector<std::pair<std::string, std::string>>& headers) {
   requestCount++;
+  if (!responseHeaderQueue.empty()) {
+    headers = responseHeaderQueue.front();
+    responseHeaderQueue.pop_front();
+  } else {
+    headers = nextResponseHeaders;
+  }
+
   if (!responseQueue.empty()) {
     auto item = responseQueue.front();
     responseQueue.pop_front();
@@ -112,49 +134,87 @@ class HTTPClient {
     HttpClientStub::lastHeaders.push_back({name.str(), value.str()});
   }
 
+  void collectHeaders(const char* headerKeys[], const size_t headerKeysCount) {
+    HttpClientStub::collectedHeaderKeys.clear();
+    _collectedKeys.clear();
+    for (size_t i = 0; i < headerKeysCount; i++) {
+      if (headerKeys[i]) {
+        HttpClientStub::collectedHeaderKeys.push_back(headerKeys[i]);
+        _collectedKeys.push_back(headerKeys[i]);
+      }
+    }
+  }
+
+  bool hasHeader(const char* name) {
+    if (!name) return false;
+    for (const auto& h : _currentHeaders) {
+      if (strcasecmp(h.first.c_str(), name) == 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  String header(const char* name) {
+    if (!name) return "";
+    for (const auto& h : _currentHeaders) {
+      if (strcasecmp(h.first.c_str(), name) == 0) {
+        return String(h.second.c_str());
+      }
+    }
+    return "";
+  }
+
+  String header(String name) {
+    return header(name.c_str());
+  }
+
+  String header(size_t i) {
+    if (i < _currentHeaders.size()) {
+      return String(_currentHeaders[i].second.c_str());
+    }
+    return "";
+  }
+
+  String headerName(size_t i) {
+    if (i < _currentHeaders.size()) {
+      return String(_currentHeaders[i].first.c_str());
+    }
+    return "";
+  }
+
+  int headers() {
+    return static_cast<int>(_currentHeaders.size());
+  }
+
   int GET() {
     HttpClientStub::lastMethod = "GET";
     HttpClientStub::lastPayload.clear();
-    std::string body;
-    int code = HttpClientStub::getNextStatusAndBody(body);
-    _stream = HttpClientStub::InMemoryStream(body);
-    return code;
+    return executeRequest();
   }
 
   int POST(const String& payload) {
     HttpClientStub::lastMethod = "POST";
     HttpClientStub::lastPayload = payload.str();
-    std::string body;
-    int code = HttpClientStub::getNextStatusAndBody(body);
-    _stream = HttpClientStub::InMemoryStream(body);
-    return code;
+    return executeRequest();
   }
 
   int PUT(const String& payload) {
     HttpClientStub::lastMethod = "PUT";
     HttpClientStub::lastPayload = payload.str();
-    std::string body;
-    int code = HttpClientStub::getNextStatusAndBody(body);
-    _stream = HttpClientStub::InMemoryStream(body);
-    return code;
+    return executeRequest();
   }
 
   int PATCH(const String& payload) {
     HttpClientStub::lastMethod = "PATCH";
     HttpClientStub::lastPayload = payload.str();
-    std::string body;
-    int code = HttpClientStub::getNextStatusAndBody(body);
-    _stream = HttpClientStub::InMemoryStream(body);
-    return code;
+    return executeRequest();
   }
 
   int sendRequest(const char* method, const String& payload) {
     HttpClientStub::lastMethod = method ? method : "";
     HttpClientStub::lastPayload = payload.str();
-    std::string body;
-    int code = HttpClientStub::getNextStatusAndBody(body);
-    _stream = HttpClientStub::InMemoryStream(body);
-    return code;
+    return executeRequest();
   }
 
   int getSize() {
@@ -166,6 +226,7 @@ class HTTPClient {
   }
 
   void end() {
+    _currentHeaders.clear();
   }
 
   static String errorToString(int error) {
@@ -186,7 +247,27 @@ class HTTPClient {
   }
 
  private:
+  int executeRequest() {
+    std::string body;
+    std::vector<std::pair<std::string, std::string>> respHeaders;
+    int code = HttpClientStub::getNextStatusAndBody(body, respHeaders);
+    _stream = HttpClientStub::InMemoryStream(body);
+
+    _currentHeaders.clear();
+    for (const auto& h : respHeaders) {
+      for (const auto& k : _collectedKeys) {
+        if (strcasecmp(h.first.c_str(), k.c_str()) == 0) {
+          _currentHeaders.push_back({k, h.second});
+          break;
+        }
+      }
+    }
+    return code;
+  }
+
   HttpClientStub::InMemoryStream _stream;
+  std::vector<std::string> _collectedKeys;
+  std::vector<std::pair<std::string, std::string>> _currentHeaders;
 };
 
 #endif
