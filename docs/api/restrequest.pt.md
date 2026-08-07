@@ -201,162 +201,135 @@ client.get("/users")
 
 ## Extraindo a Resposta
 
-`getBody()` é sobrecarregado para cada tipo C suportado. Ele registra uma vinculação entre um **caminho de chave JSON** e uma **variável alvo**. Todas as sobrecargas são encadeáveis.
-
-A vinculação usa o caminho para localizar o valor no fluxo JSON analisado. Se a chave não for encontrada, o valor alvo **permanece inalterado**.
+`getBody()` registra uma vinculação entre um **caminho de chave JSON** e uma **variável alvo**. Se a chave não for encontrada, o valor alvo **permanece inalterado**. Todas as sobrecargas são encadeáveis.
 
 ---
 
-### `getBody(key, int* target)`
+### `getBody(key, target)`
 
-Vincula um número JSON a um `int` C.
+Vincula um campo da resposta JSON a uma variável local através de sobrecargas de tipo:
 
 ```cpp
 RestRequest& getBody(const char* key, int* target);
+RestRequest& getBody(const char* key, long* target);
+RestRequest& getBody(const char* key, float* target);
+RestRequest& getBody(const char* key, double* target);
+RestRequest& getBody(const char* key, bool* target);
+RestRequest& getBody(const char* key, char* target, size_t maxLength);
+template <size_t N> RestRequest& getBody(const char* key, char (&target)[N]);
+RestRequest& getBody(const char* key, String* target);
 ```
+
+**Tipos suportados para `target`:**
+
+| Tipo da Variável | Tipo JSON Esperado | Comportamento |
+| :--- | :--- | :--- |
+| `int*` | Número inteiro | Trunca decimais se houver |
+| `long*` | Número inteiro | Útil para timestamps Unix e IDs grandes |
+| `float*` | Número de ponto flutuante | Até 5 dígitos significativos |
+| `double*` | Número de ponto flutuante | Até 9 dígitos significativos |
+| `bool*` | Booleano | `true` ou `false` |
+| `char*`, `size_t` / `char[N]` | String | Copia até `N-1` caracteres com terminador nulo |
+| `String*` | String / Objeto / Array | Copia o valor como texto ou JSON bruto |
 
 **Exemplo:**
 ```cpp
 int count;
-client.get("/stats").getBody("count", &count);
-```
-
----
-
-### `getBody(key, float* target)`
-
-Vincula um número JSON a um `float` C.
-
-```cpp
-RestRequest& getBody(const char* key, float* target);
-```
-
-**Exemplo:**
-```cpp
 float temp;
-client.get("/sensor").getBody("temperature", &temp);
-```
-
----
-
-### `getBody(key, double* target)`
-
-Vincula um número JSON a um `double` C.
-
-```cpp
-RestRequest& getBody(const char* key, double* target);
-```
-
-**Exemplo:**
-```cpp
-double voltage;
-client.get("/meter").getBody("voltage", &voltage);
-```
-
----
-
-### `getBody(key, long* target)`
-
-Vincula um inteiro JSON a um `long` C. Use para timestamps Unix e outros inteiros grandes.
-
-```cpp
-RestRequest& getBody(const char* key, long* target);
-```
-
-**Exemplo:**
-```cpp
-long unixTs;
-client.get("/time").getBody("unix_timestamp", &unixTs);
-```
-
----
-
-### `getBody(key, bool* target)`
-
-Vincula um booleano JSON (`true` / `false`) a um `bool` C.
-
-```cpp
-RestRequest& getBody(const char* key, bool* target);
-```
-
-**Exemplo:**
-```cpp
 bool active;
-client.get("/status").getBody("active", &active);
-```
-
----
-
-### `getBody(key, char* target, size_t maxLength)`
-
-Copia uma string JSON para um buffer `char` C. Grava no máximo `maxLength - 1` bytes e sempre inclui o caractere nulo final.
-
-```cpp
-RestRequest& getBody(const char* key, char* target, size_t maxLength);
-```
-
-**Exemplo:**
-```cpp
 char city[64];
-client.get("/user/1").getBody("address.city", city, sizeof(city));
+long timestamp;
+
+client.get("/sensor/data")
+      .getBody("count",       &count)
+      .getBody("temperature", &temp)
+      .getBody("active",      &active)
+      .getBody("location",    city)
+      .getBody("timestamp",   &timestamp);
 ```
 
 ---
 
-### `getBody(key, String* target)`
+### Captura de JSON Bruto com `String`
 
-Copia uma string, objeto ou array JSON para uma `String` do Arduino.
-
-- Para strings JSON primitivas, o valor da string é copiado.
-- Para objetos ou arrays JSON, o JSON bruto é capturado caractere por caractere.
-- Passe `""` (string vazia) como `key` para capturar todo o valor no nível raiz.
+Passe uma `String*` para capturar objetos, arrays ou a resposta inteira sem desserialização:
 
 ```cpp
-RestRequest& getBody(const char* key, String* target);
+String entireResponse;
+String firstUser;
+
+client.get("/users")
+      .getBody("",  &entireResponse) // Captura a resposta inteira da raiz
+      .getBody("0", &firstUser);     // Captura o primeiro elemento como JSON bruto
 ```
 
-**Exemplo:**
-```cpp
-String raw;
-client.get("/users").getBody("",  &raw);      // toda a resposta
-client.get("/users").getBody("0", &firstUser); // primeiro elemento do array
-```
-
-!!! warning
-    Use com cuidado para respostas grandes. Cada caractere é alocado individualmente na heap, o que pode causar fragmentação de memória.
+!!! warning "Aviso de Memória"
+    O uso de `String` com payloads muito grandes aloca memória na heap. Prefira tipos primitivos ou structs mapeadas sempre que possível.
 
 ---
 
-### `getBody(struct* target)`
+### Mapeamento de Structs com `getBody(&struct)`
 
-Vincula e preenche uma struct C++ mapeada com `REST_JSON_MAP` diretamente a partir do stream da resposta JSON na raiz.
-
-```cpp
-template <typename T>
-RestRequest& getBody(T* target);
-```
-
-**Exemplo:**
-```cpp
-User user;
-client.get("/users/1").getBody(&user);
-```
-
----
-
-### `getBody(key, struct* target)`
-
-Vincula e preenche uma struct C++ mapeada com `REST_JSON_MAP` a partir de um caminho de objeto JSON aninhado.
+Vincula e preenche uma struct C++ mapeada com `REST_JSON_MAP` diretamente na raiz ou a partir de um caminho aninhado:
 
 ```cpp
-template <typename T>
-RestRequest& getBody(const char* key, T* target);
+template <typename T> RestRequest& getBody(T* target);
+template <typename T> RestRequest& getBody(const char* key, T* target);
 ```
 
 **Exemplo:**
 ```cpp
 User user;
-client.get("/profile").getBody("data.user", &user);
+UserProfile profile;
+
+client.get("/user/1").getBody(&user);
+client.get("/dashboard").getBody("data.profile", &profile);
+```
+
+---
+
+## Extraindo Cabeçalhos da Resposta
+
+`getHeader()` registra a extração de cabeçalhos HTTP da resposta. A busca é **não sensível a maiúsculas/minúsculas (case-insensitive)** (ex: `"token"`, `"TOKEN"` e `"Token"` são equivalentes). Se o cabeçalho não estiver presente na resposta, a variável alvo **permanece inalterada**. Todas as sobrecargas são encadeáveis.
+
+### `getHeader(name, target)`
+
+```cpp
+RestRequest& getHeader(const char* name, String* target);
+RestRequest& getHeader(const char* name, char* target, size_t maxLength);
+template <size_t N> RestRequest& getHeader(const char* name, char (&target)[N]);
+RestRequest& getHeader(const char* name, int* target);
+RestRequest& getHeader(const char* name, long* target);
+RestRequest& getHeader(const char* name, float* target);
+RestRequest& getHeader(const char* name, double* target);
+RestRequest& getHeader(const char* name, bool* target);
+```
+
+**Tipos suportados para `target`:**
+
+| Tipo da Variável | Formato do Cabeçalho | Conversão / Comportamento |
+| :--- | :--- | :--- |
+| `String*` | Texto | Copia o valor completo do cabeçalho |
+| `char*`, `size_t` / `char[N]` | Texto | Copia até `N-1` caracteres com terminador nulo |
+| `int*` | Numérico | Converte via `atoi` (ex: `Content-Length`) |
+| `long*` | Numérico | Converte via `atol` (ex: `X-Timestamp`) |
+| `float*` | Numérico | Converte via `strtof` (ex: `X-Rate-Limit`) |
+| `double*` | Numérico | Converte via `strtod` |
+| `bool*` | Texto / Booleano | `true` para `"true"` ou `"1"`, `false` caso contrário |
+
+**Exemplo:**
+```cpp
+String token;
+char contentType[64];
+int contentLength;
+bool isCached;
+
+client.get("/auth")
+      .getHeader("token",          &token)
+      .getHeader("Content-Type",   contentType)
+      .getHeader("Content-Length", &contentLength)
+      .getHeader("X-Cache-Hit",    &isCached)
+      .getBody("id", &id);
 ```
 
 ---

@@ -107,19 +107,41 @@ client.get("/users")
 
 ---
 
+## Lendo Cabeçalhos de Resposta com `getHeader()`
+
+Além dos campos do corpo JSON, você pode extrair cabeçalhos HTTP da resposta diretamente usando `getHeader()`.
+
+```cpp
+String token;
+char contentType[64];
+int contentLength;
+
+client.get("/auth")
+      .getHeader("token",          &token)
+      .getHeader("Content-Type",   contentType)
+      .getHeader("Content-Length", &contentLength)
+      .getBody("id", &id);
+```
+
+As buscas por cabeçalhos **não diferenciam maiúsculas de minúsculas**, portanto `"token"`, `"TOKEN"` e `"Token"` funcionam de forma idêntica.
+
+---
+
 ## Garantias de Segurança
 
-!!! note "Chaves ausentes são seguras"
-    Se o caminho de uma chave não existir na resposta, estiver com erro de digitação ou o tipo não corresponder, a variável alvo é **mantida inalterada**. Nenhuma exceção é lançada, nenhum travamento ocorre e a biblioteca continua analisando o restante da resposta.
+!!! note "Chaves e cabeçalhos ausentes são seguros"
+    Se o caminho de uma chave ou um cabeçalho HTTP não existir na resposta, estiver com erro de digitação ou o tipo não corresponder, a variável alvo é **mantida inalterada**. Nenhuma exceção é lançada, nenhum travamento ocorre e a biblioteca continua analisando o restante da resposta.
 
-Isso torna seguro adicionar campos opcionais aos seus vínculos sem checagens defensivas:
+Isso torna seguro adicionar campos ou cabeçalhos opcionais aos seus vínculos sem checagens defensivas:
 
 ```cpp
 int optionalField = -1; // valor padrão
+String optionalToken = "";
 
 client.get("/data")
-      .getBody("requiredField", &myVar)
-      .getBody("optionalField", &optionalField); // inalterado se ausente
+      .getHeader("token",         &optionalToken)
+      .getBody("requiredField",   &myVar)
+      .getBody("optionalField",   &optionalField); // inalterado se ausente
 ```
 
 ---

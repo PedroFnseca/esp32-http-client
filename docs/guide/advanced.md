@@ -52,6 +52,9 @@ client.get("/protected/resource").getBody("data", &myVar);
 !!! note "Header persistence"
     Headers registered with `setHeader()`, `bearer()`, `basic()`, or `apiKey()` persist for the lifetime of the client object. They are sent on every request. To change a header, call the method again with the new value.
 
+!!! tip "Reading response headers"
+    `setHeader()` sets headers to send with the request. To read or collect headers returned by the server in the response (such as `token`, `Content-Length`, `Date`, etc.), use the `.getHeader()` method on `RestRequest`. See how to collect them in the [Reading Response Headers](responses.md#reading-response-headers-with-getheader) guide or the [RestRequest::getHeader](../api/restrequest.md#extracting-response-headers) API reference.
+
 ---
 
 ## Custom Content-Type

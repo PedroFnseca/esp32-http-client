@@ -179,6 +179,9 @@ client.setHeader("X-Device-ID",   "ESP32-001");
 !!! note
     Headers persist for the lifetime of the client instance. Call `setHeader()` again with the same name to overwrite.
 
+!!! tip "Reading response headers"
+    `setHeader()` sets headers to be sent in the **request**. To read headers returned by the server in the **response**, use [RestRequest::getHeader](restrequest.md#extracting-response-headers).
+
 ---
 
 ### `bearer(token)`

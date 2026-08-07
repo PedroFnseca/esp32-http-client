@@ -387,6 +387,8 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 
 `getBody()` is overloaded for each supported C type. It registers a binding between a JSON key path and a target variable. Use dot notation for nested fields and numeric segments for array indices.
 
+`getHeader()` is overloaded for each supported C type to extract HTTP response headers directly (e.g., `token`, `Content-Type`, `Date`). Header lookups are case-insensitive.
+
 | Method | Description | Example |
 | :--- | :--- | :--- |
 | `getBody(key, int* target)` | Binds a JSON integer to `*target`. | `client.get("/data").getBody("count", &myInt)` |
@@ -398,9 +400,10 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 | `getBody(key, String* target)` | Copies a raw JSON object or array into an Arduino `String`. Pass `""` to capture the entire response. | `client.get("/users").getBody("", &entireJson)` |
 | `getBody(struct* target)` | Binds and populates a mapped struct directly from root JSON response. | `client.get("/users/1").getBody(&user)` |
 | `getBody(key, struct* target)` | Binds and populates a mapped struct from nested JSON object path. | `client.get("/profile").getBody("data.user", &user)` |
+| `getHeader(name, target)` | Extracts an HTTP response header into `target` (`String*`, `char*`/`char[N]`, `int*`, `long*`, `float*`, `double*`, `bool*`). Case-insensitive. | `client.get("/auth").getHeader("token", &token)` |
 
 > [!NOTE]
-> If a key is missing or the path does not exist, the target variable is left unchanged. No exception is thrown and no crash occurs.
+> If a key or header is missing, the target variable is left unchanged. No exception is thrown and no crash occurs.
 
 #### Full chaining example
 
@@ -408,6 +411,7 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 int userId;
 float temperature;
 char city[32];
+String token;
 
 client.post("/report")
       .body("device", "esp32-cam")
@@ -416,6 +420,7 @@ client.post("/report")
       .retry(2)
       .onSuccess([](int code) { Serial.printf("OK: %d\n", code); })
       .onError([](int code, const char* msg) { Serial.printf("Fail (%d): %s\n", code, msg); })
+      .getHeader("token", &token)              // String — response header
       .getBody("userId", &userId)            // int — root field
       .getBody("sensor.temp", &temperature)  // float — nested object
       .getBody("0.address.city", city, sizeof(city)); // char* — array index + nested

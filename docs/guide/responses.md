@@ -107,19 +107,41 @@ client.get("/users")
 
 ---
 
+## Reading Response Headers with `getHeader()`
+
+In addition to JSON body fields, you can extract HTTP response headers directly using `getHeader()`.
+
+```cpp
+String token;
+char contentType[64];
+int contentLength;
+
+client.get("/auth")
+      .getHeader("token",          &token)
+      .getHeader("Content-Type",   contentType)
+      .getHeader("Content-Length", &contentLength)
+      .getBody("id", &id);
+```
+
+Header lookups are **case-insensitive**, so `"token"`, `"TOKEN"`, and `"Token"` all work identically.
+
+---
+
 ## Safety Guarantees
 
-!!! note "Missing keys are safe"
-    If a key path does not exist in the response, is misspelled, or the type doesn't match, the target variable is **left unchanged**. No exception is thrown, no crash occurs, and the library continues parsing the rest of the response.
+!!! note "Missing keys and headers are safe"
+    If a JSON key path or response header does not exist in the response, is misspelled, or the type doesn't match, the target variable is **left unchanged**. No exception is thrown, no crash occurs, and the library continues parsing the rest of the response.
 
-This makes it safe to add optional fields to your bindings without defensive checks:
+This makes it safe to add optional fields or optional headers to your bindings without defensive checks:
 
 ```cpp
 int optionalField = -1; // default value
+String optionalToken = "";
 
 client.get("/data")
-      .getBody("requiredField", &myVar)
-      .getBody("optionalField", &optionalField); // unchanged if missing
+      .getHeader("token",         &optionalToken)
+      .getBody("requiredField",   &myVar)
+      .getBody("optionalField",   &optionalField); // unchanged if missing
 ```
 
 ---

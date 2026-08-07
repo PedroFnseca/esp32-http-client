@@ -179,6 +179,9 @@ client.setHeader("X-Device-ID",   "ESP32-001");
 !!! note
     Cabeçalhos persistem durante todo o ciclo de vida da instância do cliente. Chame `setHeader()` novamente com o mesmo nome para sobrescrevê-lo.
 
+!!! tip "Lendo cabeçalhos de resposta"
+    `setHeader()` define cabeçalhos a serem enviados na **requisição**. Para ler cabeçalhos retornados pelo servidor na **resposta**, utilize [RestRequest::getHeader](restrequest.pt.md#extraindo-cabecalhos-da-resposta).
+
 ---
 
 ### `bearer(token)`

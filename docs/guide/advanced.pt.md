@@ -52,6 +52,9 @@ client.get("/protected/resource").getBody("data", &minhaVar);
 !!! note "Persistência de cabeçalhos"
     Cabeçalhos registrados com `setHeader()`, `bearer()`, `basic()` ou `apiKey()` persistem durante todo o ciclo de vida do objeto cliente. Eles são enviados a cada requisição. Para alterar um cabeçalho ou token, chame o método novamente com o novo valor.
 
+!!! tip "Lendo cabeçalhos da resposta"
+    `setHeader()` define cabeçalhos para envio na requisição. Se você precisa ler cabeçalhos retornados pelo servidor na resposta (como `token`, `Content-Length`, `Date`, etc.), utilize o método `.getHeader()` do `RestRequest`. Veja como coletá-los no guia [Lendo Cabeçalhos de Resposta](responses.pt.md#lendo-cabecalhos-de-resposta-com-getheader) ou na referência de [RestRequest::getHeader](../api/restrequest.pt.md#extraindo-cabecalhos-da-resposta).
+
 ---
 
 ## Content-Type Personalizado
