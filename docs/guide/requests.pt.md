@@ -104,8 +104,10 @@ client.del("/sessions")
 | Tipo C | Saída JSON | Exemplo |
 | :--- | :--- | :--- |
 | `const char*` / `char*` | `"string"` (entre aspas) | `.body("name", "Pedro")` |
-| `int` | `42` | `.body("age", 21)` |
-| `long` | `1721000000` | `.body("ts", unixTime)` |
+| `String` | `"string"` (entre aspas) | `.body("title", title)` |
+| `int` / `unsigned int` | `42` | `.body("age", 21)` |
+| `long` / `unsigned long` | `1721000000` | `.body("ts", unixTime)` |
+| `long long` / `uint64_t` | `12345678901234` | `.body("id", largeId)` |
 | `float` | `24.5` | `.body("temp", 24.5f)` |
 | `double` | `3.14159265` | `.body("pi", 3.14159265)` |
 | `bool` | `true` / `false` | `.body("active", true)` |

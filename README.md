@@ -373,8 +373,8 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 
 | Method | Description | Example |
 | :--- | :--- | :--- |
-| `path(key, value)` | Replaces a `{placeholder}` in the URL path. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/users/{id}").path("id", 15)` |
-| `query(key, value)` | Appends a URL query parameter. Supports `int`, `float`, `double`, `bool`, `long`, and `const char*`. Chainable. | `client.get("/users").query("page", 2).query("limit", 20)` |
+| `path(key, value)` | Replaces a `{placeholder}` in the URL path. Supports `String`, `const char*`, `int`, `long`, `float`, `double`, and `bool`. Chainable. | `client.get("/users/{id}").path("id", 15)` |
+| `query(key, value)` | Appends a URL query parameter. Supports `String`, `const char*`, `int`, `long`, `float`, `double`, and `bool`. Chainable. | `client.get("/users").query("page", 2).query("limit", 20)` |
 | `body(key, value)` | Adds a field to the JSON request body. Supports the same types as `query()`. Chainable. | `client.post("/users").body("name", "Pedro").body("age", 21)` |
 | `body(struct)` | Sets full JSON request body serialized from a mapped struct. Chainable. | `client.post("/users").body(user)` |
 | `timeout(ms)` | Overrides timeout for this specific request in milliseconds. Chainable. | `client.get("/data").timeout(2000)` |
