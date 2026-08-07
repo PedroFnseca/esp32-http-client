@@ -31,13 +31,13 @@ class RestRequest {
   RestRequest& onResponse(HttpResponseCallback cb);
 
   template <typename T>
-  RestRequest& path(const char* key, T value);
+  RestRequest& path(const char* key, const T& value);
 
   template <typename T>
-  RestRequest& query(const char* key, T value);
+  RestRequest& query(const char* key, const T& value);
 
   template <typename T>
-  RestRequest& body(const char* key, T value);
+  RestRequest& body(const char* key, const T& value);
 
   template <typename T>
   typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
@@ -50,6 +50,9 @@ class RestRequest {
   RestRequest& getBody(const char* key, char* target, size_t maxLength);
   RestRequest& getBody(const char* key, long* target);
   RestRequest& getBody(const char* key, String* target);
+
+  template <size_t N>
+  RestRequest& getBody(const char* key, char (&target)[N]);
 
   template <typename T>
   typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type
@@ -101,9 +104,23 @@ class RestRequest {
   void execute();
   void parseResponse(BufferedStreamReader& r);
 
-  template <typename T>
-  void addParam(std::vector<KeyValue>& list, const char* key, T value);
+  void addParam(std::vector<KeyValue>& list, const char* key, const char* value);
+  void addParam(std::vector<KeyValue>& list, const char* key, const String& value);
+  void addParam(std::vector<KeyValue>& list, const char* key, bool value);
+  void addParam(std::vector<KeyValue>& list, const char* key, int value);
+  void addParam(std::vector<KeyValue>& list, const char* key, unsigned int value);
+  void addParam(std::vector<KeyValue>& list, const char* key, long value);
+  void addParam(std::vector<KeyValue>& list, const char* key, unsigned long value);
+  void addParam(std::vector<KeyValue>& list, const char* key, long long value);
+  void addParam(std::vector<KeyValue>& list, const char* key, unsigned long long value);
+  void addParam(std::vector<KeyValue>& list, const char* key, float value);
+  void addParam(std::vector<KeyValue>& list, const char* key, double value);
 };
+
+template <size_t N>
+inline RestRequest& RestRequest::getBody(const char* key, char (&target)[N]) {
+  return getBody(key, target, N);
+}
 
 template <size_t N>
 inline RestRequest& RestRequest::getHeader(const char* name, char (&target)[N]) {
@@ -111,19 +128,19 @@ inline RestRequest& RestRequest::getHeader(const char* name, char (&target)[N]) 
 }
 
 template <typename T>
-RestRequest& RestRequest::path(const char* key, T value) {
+RestRequest& RestRequest::path(const char* key, const T& value) {
   addParam(_pathParams, key, value);
   return *this;
 }
 
 template <typename T>
-RestRequest& RestRequest::query(const char* key, T value) {
+RestRequest& RestRequest::query(const char* key, const T& value) {
   addParam(_queryParams, key, value);
   return *this;
 }
 
 template <typename T>
-RestRequest& RestRequest::body(const char* key, T value) {
+RestRequest& RestRequest::body(const char* key, const T& value) {
   addParam(_bodyParams, key, value);
   return *this;
 }
@@ -157,28 +174,34 @@ RestRequest::getBody(const char* key, T* target) {
   return *this;
 }
 
-template <typename T>
-void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, T value) {
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, const char* value) {
   KeyValue kv;
   kv.key = key;
-  kv.quoteValue = false;
-
-  if constexpr (std::is_same<T, const char*>::value || std::is_same<T, char*>::value) {
-    strncpy(kv.valueBuffer, (const char*)value, sizeof(kv.valueBuffer) - 1);
-    kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
-    kv.quoteValue = true;
-  } else if constexpr (std::is_same<T, bool>::value) {
-    strncpy(kv.valueBuffer, value ? "true" : "false", sizeof(kv.valueBuffer) - 1);
-    kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
-    kv.quoteValue = false;
-  } else {
-    snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%.2f", (float)value);
-  }
+  strncpy(kv.valueBuffer, value ? value : "", sizeof(kv.valueBuffer) - 1);
+  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.quoteValue = true;
   list.push_back(kv);
 }
 
-template <>
-inline void RestRequest::addParam<int>(std::vector<KeyValue>& list, const char* key, int value) {
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, const String& value) {
+  KeyValue kv;
+  kv.key = key;
+  strncpy(kv.valueBuffer, value.c_str(), sizeof(kv.valueBuffer) - 1);
+  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.quoteValue = true;
+  list.push_back(kv);
+}
+
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, bool value) {
+  KeyValue kv;
+  kv.key = key;
+  strncpy(kv.valueBuffer, value ? "true" : "false", sizeof(kv.valueBuffer) - 1);
+  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.quoteValue = false;
+  list.push_back(kv);
+}
+
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, int value) {
   KeyValue kv;
   kv.key = key;
   snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%d", value);
@@ -187,8 +210,16 @@ inline void RestRequest::addParam<int>(std::vector<KeyValue>& list, const char* 
   list.push_back(kv);
 }
 
-template <>
-inline void RestRequest::addParam<long>(std::vector<KeyValue>& list, const char* key, long value) {
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned int value) {
+  KeyValue kv;
+  kv.key = key;
+  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%u", value);
+  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.quoteValue = false;
+  list.push_back(kv);
+}
+
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, long value) {
   KeyValue kv;
   kv.key = key;
   snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%ld", value);
@@ -197,8 +228,34 @@ inline void RestRequest::addParam<long>(std::vector<KeyValue>& list, const char*
   list.push_back(kv);
 }
 
-template <>
-inline void RestRequest::addParam<float>(std::vector<KeyValue>& list, const char* key, float value) {
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned long value) {
+  KeyValue kv;
+  kv.key = key;
+  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%lu", value);
+  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.quoteValue = false;
+  list.push_back(kv);
+}
+
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, long long value) {
+  KeyValue kv;
+  kv.key = key;
+  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%lld", value);
+  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.quoteValue = false;
+  list.push_back(kv);
+}
+
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned long long value) {
+  KeyValue kv;
+  kv.key = key;
+  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%llu", value);
+  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.quoteValue = false;
+  list.push_back(kv);
+}
+
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, float value) {
   KeyValue kv;
   kv.key = key;
   snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%.5g", value);
@@ -207,23 +264,12 @@ inline void RestRequest::addParam<float>(std::vector<KeyValue>& list, const char
   list.push_back(kv);
 }
 
-template <>
-inline void RestRequest::addParam<double>(std::vector<KeyValue>& list, const char* key, double value) {
+inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, double value) {
   KeyValue kv;
   kv.key = key;
   snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%.9g", value);
   kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
   kv.quoteValue = false;
-  list.push_back(kv);
-}
-
-template <>
-inline void RestRequest::addParam<const char*>(std::vector<KeyValue>& list, const char* key, const char* value) {
-  KeyValue kv;
-  kv.key = key;
-  strncpy(kv.valueBuffer, value ? value : "", sizeof(kv.valueBuffer) - 1);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
-  kv.quoteValue = true;
   list.push_back(kv);
 }
 
