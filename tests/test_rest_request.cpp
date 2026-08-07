@@ -1291,6 +1291,77 @@ void testGetHeaderAllHttpMethods() {
   expectEq(updateToken.c_str(), "update-token-5", "getHeader on update alias");
   expectEq(HttpClientStub::lastMethod.c_str(), "PUT", "HTTP method update calls PUT");
 }
+
+void testStringAndNumericTypesInParams() {
+  ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
+
+  String title = "asd";
+  String desc = "test-desc";
+  String route = "items";
+  String idStr = "42";
+
+  RestRequest req(&client, "/{route}/{id}", HTTP_POST_METHOD);
+  req.path("route", route)
+     .path("id", idStr)
+     .query("filter", String("active"))
+     .query("u_int", 500u)
+     .query("u_long", 12345678UL)
+     .query("i64", 9876543210LL)
+     .query("u64", 18446744073709551615ULL)
+     .body("title", title)
+     .body("desc", String("inline-string"))
+     .body("u_int", 42u)
+     .body("u_long", 99999999UL)
+     .body("i64", 12345678901234LL)
+     .body("u64", 99999999999999ULL);
+
+  expectEqInt(static_cast<long long>(req._pathParams.size()), 2, "path params count");
+  expectEq(req._pathParams[0].valueBuffer, "items", "String path param route");
+  expectEq(req._pathParams[1].valueBuffer, "42", "String path param id");
+
+  expectEqInt(static_cast<long long>(req._queryParams.size()), 5, "query params count");
+  expectEq(req._queryParams[0].valueBuffer, "active", "String query param");
+  expectTrue(req._queryParams[0].quoteValue, "String query quoteValue is true");
+  expectEq(req._queryParams[1].valueBuffer, "500", "unsigned int query param");
+  expectEq(req._queryParams[2].valueBuffer, "12345678", "unsigned long query param");
+  expectEq(req._queryParams[3].valueBuffer, "9876543210", "long long query param");
+  expectEq(req._queryParams[4].valueBuffer, "18446744073709551615", "unsigned long long query param");
+
+  expectEqInt(static_cast<long long>(req._bodyParams.size()), 6, "body params count");
+  expectEq(req._bodyParams[0].valueBuffer, "asd", "String body param");
+  expectTrue(req._bodyParams[0].quoteValue, "String body quoteValue is true");
+  expectEq(req._bodyParams[1].valueBuffer, "inline-string", "temporary String body param");
+  expectTrue(req._bodyParams[1].quoteValue, "temporary String body quoteValue is true");
+  expectEq(req._bodyParams[2].valueBuffer, "42", "unsigned int body param");
+  expectTrue(!req._bodyParams[2].quoteValue, "unsigned int body quoteValue is false");
+  expectEq(req._bodyParams[3].valueBuffer, "99999999", "unsigned long body param");
+  expectTrue(!req._bodyParams[3].quoteValue, "unsigned long body quoteValue is false");
+  expectEq(req._bodyParams[4].valueBuffer, "12345678901234", "long long body param");
+  expectTrue(!req._bodyParams[4].quoteValue, "long long body quoteValue is false");
+  expectEq(req._bodyParams[5].valueBuffer, "99999999999999", "unsigned long long body param");
+  expectTrue(!req._bodyParams[5].quoteValue, "unsigned long long body quoteValue is false");
+
+  req._executed = true;
+
+  // Test full POST execution with String body param (exact user reproduction)
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"success\":true}");
+  {
+    String postTitle = "asd";
+    client.post("/todos/1")
+          .body("title", postTitle);
+  }
+  expectEq(HttpClientStub::lastMethod, "POST", "POST method called");
+  expectEq(HttpClientStub::lastUrl, "https://jsonplaceholder.typicode.com/todos/1", "POST url");
+  expectEq(HttpClientStub::lastPayload, "{\"title\":\"asd\"}", "POST payload matches user example");
+
+  // Test getBody char array overload
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"name\":\"device-1\"}");
+  char nameBuffer[32] = {0};
+  client.get("/device").getBody("name", nameBuffer);
+  expectEq(nameBuffer, "device-1", "getBody into char array buffer");
+}
 }
 
 int main() {
@@ -1310,6 +1381,7 @@ int main() {
   runSuite("MoreParseEdgeCases", testMoreParseEdgeCases);
   runSuite("ParseEmptyObjectOrArray", testParseEmptyObjectOrArray);
   runSuite("AddParamAdvanced", testAddParamAdvanced);
+  runSuite("StringAndNumericTypesInParams", testStringAndNumericTypesInParams);
   runSuite("ExecuteCustomPortWithPath", testExecuteCustomPortWithPath);
   runSuite("ParseEscapedStringsSimple", testParseEscapedStringsSimple);
   runSuite("SkipValueAdvanced", testSkipValueAdvanced);
