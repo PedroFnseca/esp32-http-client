@@ -13,7 +13,7 @@
     "stream",
     "embedded"
   ],
-  "homepage": "https://pedrofnseca.github.io/esp32-http-client/",
+  "homepage": "https://esp32httpclient.com/docs/",
   "repository": {
     "type": "git",
     "url": "https://github.com/PedroFnseca/esp32-http-client.git"

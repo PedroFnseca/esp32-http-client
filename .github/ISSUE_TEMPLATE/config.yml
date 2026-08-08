@@ -2,5 +2,5 @@ blank_issues_enabled: false
 
 contact_links:
   - name: Documentation
-    url: https://pedrofnseca.github.io/esp32-http-client/
+    url: https://esp32httpclient.com/docs/
     about: Check the documentation before opening an issue.

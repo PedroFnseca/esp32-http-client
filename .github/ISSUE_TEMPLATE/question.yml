@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before asking a question, please check our [Documentation](https://pedrofnseca.github.io/esp32-http-client/) first.
+        Before asking a question, please check our [Documentation](https://esp32httpclient.com/docs/) first.
 
   - type: textarea
     id: question
