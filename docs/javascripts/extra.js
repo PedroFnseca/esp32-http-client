@@ -5,7 +5,7 @@
         var link = e.target.closest("a[href*='/pt/'], a[href$='/pt'], a.md-select__link");
         if (link) {
             var href = link.getAttribute("href") || "";
-            if (href.includes("/pt/") || href.endsWith("/pt")) {
+            if (href.includes("/pt/") || href.endsWith("/pt") || /(?:^|\/)pt(?:\/|$)/.test(href)) {
                 sessionStorage.setItem("user_lang_preference", "pt");
             } else {
                 sessionStorage.setItem("user_lang_preference", "en");
@@ -17,19 +17,31 @@
         var userLang = (navigator.language || navigator.userLanguage || "").toLowerCase();
         var isPortuguese = userLang.startsWith("pt");
         var currentPath = window.location.pathname;
-        var isPtPath = currentPath.includes("/pt/") || currentPath.endsWith("/pt");
+        var isPtPath = /(?:^|\/)pt(?:\/|$)/.test(currentPath);
 
         if (isPortuguese && !isPtPath) {
             sessionStorage.setItem("user_lang_preference", "pt");
-            var targetPath = currentPath;
             
-            if (targetPath.endsWith("/")) {
-                targetPath = targetPath + "pt/";
-            } else {
-                var lastSlash = targetPath.lastIndexOf("/");
-                targetPath = targetPath.substring(0, lastSlash) + "/pt" + targetPath.substring(lastSlash);
+            var knownBases = ["/docs", "/esp32-http-client"];
+            var base = "";
+            for (var i = 0; i < knownBases.length; i++) {
+                if (currentPath === knownBases[i] || currentPath.startsWith(knownBases[i] + "/")) {
+                    base = knownBases[i];
+                    break;
+                }
             }
             
+            var relativePath = currentPath.slice(base.length);
+            if (!relativePath.startsWith("/")) {
+                relativePath = "/" + relativePath;
+            }
+            
+            var targetPath = base + "/pt" + relativePath;
+            if (currentPath.endsWith("/") && !targetPath.endsWith("/")) {
+                targetPath += "/";
+            }
+            
+            targetPath += window.location.search + window.location.hash;
             window.location.replace(targetPath);
         } else if (!isPortuguese) {
             sessionStorage.setItem("user_lang_preference", "en");
@@ -53,14 +65,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    var isPtPage = window.location.pathname.includes("/pt/") || window.location.pathname.endsWith("/pt");
+    var isPtPage = /(?:^|\/)pt(?:\/|$)/.test(window.location.pathname);
     
     function filterSearchContainer(container) {
         if (!container) return;
         var links = container.querySelectorAll("a.md-search-result__link, .md-search-result__item a");
         links.forEach(function(link) {
             var href = link.getAttribute("href") || "";
-            var isPtLink = href.includes("/pt/") || href.startsWith("pt/") || href.startsWith("../pt/");
+            var isPtLink = href.includes("/pt/") || href.startsWith("pt/") || href.startsWith("../pt/") || /(?:^|\/)pt(?:\/|$)/.test(href);
             
             var item = link.closest(".md-search-result__item") || link.parentElement;
             if (!item) return;
