@@ -2,5 +2,5 @@ blank_issues_enabled: false
 
 contact_links:
   - name: Documentation
-    url: https://esp32httpclient.com/docs/
+    url: https://esp32httpclient.com/
     about: Check the documentation before opening an issue.

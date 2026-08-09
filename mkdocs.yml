@@ -1,5 +1,5 @@
 site_name: ESP32-HTTP-Client
-site_url: https://esp32httpclient.com/docs/
+site_url: https://esp32httpclient.com/
 site_description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling.
 site_author: Pedro Fonseca
 repo_name: PedroFnseca/esp32-http-client

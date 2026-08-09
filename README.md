@@ -1,7 +1,7 @@
-# [ESP32 HTTP Client](https://esp32httpclient.com/docs/) the Easy Way & Low Memory Footprint
+# [ESP32 HTTP Client](https://esp32httpclient.com/) the Easy Way & Low Memory Footprint
 **A high-performance, fluent, and object-oriented HTTP client for ESP32 with direct JSON binding capabilities.**
 
-## **[Official Documentation](https://esp32httpclient.com/docs/)** Get started quickly with the [Quick Start Guide](https://esp32httpclient.com/docs/getting-started/quickstart) or explore the [API Reference](https://esp32httpclient.com/docs/api/esp32httpclient/) for detailed usage.
+## **[Official Documentation](https://esp32httpclient.com/)** Get started quickly with the [Quick Start Guide](https://esp32httpclient.com/getting-started/quickstart) or explore the [API Reference](https://esp32httpclient.com/api/esp32httpclient/) for detailed usage.
 
 [![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
 [![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
