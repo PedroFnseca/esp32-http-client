@@ -16,6 +16,7 @@ extra:
       name: GitHub Repository
 
 theme:
+  favicon: assets/favicon.ico
   custom_dir: overrides
   icon:
     logo: material/memory
