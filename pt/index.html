@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling.">
+        <meta name="description" content="Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++ e vínculo direto de JSON.">
       
       
         <meta name="author" content="Pedro Fonseca">
@@ -31,7 +31,7 @@
     
     
       
-        <title>Início - ESP32-HTTP-Client</title>
+        <title>Cliente HTTP ESP32 - Biblioteca REST Rápida e Zero Heap para Arduino e PlatformIO - ESP32-HTTP-Client</title>
       
     
     
@@ -76,8 +76,75 @@
     
     
   
+  <meta name="keywords" content="Cliente HTTP ESP32, API REST Arduino ESP32, Parser JSON ESP32, Requisição GET POST ESP32, PlatformIO ESP32, biblioteca C++ ESP32">
+  <meta name="author" content="Pedro Fonseca">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ESP32-HTTP-Client Documentation">
+  <meta property="og:url" content="https://esp32httpclient.com/pt/">
+  <meta property="og:title" content="Início - ESP32-HTTP-Client">
+  <meta property="og:description" content="Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++ e vínculo direto de JSON.">
+  <meta property="og:image" content="https://esp32httpclient.com/assets/preview.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Início - ESP32-HTTP-Client">
+  <meta name="twitter:description" content="Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++ e vínculo direto de JSON.">
+  <meta name="twitter:image" content="https://esp32httpclient.com/assets/preview.png">
+
+  <!-- JSON-LD Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ESP32-HTTP-Client",
+    "operatingSystem": "ESP32, ESP-IDF, FreeRTOS, Arduino",
+    "applicationCategory": "DeveloperApplication",
+    "programmingLanguage": "C++",
+    "description": "Fluent, zero-heap allocation HTTP client for ESP32 designed for REST APIs and direct JSON field binding.",
+    "url": "https://esp32httpclient.com/",
+    "codeRepository": "https://github.com/PedroFnseca/esp32-http-client",
+    "license": "https://opensource.org/licenses/MIT",
+    "author": {
+      "@type": "Person",
+      "name": "Pedro Fonseca",
+      "url": "https://github.com/PedroFnseca"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Início",
+    "description": "Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++ e vínculo direto de JSON.",
+    "url": "https://esp32httpclient.com/pt/",
+    "author": {
+      "@type": "Person",
+      "name": "Pedro Fonseca",
+      "url": "https://github.com/PedroFnseca"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ESP32-HTTP-Client",
+      "url": "https://esp32httpclient.com/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ESP32-HTTP-Client Documentation",
+    "url": "https://esp32httpclient.com/"
+  }
+  </script>
+
+  
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Início - ESP32-HTTP-Client" />
+<meta property="og:title" content="Cliente HTTP ESP32 - Biblioteca REST Rápida e Zero Heap para Arduino e PlatformIO - ESP32-HTTP-Client" />
 <meta property="og:description" content="ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling." />
 <meta property="og:image" content="https://esp32httpclient.com/assets/images/social/pt/index.png" />
 <meta property="og:image:type" content="image/png" />
@@ -85,7 +152,7 @@
 <meta property="og:image:height" content="630" />
 <meta property="og:url" content="https://esp32httpclient.com/pt/" />
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:title" content="Início - ESP32-HTTP-Client" />
+<meta property="twitter:title" content="Cliente HTTP ESP32 - Biblioteca REST Rápida e Zero Heap para Arduino e PlatformIO - ESP32-HTTP-Client" />
 <meta property="twitter:description" content="ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling." />
 <meta property="twitter:image" content="https://esp32httpclient.com/assets/images/social/pt/index.png" />
 </head>
@@ -143,7 +210,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Início
+              Cliente HTTP ESP32 - Biblioteca REST Rápida e Zero Heap para Arduino e PlatformIO
             
           </span>
         </div>
@@ -1650,7 +1717,7 @@
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="2 de agosto de 2026 01:51:29 UTC">2 de agosto de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="10 de agosto de 2026 17:36:54 UTC">10 de agosto de 2026</span>
   </span>
 
     
