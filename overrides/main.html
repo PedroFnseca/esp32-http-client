@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% block htmltitle %}
+  {% if page and page.meta and page.meta.title %}
+    <title>{{ page.meta.title }}</title>
+  {% elif page and page.title %}
+    <title>{{ page.title }}</title>
+  {% else %}
+    <title>{{ config.site_name }} - Fast Zero-Heap REST Library</title>
+  {% endif %}
+{% endblock %}
+
 {% block extrahead %}
   <!-- Eliminate Render-Blocking Resources: Preconnect to font and analytics servers -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -22,13 +32,13 @@
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ESP32-HTTP-Client Documentation">
   <meta property="og:url" content="{{ page.canonical_url | default(config.site_url) }}">
-  <meta property="og:title" content="{% if page and page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}">
+  <meta property="og:title" content="{% if page and page.meta and page.meta.title %}{{ page.meta.title }}{% elif page and page.title %}{{ page.title }}{% else %}{{ config.site_name }}{% endif %}">
   <meta property="og:description" content="{% if page and page.meta and page.meta.description %}{{ page.meta.description }}{% else %}{{ config.site_description }}{% endif %}">
   <meta property="og:image" content="{{ config.site_url }}assets/preview.png">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{% if page and page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}">
+  <meta name="twitter:title" content="{% if page and page.meta and page.meta.title %}{{ page.meta.title }}{% elif page and page.title %}{{ page.title }}{% else %}{{ config.site_name }}{% endif %}">
   <meta name="twitter:description" content="{% if page and page.meta and page.meta.description %}{{ page.meta.description }}{% else %}{{ config.site_description }}{% endif %}">
   <meta name="twitter:image" content="{{ config.site_url }}assets/preview.png">
 
@@ -56,7 +66,7 @@
   {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "headline": "{% if page and page.title %}{{ page.title }}{% else %}ESP32-HTTP-Client Documentation{% endif %}",
+    "headline": "{% if page and page.meta and page.meta.title %}{{ page.meta.title }}{% elif page and page.title %}{{ page.title }}{% else %}ESP32-HTTP-Client Documentation{% endif %}",
     "description": "{% if page and page.meta and page.meta.description %}{{ page.meta.description }}{% else %}{{ config.site_description }}{% endif %}",
     "url": "{{ page.canonical_url | default(config.site_url) }}",
     "author": {
