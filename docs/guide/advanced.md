@@ -1,4 +1,7 @@
 ---
+title: Advanced ESP32 HTTP Client Features - Auth, Callbacks & Retries
+description: Advanced HTTP client patterns on ESP32: Bearer JWT & Basic Auth, request callbacks, custom headers, Keep-Alive, timeout retries, and dynamic URLs.
+keywords: ESP32 HTTP authentication, ESP32 Bearer token, HTTP headers ESP32, Keep-Alive ESP32, request callbacks ESP32
 tags:
   - guide
   - advanced

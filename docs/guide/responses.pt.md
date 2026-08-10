@@ -1,4 +1,7 @@
 ---
+title: Lendo Respostas HTTP e Parsing JSON Zero Heap no ESP32
+description: Aprenda como vincular campos de resposta JSON diretamente a tipos primitivos, structs e arrays em C++ sem alocação dinâmica no ESP32.
+keywords: vinculo JSON ESP32, parser JSON zero heap ESP32, ler resposta HTTP Arduino ESP32, getBody ESP32HTTPClient
 tags:
   - guide
   - response

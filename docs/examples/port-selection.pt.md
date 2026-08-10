@@ -1,4 +1,7 @@
 ---
+title: Exemplo de Conexão em Portas HTTP/HTTPS Personalizadas no ESP32
+description: Exemplo mostrando como configurar portas de servidor personalizadas (ex: :8080, :3000) para requisições com ESP32HTTPClient.
+keywords: porta HTTP personalizada ESP32, porta HTTP 8080 3000 ESP32, conectar porta personalizada Arduino ESP32, selecao de porta HTTP ESP32
 tags:
   - example
   - port

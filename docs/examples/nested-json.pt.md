@@ -1,4 +1,7 @@
 ---
+title: Exemplo de Parsing de Objetos JSON Aninhados no ESP32
+description: Exemplo demonstrando como extrair campos JSON profundamente aninhados utilizando notação por ponto sem alocação dinâmica no ESP32.
+keywords: JSON aninhado ESP32, notacao por ponto JSON ESP32, parser JSON complexo ESP32, parser JSON zero heap
 tags:
   - example
   - json

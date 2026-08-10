@@ -1,4 +1,7 @@
 ---
+title: FAQ e Solução de Problemas do Cliente HTTP ESP32
+description: Perguntas frequentes, dicas de otimização de memória RAM e solução de problemas para ESP32-HTTP-Client no Arduino IDE e PlatformIO.
+keywords: FAQ cliente HTTP ESP32, vazamento de memória ESP32, problemas HTTP GET POST Arduino, solução de problemas REST API ESP32
 tags:
   - FAQ
   - Help

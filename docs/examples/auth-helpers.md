@@ -1,4 +1,7 @@
 ---
+title: ESP32 HTTP Authentication Example (Bearer JWT, Basic Auth & API Key)
+description: Complete example for authenticating ESP32 REST API requests using Bearer tokens, HTTP Basic Auth, and API Key headers.
+keywords: ESP32 HTTP authentication, ESP32 Bearer token, ESP32 Basic Auth example, ESP32 API key header
 tags:
   - example
   - auth

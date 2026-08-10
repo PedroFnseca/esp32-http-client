@@ -1,4 +1,7 @@
 ---
+title: Connecting to Custom HTTP/HTTPS Ports on ESP32 Example
+description: Example showing how to configure custom server ports (e.g., :8080, :3000) for ESP32HTTPClient requests.
+keywords: ESP32 custom HTTP port, ESP32 HTTP port 8080 3000, connect custom port Arduino ESP32, ESP32 HTTP port selection
 tags:
   - example
   - port

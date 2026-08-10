@@ -1,4 +1,7 @@
 ---
+title: Capturing Raw JSON Strings & Sub-Objects on ESP32 Example
+description: Example showing how to capture unparsed raw JSON strings or entire sub-objects into an Arduino String variable on ESP32.
+keywords: ESP32 raw JSON string, capture raw JSON ESP32, Arduino String raw JSON payload, ESP32 HTTP raw response
 tags:
   - example
   - json

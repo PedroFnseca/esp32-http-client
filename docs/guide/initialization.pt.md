@@ -1,4 +1,7 @@
 ---
+title: Inicialização do Cliente HTTP ESP32 e Configuração de URL Base
+description: Aprenda como inicializar a classe ESP32HTTPClient com URLs base, configurações SSL/TLS e gerenciamento de conexão em C++.
+keywords: inicialização ESP32HTTPClient, URL base ESP32, construtor cliente HTTP ESP32, conexão HTTP Arduino ESP32
 tags:
   - guide
   - init

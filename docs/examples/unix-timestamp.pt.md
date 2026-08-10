@@ -1,4 +1,7 @@
 ---
+title: Exemplo de Leitura de Timestamps Unix de 64 bits em API REST no ESP32
+description: Exemplo demonstrando como ler timestamps Unix de 64 bits de uma API de tempo diretamente em uma variável long no ESP32.
+keywords: timestamp Unix ESP32, obter hora por API HTTP ESP32, hora Unix 64 bits Arduino ESP32, sincronizar hora REST ESP32
 tags:
   - example
   - timestamp

@@ -1,4 +1,7 @@
 ---
+title: Fazendo Requisições HTTP GET, POST, PUT, PATCH e DELETE no ESP32
+description: Guia completo para envio de requisições REST com ESP32HTTPClient: parâmetros de consulta, payloads JSON, encadeamento e métodos HTTP.
+keywords: requisição HTTP ESP32, ESP32 HTTP GET POST, enviar JSON ESP32, RestRequest C++ ESP32
 tags:
   - guide
   - request

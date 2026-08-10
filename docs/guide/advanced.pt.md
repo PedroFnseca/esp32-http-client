@@ -1,4 +1,7 @@
 ---
+title: Recursos Avançados do Cliente HTTP ESP32 - Autenticação, Callbacks e Retries
+description: Padrões avançados de cliente HTTP no ESP32: Bearer JWT e Basic Auth, callbacks de requisição, cabeçalhos customizados, Keep-Alive e retries.
+keywords: autenticacao HTTP ESP32, Bearer token ESP32, cabecalhos HTTP ESP32, Keep-Alive ESP32, callbacks de requisicao ESP32
 tags:
   - guide
   - advanced

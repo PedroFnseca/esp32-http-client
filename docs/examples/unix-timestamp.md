@@ -1,4 +1,7 @@
 ---
+title: Fetching 64-bit Unix Timestamps from Time API on ESP32 Example
+description: Example demonstrating how to parse 64-bit Unix timestamps from a REST time API directly into a long variable on ESP32.
+keywords: ESP32 Unix timestamp, ESP32 get time from HTTP API, 64-bit Unix time Arduino ESP32, ESP32 time sync REST
 tags:
   - example
   - timestamp

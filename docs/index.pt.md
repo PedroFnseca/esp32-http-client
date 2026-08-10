@@ -1,4 +1,7 @@
 ---
+title: Cliente HTTP ESP32 - Biblioteca REST Rápida e Zero Heap para Arduino e PlatformIO
+description: Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++ e vínculo direto de JSON.
+keywords: Cliente HTTP ESP32, API REST Arduino ESP32, Parser JSON ESP32, Requisição GET POST ESP32, PlatformIO ESP32, biblioteca C++ ESP32
 tags:
   - home
   - overview

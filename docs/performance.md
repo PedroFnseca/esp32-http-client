@@ -1,4 +1,7 @@
 ---
+title: ESP32 HTTP Client Performance & Memory Benchmarks
+description: Benchmarks comparing ESP32-HTTP-Client vs HTTPClient + ArduinoJson. 99.9% lower RAM allocation, zero heap fragmentation, and 12x faster execution.
+keywords: ESP32 benchmark, ArduinoJson performance, ESP32 memory optimization, ESP32 RAM usage HTTP
 tags:
   - performance
   - benchmark

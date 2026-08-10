@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  <meta name="keywords" content="{% if page and page.meta and page.meta.keywords %}{{ page.meta.keywords }}{% else %}ESP32 HTTP Client, ESP32 REST Client, Arduino ESP32 HTTP GET POST, ESP32 JSON parser, PlatformIO ESP32, ESP-IDF HTTP client, C++ IoT library{% endif %}">
+  <meta name="author" content="Pedro Fonseca">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ESP32-HTTP-Client Documentation">
+  <meta property="og:url" content="{{ page.canonical_url | default(config.site_url) }}">
+  <meta property="og:title" content="{% if page and page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}">
+  <meta property="og:description" content="{% if page and page.meta and page.meta.description %}{{ page.meta.description }}{% else %}{{ config.site_description }}{% endif %}">
+  <meta property="og:image" content="{{ config.site_url }}assets/preview.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% if page and page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}">
+  <meta name="twitter:description" content="{% if page and page.meta and page.meta.description %}{{ page.meta.description }}{% else %}{{ config.site_description }}{% endif %}">
+  <meta name="twitter:image" content="{{ config.site_url }}assets/preview.png">
+
+  <!-- JSON-LD Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ESP32-HTTP-Client",
+    "operatingSystem": "ESP32, ESP-IDF, FreeRTOS, Arduino",
+    "applicationCategory": "DeveloperApplication",
+    "programmingLanguage": "C++",
+    "description": "Fluent, zero-heap allocation HTTP client for ESP32 designed for REST APIs and direct JSON field binding.",
+    "url": "https://esp32httpclient.com/",
+    "codeRepository": "https://github.com/PedroFnseca/esp32-http-client",
+    "license": "https://opensource.org/licenses/MIT",
+    "author": {
+      "@type": "Person",
+      "name": "Pedro Fonseca",
+      "url": "https://github.com/PedroFnseca"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "{% if page and page.title %}{{ page.title }}{% else %}ESP32-HTTP-Client Documentation{% endif %}",
+    "description": "{% if page and page.meta and page.meta.description %}{{ page.meta.description }}{% else %}{{ config.site_description }}{% endif %}",
+    "url": "{{ page.canonical_url | default(config.site_url) }}",
+    "author": {
+      "@type": "Person",
+      "name": "Pedro Fonseca",
+      "url": "https://github.com/PedroFnseca"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ESP32-HTTP-Client",
+      "url": "https://esp32httpclient.com/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ESP32-HTTP-Client Documentation",
+    "url": "https://esp32httpclient.com/"
+  }
+  </script>
+{% endblock %}

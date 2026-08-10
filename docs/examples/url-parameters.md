@@ -1,4 +1,7 @@
 ---
+title: ESP32 Dynamic URL Path Parameters & Query Strings Example
+description: Learn how to set path parameters (/users/{id}) and query strings (?key=val) dynamically in HTTP requests with ESP32HTTPClient.
+keywords: ESP32 URL query parameter, ESP32 path parameter, Arduino HTTP query string, ESP32 REST parameter
 tags:
   - example
   - url

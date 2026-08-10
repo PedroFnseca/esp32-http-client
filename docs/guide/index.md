@@ -1,4 +1,7 @@
 ---
+title: ESP32 HTTP Client Developer Guide & Usage Patterns
+description: Comprehensive user guide for ESP32-HTTP-Client library covering client initialization, REST request methods, JSON binding, and advanced HTTP patterns.
+keywords: ESP32 HTTP client guide, ESP32 REST API tutorial, ESP32 C++ HTTP library usage, ESP32 HTTP GET POST PUT DELETE
 tags:
   - guide
   - overview

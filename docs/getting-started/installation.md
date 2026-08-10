@@ -1,4 +1,7 @@
 ---
+title: Installing ESP32-HTTP-Client for Arduino IDE & PlatformIO
+description: Step-by-step installation guide for ESP32-HTTP-Client library in Arduino IDE Library Manager, PlatformIO registry, and ESP-IDF.
+keywords: install ESP32 HTTP client, PlatformIO ESP32-HTTP-Client, Arduino library manager ESP32 HTTP, ESP32 setup guide
 tags:
   - getting-started
   - install

@@ -1,4 +1,7 @@
 ---
+title: Exemplo de Operações CRUD REST no ESP32 (GET, POST, PUT, PATCH, DELETE)
+description: Sketch completo em C++ Arduino demonstrando operações CRUD em APIs REST no ESP32 com zero alocação dinâmica de memória.
+keywords: exemplo CRUD ESP32, API REST ESP32 GET POST PUT DELETE, sketch HTTP Arduino ESP32, cliente HTTP CRUD ESP32
 tags:
   - example
   - crud

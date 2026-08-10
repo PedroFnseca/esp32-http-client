@@ -1,4 +1,7 @@
 ---
+title: Referência da API ESP32 HTTP Client & Documentação de Classes
+description: Referência completa da API C++ para as classes ESP32HTTPClient e RestRequest, parâmetros, tipos de retorno e métodos públicos.
+keywords: Referência API ESP32HTTPClient, RestRequest C++, métodos cliente HTTP ESP32, documentação classes C++ ESP32
 tags:
   - api
   - reference

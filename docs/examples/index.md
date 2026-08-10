@@ -1,4 +1,7 @@
 ---
+title: ESP32 HTTP Client Code Examples & Arduino Sketches
+description: Collection of complete C++ code examples for ESP32-HTTP-Client: CRUD operations, struct serialization, JSON arrays, Auth headers, and error handling.
+keywords: ESP32 HTTP client code examples, Arduino ESP32 HTTP sketch, ESP32 REST API example C++, PlatformIO ESP32 sample code
 tags:
   - example
   - overview

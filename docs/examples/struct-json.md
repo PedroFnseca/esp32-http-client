@@ -1,4 +1,7 @@
 ---
+title: ESP32 Struct to JSON Serialization & Deserialization Example
+description: Learn how to map C++ structs directly to JSON payloads and parse HTTP responses into struct fields on ESP32 without heap allocation.
+keywords: ESP32 struct JSON mapping, C++ struct serialization ESP32, ESP32 JSON deserialization, Arduino struct HTTP payload
 tags:
   - example
   - struct

@@ -1,4 +1,7 @@
 ---
+title: Referência da Classe RestRequest - Construtor Fluente C++
+description: Referência da classe RestRequest: encadeamento de métodos para parâmetros de consulta, corpo da requisição, vínculos JSON, callbacks e status HTTP.
+keywords: classe RestRequest ESP32, construtor fluente HTTP C++, getBody RestRequest, construtor API REST ESP32
 tags:
   - api
   - request

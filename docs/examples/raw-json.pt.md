@@ -1,4 +1,7 @@
 ---
+title: Exemplo de Captura de Strings JSON Brutas e Sub-Objetos no ESP32
+description: Exemplo mostrando como capturar strings JSON brutas não analisadas ou sub-objetos inteiros em uma variável String do Arduino no ESP32.
+keywords: JSON bruto ESP32, capturar JSON bruto ESP32, String JSON bruto Arduino, resposta HTTP bruta ESP32
 tags:
   - example
   - json

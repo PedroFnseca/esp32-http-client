@@ -1,4 +1,7 @@
 ---
+title: Guia do Desenvolvedor ESP32 HTTP Client
+description: Guia completo para uso da biblioteca ESP32-HTTP-Client abrangendo inicialização, métodos de requisição REST, parsing de JSON e padrões avançados em C++.
+keywords: guia cliente HTTP ESP32, tutorial API REST ESP32, biblioteca C++ ESP32 HTTP, requisições GET POST PUT DELETE ESP32
 tags:
   - guide
   - overview

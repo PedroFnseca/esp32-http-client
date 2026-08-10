@@ -1,4 +1,7 @@
 ---
+title: Exemplo de Callbacks HTTP, Retries por Timeout e Erros no ESP32
+description: Aprenda como tratar erros HTTP, configurar retries automáticos por timeout e registrar callbacks de término de requisição no ESP32.
+keywords: tratamento de erro HTTP ESP32, retry timeout HTTP ESP32, callbacks HTTP ESP32, codigo status HTTP Arduino ESP32
 tags:
   - example
   - callbacks

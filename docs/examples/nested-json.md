@@ -1,4 +1,7 @@
 ---
+title: Parsing Deeply Nested JSON Objects on ESP32 Example
+description: Example demonstrating how to extract deeply nested JSON fields using dot-notation paths without memory allocations on ESP32.
+keywords: ESP32 nested JSON, dot notation JSON ESP32, parse complex JSON ESP32, zero heap nested JSON parser
 tags:
   - example
   - json

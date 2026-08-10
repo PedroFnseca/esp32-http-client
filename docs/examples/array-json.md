@@ -1,4 +1,7 @@
 ---
+title: Parsing JSON Arrays by Index on ESP32 Example
+description: Learn how to access specific JSON array elements by index directly into C++ variables on ESP32 without loading the full payload.
+keywords: ESP32 JSON array, parse JSON array index ESP32, ESP32 HTTP JSON array element, Arduino JSON array binding
 tags:
   - example
   - json

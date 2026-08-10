@@ -1,4 +1,7 @@
 ---
+title: Reading HTTP Responses & Direct Zero-Allocation JSON Parsing on ESP32
+description: Learn how to bind JSON response fields directly to C++ primitive types, structs, and arrays without dynamic memory allocation on ESP32.
+keywords: ESP32 JSON binding, zero heap JSON parser ESP32, read HTTP response Arduino ESP32, getBody ESP32HTTPClient
 tags:
   - guide
   - response

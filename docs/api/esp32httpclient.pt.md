@@ -1,4 +1,7 @@
 ---
+title: Referência da Classe ESP32HTTPClient - Métodos e Assinaturas C++
+description: Documentação de API completa para a classe ESP32HTTPClient: construtor, métodos de verbos HTTP, cabeçalhos persistentes, autenticação e timeouts.
+keywords: classe ESP32HTTPClient, construtor ESP32HTTPClient, referencia biblioteca C++ ESP32 HTTP, metodos cliente HTTP ESP32
 tags:
   - api
   - client

@@ -1,4 +1,7 @@
 ---
+title: RestRequest Class Reference - Fluent Request Builder C++ Methods
+description: API reference for RestRequest class: method chaining for query parameters, request bodies, JSON field bindings, callbacks, and status codes.
+keywords: RestRequest class ESP32, fluent HTTP builder C++, getBody RestRequest, ESP32 REST API builder
 tags:
   - api
   - request

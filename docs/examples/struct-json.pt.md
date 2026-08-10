@@ -1,4 +1,7 @@
 ---
+title: Exemplo de Mapeamento Struct para JSON no ESP32
+description: Aprenda como mapear structs C++ diretamente para payloads JSON e ler respostas HTTP em variáveis de struct no ESP32 sem alocação dinâmica.
+keywords: mapeamento struct JSON ESP32, serializacao struct C++ ESP32, desserializacao JSON ESP32, payload HTTP struct Arduino
 tags:
   - example
   - struct

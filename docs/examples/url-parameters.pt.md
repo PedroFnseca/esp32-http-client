@@ -1,4 +1,7 @@
 ---
+title: Exemplo de Parâmetros Dinâmicos de URL e Query Strings no ESP32
+description: Aprenda a definir parâmetros de rota (/users/{id}) e query strings (?chave=val) dinamicamente em requisições HTTP com o ESP32HTTPClient.
+keywords: parametro de consulta ESP32, parametro de rota ESP32, query string HTTP Arduino, parametro REST ESP32
 tags:
   - example
   - url
