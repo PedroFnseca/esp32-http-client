@@ -123,6 +123,25 @@ void ESP32HTTPClient::apiKey(const char* name, const char* key) {
   setHeader(name, key ? key : "");
 }
 
+ESP32HTTPClient& ESP32HTTPClient::cookie(const char* name, const char* value) {
+  if (!name || !value) return *this;
+  String currentCookies = "";
+  for (size_t i = 0; i < _headers.size(); i++) {
+    if (strcasecmp(_headers[i].name, "Cookie") == 0) {
+      currentCookies = _headers[i].value;
+      break;
+    }
+  }
+  if (currentCookies.length() > 0) {
+    currentCookies += "; ";
+  }
+  currentCookies += name;
+  currentCookies += "=";
+  currentCookies += value;
+  setHeader("Cookie", currentCookies.c_str());
+  return *this;
+}
+
 void ESP32HTTPClient::end() {
   _http.setReuse(false);
   _http.end();

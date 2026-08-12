@@ -8,7 +8,7 @@ This library acts as a bridge between your variables and your API. You don't "pa
 - **Fluent chaining** — build requests naturally: `.get().query().getBody()`.
 - **Direct injection** — JSON values are written straight into standard C types or C++ structs.
 - **Zero buffering** — the response stream is parsed in place; the full payload is never stored.
-- **Headers & Auth** — extract headers easily (`.getHeader()`) and set authentication (`.bearer()`, `.basic()`, `.apiKey()`).
+- **Headers & Auth** — extract headers easily (`.getHeader()`) and set authentication (`.bearer()`, `.basic()`, `.apiKey()`, `.cookie()`).
 - **Dynamic Parameters** — replace `{path}` segments or append query strings easily (`.path()`, `.query()`).
 - **Nested JSON & Arrays** — navigate using dot notation (`sensor.temp`) and array indexes (`0.address.city`).
 - **Struct <-> JSON mapping** — direct bidirectional struct serialization/deserialization.

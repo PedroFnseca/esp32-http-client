@@ -246,6 +246,27 @@ client.apiKey("x-api-key", "minha-chave-api-secreta");
 
 ---
 
+### `cookie(nome, valor)`
+
+Anexa ou cria um cabeçalho `Cookie` no cliente. Retorna uma referência para `ESP32HTTPClient`, permitindo que você encadeie chamadas `.get()`, `.post()` ou até mesmo outros `.cookie()` diretamente no cliente.
+
+```cpp
+ESP32HTTPClient& cookie(const char* name, const char* value);
+```
+
+**Parâmetros:**
+*   `nome`: O nome do cookie (ex: `"session_id"`).
+*   `valor`: O valor do cookie (ex: `"abc1234"`).
+
+**Exemplo:**
+```cpp
+client.cookie("session_id", "abc1234")
+      .cookie("device_id", "esp32-01")
+      .get("/perfil");
+```
+
+---
+
 ### `setBaseUrl(baseUrl, port)`
 
 Altera a URL base e a porta de destino em tempo de execução para as requisições subsequentes.

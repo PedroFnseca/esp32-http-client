@@ -622,6 +622,29 @@ void testAuthApiKey() {
   expectEq(client._headers[0].value, "new-secret-456", "apiKey header updated");
 }
 
+void testAuthCookie() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+  client.cookie("session_id", "abc123")
+        .cookie("device_id", "esp32-01");
+
+  expectEqInt(static_cast<long long>(client._headers.size()), 1, "headers size after multiple cookies should be 1 (appended)");
+  expectEq(client._headers[0].name, "Cookie", "cookie header name");
+  expectEq(client._headers[0].value, "session_id=abc123; device_id=esp32-01", "cookie header value correctly formatted");
+
+  int val = 0;
+  client.get("/api/v1").getBody("v", &val);
+
+  bool found = false;
+  for (const auto& h : HttpClientStub::lastHeaders) {
+    if (h.first == "Cookie" && h.second == "session_id=abc123; device_id=esp32-01") {
+      found = true;
+      break;
+    }
+  }
+  expectTrue(found, "Cookie header should be sent with request");
+}
+
 void testAuthEdgeCases() {
   ESP32HTTPClient client("https://example.com");
   client.bearer(nullptr);
@@ -1390,6 +1413,7 @@ int main() {
   runSuite("AuthBearer", testAuthBearer);
   runSuite("AuthBasic", testAuthBasic);
   runSuite("AuthApiKey", testAuthApiKey);
+  runSuite("AuthCookie", testAuthCookie);
   runSuite("AuthEdgeCases", testAuthEdgeCases);
   runSuite("QueryParameters", testQueryParameters);
   runSuite("PathParameters", testPathParameters);
