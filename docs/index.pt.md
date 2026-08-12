@@ -6,7 +6,7 @@ tags:
   - home
   - overview
 ---
-# ESP32-HTTP-Client
+# Biblioteca ESP32 HTTP Client
 
 > Um cliente HTTP fluente e orientado a objetos para ESP32 que **vincula os campos da resposta JSON diretamente às suas variáveis** — sem `ArduinoJson`, sem strings intermediárias, sem código clichê.
 
