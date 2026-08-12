@@ -1710,6 +1710,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#onobservabilitycb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        onObservability(cb)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2420,6 +2431,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#onobservabilitycb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        onObservability(cb)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2943,7 +2965,7 @@ tags:
 </code></pre></div></p>
 <hr />
 <h3 id="onresponsecallback"><code>onResponse(callback)</code><a class="headerlink" href="#onresponsecallback" title="Permanent link">&para;</a></h3>
-<p>Registra um callback executado em <strong>qualquer</strong> requisição finalizada, independentemente de sucesso ou falha.</p>
+<p>Registra um callback executado em <strong>qualquer</strong> requisição concluída, independentemente de ter sucesso ou falhado.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onResponse</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
@@ -2952,21 +2974,42 @@ tags:
 <a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="p">});</span>
 </code></pre></div></p>
 <hr />
+<h3 id="onobservabilitycb"><code>onObservability(cb)</code><a class="headerlink" href="#onobservabilitycb" title="Permanent link">&para;</a></h3>
+<p>Registra um callback global invocado ao final de cada requisição, fornecendo métricas de performance (tempos, tamanho de payload, uso de heap).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onObservability</span><span class="p">(</span><span class="n">ObservabilityCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Definição do Struct (<code>ObservabilityMetrics</code>):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="k">struct</span><span class="w"> </span><span class="nc">ObservabilityMetrics</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">totalTimeMs</span><span class="p">;</span>
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">ttfbMs</span><span class="p">;</span>
+<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">txBytes</span><span class="p">;</span>
+<a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">rxBytes</span><span class="p">;</span>
+<a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">retries</span><span class="p">;</span>
+<a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">freeHeapBefore</span><span class="p">;</span>
+<a id="__codelineno-58-8" name="__codelineno-58-8" href="#__codelineno-58-8"></a><span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">freeHeapAfter</span><span class="p">;</span>
+<a id="__codelineno-58-9" name="__codelineno-58-9" href="#__codelineno-58-9"></a><span class="p">};</span>
+</code></pre></div></p>
+<p><strong>Exemplo:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onObservability</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">ObservabilityMetrics</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;TTFB: %lu ms | TX: %d | RX: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">ttfbMs</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">txBytes</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">rxBytes</span><span class="p">);</span>
+<a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a><span class="p">});</span>
+</code></pre></div></p>
+<hr />
 <h2 id="gerenciamento-de-conexao">Gerenciamento de Conexão<a class="headerlink" href="#gerenciamento-de-conexao" title="Permanent link">&para;</a></h2>
 <hr />
 <h3 id="end"><code>end()</code><a class="headerlink" href="#end" title="Permanent link">&para;</a></h3>
 <p>Fecha a conexão TCP/TLS Keep-Alive persistente e libera seus buffers de memória.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">end</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">end</span><span class="p">();</span>
 </code></pre></div>
 <p>Chame este método após uma sequência de requisições para liberar ~45KB de memória TLS durante um período de inatividade longo. A próxima requisição restabelecerá a conexão automaticamente.</p>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v1</span><span class="p">);</span>
-<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data2&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v2</span><span class="p">);</span>
-<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>
-<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="n">client</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="c1">// libera memória TLS</span>
-<a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
-<a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a>
-<a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data3&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v3</span><span class="p">);</span><span class="w"> </span><span class="c1">// reconecta automaticamente</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v1</span><span class="p">);</span>
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data2&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v2</span><span class="p">);</span>
+<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a>
+<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="n">client</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="c1">// libera memória TLS</span>
+<a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
+<a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a>
+<a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data3&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v3</span><span class="p">);</span><span class="w"> </span><span class="c1">// reconecta automaticamente</span>
 </code></pre></div></p>
 <hr />
 <h2 id="tabela-de-referencia-de-codigos-de-erro">Tabela de Referência de Códigos de Erro<a class="headerlink" href="#tabela-de-referencia-de-codigos-de-erro" title="Permanent link">&para;</a></h2>
@@ -3139,7 +3182,7 @@ tags:
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="12 de agosto de 2026 14:23:27 UTC">12 de agosto de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="12 de agosto de 2026 14:39:58 UTC">12 de agosto de 2026</span>
   </span>
 
     
