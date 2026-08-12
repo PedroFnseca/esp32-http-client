@@ -52,6 +52,7 @@ class ESP32HTTPClient {
   void onError(HttpErrorCallback cb);
   void onError(HttpResponseCallback cb);
   void onResponse(HttpResponseCallback cb);
+  void onObservability(ObservabilityCallback cb);
 
   template <typename T>
   static String toJson(const T& obj) {
@@ -90,6 +91,7 @@ class ESP32HTTPClient {
   HttpResponseCallback _onSuccessCb;
   HttpErrorCallback _onErrorCb;
   HttpResponseCallback _onResponseCb;
+  ObservabilityCallback _observabilityCb;
 };
 
 namespace RestJson {

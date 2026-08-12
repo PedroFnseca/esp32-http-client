@@ -645,6 +645,28 @@ void testAuthCookie() {
   expectTrue(found, "Cookie header should be sent with request");
 }
 
+void testObservability() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  bool callbackFired = false;
+  client.onObservability([&callbackFired](const ObservabilityMetrics& metrics) {
+    callbackFired = true;
+    expectTrue(metrics.totalTimeMs >= 0, "Total time should be tracked");
+    expectTrue(metrics.ttfbMs >= 0, "TTFB should be tracked");
+    expectTrue(metrics.txBytes > 0, "TX bytes should be > 0");
+    expectEqInt(static_cast<long long>(metrics.rxBytes), 11, "RX bytes should match response size");
+    expectEqInt(metrics.retries, 0, "Retries should be 0");
+    expectTrue(metrics.freeHeapBefore > 0, "Free heap before should be > 0");
+    expectTrue(metrics.freeHeapAfter > 0, "Free heap after should be > 0");
+  });
+
+  HttpClientStub::setResponse(200, R"({"ok":true})");
+  client.get("/api").execute();
+
+  expectTrue(callbackFired, "Observability callback should have been fired");
+}
+
 void testAuthEdgeCases() {
   ESP32HTTPClient client("https://example.com");
   client.bearer(nullptr);
@@ -1414,6 +1436,7 @@ int main() {
   runSuite("AuthBasic", testAuthBasic);
   runSuite("AuthApiKey", testAuthApiKey);
   runSuite("AuthCookie", testAuthCookie);
+  runSuite("Observability", testObservability);
   runSuite("AuthEdgeCases", testAuthEdgeCases);
   runSuite("QueryParameters", testQueryParameters);
   runSuite("PathParameters", testPathParameters);

@@ -197,5 +197,10 @@ class Stream {
     return count;
   }
 };
+class ESPClass {
+public:
+    uint32_t getFreeHeap() { return 102400; }
+};
+inline ESPClass ESP;
 
 #endif

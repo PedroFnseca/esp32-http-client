@@ -344,6 +344,13 @@ void RestRequest::execute() {
   int maxRetries = (_maxRetry >= 0) ? _maxRetry : _client->_maxRetry;
   int maxAttempts = 1 + maxRetries;
 
+  uint32_t freeHeapBefore = 0;
+  unsigned long startTime = 0;
+  if (_client->_observabilityCb) {
+    freeHeapBefore = ESP.getFreeHeap();
+    startTime = millis();
+  }
+
   while (retries < maxAttempts) {
     switch (_method) {
       case HTTP_GET_METHOD:
@@ -379,6 +386,11 @@ void RestRequest::execute() {
     } else {
       break;
     }
+  }
+
+  unsigned long ttfbTime = 0;
+  if (_client->_observabilityCb) {
+    ttfbTime = millis();
   }
 
   _client->_lastStatusCode = code;
@@ -440,6 +452,18 @@ void RestRequest::execute() {
     if (_client->_onErrorCb) {
       _client->_onErrorCb(code, errMsg.c_str());
     }
+  }
+
+  if (_client->_observabilityCb) {
+    ObservabilityMetrics metrics;
+    metrics.totalTimeMs = millis() - startTime;
+    metrics.ttfbMs = ttfbTime > 0 ? (ttfbTime - startTime) : 0;
+    metrics.txBytes = url.length() + payload.length() + 150; 
+    metrics.rxBytes = http.getSize() > 0 ? http.getSize() : 0;
+    metrics.retries = retries;
+    metrics.freeHeapBefore = freeHeapBefore;
+    metrics.freeHeapAfter = ESP.getFreeHeap();
+    _client->_observabilityCb(metrics);
   }
 }
 
