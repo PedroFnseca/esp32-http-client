@@ -28,6 +28,18 @@ struct ResponseBinding {
   size_t size;
 };
 
+struct ObservabilityMetrics {
+  unsigned long totalTimeMs;
+  unsigned long ttfbMs;
+  size_t txBytes;
+  size_t rxBytes;
+  int retries;
+  uint32_t freeHeapBefore;
+  uint32_t freeHeapAfter;
+};
+
+typedef std::function<void(const ObservabilityMetrics&)> ObservabilityCallback;
+
 struct HttpHeader {
   char name[64];
   char value[256];

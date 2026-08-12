@@ -11,7 +11,8 @@ ESP32HTTPClient::ESP32HTTPClient(const char* baseUrl, int port)
       _contentType("application/json"),
       _onSuccessCb(nullptr),
       _onErrorCb(nullptr),
-      _onResponseCb(nullptr) {
+      _onResponseCb(nullptr),
+      _observabilityCb(nullptr) {
   _http.setReuse(true);
 }
 
@@ -223,6 +224,10 @@ void ESP32HTTPClient::onError(HttpResponseCallback cb) {
 
 void ESP32HTTPClient::onResponse(HttpResponseCallback cb) {
   _onResponseCb = cb;
+}
+
+void ESP32HTTPClient::onObservability(ObservabilityCallback cb) {
+  _observabilityCb = cb;
 }
 
 RestRequest ESP32HTTPClient::get(const char* path) {
