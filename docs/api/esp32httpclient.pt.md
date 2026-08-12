@@ -550,7 +550,7 @@ client.onError([](int code, const char* message) {
 
 ### `onResponse(callback)`
 
-Registra um callback executado em **qualquer** requisição finalizada, independentemente de sucesso ou falha.
+Registra um callback executado em **qualquer** requisição concluída, independentemente de ter sucesso ou falhado.
 
 ```cpp
 void onResponse(HttpResponseCallback cb);
@@ -560,6 +560,36 @@ void onResponse(HttpResponseCallback cb);
 ```cpp
 client.onResponse([](int code) {
     Serial.printf("Resposta recebida com código %d\n", code);
+});
+```
+
+---
+
+### `onObservability(cb)`
+
+Registra um callback global invocado ao final de cada requisição, fornecendo métricas de performance (tempos, tamanho de payload, uso de heap).
+
+```cpp
+void onObservability(ObservabilityCallback cb);
+```
+
+**Definição do Struct (`ObservabilityMetrics`):**
+```cpp
+struct ObservabilityMetrics {
+    unsigned long totalTimeMs;
+    unsigned long ttfbMs;
+    size_t txBytes;
+    size_t rxBytes;
+    int retries;
+    uint32_t freeHeapBefore;
+    uint32_t freeHeapAfter;
+};
+```
+
+**Exemplo:**
+```cpp
+client.onObservability([](const ObservabilityMetrics& m) {
+    Serial.printf("TTFB: %lu ms | TX: %d | RX: %d\n", m.ttfbMs, m.txBytes, m.rxBytes);
 });
 ```
 

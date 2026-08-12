@@ -543,14 +543,11 @@ void onError(HttpResponseCallback cb);
 ```cpp
 client.onError([](int code, const char* message) {
     Serial.printf("Client request failed (%d): %s\n", code, message);
-});
-```
-
 ---
 
-### `onResponse(callback)`
+### `onResponse(cb)`
 
-Registers a callback executed on **any** completed request, regardless of whether it succeeded or failed.
+Registers a global callback that is invoked after any request finishes, providing the HTTP status code.
 
 ```cpp
 void onResponse(HttpResponseCallback cb);
@@ -559,7 +556,37 @@ void onResponse(HttpResponseCallback cb);
 **Example:**
 ```cpp
 client.onResponse([](int code) {
-    Serial.printf("Response received with code %d\n", code);
+    Serial.printf("Request completed with status: %d\n", code);
+});
+```
+
+---
+
+### `onObservability(cb)`
+
+Registers a global callback that is invoked at the end of each request, providing performance metrics (timings, payload sizes, heap usage).
+
+```cpp
+void onObservability(ObservabilityCallback cb);
+```
+
+**Struct Definition (`ObservabilityMetrics`):**
+```cpp
+struct ObservabilityMetrics {
+    unsigned long totalTimeMs;
+    unsigned long ttfbMs;
+    size_t txBytes;
+    size_t rxBytes;
+    int retries;
+    uint32_t freeHeapBefore;
+    uint32_t freeHeapAfter;
+};
+```
+
+**Example:**
+```cpp
+client.onObservability([](const ObservabilityMetrics& m) {
+    Serial.printf("TTFB: %lu ms | TX: %d | RX: %d\n", m.ttfbMs, m.txBytes, m.rxBytes);
 });
 ```
 
