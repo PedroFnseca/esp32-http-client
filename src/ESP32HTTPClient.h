@@ -39,6 +39,7 @@ class ESP32HTTPClient {
   void bearer(const char* token);
   void basic(const char* user, const char* password);
   void apiKey(const char* name, const char* key);
+  ESP32HTTPClient& cookie(const char* name, const char* value);
   void end();
 
   int getStatusCode() const;
