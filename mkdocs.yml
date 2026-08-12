@@ -7,6 +7,13 @@ repo_url: https://github.com/PedroFnseca/esp32-http-client
 edit_uri: edit/main/docs/
 
 extra:
+  alternate:
+    - name: 🇺🇸 English
+      link: /
+      lang: en
+    - name: 🇧🇷 Português
+      link: /pt/
+      lang: pt-BR
   analytics:
     provider: google
     property: G-TFXJLYGKZM

@@ -24,6 +24,15 @@
 
   {{ super() }}
 
+  <!-- x-default hreflang pointing to the English version -->
+  {% if config.extra.alternate %}
+    {% for alt in config.extra.alternate %}
+      {% if alt.lang == 'en' %}
+  <link rel="alternate" hreflang="x-default" href="{{ alt.link | url }}">
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
   <meta name="keywords" content="{% if page and page.meta and page.meta.keywords %}{{ page.meta.keywords }}{% else %}ESP32 HTTP Client, ESP32 REST Client, Arduino ESP32 HTTP GET POST, ESP32 JSON parser, PlatformIO ESP32, ESP-IDF HTTP client, C++ IoT library{% endif %}">
   <meta name="author" content="Pedro Fonseca">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
