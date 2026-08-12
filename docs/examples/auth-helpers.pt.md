@@ -26,6 +26,7 @@ O cliente disponibiliza métodos dedicados que configuram cabeçalhos de autoriz
 | `client.bearer(token)` | `Authorization: Bearer <token>` | Para tokens JWT e OAuth2 Bearer. |
 | `client.basic(user, pass)` | `Authorization: Basic <base64>` | Codifica as credenciais automaticamente em Base64. |
 | `client.apiKey(nome, chave)` | `<nome>: <chave>` | Define cabeçalhos de API Key (ex: `X-API-Key`). |
+| `client.cookie(nome, valor)` | `Cookie: <nome>=<valor>` | Define ou anexa ao cabeçalho `Cookie` (pode ser encadeado). |
 | `client.setHeader(nome, val)` | `<nome>: <val>` | Define qualquer cabeçalho HTTP genérico persistente. |
 
 ---

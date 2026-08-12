@@ -26,6 +26,7 @@ The client provides dedicated helpers that configure persistent authorization he
 | `client.bearer(token)` | `Authorization: Bearer <token>` | For JWT and OAuth2 Bearer tokens. |
 | `client.basic(user, pass)` | `Authorization: Basic <base64>` | Automatically encodes credentials into Base64. |
 | `client.apiKey(name, key)` | `<name>: <key>` | Sets any API Key header (e.g., `X-API-Key`). |
+| `client.cookie(name, value)` | `Cookie: <name>=<value>` | Sets/Appends to the `Cookie` header (can be chained). |
 | `client.setHeader(name, val)` | `<name>: <val>` | Sets any generic persistent HTTP header. |
 
 ---
