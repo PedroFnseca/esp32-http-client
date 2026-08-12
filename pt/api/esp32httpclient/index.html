@@ -1429,6 +1429,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cookienome-valor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cookie(nome, valor)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setbaseurlbaseurl-port" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2128,6 +2139,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#cookienome-valor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cookie(nome, valor)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#setbaseurlbaseurl-port" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2734,73 +2756,86 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">client</span><span class="p">.</span><span class="n">apiKey</span><span class="p">(</span><span class="s">&quot;x-api-key&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;minha-chave-api-secreta&quot;</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
+<h3 id="cookienome-valor"><code>cookie(nome, valor)</code><a class="headerlink" href="#cookienome-valor" title="Permanent link">&para;</a></h3>
+<p>Anexa ou cria um cabeçalho <code>Cookie</code> no cliente. Retorna uma referência para <code>ESP32HTTPClient</code>, permitindo que você encadeie chamadas <code>.get()</code>, <code>.post()</code> ou até mesmo outros <code>.cookie()</code> diretamente no cliente.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="n">ESP32HTTPClient</span><span class="o">&amp;</span><span class="w"> </span><span class="nf">cookie</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</code></pre></div>
+<p><strong>Parâmetros:</strong>
+*   <code>nome</code>: O nome do cookie (ex: <code>"session_id"</code>).
+*   <code>valor</code>: O valor do cookie (ex: <code>"abc1234"</code>).</p>
+<p><strong>Exemplo:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">client</span><span class="p">.</span><span class="n">cookie</span><span class="p">(</span><span class="s">&quot;session_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;abc1234&quot;</span><span class="p">)</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">      </span><span class="p">.</span><span class="n">cookie</span><span class="p">(</span><span class="s">&quot;device_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;esp32-01&quot;</span><span class="p">)</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">      </span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/perfil&quot;</span><span class="p">);</span>
+</code></pre></div></p>
+<hr />
 <h3 id="setbaseurlbaseurl-port"><code>setBaseUrl(baseUrl, port)</code><a class="headerlink" href="#setbaseurlbaseurl-port" title="Permanent link">&para;</a></h3>
 <p>Altera a URL base e a porta de destino em tempo de execução para as requisições subsequentes.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setBaseUrl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">baseUrl</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setBaseUrl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">baseUrl</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setBaseUrl</span><span class="p">(</span><span class="s">&quot;https://api.v2.exemplo.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setBaseUrl</span><span class="p">(</span><span class="s">&quot;https://api.v2.exemplo.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="seturlbaseurl"><code>setUrl(baseUrl)</code><a class="headerlink" href="#seturlbaseurl" title="Permanent link">&para;</a></h3>
 <p>Atalho para atualizar apenas a URL base em tempo de execução.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setUrl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">baseUrl</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setUrl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">baseUrl</span><span class="p">);</span>
 </code></pre></div>
 <hr />
 <h3 id="setportport"><code>setPort(port)</code><a class="headerlink" href="#setportport" title="Permanent link">&para;</a></h3>
 <p>Atualiza a porta TCP de destino em tempo de execução.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setPort</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">port</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setPort</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">port</span><span class="p">);</span>
 </code></pre></div>
 <hr />
 <h3 id="getbaseurl"><code>getBaseUrl()</code><a class="headerlink" href="#getbaseurl" title="Permanent link">&para;</a></h3>
 <p>Retorna a URL base atual configurada.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="nf">getBaseUrl</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="nf">getBaseUrl</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <hr />
 <h3 id="getport"><code>getPort()</code><a class="headerlink" href="#getport" title="Permanent link">&para;</a></h3>
 <p>Retorna a porta TCP configurada (ou 0 se padrão).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">getPort</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">getPort</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <hr />
 <h3 id="settimeouttimeoutms"><code>setTimeout(timeoutMs)</code><a class="headerlink" href="#settimeouttimeoutms" title="Permanent link">&para;</a></h3>
 <p>Configura o tempo limite (timeout) padrão em milissegundos para todas as requisições deste cliente. O padrão é <code>60000</code> ms (1 minuto).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setTimeout</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">timeoutMs</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setTimeout</span><span class="p">(</span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">timeoutMs</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setTimeout</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span><span class="w"> </span><span class="c1">// 10 segundos</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setTimeout</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span><span class="w"> </span><span class="c1">// 10 segundos</span>
 </code></pre></div></p>
 <hr />
 <h3 id="gettimeout"><code>getTimeout()</code><a class="headerlink" href="#gettimeout" title="Permanent link">&para;</a></h3>
 <p>Retorna o timeout configurado em milissegundos.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">getTimeout</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="kt">uint16_t</span><span class="w"> </span><span class="nf">getTimeout</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <hr />
 <h3 id="setmaxretrymaxretry"><code>setMaxRetry(maxRetry)</code><a class="headerlink" href="#setmaxretrymaxretry" title="Permanent link">&para;</a></h3>
 <p>Configura o número máximo de tentativas automáticas em caso de falha de rede. O padrão é <code>1</code> tentativa.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setMaxRetry</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">maxRetry</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setMaxRetry</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">maxRetry</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setMaxRetry</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"> </span><span class="c1">// Até 3 tentativas</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setMaxRetry</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span><span class="w"> </span><span class="c1">// Até 3 tentativas</span>
 </code></pre></div></p>
 <hr />
 <h3 id="getmaxretry"><code>getMaxRetry()</code><a class="headerlink" href="#getmaxretry" title="Permanent link">&para;</a></h3>
 <p>Retorna o número máximo configurado de tentativas.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">getMaxRetry</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">getMaxRetry</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <hr />
 <h3 id="setcontenttypecontenttype"><code>setContentType(contentType)</code><a class="headerlink" href="#setcontenttypecontenttype" title="Permanent link">&para;</a></h3>
 <p>Sobrescreve o cabeçalho <code>Content-Type</code> usado no corpo das requisições. O padrão é <code>application/json</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setContentType</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">contentType</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setContentType</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">contentType</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setContentType</span><span class="p">(</span><span class="s">&quot;application/x-www-form-urlencoded&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setContentType</span><span class="p">(</span><span class="s">&quot;application/x-www-form-urlencoded&quot;</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h2 id="inspecao-de-resposta-e-tratamento-de-erros">Inspeção de Resposta e Tratamento de Erros<a class="headerlink" href="#inspecao-de-resposta-e-tratamento-de-erros" title="Permanent link">&para;</a></h2>
 <hr />
 <h3 id="getstatuscode"><code>getStatusCode()</code><a class="headerlink" href="#getstatuscode" title="Permanent link">&para;</a></h3>
 <p>Retorna o código de status HTTP da <strong>última requisição concluída</strong>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">getStatusCode</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">getStatusCode</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>Valores de retorno:</strong></p>
 <table>
@@ -2828,34 +2863,34 @@ tags:
 <hr />
 <h3 id="issuccess"><code>isSuccess()</code><a class="headerlink" href="#issuccess" title="Permanent link">&para;</a></h3>
 <p>Retorna <code>true</code> se a última requisição foi concluída com status HTTP de sucesso 2xx (<code>200 &lt;= code &lt; 300</code>).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">isSuccess</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">isSuccess</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;val&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">);</span>
-<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">isSuccess</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Requisição bem-sucedida!&quot;</span><span class="p">);</span>
-<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;val&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">);</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">isSuccess</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Requisição bem-sucedida!&quot;</span><span class="p">);</span>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="p">}</span>
 </code></pre></div></p>
 <hr />
 <h3 id="haserror"><code>hasError()</code><a class="headerlink" href="#haserror" title="Permanent link">&para;</a></h3>
 <p>Retorna <code>true</code> se a última requisição falhou devido a um erro de rede (<code>code &lt; 0</code>) ou erro HTTP de cliente/servidor (<code>code &gt;= 400</code>).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">hasError</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">hasError</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;val&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">);</span>
-<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">hasError</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Erro (%d): %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">getStatusCode</span><span class="p">(),</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">getErrorMessage</span><span class="p">().</span><span class="n">c_str</span><span class="p">());</span>
-<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;val&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">);</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">hasError</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Erro (%d): %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">getStatusCode</span><span class="p">(),</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">getErrorMessage</span><span class="p">().</span><span class="n">c_str</span><span class="p">());</span>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="p">}</span>
 </code></pre></div></p>
 <hr />
 <h3 id="geterrormessage"><code>getErrorMessage()</code><a class="headerlink" href="#geterrormessage" title="Permanent link">&para;</a></h3>
 <p>Retorna uma descrição legível do último código de status ou de erro retornado.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="n">String</span><span class="w"> </span><span class="nf">getErrorMessage</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="n">String</span><span class="w"> </span><span class="nf">getErrorMessage</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <hr />
 <h3 id="errortostringcode"><code>errorToString(code)</code><a class="headerlink" href="#errortostringcode" title="Permanent link">&para;</a></h3>
 <p>Método estático auxiliar que converte qualquer código de status HTTP ou código de erro negativo em uma descrição textual.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="k">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">errorToString</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="k">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">errorToString</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
 </code></pre></div>
 <hr />
 <h2 id="serializacao-desserializacao-de-structs">Serialização &amp; Desserialização de Structs<a class="headerlink" href="#serializacao-desserializacao-de-structs" title="Permanent link">&para;</a></h2>
@@ -2863,24 +2898,24 @@ tags:
 <hr />
 <h3 id="tojsonstruct"><code>toJson(struct)</code><a class="headerlink" href="#tojsonstruct" title="Permanent link">&para;</a></h3>
 <p>Serializa uma struct mapeada com <code>REST_JSON_MAP</code> em uma string JSON.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
-<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="k">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">toJson</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="k">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">toJson</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pedro&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">9.5f</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">};</span>
-<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ESP32HTTPClient</span><span class="o">::</span><span class="n">toJson</span><span class="p">(</span><span class="n">user</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pedro&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">9.5f</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">};</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ESP32HTTPClient</span><span class="o">::</span><span class="n">toJson</span><span class="p">(</span><span class="n">user</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="fromjsonjson-struct"><code>fromJson(json, struct)</code><a class="headerlink" href="#fromjsonjson-struct" title="Permanent link">&para;</a></h3>
 <p>Preenche uma struct mapeada com <code>REST_JSON_MAP</code> a partir de uma string JSON.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
-<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fromJson</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">String</span><span class="o">&amp;</span><span class="w"> </span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
-<a id="__codelineno-47-3" name="__codelineno-47-3" href="#__codelineno-47-3"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
-<a id="__codelineno-47-4" name="__codelineno-47-4" href="#__codelineno-47-4"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fromJson</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fromJson</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">String</span><span class="o">&amp;</span><span class="w"> </span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">fromJson</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="p">;</span>
-<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="n">ESP32HTTPClient</span><span class="o">::</span><span class="n">fromJson</span><span class="p">(</span><span class="s">&quot;{</span><span class="se">\&quot;</span><span class="s">id</span><span class="se">\&quot;</span><span class="s">:15,</span><span class="se">\&quot;</span><span class="s">name</span><span class="se">\&quot;</span><span class="s">:</span><span class="se">\&quot;</span><span class="s">Pedro</span><span class="se">\&quot;</span><span class="s">}&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">user</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="p">;</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="n">ESP32HTTPClient</span><span class="o">::</span><span class="n">fromJson</span><span class="p">(</span><span class="s">&quot;{</span><span class="se">\&quot;</span><span class="s">id</span><span class="se">\&quot;</span><span class="s">:15,</span><span class="se">\&quot;</span><span class="s">name</span><span class="se">\&quot;</span><span class="s">:</span><span class="se">\&quot;</span><span class="s">Pedro</span><span class="se">\&quot;</span><span class="s">}&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">user</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h2 id="callbacks">Callbacks<a class="headerlink" href="#callbacks" title="Permanent link">&para;</a></h2>
@@ -2888,50 +2923,50 @@ tags:
 <hr />
 <h3 id="onsuccesscallback"><code>onSuccess(callback)</code><a class="headerlink" href="#onsuccesscallback" title="Permanent link">&para;</a></h3>
 <p>Registra um callback executado quando qualquer requisição finaliza com sucesso 2xx (<code>200 &lt;= code &lt; 300</code>).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onSuccess</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onSuccess</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onSuccess</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Requisição bem-sucedida com status %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
-<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a><span class="p">});</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onSuccess</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Requisição bem-sucedida com status %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="p">});</span>
 </code></pre></div></p>
 <hr />
 <h3 id="onerrorcallback"><code>onError(callback)</code><a class="headerlink" href="#onerrorcallback" title="Permanent link">&para;</a></h3>
 <p>Registra um callback executado quando qualquer requisição falha com erro (<code>code &lt; 200 || code &gt;= 400</code>).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onError</span><span class="p">(</span><span class="n">HttpErrorCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
-<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onError</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onError</span><span class="p">(</span><span class="n">HttpErrorCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onError</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onError</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Requisição falhou (%d): %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">);</span>
-<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="p">});</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onError</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Requisição falhou (%d): %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">);</span>
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="p">});</span>
 </code></pre></div></p>
 <hr />
 <h3 id="onresponsecallback"><code>onResponse(callback)</code><a class="headerlink" href="#onresponsecallback" title="Permanent link">&para;</a></h3>
 <p>Registra um callback executado em <strong>qualquer</strong> requisição finalizada, independentemente de sucesso ou falha.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onResponse</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">onResponse</span><span class="p">(</span><span class="n">HttpResponseCallback</span><span class="w"> </span><span class="n">cb</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onResponse</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Resposta recebida com código %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
-<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="p">});</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onResponse</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Resposta recebida com código %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
+<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a><span class="p">});</span>
 </code></pre></div></p>
 <hr />
 <h2 id="gerenciamento-de-conexao">Gerenciamento de Conexão<a class="headerlink" href="#gerenciamento-de-conexao" title="Permanent link">&para;</a></h2>
 <hr />
 <h3 id="end"><code>end()</code><a class="headerlink" href="#end" title="Permanent link">&para;</a></h3>
 <p>Fecha a conexão TCP/TLS Keep-Alive persistente e libera seus buffers de memória.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">end</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">end</span><span class="p">();</span>
 </code></pre></div>
 <p>Chame este método após uma sequência de requisições para liberar ~45KB de memória TLS durante um período de inatividade longo. A próxima requisição restabelecerá a conexão automaticamente.</p>
 <p><strong>Exemplo:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v1</span><span class="p">);</span>
-<a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data2&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v2</span><span class="p">);</span>
-<a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a>
-<a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="n">client</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="c1">// libera memória TLS</span>
-<a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
-<a id="__codelineno-56-6" name="__codelineno-56-6" href="#__codelineno-56-6"></a>
-<a id="__codelineno-56-7" name="__codelineno-56-7" href="#__codelineno-56-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data3&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v3</span><span class="p">);</span><span class="w"> </span><span class="c1">// reconecta automaticamente</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v1</span><span class="p">);</span>
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data2&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v2</span><span class="p">);</span>
+<a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>
+<a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="n">client</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="c1">// libera memória TLS</span>
+<a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
+<a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a>
+<a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data3&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v3</span><span class="p">);</span><span class="w"> </span><span class="c1">// reconecta automaticamente</span>
 </code></pre></div></p>
 <hr />
 <h2 id="tabela-de-referencia-de-codigos-de-erro">Tabela de Referência de Códigos de Erro<a class="headerlink" href="#tabela-de-referencia-de-codigos-de-erro" title="Permanent link">&para;</a></h2>
@@ -3104,7 +3139,7 @@ tags:
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="10 de agosto de 2026 17:36:54 UTC">10 de agosto de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="12 de agosto de 2026 14:23:27 UTC">12 de agosto de 2026</span>
   </span>
 
     
