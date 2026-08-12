@@ -1,0 +1,24 @@
+# ESP32-HTTP-Client
+
+> A fluent, object-oriented HTTP client for ESP32 that **binds JSON response fields directly into your variables** — no `ArduinoJson`, no intermediate strings, no boilerplate.
+
+This library acts as a bridge between your variables and your API. You don't "parse" JSON, you tell the client where to put the data.
+
+## Key Features
+- **Fluent chaining** — build requests naturally: `.get().query().getBody()`.
+- **Direct injection** — JSON values are written straight into standard C types or C++ structs.
+- **Zero buffering** — the response stream is parsed in place; the full payload is never stored.
+- **Headers & Auth** — extract headers easily (`.getHeader()`) and set authentication (`.bearer()`, `.basic()`, `.apiKey()`).
+- **Dynamic Parameters** — replace `{path}` segments or append query strings easily (`.path()`, `.query()`).
+- **Nested JSON & Arrays** — navigate using dot notation (`sensor.temp`) and array indexes (`0.address.city`).
+- **Struct <-> JSON mapping** — direct bidirectional struct serialization/deserialization.
+- **Full REST support** — `GET`, `POST`, `PUT`, `PATCH`, and `DELETE`.
+- **Low Memory Footprint** — ~0.0 KB heap memory usage per request.
+- **High Performance** — ~12x faster execution time with native Keep-Alive.
+
+## Links
+- [Official Documentation](https://esp32httpclient.com/)
+- [GitHub Repository](https://github.com/PedroFnseca/esp32-http-client)
+- [Quick Start](https://esp32httpclient.com/getting-started/quickstart)
+- [API Reference](https://esp32httpclient.com/api/esp32httpclient/)
+- [Examples](https://esp32httpclient.com/examples/)
