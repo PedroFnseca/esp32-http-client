@@ -622,39 +622,59 @@ client.get("/data3").getBody("v", &v3); // reconecta automaticamente
 
 ---
 
-## Tabela de Referência de Códigos de Erro
+## Códigos de Erro e Códigos de Status HTTP
 
-### Códigos de Erro de Rede / Cliente (`code < 0`)
-
-| Código | Constante | Descrição |
+| Código | Significado | Categoria |
 | :--- | :--- | :--- |
-| `-1` | `HTTPC_ERROR_CONNECTION_REFUSED` | O host de destino recusou a conexão TCP. |
-| `-2` | `HTTPC_ERROR_SEND_HEADER_FAILED` | Falha ao enviar cabeçalhos HTTP pelo socket. |
-| `-3` | `HTTPC_ERROR_SEND_PAYLOAD_FAILED` | Falha ao transmitir o corpo da requisição. |
-| `-4` | `HTTPC_ERROR_NOT_CONNECTED` | Cliente não está conectado à rede/socket. |
-| `-5` | `HTTPC_ERROR_CONNECTION_LOST` | A conexão TCP foi interrompida inesperadamente. |
-| `-6` | `HTTPC_ERROR_NO_STREAM` | Nenhum stream de resposta disponível. |
-| `-7` | `HTTPC_ERROR_NO_HTTP_SERVER` | Servidor não respondeu com HTTP válido. |
-| `-8` | `HTTPC_ERROR_TOO_LESS_RAM` | Memória RAM (Heap) insuficiente para a operação. |
-| `-9` | `HTTPC_ERROR_ENCODING` | Erro de codificação ou decodificação de transferência. |
-| `-10` | `HTTPC_ERROR_STREAM_WRITE` | Falha na operação de escrita no stream. |
-| `-11` | `HTTPC_ERROR_READ_TIMEOUT` | Tempo limite esgotado aguardando resposta do servidor. |
+| `-1` | Conexão Recusada | Erro do cliente |
+| `-2` | Falha ao Enviar Cabeçalho | Erro do cliente |
+| `-3` | Falha ao Enviar Payload | Erro do cliente |
+| `-4` | Não Conectado | Erro do cliente |
+| `-5` | Conexão Perdida | Erro do cliente |
+| `-6` | Sem Stream | Erro do cliente |
+| `-7` | Sem Servidor HTTP | Erro do cliente |
+| `-8` | Memória RAM Insuficiente | Erro do cliente |
+| `-9` | Erro de Codificação | Erro do cliente |
+| `-10` | Erro de Escrita no Stream | Erro do cliente |
+| `-11` | Tempo Limite de Leitura | Erro do cliente |
+| `200` | OK | Sucesso HTTP |
+| `201` | Criado | Sucesso HTTP |
+| `202` | Aceito | Sucesso HTTP |
+| `204` | Sem Conteúdo | Sucesso HTTP |
+| `400` | Requisição Inválida | Erro do cliente HTTP |
+| `401` | Não Autorizado | Erro do cliente HTTP |
+| `403` | Proibido | Erro do cliente HTTP |
+| `404` | Não Encontrado | Erro do cliente HTTP |
+| `405` | Método Não Permitido | Erro do cliente HTTP |
+| `408` | Tempo Limite da Requisição | Erro do cliente HTTP |
+| `409` | Conflito | Erro do cliente HTTP |
+| `429` | Muitas Requisições | Erro do cliente HTTP |
+| `500` | Erro Interno do Servidor | Erro do servidor HTTP |
+| `501` | Não Implementado | Erro do servidor HTTP |
+| `502` | Gateway Inválido | Erro do servidor HTTP |
+| `503` | Serviço Indisponível | Erro do servidor HTTP |
+| `504` | Tempo Limite do Gateway | Erro do servidor HTTP |
+| `0` | Não Executado | Estado interno |
 
-### Códigos de Status HTTP Comuns (`code > 0`)
+### Comportamento Genérico de Fallback
 
-| Código | Status | Descrição |
-| :--- | :--- | :--- |
-| `200` | OK | Requisição concluída com sucesso. |
-| `201` | Created | Recurso criado com sucesso no servidor. |
-| `202` | Accepted | Requisição aceita para processamento assíncrono. |
-| `204` | No Content | Sucesso, servidor não retornou conteúdo no corpo. |
-| `400` | Bad Request | Requisição malformada ou dados inválidos. |
-| `401` | Unauthorized | Credenciais de autenticação ausentes ou inválidas. |
-| `403` | Forbidden | Autenticado, mas sem permissão de acesso ao recurso. |
-| `404` | Not Found | O endpoint solicitado não existe no servidor. |
-| `408` | Request Timeout | Servidor expirou o tempo de espera pela requisição. |
-| `429` | Too Many Requests | Limite de taxa de requisições excedido. |
-| `500` | Internal Server Error | Erro interno genérico no servidor. |
-| `502` | Bad Gateway | Resposta inválida recebida do servidor upstream. |
-| `503` | Service Unavailable | Servidor sobrecarregado ou em manutenção. |
-| `504` | Gateway Timeout | Gateway upstream expirou aguardando resposta. |
+- **Códigos negativos desconhecidos** → Erro de Cliente Desconhecido
+- **200–299** → Sucesso
+- **300–399** → Redirecionamento
+- **400–499** → Erro do Cliente
+- **500–599** → Erro do Servidor
+- **Outros valores** → Status HTTP Desconhecido
+
+### Exemplo
+
+Um pequeno exemplo de uso mostrando como aplicações podem tratar tanto erros de transporte quanto erros HTTP:
+
+```cpp
+int status = client.get("/api/data").getStatusCode();
+
+if (client.isSuccess()) {
+    // Tratar resposta bem-sucedida
+} else {
+    Serial.println(client.getErrorMessage());
+}
+```

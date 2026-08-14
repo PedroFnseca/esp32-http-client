@@ -619,39 +619,59 @@ client.get("/data3").getBody("v", &v3); // reconnects automatically
 
 ---
 
-## Error Codes Reference Table
+## Error Codes and HTTP Status Codes
 
-### Network / Client Error Codes (`code < 0`)
-
-| Code | Constant | Description |
+| Code | Meaning | Category |
 | :--- | :--- | :--- |
-| `-1` | `HTTPC_ERROR_CONNECTION_REFUSED` | Target host rejected the TCP connection. |
-| `-2` | `HTTPC_ERROR_SEND_HEADER_FAILED` | Failed to write HTTP headers to the socket. |
-| `-3` | `HTTPC_ERROR_SEND_PAYLOAD_FAILED` | Failed to transmit request body payload. |
-| `-4` | `HTTPC_ERROR_NOT_CONNECTED` | Client is not connected to a network/socket. |
-| `-5` | `HTTPC_ERROR_CONNECTION_LOST` | TCP connection terminated unexpectedly. |
-| `-6` | `HTTPC_ERROR_NO_STREAM` | No response stream available from client. |
-| `-7` | `HTTPC_ERROR_NO_HTTP_SERVER` | Server did not respond with valid HTTP. |
-| `-8` | `HTTPC_ERROR_TOO_LESS_RAM` | Insufficient free heap memory for operation. |
-| `-9` | `HTTPC_ERROR_ENCODING` | Transfer encoding or decoding error. |
-| `-10` | `HTTPC_ERROR_STREAM_WRITE` | Stream write operation failed. |
-| `-11` | `HTTPC_ERROR_READ_TIMEOUT` | Exceeded timeout waiting for server data. |
+| `-1` | Connection Refused | Client error |
+| `-2` | Send Header Failed | Client error |
+| `-3` | Send Payload Failed | Client error |
+| `-4` | Not Connected | Client error |
+| `-5` | Connection Lost | Client error |
+| `-6` | No Stream | Client error |
+| `-7` | No HTTP Server | Client error |
+| `-8` | Too Less RAM | Client error |
+| `-9` | Encoding Error | Client error |
+| `-10` | Stream Write Error | Client error |
+| `-11` | Read Timeout | Client error |
+| `200` | OK | HTTP success |
+| `201` | Created | HTTP success |
+| `202` | Accepted | HTTP success |
+| `204` | No Content | HTTP success |
+| `400` | Bad Request | HTTP client error |
+| `401` | Unauthorized | HTTP client error |
+| `403` | Forbidden | HTTP client error |
+| `404` | Not Found | HTTP client error |
+| `405` | Method Not Allowed | HTTP client error |
+| `408` | Request Timeout | HTTP client error |
+| `409` | Conflict | HTTP client error |
+| `429` | Too Many Requests | HTTP client error |
+| `500` | Internal Server Error | HTTP server error |
+| `501` | Not Implemented | HTTP server error |
+| `502` | Bad Gateway | HTTP server error |
+| `503` | Service Unavailable | HTTP server error |
+| `504` | Gateway Timeout | HTTP server error |
+| `0` | Not Executed | Internal state |
 
-### Common HTTP Status Codes (`code > 0`)
+### Generic Fallback Behavior
 
-| Code | Status | Description |
-| :--- | :--- | :--- |
-| `200` | OK | Request succeeded normally. |
-| `201` | Created | Resource was created successfully. |
-| `202` | Accepted | Request accepted for asynchronous processing. |
-| `204` | No Content | Request succeeded, server returned empty response. |
-| `400` | Bad Request | Malformed request or invalid payload syntax. |
-| `401` | Unauthorized | Missing or invalid authentication credentials. |
-| `403` | Forbidden | Authenticated, but lacking permissions for resource. |
-| `404` | Not Found | Requested endpoint path does not exist on server. |
-| `408` | Request Timeout | Server timed out waiting for request completion. |
-| `429` | Too Many Requests | Rate limit exceeded. |
-| `500` | Internal Server Error | Generic unhandled server-side error. |
-| `502` | Bad Gateway | Upstream server returned an invalid response. |
-| `503` | Service Unavailable | Server overloaded or down for maintenance. |
-| `504` | Gateway Timeout | Upstream gateway timed out waiting for response. |
+- **Negative unknown codes** → Unknown Client Error
+- **200–299** → Success
+- **300–399** → Redirection
+- **400–499** → Client Error
+- **500–599** → Server Error
+- **Other values** → Unknown HTTP Status
+
+### Example
+
+A short usage example showing how applications can handle both transport errors and HTTP errors:
+
+```cpp
+int status = client.get("/api/data").getStatusCode();
+
+if (client.isSuccess()) {
+    // Handle successful response
+} else {
+    Serial.println(client.getErrorMessage());
+}
+```
