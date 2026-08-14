@@ -1744,22 +1744,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#error-codes-reference-table" class="md-nav__link">
+  <a href="#error-codes-and-http-status-codes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Error Codes Reference Table
+        Error Codes and HTTP Status Codes
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Error Codes Reference Table">
+    <nav class="md-nav" aria-label="Error Codes and HTTP Status Codes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#network-client-error-codes-code-0" class="md-nav__link">
+  <a href="#generic-fallback-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Network / Client Error Codes (code &lt; 0)
+        Generic Fallback Behavior
       
     </span>
   </a>
@@ -1767,10 +1767,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#common-http-status-codes-code-0" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common HTTP Status Codes (code &gt; 0)
+        Example
       
     </span>
   </a>
@@ -2454,22 +2454,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#error-codes-reference-table" class="md-nav__link">
+  <a href="#error-codes-and-http-status-codes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Error Codes Reference Table
+        Error Codes and HTTP Status Codes
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Error Codes Reference Table">
+    <nav class="md-nav" aria-label="Error Codes and HTTP Status Codes">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#network-client-error-codes-code-0" class="md-nav__link">
+  <a href="#generic-fallback-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Network / Client Error Codes (code &lt; 0)
+        Generic Fallback Behavior
       
     </span>
   </a>
@@ -2477,10 +2477,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#common-http-status-codes-code-0" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common HTTP Status Codes (code &gt; 0)
+        Example
       
     </span>
   </a>
@@ -2992,156 +2992,182 @@ tags:
 <a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data3&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v3</span><span class="p">);</span><span class="w"> </span><span class="c1">// reconnects automatically</span>
 </code></pre></div></p>
 <hr />
-<h2 id="error-codes-reference-table">Error Codes Reference Table<a class="headerlink" href="#error-codes-reference-table" title="Permanent link">&para;</a></h2>
-<h3 id="network-client-error-codes-code-0">Network / Client Error Codes (<code>code &lt; 0</code>)<a class="headerlink" href="#network-client-error-codes-code-0" title="Permanent link">&para;</a></h3>
+<h2 id="error-codes-and-http-status-codes">Error Codes and HTTP Status Codes<a class="headerlink" href="#error-codes-and-http-status-codes" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Code</th>
-<th style="text-align: left;">Constant</th>
-<th style="text-align: left;">Description</th>
+<th style="text-align: left;">Meaning</th>
+<th style="text-align: left;">Category</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><code>-1</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_CONNECTION_REFUSED</code></td>
-<td style="text-align: left;">Target host rejected the TCP connection.</td>
+<td style="text-align: left;">Connection Refused</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-2</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_SEND_HEADER_FAILED</code></td>
-<td style="text-align: left;">Failed to write HTTP headers to the socket.</td>
+<td style="text-align: left;">Send Header Failed</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-3</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_SEND_PAYLOAD_FAILED</code></td>
-<td style="text-align: left;">Failed to transmit request body payload.</td>
+<td style="text-align: left;">Send Payload Failed</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-4</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_NOT_CONNECTED</code></td>
-<td style="text-align: left;">Client is not connected to a network/socket.</td>
+<td style="text-align: left;">Not Connected</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-5</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_CONNECTION_LOST</code></td>
-<td style="text-align: left;">TCP connection terminated unexpectedly.</td>
+<td style="text-align: left;">Connection Lost</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-6</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_NO_STREAM</code></td>
-<td style="text-align: left;">No response stream available from client.</td>
+<td style="text-align: left;">No Stream</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-7</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_NO_HTTP_SERVER</code></td>
-<td style="text-align: left;">Server did not respond with valid HTTP.</td>
+<td style="text-align: left;">No HTTP Server</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-8</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_TOO_LESS_RAM</code></td>
-<td style="text-align: left;">Insufficient free heap memory for operation.</td>
+<td style="text-align: left;">Too Less RAM</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-9</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_ENCODING</code></td>
-<td style="text-align: left;">Transfer encoding or decoding error.</td>
+<td style="text-align: left;">Encoding Error</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-10</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_STREAM_WRITE</code></td>
-<td style="text-align: left;">Stream write operation failed.</td>
+<td style="text-align: left;">Stream Write Error</td>
+<td style="text-align: left;">Client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-11</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_READ_TIMEOUT</code></td>
-<td style="text-align: left;">Exceeded timeout waiting for server data.</td>
+<td style="text-align: left;">Read Timeout</td>
+<td style="text-align: left;">Client error</td>
 </tr>
-</tbody>
-</table>
-<h3 id="common-http-status-codes-code-0">Common HTTP Status Codes (<code>code &gt; 0</code>)<a class="headerlink" href="#common-http-status-codes-code-0" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Code</th>
-<th style="text-align: left;">Status</th>
-<th style="text-align: left;">Description</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td style="text-align: left;"><code>200</code></td>
 <td style="text-align: left;">OK</td>
-<td style="text-align: left;">Request succeeded normally.</td>
+<td style="text-align: left;">HTTP success</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>201</code></td>
 <td style="text-align: left;">Created</td>
-<td style="text-align: left;">Resource was created successfully.</td>
+<td style="text-align: left;">HTTP success</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>202</code></td>
 <td style="text-align: left;">Accepted</td>
-<td style="text-align: left;">Request accepted for asynchronous processing.</td>
+<td style="text-align: left;">HTTP success</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>204</code></td>
 <td style="text-align: left;">No Content</td>
-<td style="text-align: left;">Request succeeded, server returned empty response.</td>
+<td style="text-align: left;">HTTP success</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>400</code></td>
 <td style="text-align: left;">Bad Request</td>
-<td style="text-align: left;">Malformed request or invalid payload syntax.</td>
+<td style="text-align: left;">HTTP client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>401</code></td>
 <td style="text-align: left;">Unauthorized</td>
-<td style="text-align: left;">Missing or invalid authentication credentials.</td>
+<td style="text-align: left;">HTTP client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>403</code></td>
 <td style="text-align: left;">Forbidden</td>
-<td style="text-align: left;">Authenticated, but lacking permissions for resource.</td>
+<td style="text-align: left;">HTTP client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>404</code></td>
 <td style="text-align: left;">Not Found</td>
-<td style="text-align: left;">Requested endpoint path does not exist on server.</td>
+<td style="text-align: left;">HTTP client error</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>405</code></td>
+<td style="text-align: left;">Method Not Allowed</td>
+<td style="text-align: left;">HTTP client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>408</code></td>
 <td style="text-align: left;">Request Timeout</td>
-<td style="text-align: left;">Server timed out waiting for request completion.</td>
+<td style="text-align: left;">HTTP client error</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>409</code></td>
+<td style="text-align: left;">Conflict</td>
+<td style="text-align: left;">HTTP client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>429</code></td>
 <td style="text-align: left;">Too Many Requests</td>
-<td style="text-align: left;">Rate limit exceeded.</td>
+<td style="text-align: left;">HTTP client error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>500</code></td>
 <td style="text-align: left;">Internal Server Error</td>
-<td style="text-align: left;">Generic unhandled server-side error.</td>
+<td style="text-align: left;">HTTP server error</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>501</code></td>
+<td style="text-align: left;">Not Implemented</td>
+<td style="text-align: left;">HTTP server error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>502</code></td>
 <td style="text-align: left;">Bad Gateway</td>
-<td style="text-align: left;">Upstream server returned an invalid response.</td>
+<td style="text-align: left;">HTTP server error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>503</code></td>
 <td style="text-align: left;">Service Unavailable</td>
-<td style="text-align: left;">Server overloaded or down for maintenance.</td>
+<td style="text-align: left;">HTTP server error</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>504</code></td>
 <td style="text-align: left;">Gateway Timeout</td>
-<td style="text-align: left;">Upstream gateway timed out waiting for response.</td>
+<td style="text-align: left;">HTTP server error</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>0</code></td>
+<td style="text-align: left;">Not Executed</td>
+<td style="text-align: left;">Internal state</td>
 </tr>
 </tbody>
 </table>
+<h3 id="generic-fallback-behavior">Generic Fallback Behavior<a class="headerlink" href="#generic-fallback-behavior" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Negative unknown codes</strong> → Unknown Client Error</li>
+<li><strong>200–299</strong> → Success</li>
+<li><strong>300–399</strong> → Redirection</li>
+<li><strong>400–499</strong> → Client Error</li>
+<li><strong>500–599</strong> → Server Error</li>
+<li><strong>Other values</strong> → Unknown HTTP Status</li>
+</ul>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
+<p>A short usage example showing how applications can handle both transport errors and HTTP errors:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/api/data&quot;</span><span class="p">).</span><span class="n">getStatusCode</span><span class="p">();</span>
+<a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>
+<a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">isSuccess</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="w">    </span><span class="c1">// Handle successful response</span>
+<a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">getErrorMessage</span><span class="p">());</span>
+<a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="p">}</span>
+</code></pre></div>
 
 
 
@@ -3162,7 +3188,7 @@ tags:
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 12, 2026 14:39:58 UTC">August 12, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 14, 2026 23:57:31 UTC">August 14, 2026</span>
   </span>
 
     

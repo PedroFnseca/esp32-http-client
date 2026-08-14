@@ -1755,22 +1755,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tabela-de-referencia-de-codigos-de-erro" class="md-nav__link">
+  <a href="#codigos-de-erro-e-codigos-de-status-http" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tabela de Referência de Códigos de Erro
+        Códigos de Erro e Códigos de Status HTTP
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Tabela de Referência de Códigos de Erro">
+    <nav class="md-nav" aria-label="Códigos de Erro e Códigos de Status HTTP">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#codigos-de-erro-de-rede-cliente-code-0" class="md-nav__link">
+  <a href="#comportamento-generico-de-fallback" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Códigos de Erro de Rede / Cliente (code &lt; 0)
+        Comportamento Genérico de Fallback
       
     </span>
   </a>
@@ -1778,10 +1778,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#codigos-de-status-http-comuns-code-0" class="md-nav__link">
+  <a href="#exemplo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Códigos de Status HTTP Comuns (code &gt; 0)
+        Exemplo
       
     </span>
   </a>
@@ -2476,22 +2476,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#tabela-de-referencia-de-codigos-de-erro" class="md-nav__link">
+  <a href="#codigos-de-erro-e-codigos-de-status-http" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tabela de Referência de Códigos de Erro
+        Códigos de Erro e Códigos de Status HTTP
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Tabela de Referência de Códigos de Erro">
+    <nav class="md-nav" aria-label="Códigos de Erro e Códigos de Status HTTP">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#codigos-de-erro-de-rede-cliente-code-0" class="md-nav__link">
+  <a href="#comportamento-generico-de-fallback" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Códigos de Erro de Rede / Cliente (code &lt; 0)
+        Comportamento Genérico de Fallback
       
     </span>
   </a>
@@ -2499,10 +2499,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#codigos-de-status-http-comuns-code-0" class="md-nav__link">
+  <a href="#exemplo" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Códigos de Status HTTP Comuns (code &gt; 0)
+        Exemplo
       
     </span>
   </a>
@@ -3012,156 +3012,182 @@ tags:
 <a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data3&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v3</span><span class="p">);</span><span class="w"> </span><span class="c1">// reconecta automaticamente</span>
 </code></pre></div></p>
 <hr />
-<h2 id="tabela-de-referencia-de-codigos-de-erro">Tabela de Referência de Códigos de Erro<a class="headerlink" href="#tabela-de-referencia-de-codigos-de-erro" title="Permanent link">&para;</a></h2>
-<h3 id="codigos-de-erro-de-rede-cliente-code-0">Códigos de Erro de Rede / Cliente (<code>code &lt; 0</code>)<a class="headerlink" href="#codigos-de-erro-de-rede-cliente-code-0" title="Permanent link">&para;</a></h3>
+<h2 id="codigos-de-erro-e-codigos-de-status-http">Códigos de Erro e Códigos de Status HTTP<a class="headerlink" href="#codigos-de-erro-e-codigos-de-status-http" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Código</th>
-<th style="text-align: left;">Constante</th>
-<th style="text-align: left;">Descrição</th>
+<th style="text-align: left;">Significado</th>
+<th style="text-align: left;">Categoria</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align: left;"><code>-1</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_CONNECTION_REFUSED</code></td>
-<td style="text-align: left;">O host de destino recusou a conexão TCP.</td>
+<td style="text-align: left;">Conexão Recusada</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-2</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_SEND_HEADER_FAILED</code></td>
-<td style="text-align: left;">Falha ao enviar cabeçalhos HTTP pelo socket.</td>
+<td style="text-align: left;">Falha ao Enviar Cabeçalho</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-3</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_SEND_PAYLOAD_FAILED</code></td>
-<td style="text-align: left;">Falha ao transmitir o corpo da requisição.</td>
+<td style="text-align: left;">Falha ao Enviar Payload</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-4</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_NOT_CONNECTED</code></td>
-<td style="text-align: left;">Cliente não está conectado à rede/socket.</td>
+<td style="text-align: left;">Não Conectado</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-5</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_CONNECTION_LOST</code></td>
-<td style="text-align: left;">A conexão TCP foi interrompida inesperadamente.</td>
+<td style="text-align: left;">Conexão Perdida</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-6</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_NO_STREAM</code></td>
-<td style="text-align: left;">Nenhum stream de resposta disponível.</td>
+<td style="text-align: left;">Sem Stream</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-7</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_NO_HTTP_SERVER</code></td>
-<td style="text-align: left;">Servidor não respondeu com HTTP válido.</td>
+<td style="text-align: left;">Sem Servidor HTTP</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-8</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_TOO_LESS_RAM</code></td>
-<td style="text-align: left;">Memória RAM (Heap) insuficiente para a operação.</td>
+<td style="text-align: left;">Memória RAM Insuficiente</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-9</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_ENCODING</code></td>
-<td style="text-align: left;">Erro de codificação ou decodificação de transferência.</td>
+<td style="text-align: left;">Erro de Codificação</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-10</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_STREAM_WRITE</code></td>
-<td style="text-align: left;">Falha na operação de escrita no stream.</td>
+<td style="text-align: left;">Erro de Escrita no Stream</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>-11</code></td>
-<td style="text-align: left;"><code>HTTPC_ERROR_READ_TIMEOUT</code></td>
-<td style="text-align: left;">Tempo limite esgotado aguardando resposta do servidor.</td>
+<td style="text-align: left;">Tempo Limite de Leitura</td>
+<td style="text-align: left;">Erro do cliente</td>
 </tr>
-</tbody>
-</table>
-<h3 id="codigos-de-status-http-comuns-code-0">Códigos de Status HTTP Comuns (<code>code &gt; 0</code>)<a class="headerlink" href="#codigos-de-status-http-comuns-code-0" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th style="text-align: left;">Código</th>
-<th style="text-align: left;">Status</th>
-<th style="text-align: left;">Descrição</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td style="text-align: left;"><code>200</code></td>
 <td style="text-align: left;">OK</td>
-<td style="text-align: left;">Requisição concluída com sucesso.</td>
+<td style="text-align: left;">Sucesso HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>201</code></td>
-<td style="text-align: left;">Created</td>
-<td style="text-align: left;">Recurso criado com sucesso no servidor.</td>
+<td style="text-align: left;">Criado</td>
+<td style="text-align: left;">Sucesso HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>202</code></td>
-<td style="text-align: left;">Accepted</td>
-<td style="text-align: left;">Requisição aceita para processamento assíncrono.</td>
+<td style="text-align: left;">Aceito</td>
+<td style="text-align: left;">Sucesso HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>204</code></td>
-<td style="text-align: left;">No Content</td>
-<td style="text-align: left;">Sucesso, servidor não retornou conteúdo no corpo.</td>
+<td style="text-align: left;">Sem Conteúdo</td>
+<td style="text-align: left;">Sucesso HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>400</code></td>
-<td style="text-align: left;">Bad Request</td>
-<td style="text-align: left;">Requisição malformada ou dados inválidos.</td>
+<td style="text-align: left;">Requisição Inválida</td>
+<td style="text-align: left;">Erro do cliente HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>401</code></td>
-<td style="text-align: left;">Unauthorized</td>
-<td style="text-align: left;">Credenciais de autenticação ausentes ou inválidas.</td>
+<td style="text-align: left;">Não Autorizado</td>
+<td style="text-align: left;">Erro do cliente HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>403</code></td>
-<td style="text-align: left;">Forbidden</td>
-<td style="text-align: left;">Autenticado, mas sem permissão de acesso ao recurso.</td>
+<td style="text-align: left;">Proibido</td>
+<td style="text-align: left;">Erro do cliente HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>404</code></td>
-<td style="text-align: left;">Not Found</td>
-<td style="text-align: left;">O endpoint solicitado não existe no servidor.</td>
+<td style="text-align: left;">Não Encontrado</td>
+<td style="text-align: left;">Erro do cliente HTTP</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>405</code></td>
+<td style="text-align: left;">Método Não Permitido</td>
+<td style="text-align: left;">Erro do cliente HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>408</code></td>
-<td style="text-align: left;">Request Timeout</td>
-<td style="text-align: left;">Servidor expirou o tempo de espera pela requisição.</td>
+<td style="text-align: left;">Tempo Limite da Requisição</td>
+<td style="text-align: left;">Erro do cliente HTTP</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>409</code></td>
+<td style="text-align: left;">Conflito</td>
+<td style="text-align: left;">Erro do cliente HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>429</code></td>
-<td style="text-align: left;">Too Many Requests</td>
-<td style="text-align: left;">Limite de taxa de requisições excedido.</td>
+<td style="text-align: left;">Muitas Requisições</td>
+<td style="text-align: left;">Erro do cliente HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>500</code></td>
-<td style="text-align: left;">Internal Server Error</td>
-<td style="text-align: left;">Erro interno genérico no servidor.</td>
+<td style="text-align: left;">Erro Interno do Servidor</td>
+<td style="text-align: left;">Erro do servidor HTTP</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>501</code></td>
+<td style="text-align: left;">Não Implementado</td>
+<td style="text-align: left;">Erro do servidor HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>502</code></td>
-<td style="text-align: left;">Bad Gateway</td>
-<td style="text-align: left;">Resposta inválida recebida do servidor upstream.</td>
+<td style="text-align: left;">Gateway Inválido</td>
+<td style="text-align: left;">Erro do servidor HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>503</code></td>
-<td style="text-align: left;">Service Unavailable</td>
-<td style="text-align: left;">Servidor sobrecarregado ou em manutenção.</td>
+<td style="text-align: left;">Serviço Indisponível</td>
+<td style="text-align: left;">Erro do servidor HTTP</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>504</code></td>
-<td style="text-align: left;">Gateway Timeout</td>
-<td style="text-align: left;">Gateway upstream expirou aguardando resposta.</td>
+<td style="text-align: left;">Tempo Limite do Gateway</td>
+<td style="text-align: left;">Erro do servidor HTTP</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>0</code></td>
+<td style="text-align: left;">Não Executado</td>
+<td style="text-align: left;">Estado interno</td>
 </tr>
 </tbody>
 </table>
+<h3 id="comportamento-generico-de-fallback">Comportamento Genérico de Fallback<a class="headerlink" href="#comportamento-generico-de-fallback" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Códigos negativos desconhecidos</strong> → Erro de Cliente Desconhecido</li>
+<li><strong>200–299</strong> → Sucesso</li>
+<li><strong>300–399</strong> → Redirecionamento</li>
+<li><strong>400–499</strong> → Erro do Cliente</li>
+<li><strong>500–599</strong> → Erro do Servidor</li>
+<li><strong>Outros valores</strong> → Status HTTP Desconhecido</li>
+</ul>
+<h3 id="exemplo">Exemplo<a class="headerlink" href="#exemplo" title="Permanent link">&para;</a></h3>
+<p>Um pequeno exemplo de uso mostrando como aplicações podem tratar tanto erros de transporte quanto erros HTTP:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/api/data&quot;</span><span class="p">).</span><span class="n">getStatusCode</span><span class="p">();</span>
+<a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>
+<a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">isSuccess</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a><span class="w">    </span><span class="c1">// Tratar resposta bem-sucedida</span>
+<a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">getErrorMessage</span><span class="p">());</span>
+<a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a><span class="p">}</span>
+</code></pre></div>
 
 
 
@@ -3182,7 +3208,7 @@ tags:
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="12 de agosto de 2026 14:39:58 UTC">12 de agosto de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="14 de agosto de 2026 23:57:31 UTC">14 de agosto de 2026</span>
   </span>
 
     
