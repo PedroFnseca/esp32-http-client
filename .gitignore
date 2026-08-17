@@ -6,3 +6,5 @@ site/
 .cache
 *.tar.gz
 .pio/
+__pycache__/
+*.pyc
