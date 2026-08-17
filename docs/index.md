@@ -10,12 +10,12 @@ tags:
 
 > A fluent, object-oriented HTTP client for ESP32 that **binds JSON response fields directly into your variables** — no `ArduinoJson`, no intermediate strings, no boilerplate.
 
-[![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
-[![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
-[![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
-[![Coverage](https://img.shields.io/badge/Coverage-88.03%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
-[![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client/blob/main/LICENSE)
-[![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social)](https://github.com/PedroFnseca/esp32-http-client/stargazers)
+[![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white){: width="120" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
+[![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white){: width="130" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
+[![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
+[![Coverage](https://img.shields.io/badge/Coverage-88.03%25-brightgreen){: width="116" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
+[![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client/blob/main/LICENSE)
+[![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client/stargazers)
 
 ---
 
@@ -35,37 +35,6 @@ client.get("/report")
 ```
 
 One fluent chain. Direct memory binding. Zero heap allocations for the response.
-
-### How it Works
-
-```mermaid
-sequenceDiagram
-    box rgba(0, 150, 136, 0.15) ESP32 Device
-    participant App as Your App
-    participant Client as ESP32HTTPClient
-    end
-    box rgba(255, 152, 0, 0.15) External API
-    participant Server as API
-    end
-
-    App->>Client: 1. Configure Request & Bind Variables
-    Note over App,Client: e.g., getBody("temp", &temperature)
-    Client->>Server: 2. Send HTTP Request
-    Server-->>Client: 3. Stream JSON Response
-    
-    rect rgba(0, 150, 136, 0.1)
-    loop Zero-Allocation Parsing
-        Client->>Client: Read Stream Byte-by-Byte
-        Client->>Client: Identify Keys On-The-Fly
-        rect rgba(255, 152, 0, 0.15)
-        alt Key Matches Target
-            Client->>App: 4. Inject Value directly into Variable
-        end
-        end
-    end
-    end
-    Client-->>App: 5. Request Complete
-```
 
 ---
 
