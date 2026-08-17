@@ -62,22 +62,47 @@
   
   
 
-<script id="__analytics">function __md_analytics(){function e(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],e("js",new Date),e("config","G-TFXJLYGKZM"),document.addEventListener("DOMContentLoaded",(function(){document.forms.search&&document.forms.search.query.addEventListener("blur",(function(){this.value&&e("event","search",{search_term:this.value})}));document$.subscribe((function(){var t=document.forms.feedback;if(void 0!==t)for(var a of t.querySelectorAll("[type=submit]"))a.addEventListener("click",(function(a){a.preventDefault();var n=document.location.pathname,d=this.getAttribute("data-md-value");e("event","feedback",{page:n,data:d}),t.firstElementChild.disabled=!0;var r=t.querySelector(".md-feedback__note [data-md-value='"+d+"']");r&&(r.hidden=!1)})),t.hidden=!1})),location$.subscribe((function(t){e("config","G-TFXJLYGKZM",{page_path:t.pathname})}))}));var t=document.createElement("script");t.async=!0,t.src="https://www.googletagmanager.com/gtag/js?id=G-TFXJLYGKZM",document.getElementById("__analytics").insertAdjacentElement("afterEnd",t)}</script>
+<script id="__analytics">
+function __md_analytics(){
+  function e(){dataLayer.push(arguments)}
+  window.dataLayer=window.dataLayer||[];
+  e("js",new Date);
+  e("config","G-TFXJLYGKZM");
+  document.addEventListener("DOMContentLoaded", function(){
+    if (document.forms.search && document.forms.search.query) {
+      document.forms.search.query.addEventListener("blur", function(){
+        if (this.value) e("event", "search", {search_term: this.value});
+      }, {passive: true});
+    }
+    if (typeof location$ !== "undefined") {
+      location$.subscribe(function(t){
+        e("config", "G-TFXJLYGKZM", {page_path: t.pathname});
+      });
+    }
+  });
+  function loadGtag(){
+    var t = document.createElement("script");
+    t.async = true;
+    t.src = "https://www.googletagmanager.com/gtag/js?id=G-TFXJLYGKZM";
+    var el = document.getElementById("__analytics");
+    if (el) el.insertAdjacentElement("afterEnd", t);
+  }
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(loadGtag, {timeout: 2000});
+  } else {
+    setTimeout(loadGtag, 1000);
+  }
+}
+</script>
   
     <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
   
 
     
     
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
-  </noscript>
+  <link rel="preload" href="../assets/stylesheets/main.ec1eaa64.min.css" as="style">
+  <link rel="preload" href="../assets/stylesheets/palette.ab4e12ef.min.css" as="style">
 
   
 
