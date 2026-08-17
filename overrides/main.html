@@ -11,15 +11,9 @@
 {% endblock %}
 
 {% block extrahead %}
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
-  </noscript>
+  <link rel="preload" href="{{ 'assets/stylesheets/main.ec1eaa64.min.css' | url }}" as="style">
+  <link rel="preload" href="{{ 'assets/stylesheets/palette.ab4e12ef.min.css' | url }}" as="style">
 
   {{ super() }}
 

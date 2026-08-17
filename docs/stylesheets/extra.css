@@ -3,8 +3,8 @@ html {
 }
 
 :root {
-  --md-text-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --md-code-font: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --md-text-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+  --md-code-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", Courier, monospace;
 }
 
 [data-md-color-primary="teal"] {
@@ -50,6 +50,10 @@ html {
   min-height: 20px;
   display: inline-block;
   vertical-align: middle;
+}
+
+.md-typeset pre {
+  contain: content;
 }
 
 @media screen and (min-width: 60em) {

@@ -1,0 +1,35 @@
+{% if config.extra.analytics %}
+  {% set property = config.extra.analytics.property | d("", true) %}
+{% endif %}
+<script id="__analytics">
+function __md_analytics(){
+  function e(){dataLayer.push(arguments)}
+  window.dataLayer=window.dataLayer||[];
+  e("js",new Date);
+  e("config","{{ property }}");
+  document.addEventListener("DOMContentLoaded", function(){
+    if (document.forms.search && document.forms.search.query) {
+      document.forms.search.query.addEventListener("blur", function(){
+        if (this.value) e("event", "search", {search_term: this.value});
+      }, {passive: true});
+    }
+    if (typeof location$ !== "undefined") {
+      location$.subscribe(function(t){
+        e("config", "{{ property }}", {page_path: t.pathname});
+      });
+    }
+  });
+  function loadGtag(){
+    var t = document.createElement("script");
+    t.async = true;
+    t.src = "https://www.googletagmanager.com/gtag/js?id={{ property }}";
+    var el = document.getElementById("__analytics");
+    if (el) el.insertAdjacentElement("afterEnd", t);
+  }
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(loadGtag, {timeout: 2000});
+  } else {
+    setTimeout(loadGtag, 1000);
+  }
+}
+</script>
