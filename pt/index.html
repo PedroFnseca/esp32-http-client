@@ -20,9 +20,9 @@
       
       
         
-          <link rel="alternate" href="/" hreflang="en">
+          <link rel="alternate" href="https://esp32httpclient.com/" hreflang="en">
         
-          <link rel="alternate" href="/pt/" hreflang="pt-BR">
+          <link rel="alternate" href="https://esp32httpclient.com/pt/" hreflang="pt">
         
       
       
@@ -49,12 +49,6 @@
     
     
       
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CCascadia+Code:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Inter";--md-code-font:"Cascadia Code"}</style>
-      
     
     
       <link rel="stylesheet" href="../stylesheets/extra.css">
@@ -75,35 +69,35 @@
 
     
     
-  <!-- Eliminate Render-Blocking Resources: Preconnect to font and analytics servers -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 
-  <!-- Asynchronous Font Loading (Swap display to prevent FOIT/render blocking) -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CCascadia+Code:400,400i,700,700i&display=swap" media="print" onload="this.media='all'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CCascadia+Code:400,400i,700,700i&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
   </noscript>
 
   
 
-  <!-- x-default hreflang pointing to the English version -->
   
     
       
-  <link rel="alternate" hreflang="x-default" href="/">
+  <link rel="alternate" hreflang="x-default" href="https://esp32httpclient.com/">
       
     
       
     
   
+
+  <link rel="alternate" type="text/plain" href="https://esp32httpclient.com/llms.txt" title="LLMs Context">
+  <link rel="alternate" type="text/plain" href="https://esp32httpclient.com/llms-full.txt" title="Full LLMs Context">
 
   <meta name="keywords" content="Cliente HTTP ESP32, API REST Arduino ESP32, Parser JSON ESP32, Requisição GET POST ESP32, PlatformIO ESP32, biblioteca C++ ESP32">
   <meta name="author" content="Pedro Fonseca">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ESP32-HTTP-Client Documentation">
   <meta property="og:url" content="https://esp32httpclient.com/pt/">
@@ -111,13 +105,11 @@
   <meta property="og:description" content="Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++ e vínculo direto de JSON.">
   <meta property="og:image" content="https://esp32httpclient.com/assets/preview.png">
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Cliente HTTP ESP32 - Biblioteca REST Zero Heap">
   <meta name="twitter:description" content="Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++ e vínculo direto de JSON.">
   <meta name="twitter:image" content="https://esp32httpclient.com/assets/preview.png">
 
-  <!-- JSON-LD Structured Data (Schema.org) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -280,13 +272,13 @@
       <ul class="md-select__list">
         
           <li class="md-select__item">
-            <a href="/" hreflang="en" class="md-select__link">
+            <a href="https://esp32httpclient.com/" hreflang="en" class="md-select__link">
               🇺🇸 English
             </a>
           </li>
         
           <li class="md-select__item">
-            <a href="/pt/" hreflang="pt-BR" class="md-select__link">
+            <a href="https://esp32httpclient.com/pt/" hreflang="pt" class="md-select__link">
               🇧🇷 Português
             </a>
           </li>
@@ -303,7 +295,7 @@
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         </label>
-        <div class="md-search" data-md-component="search" role="dialog">
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Buscar">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
@@ -474,23 +466,6 @@
       
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="O que é?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#como-funciona" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Como Funciona
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1494,23 +1469,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="O que é?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#como-funciona" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Como Funciona
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1593,12 +1551,12 @@
 <blockquote>
 <p>Um cliente HTTP fluente e orientado a objetos para ESP32 que <strong>vincula os campos da resposta JSON diretamente às suas variáveis</strong> — sem <code>ArduinoJson</code>, sem strings intermediárias, sem código clichê.</p>
 </blockquote>
-<p><a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="Arduino Library" src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&amp;label=Arduino&amp;logo=arduino&amp;logoColor=white" /></a>
-<a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="PlatformIO Registry" src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&amp;label=PlatformIO&amp;logo=platformio&amp;logoColor=white" /></a>
-<a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="Idioma" src="https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client" /></a>
-<a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="Cobertura" src="https://img.shields.io/badge/Coverage-88.18%25-brightgreen" /></a>
-<a href="https://github.com/PedroFnseca/esp32-http-client/blob/main/LICENSE"><img alt="Licença" src="https://img.shields.io/github/license/PedroFnseca/esp32-http-client" /></a>
-<a href="https://github.com/PedroFnseca/esp32-http-client/stargazers"><img alt="Estrelas" src="https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social" /></a></p>
+<p><a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="Arduino Library" decoding="async" height="20" loading="lazy" src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&amp;label=Arduino&amp;logo=arduino&amp;logoColor=white" width="120" /></a>
+<a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="PlatformIO Registry" decoding="async" height="20" loading="lazy" src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&amp;label=PlatformIO&amp;logo=platformio&amp;logoColor=white" width="130" /></a>
+<a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="Idioma" decoding="async" height="20" loading="lazy" src="https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client" width="80" /></a>
+<a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="Cobertura" decoding="async" height="20" loading="lazy" src="https://img.shields.io/badge/Coverage-88.18%25-brightgreen" width="116" /></a>
+<a href="https://github.com/PedroFnseca/esp32-http-client/blob/main/LICENSE"><img alt="Licença" decoding="async" height="20" loading="lazy" src="https://img.shields.io/github/license/PedroFnseca/esp32-http-client" width="80" /></a>
+<a href="https://github.com/PedroFnseca/esp32-http-client/stargazers"><img alt="Estrelas" decoding="async" height="20" loading="lazy" src="https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social" width="80" /></a></p>
 <hr />
 <h2 id="o-que-e">O que é?<a class="headerlink" href="#o-que-e" title="Permanent link">&para;</a></h2>
 <p><strong>ESP32-HTTP-Client</strong> é uma biblioteca leve do Arduino para o ESP32 que repensa como você interage com APIs REST. Em vez de obter uma string JSON bruta e depois analisá-la, você simplesmente diz ao cliente <em>onde</em> colocar os dados, e ele cuida do resto.</p>
@@ -1606,39 +1564,12 @@
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kt">float</span><span class="w"> </span><span class="n">temperature</span><span class="p">;</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/report&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;userId&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">userId</span><span class="p">)</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;sensor.temp&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">temperature</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;0.address.city&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/report"</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"userId"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">userId</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"sensor.temp"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">temperature</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"0.address.city"</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
 </code></pre></div>
 <p>Uma única cadeia fluente. Vinculação direta de memória. Zero alocações na heap para a resposta.</p>
-<h3 id="como-funciona">Como Funciona<a class="headerlink" href="#como-funciona" title="Permanent link">&para;</a></h3>
-<pre class="mermaid"><code>sequenceDiagram
-    box rgba(0, 150, 136, 0.15) Dispositivo ESP32
-    participant App as Sua App
-    participant Client as ESP32HTTPClient
-    end
-    box rgba(255, 152, 0, 0.15) API Externa
-    participant Server as API
-    end
-
-    App-&gt;&gt;Client: 1. Configurar Requisição &amp; Vincular Variáveis
-    Note over App,Client: ex: getBody("temp", &amp;temperature)
-    Client-&gt;&gt;Server: 2. Enviar Requisição HTTP
-    Server--&gt;&gt;Client: 3. Streaming da Resposta JSON
-
-    rect rgba(0, 150, 136, 0.1)
-    loop Parsing com Alocação Zero
-        Client-&gt;&gt;Client: Ler Stream Byte a Byte
-        Client-&gt;&gt;Client: Identificar Chaves em Tempo Real
-        rect rgba(255, 152, 0, 0.15)
-        alt Chave Corresponde ao Alvo
-            Client-&gt;&gt;App: 4. Injetar Valor Diretamente na Variável
-        end
-        end
-    end
-    end
-    Client--&gt;&gt;App: 5. Requisição Concluída</code></pre>
 <hr />
 <h2 id="desempenho-em-destaque">Desempenho em Destaque<a class="headerlink" href="#desempenho-em-destaque" title="Permanent link">&para;</a></h2>
 <p>Comparativo medido em <strong>100 requisições HTTP GET consecutivas</strong> com cargas JSON em um dispositivo ESP32 real:</p>
@@ -1696,21 +1627,21 @@
 <hr />
 <h2 id="inicio-rapido-em-30-segundos">Início Rápido em 30 Segundos<a class="headerlink" href="#inicio-rapido-em-30-segundos" title="Permanent link">&para;</a></h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ESP32HTTPClient.h&quot;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">&quot;https://jsonplaceholder.typicode.com&quot;</span><span class="p">);</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://jsonplaceholder.typicode.com"</span><span class="p">);</span>
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="s">&quot;SEU_SSID&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;SUA_SENHA&quot;</span><span class="p">);</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="s">"SEU_SSID"</span><span class="p">,</span><span class="w"> </span><span class="s">"SUA_SENHA"</span><span class="p">);</span>
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
 <a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
 <a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="c1">// A API retorna: { &quot;userId&quot;: 1, &quot;id&quot;: 1, &quot;title&quot;: &quot;...&quot;, &quot;completed&quot;: false }</span>
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/todos/1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;userId&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">userId</span><span class="p">);</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="c1">// A API retorna: { "userId": 1, "id": 1, "title": "...", "completed": false }</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/todos/1"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"userId"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">userId</span><span class="p">);</span>
 <a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
-<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;ID do Usuário: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">userId</span><span class="p">);</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"ID do Usuário: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">userId</span><span class="p">);</span>
 <a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="p">}</span>
 <a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
 <a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
@@ -1740,7 +1671,7 @@
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="12 de agosto de 2026 14:10:16 UTC">12 de agosto de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="17 de agosto de 2026 19:37:16 UTC">17 de agosto de 2026</span>
   </span>
 
     
@@ -1814,10 +1745,10 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "Mais 1 nesta p\u00e1gina", "search.result.more.other": "Mais # nesta p\u00e1gina", "search.result.none": "Nenhum resultado encontrado", "search.result.one": "1 resultado encontrado", "search.result.other": "# resultados encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
-      
-        <script src="../javascripts/extra.js"></script>
-      
-    
+  <script src="../assets/javascripts/bundle.d7400e89.min.js" defer></script>
+  
+    <script src="../javascripts/extra.js" defer></script>
+  
+
   </body>
 </html>

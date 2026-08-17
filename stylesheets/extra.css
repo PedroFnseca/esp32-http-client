@@ -2,9 +2,56 @@ html {
   scroll-behavior: smooth;
 }
 
-/* ==========================================================================
-   Header Layout: Left (Logo/Title), Center (Search), Right (Dark Mode, i18n, GitHub)
-   ========================================================================== */
+:root {
+  --md-text-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --md-code-font: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+[data-md-color-primary="teal"] {
+  --md-primary-fg-color: #00796b;
+  --md-primary-fg-color--light: #00897b;
+  --md-primary-fg-color--dark: #004d40;
+}
+
+.md-source__facts,
+.md-header .md-source__facts {
+  opacity: 1 !important;
+}
+
+.md-source__fact,
+.md-header .md-source__fact {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  font-weight: 600 !important;
+}
+
+[data-md-color-scheme="slate"] .highlight .mi,
+[data-md-color-scheme="slate"] .highlight .mf,
+[data-md-color-scheme="slate"] .highlight .mh,
+[data-md-color-scheme="slate"] .highlight .mo,
+[data-md-color-scheme="slate"] .highlight .il {
+  color: #ff8e82 !important;
+}
+
+.md-typeset p a,
+.md-typeset li a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.md-typeset p a:hover,
+.md-typeset li a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.md-typeset img[src*="shields.io"],
+.md-typeset img[src*="badge"] {
+  height: 20px;
+  min-height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 @media screen and (min-width: 60em) {
   .md-header__inner {
     display: flex;
@@ -30,21 +77,25 @@ html {
   }
 
   .md-search__form {
-    background-color: rgba(255, 255, 255, 0.12) !important;
+    background-color: rgba(0, 0, 0, 0.22) !important;
     border-radius: 20px !important;
-    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
     transition: all 0.25s ease !important;
   }
 
   .md-search__form:hover,
   .md-search__form:focus-within {
-    background-color: rgba(255, 255, 255, 0.22) !important;
+    background-color: rgba(0, 0, 0, 0.35) !important;
     border-color: #ff9800 !important;
     box-shadow: 0 0 12px rgba(255, 152, 0, 0.35) !important;
   }
 
+  .md-search__input {
+    color: #ffffff !important;
+  }
+
   .md-search__input::placeholder {
-    color: rgba(255, 255, 255, 0.75) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
   }
 
   form.md-header__option[data-md-component="palette"] {

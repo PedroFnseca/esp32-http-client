@@ -24,7 +24,7 @@
         
           <link rel="alternate" href="./" hreflang="en">
         
-          <link rel="alternate" href="/pt/" hreflang="pt-BR">
+          <link rel="alternate" href="../../pt/api/esp32httpclient/" hreflang="pt">
         
       
       
@@ -51,12 +51,6 @@
     
     
       
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CCascadia+Code:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Inter";--md-code-font:"Cascadia Code"}</style>
-      
     
     
       <link rel="stylesheet" href="../../stylesheets/extra.css">
@@ -77,35 +71,35 @@
 
     
     
-  <!-- Eliminate Render-Blocking Resources: Preconnect to font and analytics servers -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 
-  <!-- Asynchronous Font Loading (Swap display to prevent FOIT/render blocking) -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CCascadia+Code:400,400i,700,700i&display=swap" media="print" onload="this.media='all'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CCascadia+Code:400,400i,700,700i&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
   </noscript>
 
   
 
-  <!-- x-default hreflang pointing to the English version -->
   
     
       
-  <link rel="alternate" hreflang="x-default" href="./">
+  <link rel="alternate" hreflang="x-default" href="api/esp32httpclient/">
       
     
       
     
   
+
+  <link rel="alternate" type="text/plain" href="https://esp32httpclient.com/llms.txt" title="LLMs Context">
+  <link rel="alternate" type="text/plain" href="https://esp32httpclient.com/llms-full.txt" title="Full LLMs Context">
 
   <meta name="keywords" content="ESP32 HTTP Client, ESP32 REST Client, Arduino ESP32 HTTP GET POST, ESP32 JSON parser, PlatformIO ESP32, ESP-IDF HTTP client, C++ IoT library">
   <meta name="author" content="Pedro Fonseca">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ESP32-HTTP-Client Documentation">
   <meta property="og:url" content="https://esp32httpclient.com/api/esp32httpclient/">
@@ -113,13 +107,11 @@
   <meta property="og:description" content="ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling.">
   <meta property="og:image" content="https://esp32httpclient.com/assets/preview.png">
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ESP32HTTPClient">
   <meta name="twitter:description" content="ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling.">
   <meta name="twitter:image" content="https://esp32httpclient.com/assets/preview.png">
 
-  <!-- JSON-LD Structured Data (Schema.org) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -288,7 +280,7 @@
           </li>
         
           <li class="md-select__item">
-            <a href="/pt/" hreflang="pt-BR" class="md-select__link">
+            <a href="../../pt/api/esp32httpclient/" hreflang="pt" class="md-select__link">
               🇧🇷 Português
             </a>
           </li>
@@ -305,7 +297,7 @@
           
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
         </label>
-        <div class="md-search" data-md-component="search" role="dialog">
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
@@ -2553,7 +2545,7 @@ tags:
 </tbody>
 </table>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">&quot;https://api.example.com&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://api.example.com"</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="esp32httpclientbaseurl-port"><code>ESP32HTTPClient(baseUrl, port)</code><a class="headerlink" href="#esp32httpclientbaseurl-port" title="Permanent link">&para;</a></h3>
@@ -2583,7 +2575,7 @@ tags:
 </tbody>
 </table>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">&quot;http://192.168.1.100&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">8080</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"http://192.168.1.100"</span><span class="p">,</span><span class="w"> </span><span class="mi">8080</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h2 id="http-request-methods">HTTP Request Methods<a class="headerlink" href="#http-request-methods" title="Permanent link">&para;</a></h2>
@@ -2594,7 +2586,7 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">RestRequest</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/todos/1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">title</span><span class="p">));</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/todos/1"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"title"</span><span class="p">,</span><span class="w"> </span><span class="n">title</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">title</span><span class="p">));</span>
 </code></pre></div></p>
 <hr />
 <h3 id="postpath"><code>post(path)</code><a class="headerlink" href="#postpath" title="Permanent link">&para;</a></h3>
@@ -2602,7 +2594,7 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">RestRequest</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">client</span><span class="p">.</span><span class="k">post</span><span class="p">(</span><span class="s">&quot;/users&quot;</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pedro&quot;</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;age&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">21</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">newId</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">client</span><span class="p">.</span><span class="k">post</span><span class="p">(</span><span class="s">"/users"</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">"name"</span><span class="p">,</span><span class="w"> </span><span class="s">"Pedro"</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">"age"</span><span class="p">,</span><span class="w"> </span><span class="mi">21</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">newId</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="putpath"><code>put(path)</code><a class="headerlink" href="#putpath" title="Permanent link">&para;</a></h3>
@@ -2610,7 +2602,7 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">RestRequest</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">client</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="s">&quot;/posts/1&quot;</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;new title&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">client</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="s">"/posts/1"</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">"title"</span><span class="p">,</span><span class="w"> </span><span class="s">"new title"</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="updatepath"><code>update(path)</code><a class="headerlink" href="#updatepath" title="Permanent link">&para;</a></h3>
@@ -2618,7 +2610,7 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="n">RestRequest</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">client</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="s">&quot;/lights/1&quot;</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;OFF&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="n">client</span><span class="p">.</span><span class="n">update</span><span class="p">(</span><span class="s">"/lights/1"</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">"state"</span><span class="p">,</span><span class="w"> </span><span class="s">"OFF"</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="patchpath"><code>patch(path)</code><a class="headerlink" href="#patchpath" title="Permanent link">&para;</a></h3>
@@ -2626,7 +2618,7 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="n">RestRequest</span><span class="w"> </span><span class="nf">patch</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">client</span><span class="p">.</span><span class="n">patch</span><span class="p">(</span><span class="s">&quot;/config&quot;</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">&quot;timeout&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="n">client</span><span class="p">.</span><span class="n">patch</span><span class="p">(</span><span class="s">"/config"</span><span class="p">).</span><span class="n">body</span><span class="p">(</span><span class="s">"timeout"</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="delpath"><code>del(path)</code><a class="headerlink" href="#delpath" title="Permanent link">&para;</a></h3>
@@ -2634,7 +2626,7 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="n">RestRequest</span><span class="w"> </span><span class="nf">del</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">path</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">client</span><span class="p">.</span><span class="n">del</span><span class="p">(</span><span class="s">&quot;/sessions/42&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="n">client</span><span class="p">.</span><span class="n">del</span><span class="p">(</span><span class="s">"/sessions/42"</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h2 id="configuration-methods">Configuration Methods<a class="headerlink" href="#configuration-methods" title="Permanent link">&para;</a></h2>
@@ -2662,8 +2654,8 @@ tags:
 </tbody>
 </table>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">&quot;Authorization&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Bearer my-token&quot;</span><span class="p">);</span>
-<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">client</span><span class="p">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">&quot;X-Device-ID&quot;</span><span class="p">,</span><span class="w">   </span><span class="s">&quot;ESP32-001&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">"Authorization"</span><span class="p">,</span><span class="w"> </span><span class="s">"Bearer my-token"</span><span class="p">);</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">client</span><span class="p">.</span><span class="n">setHeader</span><span class="p">(</span><span class="s">"X-Device-ID"</span><span class="p">,</span><span class="w">   </span><span class="s">"ESP32-001"</span><span class="p">);</span>
 </code></pre></div></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -2695,7 +2687,7 @@ tags:
 </tbody>
 </table>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">client</span><span class="p">.</span><span class="n">bearer</span><span class="p">(</span><span class="s">&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="n">client</span><span class="p">.</span><span class="n">bearer</span><span class="p">(</span><span class="s">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="basicuser-password"><code>basic(user, password)</code><a class="headerlink" href="#basicuser-password" title="Permanent link">&para;</a></h3>
@@ -2724,7 +2716,7 @@ tags:
 </tbody>
 </table>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">client</span><span class="p">.</span><span class="n">basic</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;secret123&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="n">client</span><span class="p">.</span><span class="n">basic</span><span class="p">(</span><span class="s">"admin"</span><span class="p">,</span><span class="w"> </span><span class="s">"secret123"</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="apikeyname-key"><code>apiKey(name, key)</code><a class="headerlink" href="#apikeyname-key" title="Permanent link">&para;</a></h3>
@@ -2753,7 +2745,7 @@ tags:
 </tbody>
 </table>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">client</span><span class="p">.</span><span class="n">apiKey</span><span class="p">(</span><span class="s">&quot;x-api-key&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;my-secret-api-key&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="n">client</span><span class="p">.</span><span class="n">apiKey</span><span class="p">(</span><span class="s">"x-api-key"</span><span class="p">,</span><span class="w"> </span><span class="s">"my-secret-api-key"</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="cookiename-value"><code>cookie(name, value)</code><a class="headerlink" href="#cookiename-value" title="Permanent link">&para;</a></h3>
@@ -2764,9 +2756,9 @@ tags:
 *   <code>name</code>: The name of the cookie (e.g., <code>"session_id"</code>).
 *   <code>value</code>: The value of the cookie (e.g., <code>"abc1234"</code>).</p>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">client</span><span class="p">.</span><span class="n">cookie</span><span class="p">(</span><span class="s">&quot;session_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;abc1234&quot;</span><span class="p">)</span>
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">      </span><span class="p">.</span><span class="n">cookie</span><span class="p">(</span><span class="s">&quot;device_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;esp32-01&quot;</span><span class="p">)</span>
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">      </span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/profile&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="n">client</span><span class="p">.</span><span class="n">cookie</span><span class="p">(</span><span class="s">"session_id"</span><span class="p">,</span><span class="w"> </span><span class="s">"abc1234"</span><span class="p">)</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">      </span><span class="p">.</span><span class="n">cookie</span><span class="p">(</span><span class="s">"device_id"</span><span class="p">,</span><span class="w"> </span><span class="s">"esp32-01"</span><span class="p">)</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">      </span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/profile"</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="setbaseurlbaseurl-port"><code>setBaseUrl(baseUrl, port)</code><a class="headerlink" href="#setbaseurlbaseurl-port" title="Permanent link">&para;</a></h3>
@@ -2774,7 +2766,7 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setBaseUrl</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">baseUrl</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setBaseUrl</span><span class="p">(</span><span class="s">&quot;https://api.v2.example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setBaseUrl</span><span class="p">(</span><span class="s">"https://api.v2.example.com"</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h3 id="seturlbaseurl"><code>setUrl(baseUrl)</code><a class="headerlink" href="#seturlbaseurl" title="Permanent link">&para;</a></h3>
@@ -2828,7 +2820,7 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setContentType</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">contentType</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setContentType</span><span class="p">(</span><span class="s">&quot;application/x-www-form-urlencoded&quot;</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="n">client</span><span class="p">.</span><span class="n">setContentType</span><span class="p">(</span><span class="s">"application/x-www-form-urlencoded"</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h2 id="response-error-inspection">Response &amp; Error Inspection<a class="headerlink" href="#response-error-inspection" title="Permanent link">&para;</a></h2>
@@ -2866,9 +2858,9 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">isSuccess</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;val&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/data"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"val"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">);</span>
 <a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">isSuccess</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Request succeeded!&quot;</span><span class="p">);</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"Request succeeded!"</span><span class="p">);</span>
 <a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="p">}</span>
 </code></pre></div></p>
 <hr />
@@ -2877,9 +2869,9 @@ tags:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="kt">bool</span><span class="w"> </span><span class="nf">hasError</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;val&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/data"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"val"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">val</span><span class="p">);</span>
 <a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">hasError</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error (%d): %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">getStatusCode</span><span class="p">(),</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">getErrorMessage</span><span class="p">().</span><span class="n">c_str</span><span class="p">());</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Error (%d): %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">getStatusCode</span><span class="p">(),</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">getErrorMessage</span><span class="p">().</span><span class="n">c_str</span><span class="p">());</span>
 <a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="p">}</span>
 </code></pre></div></p>
 <hr />
@@ -2902,7 +2894,7 @@ tags:
 <a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="k">static</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">toJson</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">obj</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pedro&quot;</span><span class="p">,</span><span class="w"> </span><span class="mf">9.5f</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">};</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">15</span><span class="p">,</span><span class="w"> </span><span class="s">"Pedro"</span><span class="p">,</span><span class="w"> </span><span class="mf">9.5f</span><span class="p">,</span><span class="w"> </span><span class="nb">true</span><span class="p">};</span>
 <a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="n">String</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ESP32HTTPClient</span><span class="o">::</span><span class="n">toJson</span><span class="p">(</span><span class="n">user</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
@@ -2915,7 +2907,7 @@ tags:
 </code></pre></div>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="n">User</span><span class="w"> </span><span class="n">user</span><span class="p">;</span>
-<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="n">ESP32HTTPClient</span><span class="o">::</span><span class="n">fromJson</span><span class="p">(</span><span class="s">&quot;{</span><span class="se">\&quot;</span><span class="s">id</span><span class="se">\&quot;</span><span class="s">:15,</span><span class="se">\&quot;</span><span class="s">name</span><span class="se">\&quot;</span><span class="s">:</span><span class="se">\&quot;</span><span class="s">Pedro</span><span class="se">\&quot;</span><span class="s">}&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">user</span><span class="p">);</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="n">ESP32HTTPClient</span><span class="o">::</span><span class="n">fromJson</span><span class="p">(</span><span class="s">"{</span><span class="se">\"</span><span class="s">id</span><span class="se">\"</span><span class="s">:15,</span><span class="se">\"</span><span class="s">name</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">Pedro</span><span class="se">\"</span><span class="s">}"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">user</span><span class="p">);</span>
 </code></pre></div></p>
 <hr />
 <h2 id="callbacks">Callbacks<a class="headerlink" href="#callbacks" title="Permanent link">&para;</a></h2>
@@ -2927,7 +2919,7 @@ tags:
 </code></pre></div>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onSuccess</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Client request succeeded with status %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Client request succeeded with status %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
 <a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="p">});</span>
 </code></pre></div></p>
 <hr />
@@ -2938,7 +2930,7 @@ tags:
 </code></pre></div>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onError</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Client request failed (%d): %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">);</span>
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Client request failed (%d): %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p">);</span>
 <a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a><span class="o">---</span>
 <a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a>
 <a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a><span class="cp">### `onResponse(cb)`</span>
@@ -2950,7 +2942,7 @@ tags:
 </code></pre></div></p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onResponse</span><span class="p">([](</span><span class="kt">int</span><span class="w"> </span><span class="n">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Request completed with status: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
+<a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Request completed with status: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">code</span><span class="p">);</span>
 <a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a><span class="p">});</span>
 </code></pre></div></p>
 <hr />
@@ -2971,7 +2963,7 @@ tags:
 </code></pre></div></p>
 <p><strong>Example:</strong>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="n">client</span><span class="p">.</span><span class="n">onObservability</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">ObservabilityMetrics</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;TTFB: %lu ms | TX: %d | RX: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">ttfbMs</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">txBytes</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">rxBytes</span><span class="p">);</span>
+<a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"TTFB: %lu ms | TX: %d | RX: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">ttfbMs</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">txBytes</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">rxBytes</span><span class="p">);</span>
 <a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a><span class="p">});</span>
 </code></pre></div></p>
 <hr />
@@ -2983,13 +2975,13 @@ tags:
 </code></pre></div>
 <p>Call this after a burst of requests to reclaim ~45KB of TLS memory during a long idle period. The next request will automatically re-establish the connection.</p>
 <p><strong>Example:</strong>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data1&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v1</span><span class="p">);</span>
-<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data2&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v2</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/data1"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v1</span><span class="p">);</span>
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/data2"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v2</span><span class="p">);</span>
 <a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>
 <a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="n">client</span><span class="p">.</span><span class="n">end</span><span class="p">();</span><span class="w"> </span><span class="c1">// free TLS memory</span>
 <a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
 <a id="__codelineno-60-6" name="__codelineno-60-6" href="#__codelineno-60-6"></a>
-<a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/data3&quot;</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">&quot;v&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v3</span><span class="p">);</span><span class="w"> </span><span class="c1">// reconnects automatically</span>
+<a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/data3"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"v"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">v3</span><span class="p">);</span><span class="w"> </span><span class="c1">// reconnects automatically</span>
 </code></pre></div></p>
 <hr />
 <h2 id="error-codes-and-http-status-codes">Error Codes and HTTP Status Codes<a class="headerlink" href="#error-codes-and-http-status-codes" title="Permanent link">&para;</a></h2>
@@ -3160,7 +3152,7 @@ tags:
 </ul>
 <h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h3>
 <p>A short usage example showing how applications can handle both transport errors and HTTP errors:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;/api/data&quot;</span><span class="p">).</span><span class="n">getStatusCode</span><span class="p">();</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/api/data"</span><span class="p">).</span><span class="n">getStatusCode</span><span class="p">();</span>
 <a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>
 <a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">isSuccess</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="w">    </span><span class="c1">// Handle successful response</span>
@@ -3262,10 +3254,10 @@ tags:
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
-      
-        <script src="../../javascripts/extra.js"></script>
-      
-    
+  <script src="../../assets/javascripts/bundle.d7400e89.min.js" defer></script>
+  
+    <script src="../../javascripts/extra.js" defer></script>
+  
+
   </body>
 </html>
