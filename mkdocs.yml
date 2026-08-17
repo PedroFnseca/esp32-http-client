@@ -9,11 +9,11 @@ edit_uri: edit/main/docs/
 extra:
   alternate:
     - name: 🇺🇸 English
-      link: /
+      link: https://esp32httpclient.com/
       lang: en
     - name: 🇧🇷 Português
-      link: /pt/
-      lang: pt-BR
+      link: https://esp32httpclient.com/pt/
+      lang: pt
   analytics:
     provider: google
     property: G-TFXJLYGKZM
@@ -29,6 +29,7 @@ theme:
     logo: material/memory
     alternate: material/translate
   name: material
+  font: false
   palette:
     - scheme: slate
       primary: teal
@@ -43,9 +44,6 @@ theme:
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
-  font:
-    text: Inter
-    code: Cascadia Code
   features:
     - navigation.top
     - navigation.indexes
@@ -56,16 +54,15 @@ theme:
     - content.action.edit
     - toc.follow
 
+hooks:
+  - overrides/hooks.py
+
 markdown_extensions:
   - admonition
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.details

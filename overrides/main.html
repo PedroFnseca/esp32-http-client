@@ -11,33 +11,33 @@
 {% endblock %}
 
 {% block extrahead %}
-  <!-- Eliminate Render-Blocking Resources: Preconnect to font and analytics servers -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 
-  <!-- Asynchronous Font Loading (Swap display to prevent FOIT/render blocking) -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CCascadia+Code:400,400i,700,700i&display=swap" media="print" onload="this.media='all'">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CCascadia+Code:400,400i,700,700i&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..700;1,14..32,300..700&family=Cascadia+Code:ital,wght@0,400..700;1,400..700&display=swap">
   </noscript>
 
   {{ super() }}
 
-  <!-- x-default hreflang pointing to the English version -->
   {% if config.extra.alternate %}
     {% for alt in config.extra.alternate %}
       {% if alt.lang == 'en' %}
-  <link rel="alternate" hreflang="x-default" href="{{ alt.link | url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ alt.link }}">
       {% endif %}
     {% endfor %}
   {% endif %}
+
+  <link rel="alternate" type="text/plain" href="{{ config.site_url }}llms.txt" title="LLMs Context">
+  <link rel="alternate" type="text/plain" href="{{ config.site_url }}llms-full.txt" title="Full LLMs Context">
 
   <meta name="keywords" content="{% if page and page.meta and page.meta.keywords %}{{ page.meta.keywords }}{% else %}ESP32 HTTP Client, ESP32 REST Client, Arduino ESP32 HTTP GET POST, ESP32 JSON parser, PlatformIO ESP32, ESP-IDF HTTP client, C++ IoT library{% endif %}">
   <meta name="author" content="Pedro Fonseca">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
-  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="ESP32-HTTP-Client Documentation">
   <meta property="og:url" content="{{ page.canonical_url | default(config.site_url) }}">
@@ -45,13 +45,11 @@
   <meta property="og:description" content="{% if page and page.meta and page.meta.description %}{{ page.meta.description }}{% else %}{{ config.site_description }}{% endif %}">
   <meta property="og:image" content="{{ config.site_url }}assets/preview.png">
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% if page and page.meta and page.meta.title %}{{ page.meta.title }}{% elif page and page.title %}{{ page.title }}{% else %}{{ config.site_name }}{% endif %}">
   <meta name="twitter:description" content="{% if page and page.meta and page.meta.description %}{{ page.meta.description }}{% else %}{{ config.site_description }}{% endif %}">
   <meta name="twitter:image" content="{{ config.site_url }}assets/preview.png">
 
-  <!-- JSON-LD Structured Data (Schema.org) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -98,4 +96,11 @@
     "url": "https://esp32httpclient.com/"
   }
   </script>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ 'assets/javascripts/bundle.d7400e89.min.js' | url }}" defer></script>
+  {% for script in config.extra_javascript %}
+    <script src="{{ script | url }}" defer></script>
+  {% endfor %}
 {% endblock %}
