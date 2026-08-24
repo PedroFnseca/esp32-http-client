@@ -55,4 +55,88 @@ document.addEventListener("DOMContentLoaded", function() {
         });
         observer.observe(searchOutput, { childList: true, subtree: true });
     }
+
+    initPrivacyConsent();
 });
+
+function initPrivacyConsent() {
+    var CONSENT_KEY = "esp32_doc_privacy_consent";
+    if (localStorage.getItem(CONSENT_KEY)) {
+        return;
+    }
+
+    var isPt = /(?:^|\/)pt(?:\/|$)/.test(window.location.pathname) || 
+               sessionStorage.getItem("user_lang_preference") === "pt" ||
+               (document.documentElement && document.documentElement.lang === "pt");
+
+    var privacyUrl = isPt ? "/pt/privacy/" : "/privacy/";
+
+    var contentPt = {
+        title: "Privacidade e Métricas",
+        message: "Utilizamos <strong>Microsoft Clarity</strong> e <strong>Google Analytics</strong> para entender o uso e aprimorar a documentação.",
+        learnMore: "Saiba mais",
+        accept: "Aceitar",
+        decline: "Recusar"
+    };
+
+    var contentEn = {
+        title: "Privacy & Analytics",
+        message: "We use <strong>Microsoft Clarity</strong> and <strong>Google Analytics</strong> to analyze usage and improve the documentation.",
+        learnMore: "Learn more",
+        accept: "Accept",
+        decline: "Decline"
+    };
+
+    var content = isPt ? contentPt : contentEn;
+
+    var banner = document.createElement("div");
+    banner.id = "privacy-consent-banner";
+    banner.className = "privacy-consent-card";
+    banner.setAttribute("role", "dialog");
+    banner.setAttribute("aria-live", "polite");
+    banner.setAttribute("aria-label", content.title);
+
+    banner.innerHTML = [
+        '<div class="privacy-consent-header">',
+        '  <div class="privacy-consent-icon" aria-hidden="true">',
+        '    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
+        '      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+        '    </svg>',
+        '  </div>',
+        '  <span class="privacy-consent-title">' + content.title + '</span>',
+        '</div>',
+        '<p class="privacy-consent-text">' + content.message + ' <a href="' + privacyUrl + '" class="privacy-consent-link">' + content.learnMore + '</a></p>',
+        '<div class="privacy-consent-actions">',
+        '  <button type="button" class="privacy-consent-btn privacy-consent-btn-secondary" id="privacy-consent-decline">' + content.decline + '</button>',
+        '  <button type="button" class="privacy-consent-btn privacy-consent-btn-primary" id="privacy-consent-accept">' + content.accept + '</button>',
+        '</div>'
+    ].join("\n");
+
+    document.body.appendChild(banner);
+
+    var closeBanner = function(choice) {
+        localStorage.setItem(CONSENT_KEY, choice);
+        banner.classList.add("privacy-consent-closing");
+        setTimeout(function() {
+            if (banner.parentNode) {
+                banner.parentNode.removeChild(banner);
+            }
+        }, 300);
+    };
+
+    var acceptBtn = document.getElementById("privacy-consent-accept");
+    var declineBtn = document.getElementById("privacy-consent-decline");
+
+    if (acceptBtn) {
+        acceptBtn.addEventListener("click", function() {
+            closeBanner("accepted");
+        });
+    }
+
+    if (declineBtn) {
+        declineBtn.addEventListener("click", function() {
+            closeBanner("declined");
+        });
+    }
+}
+
