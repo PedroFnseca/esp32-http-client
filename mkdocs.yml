@@ -111,6 +111,7 @@ plugins:
             RestRequest: RestRequest
             FAQ: Perguntas Frequentes
             Performance: Desempenho
+            Privacy Policy: Política de Privacidade
             Repository: Repositório
             Releases: Lançamentos
   - search:
@@ -161,6 +162,7 @@ nav:
     - RestRequest: api/restrequest.md
   - FAQ: faq.md
   - Performance: performance.md
+  - Privacy Policy: privacy.md
   - Repository: https://github.com/PedroFnseca/esp32-http-client/
   - Releases: https://github.com/PedroFnseca/esp32-http-client/releases
 
