@@ -9,7 +9,6 @@
 #define private public
 #include "ESP32HTTPClient.h"
 #include "RestRequest.h"
-#include "BufferedStreamReader.h"
 #undef private
 
 namespace {
@@ -1407,6 +1406,450 @@ void testStringAndNumericTypesInParams() {
   client.get("/device").getBody("name", nameBuffer);
   expectEq(nameBuffer, "device-1", "getBody into char array buffer");
 }
+
+void testBase64EncodeEdgeCases() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  // Length % 3 == 2: "use:p" -> 5 characters -> "dXNlOnA="
+  client.basic("use", "p");
+  expectEqInt(static_cast<long long>(client._headers.size()), 1, "basic auth header added for len % 3 == 2");
+  expectEq(client._headers[0].value, "Basic dXNlOnA=", "base64 encoding with len % 3 == 2");
+
+  // Length % 3 == 1: "a:bc" -> 4 characters -> "YTpiYw=="
+  client.basic("a", "bc");
+  expectEq(client._headers[0].value, "Basic YTpiYw==", "base64 encoding with len % 3 == 1");
+
+  // Length % 3 == 0: "ab:def" -> 6 characters -> "YWI6ZGVm"
+  client.basic("ab", "def");
+  expectEq(client._headers[0].value, "Basic YWI6ZGVm", "base64 encoding with len % 3 == 0");
+}
+
+void testCookieNullParams() {
+  ESP32HTTPClient client("https://example.com");
+  client.cookie(nullptr, "value");
+  client.cookie("name", nullptr);
+  client.cookie(nullptr, nullptr);
+  expectEqInt(static_cast<long long>(client._headers.size()), 0, "null cookie name/value should not add header");
+}
+
+void testErrorToStringAllCodes() {
+  expectEq(ESP32HTTPClient::errorToString(-1).c_str(), "Connection Refused", "-1");
+  expectEq(ESP32HTTPClient::errorToString(-2).c_str(), "Send Header Failed", "-2");
+  expectEq(ESP32HTTPClient::errorToString(-3).c_str(), "Send Payload Failed", "-3");
+  expectEq(ESP32HTTPClient::errorToString(-4).c_str(), "Not Connected", "-4");
+  expectEq(ESP32HTTPClient::errorToString(-5).c_str(), "Connection Lost", "-5");
+  expectEq(ESP32HTTPClient::errorToString(-6).c_str(), "No Stream", "-6");
+  expectEq(ESP32HTTPClient::errorToString(-7).c_str(), "No HTTP Server", "-7");
+  expectEq(ESP32HTTPClient::errorToString(-8).c_str(), "Too Less RAM", "-8");
+  expectEq(ESP32HTTPClient::errorToString(-9).c_str(), "Encoding Error", "-9");
+  expectEq(ESP32HTTPClient::errorToString(-10).c_str(), "Stream Write Error", "-10");
+  expectEq(ESP32HTTPClient::errorToString(-11).c_str(), "Read Timeout", "-11");
+
+  expectEq(ESP32HTTPClient::errorToString(200).c_str(), "OK", "200");
+  expectEq(ESP32HTTPClient::errorToString(201).c_str(), "Created", "201");
+  expectEq(ESP32HTTPClient::errorToString(202).c_str(), "Accepted", "202");
+  expectEq(ESP32HTTPClient::errorToString(204).c_str(), "No Content", "204");
+
+  expectEq(ESP32HTTPClient::errorToString(400).c_str(), "Bad Request", "400");
+  expectEq(ESP32HTTPClient::errorToString(401).c_str(), "Unauthorized", "401");
+  expectEq(ESP32HTTPClient::errorToString(403).c_str(), "Forbidden", "403");
+  expectEq(ESP32HTTPClient::errorToString(404).c_str(), "Not Found", "404");
+  expectEq(ESP32HTTPClient::errorToString(405).c_str(), "Method Not Allowed", "405");
+  expectEq(ESP32HTTPClient::errorToString(408).c_str(), "Request Timeout", "408");
+  expectEq(ESP32HTTPClient::errorToString(409).c_str(), "Conflict", "409");
+  expectEq(ESP32HTTPClient::errorToString(429).c_str(), "Too Many Requests", "429");
+
+  expectEq(ESP32HTTPClient::errorToString(500).c_str(), "Internal Server Error", "500");
+  expectEq(ESP32HTTPClient::errorToString(501).c_str(), "Not Implemented", "501");
+  expectEq(ESP32HTTPClient::errorToString(502).c_str(), "Bad Gateway", "502");
+  expectEq(ESP32HTTPClient::errorToString(503).c_str(), "Service Unavailable", "503");
+  expectEq(ESP32HTTPClient::errorToString(504).c_str(), "Gateway Timeout", "504");
+  expectEq(ESP32HTTPClient::errorToString(0).c_str(), "Not Executed", "0");
+
+  expectEq(ESP32HTTPClient::errorToString(-99).c_str(), "Unknown Client Error", "-99");
+  expectEq(ESP32HTTPClient::errorToString(299).c_str(), "Success", "299");
+  expectEq(ESP32HTTPClient::errorToString(302).c_str(), "Redirection", "302");
+  expectEq(ESP32HTTPClient::errorToString(418).c_str(), "Client Error", "418");
+  expectEq(ESP32HTTPClient::errorToString(599).c_str(), "Server Error", "599");
+  expectEq(ESP32HTTPClient::errorToString(600).c_str(), "Unknown HTTP Status", "600");
+}
+
+void testClientAndRequestSingleParamOnError() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(500, "error");
+  ESP32HTTPClient client("https://example.com");
+
+  int clientErrCode = 0;
+  HttpResponseCallback cbClient = [&](int code) {
+    clientErrCode = code;
+  };
+  client.onError(cbClient);
+  client.get("/test");
+  expectEqInt(clientErrCode, 500, "client single-param onError invoked");
+
+  client.onError(static_cast<HttpResponseCallback>(nullptr));
+  expectTrue(!client._onErrorCb, "client onError cleared");
+
+  int reqErrCode = 0;
+  HttpResponseCallback cbReq = [&](int code) {
+    reqErrCode = code;
+  };
+  {
+    RestRequest req = client.get("/test");
+    req.onError(cbReq);
+  }
+  expectEqInt(reqErrCode, 500, "request single-param onError invoked");
+
+  RestRequest req2 = client.get("/test");
+  req2.onError(static_cast<HttpResponseCallback>(nullptr));
+  req2._executed = true;
+  expectTrue(!req2._onErrorCb, "request onError cleared");
+}
+
+void testClientErrorCallbackTriggered() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(404, "not found");
+  ESP32HTTPClient client("https://example.com");
+  int capturedCode = 0;
+  std::string capturedMsg;
+  client.onError([&](int code, const char* msg) {
+    capturedCode = code;
+    capturedMsg = msg ? msg : "";
+  });
+
+  client.get("/missing");
+  expectEqInt(capturedCode, 404, "client 2-param onError code");
+  expectEq(capturedMsg, "Not Found", "client 2-param onError msg");
+}
+
+void testRetryWithClientHeadersAndBody() {
+  HttpClientStub::reset();
+  HttpClientStub::queueResponse(-1, "");
+  HttpClientStub::queueResponse(200, "{\"ok\":true}");
+
+  ESP32HTTPClient client("https://example.com");
+  client.setHeader("X-Custom", "Val");
+  client.setContentType("application/json");
+
+  {
+    RestRequest req = client.post("/items");
+    req.maxRetry(1);
+    req.body("name", "item1");
+  }
+
+  expectEqInt(client.getStatusCode(), 200, "status code 200 after retry");
+  expectEqInt(HttpClientStub::requestCount, 2, "2 attempts made");
+}
+
+void testExecuteNullClient() {
+  RestRequest req(nullptr, "/path", HTTP_GET_METHOD);
+  req.execute();
+  expectTrue(req._executed, "executed flag set for null client");
+}
+
+void testRawJsonRootObjectAndEscapedStrings() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"msg\": \"hello \\\"world\\\" \\\\ test\", \"num\": 123}");
+
+  ESP32HTTPClient client("https://example.com");
+  String rawJson;
+  client.get("/data").getBody("", &rawJson);
+
+  expectEq(rawJson.c_str(), "{\"msg\": \"hello \\\"world\\\" \\\\ test\", \"num\": 123}", "raw JSON root object captured with escaped chars");
+}
+
+void testParsePrimitiveEdgeCases() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"d_null\": null, \"l_null\": null, \"str_int\": \"1234\", \"num_str\": 9876}");
+
+  ESP32HTTPClient client("https://example.com");
+  double dVal = 123.45;
+  long lVal = 999L;
+  int strIntVal = 0;
+  String numStrVal;
+
+  client.get("/primitives")
+        .getBody("d_null", &dVal)
+        .getBody("l_null", &lVal)
+        .getBody("str_int", &strIntVal)
+        .getBody("num_str", &numStrVal);
+
+  expectNear(dVal, 0.0, 0.001, "null double set to 0.0");
+  expectEqInt(lVal, 0L, "null long set to 0L");
+  expectEqInt(strIntVal, 1234, "string coerced to int");
+  expectEq(numStrVal.c_str(), "9876", "number coerced to Arduino String");
+}
+
+void testArrayBindingsAdvanced() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "[10, 20, 30]");
+
+  ESP32HTTPClient client("https://example.com");
+  int item0 = 0, item1 = 0, item2 = 0;
+  client.get("/array")
+        .getBody("0", &item0)
+        .getBody("1", &item1)
+        .getBody("2", &item2);
+
+  expectEqInt(item0, 10, "array[0] primitive");
+  expectEqInt(item1, 20, "array[1] primitive");
+  expectEqInt(item2, 30, "array[2] primitive");
+
+  // Raw array element
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "[{\"a\":1}, {\"b\":2}]");
+  String elem0;
+  client.get("/raw_array_elem")
+        .getBody("0", &elem0);
+  expectEq(elem0.c_str(), "{\"a\":1}", "array element raw json string");
+
+  // Nested array in array
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "[[100, 200], [300, 400]]");
+  int nestedVal = 0;
+  client.get("/nested_array")
+        .getBody("1.0", &nestedVal);
+  expectEqInt(nestedVal, 300, "nested array element 1.0");
+}
+
+void testSkipValueObjectAndArray() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"skip_obj\": {\"a\": 1, \"b\": \"str with \\\"quote\\\" and \\\\ slash\", \"nested\": [10, 20]}, \"skip_arr\": [{\"x\": true}, [1, 2]], \"keep\": 42}");
+
+  ESP32HTTPClient client("https://example.com");
+  int keep = 0;
+  client.get("/skip")
+        .getBody("keep", &keep);
+
+  expectEqInt(keep, 42, "unmapped complex object and array skipped properly");
+}
+
+void testMalformedJsonHandling() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"badkey\" 123, \"goodkey\": 456}");
+
+  ESP32HTTPClient client("https://example.com");
+  int good = 0;
+  client.get("/malformed")
+        .getBody("goodkey", &good);
+
+  expectEqInt(good, 456, "malformed key missing colon is skipped");
+}
+
+class MockDirectStream : public Stream {
+ public:
+  std::string data;
+  size_t cursor = 0;
+  bool availableTimesOut = false;
+  int availableLimit = -1;
+  int readBytesLimit = -1;
+  bool simulateZeroBytesRead = false;
+
+  explicit MockDirectStream(const std::string& d = "") : data(d), cursor(0) {}
+
+  int available() override {
+    if (availableTimesOut) return 0;
+    if (availableLimit >= 0) {
+      if (availableLimit > 0) {
+        availableLimit--;
+        return static_cast<int>(data.size() - cursor);
+      }
+      return 0;
+    }
+    return cursor < data.size() ? static_cast<int>(data.size() - cursor) : 0;
+  }
+
+  int read() override {
+    if (cursor < data.size()) {
+      return static_cast<unsigned char>(data[cursor++]);
+    }
+    return -1;
+  }
+
+  int peek() override {
+    if (cursor < data.size()) {
+      return static_cast<unsigned char>(data[cursor]);
+    }
+    return -1;
+  }
+
+  size_t readBytes(char* buffer, size_t length) override {
+    if (simulateZeroBytesRead) {
+      simulateZeroBytesRead = false;
+      return 0;
+    }
+    size_t toRead = length;
+    if (readBytesLimit >= 0 && toRead > static_cast<size_t>(readBytesLimit)) {
+      toRead = static_cast<size_t>(readBytesLimit);
+    }
+    size_t avail = cursor < data.size() ? data.size() - cursor : 0;
+    if (toRead > avail) toRead = avail;
+    for (size_t i = 0; i < toRead; i++) {
+      buffer[i] = data[cursor++];
+    }
+    return toRead;
+  }
+};
+
+struct NullStrStruct {
+  const char* text = nullptr;
+  REST_JSON_MAP(
+    REST_FIELD(text)
+  )
+};
+
+void testStructNullStringField() {
+  NullStrStruct s;
+  String json = ESP32HTTPClient::toJson(s);
+  expectEq(json.c_str(), "{\"text\":null}", "null string field serializes to null");
+}
+
+void testSkipValueEscapedString() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"skip_str\": \"hello \\\"world\\\" \\\\ test\", \"keep\": 123}");
+  ESP32HTTPClient client("https://example.com");
+  int keep = 0;
+  client.get("/skip_esc").getBody("keep", &keep);
+  expectEqInt(keep, 123, "skipValue skips escaped string");
+}
+
+void testObjectWithNestedArrayChildBinding() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "{\"items\": [100, 200], \"flag\": true}");
+  ESP32HTTPClient client("https://example.com");
+  int item0 = 0;
+  bool flag = false;
+  client.get("/nested_arr_in_obj")
+        .getBody("items.0", &item0)
+        .getBody("flag", &flag);
+  expectEqInt(item0, 100, "items.0 extracted from object");
+  expectTrue(flag, "flag extracted");
+}
+
+void testBufferedStreamReaderDirect() {
+  // Non-chunked with custom stream
+  MockDirectStream directStream("{\"val\":\"H\"}");
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &directStream;
+  HttpClientStub::customSize = static_cast<int>(directStream.data.size());
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/test").getBody("val", &val);
+    expectEq(val.c_str(), "H", "custom directStream read");
+  }
+
+  // Timeout in non-chunked refill
+  MockDirectStream timeoutStream;
+  timeoutStream.availableTimesOut = true;
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &timeoutStream;
+  HttpClientStub::customSize = 10;
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/timeout").getBody("val", &val);
+    expectEq(val.c_str(), "", "timeout in non-chunked returns empty");
+  }
+
+  // Non-chunked large buffer (> BUF_SIZE)
+  std::string largePayload(700, 'X');
+  std::string largeJson = "{\"large\":\"" + largePayload + "\"}";
+  MockDirectStream largeStream(largeJson);
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &largeStream;
+  HttpClientStub::customSize = static_cast<int>(largeJson.size());
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/large").getBody("", &val);
+    expectEqInt(static_cast<long long>(val.length()), static_cast<long long>(largeJson.size()), "large stream read length 700");
+  }
+
+  // Chunked stream with extensions (;) and empty hex lines
+  std::string chunkedExtData = "\r\n13;ext=test\r\n{\"msg\":\"WORLD\"}\r\n0\r\n\r\n";
+  MockDirectStream chunkedExtStream(chunkedExtData);
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &chunkedExtStream;
+  HttpClientStub::customSize = -1;
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/chunked").getBody("msg", &val);
+    expectEq(val.c_str(), "WORLD", "chunked with extensions read WORLD");
+  }
+
+  // Chunked stream timeout in chunk header
+  MockDirectStream chunkTimeoutHeader;
+  chunkTimeoutHeader.availableTimesOut = true;
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &chunkTimeoutHeader;
+  HttpClientStub::customSize = -1;
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/chunk_to_hdr").getBody("msg", &val);
+    expectEq(val.c_str(), "", "chunk timeout header returns empty");
+  }
+
+  // Chunked stream timeout in chunk data
+  MockDirectStream chunkTimeoutData("5\r\n");
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &chunkTimeoutData;
+  HttpClientStub::customSize = -1;
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/chunk_to_data").getBody("msg", &val);
+    expectEq(val.c_str(), "", "chunk timeout data returns empty");
+  }
+
+  // Chunk larger than BUF_SIZE (triggering toRead > BUF_SIZE - _len and refill loop completion)
+  std::string bigChunkVal(600, 'Z');
+  std::string bigChunkPayload = "{\"data\":\"" + bigChunkVal + "\"}";
+  char hexBuf[16];
+  snprintf(hexBuf, sizeof(hexBuf), "%x\r\n", static_cast<unsigned int>(bigChunkPayload.size()));
+  std::string bigChunkData = std::string(hexBuf) + bigChunkPayload + "\r\n0\r\n\r\n";
+  MockDirectStream bigChunkStream(bigChunkData);
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &bigChunkStream;
+  HttpClientStub::customSize = -1;
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/big_chunk").getBody("", &val);
+    expectEqInt(static_cast<long long>(val.length()), static_cast<long long>(bigChunkPayload.size()), "big chunk read length 600");
+  }
+
+  // Chunked stream with simulateZeroBytesRead
+  MockDirectStream zeroBytesStream("10\r\n{\"data\":\"HI\"}\r\n0\r\n\r\n");
+  zeroBytesStream.simulateZeroBytesRead = true;
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &zeroBytesStream;
+  HttpClientStub::customSize = -1;
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/zero_bytes").getBody("data", &val);
+    expectEq(val.c_str(), "", "zero bytes read causes eof");
+  }
+
+  // Chunked stream with partial read (avail < toRead)
+  MockDirectStream partialStream("10\r\n{\"data\":\"HI\"}\r\n0\r\n\r\n");
+  partialStream.readBytesLimit = 2;
+  HttpClientStub::reset();
+  HttpClientStub::customStream = &partialStream;
+  HttpClientStub::customSize = -1;
+  {
+    ESP32HTTPClient client("https://example.com");
+    String val;
+    client.get("/partial").getBody("data", &val);
+    expectEq(val.c_str(), "HI", "partial chunk read available");
+  }
+
+  HttpClientStub::reset();
+}
 }
 
 int main() {
@@ -1462,6 +1905,22 @@ int main() {
   runSuite("GetHeaderRetries", testGetHeaderRetries);
   runSuite("GetHeaderMoveConstructor", testGetHeaderMoveConstructor);
   runSuite("GetHeaderAllHttpMethods", testGetHeaderAllHttpMethods);
+  runSuite("Base64EncodeEdgeCases", testBase64EncodeEdgeCases);
+  runSuite("CookieNullParams", testCookieNullParams);
+  runSuite("ErrorToStringAllCodes", testErrorToStringAllCodes);
+  runSuite("ClientAndRequestSingleParamOnError", testClientAndRequestSingleParamOnError);
+  runSuite("ClientErrorCallbackTriggered", testClientErrorCallbackTriggered);
+  runSuite("RetryWithClientHeadersAndBody", testRetryWithClientHeadersAndBody);
+  runSuite("ExecuteNullClient", testExecuteNullClient);
+  runSuite("RawJsonRootObjectAndEscapedStrings", testRawJsonRootObjectAndEscapedStrings);
+  runSuite("ParsePrimitiveEdgeCases", testParsePrimitiveEdgeCases);
+  runSuite("ArrayBindingsAdvanced", testArrayBindingsAdvanced);
+  runSuite("SkipValueObjectAndArray", testSkipValueObjectAndArray);
+  runSuite("MalformedJsonHandling", testMalformedJsonHandling);
+  runSuite("StructNullStringField", testStructNullStringField);
+  runSuite("SkipValueEscapedString", testSkipValueEscapedString);
+  runSuite("ObjectWithNestedArrayChildBinding", testObjectWithNestedArrayChildBinding);
+  runSuite("BufferedStreamReaderDirect", testBufferedStreamReaderDirect);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;

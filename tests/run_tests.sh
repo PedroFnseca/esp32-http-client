@@ -124,8 +124,9 @@ if [ "$SHOW_COVERAGE" = "1" ] && command -v gcov >/dev/null 2>&1; then
   GCOV_OUTPUT="$(
     cd "$BUILD_DIR" &&
     gcov -b -c -o "$BUILD_DIR" \
-      "$REPO_ROOT/src/RestRequest.cpp" \
-      "$REPO_ROOT/src/ESP32HTTPClient.cpp" 2>/dev/null
+      "$TEST_OBJ" \
+      "$REST_REQUEST_OBJ" \
+      "$HTTP_CLIENT_OBJ" 2>/dev/null
   )"
   GCOV_STATUS=$?
   set -e
@@ -144,8 +145,14 @@ if [ "$SHOW_COVERAGE" = "1" ] && command -v gcov >/dev/null 2>&1; then
         sub(/%.*/, "", pct)
         cnt = $0
         sub(/^.* of /, "", cnt)
-        printf "%s|%.2f|%d\n", file, pct + 0, cnt + 0
+        files[file] = pct + 0
+        lines[file] = cnt + 0
         file = ""
+      }
+      END {
+        for (f in files) {
+          printf "%s|%.2f|%d\n", f, files[f], lines[f]
+        }
       }
     ')"
 

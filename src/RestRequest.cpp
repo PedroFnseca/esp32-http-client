@@ -661,23 +661,30 @@ void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* b
 
       if (nextChar == '{' || nextChar == '[') {
         ResponseBinding* match = nullptr;
+        bool hasChildBinding = false;
+        size_t fpLen = strlen(fullPath);
         for (auto& binding : bindings) {
           if (strcmp(fullPath, binding.key) == 0) {
             match = &binding;
             break;
+          }
+          if (strncmp(binding.key, fullPath, fpLen) == 0 && binding.key[fpLen] == '.') {
+            hasChildBinding = true;
           }
         }
 
         if (match && match->type == TYPE_ARDUINO_STRING) {
           r.read();
           readRawJson(r, (String*)match->target, nextChar);
-        } else {
+        } else if (hasChildBinding) {
           r.read();
           if (nextChar == '{') {
             parseObjectWithBindings(r, fullPath, bindings);
           } else {
             parseArrayWithBindings(r, fullPath, bindings);
           }
+        } else {
+          skipValue(r);
         }
       } else {
         ResponseBinding* match = nullptr;
@@ -722,23 +729,30 @@ void RestRequest::parseArrayWithBindings(BufferedStreamReader& r, const char* ba
 
     if (nextChar == '{' || nextChar == '[') {
       ResponseBinding* match = nullptr;
+      bool hasChildBinding = false;
+      size_t fpLen = strlen(fullPath);
       for (auto& binding : bindings) {
         if (strcmp(fullPath, binding.key) == 0) {
           match = &binding;
           break;
+        }
+        if (strncmp(binding.key, fullPath, fpLen) == 0 && binding.key[fpLen] == '.') {
+          hasChildBinding = true;
         }
       }
 
       if (match && match->type == TYPE_ARDUINO_STRING) {
         r.read();
         readRawJson(r, (String*)match->target, nextChar);
-      } else {
+      } else if (hasChildBinding) {
         r.read();
         if (nextChar == '{') {
           parseObjectWithBindings(r, fullPath, bindings);
         } else {
           parseArrayWithBindings(r, fullPath, bindings);
         }
+      } else {
+        skipValue(r);
       }
     } else {
       ResponseBinding* match = nullptr;

@@ -33,6 +33,8 @@ inline std::deque<std::pair<int, std::string>> responseQueue;
 inline std::vector<std::pair<std::string, std::string>> nextResponseHeaders;
 inline std::deque<std::vector<std::pair<std::string, std::string>>> responseHeaderQueue;
 inline std::vector<std::string> collectedHeaderKeys;
+inline Stream* customStream = nullptr;
+inline int customSize = 0;
 
 class InMemoryStream : public Stream {
  public:
@@ -71,6 +73,8 @@ inline void reset() {
   nextResponseHeaders.clear();
   responseHeaderQueue.clear();
   collectedHeaderKeys.clear();
+  customStream = nullptr;
+  customSize = 0;
 }
 
 inline void setResponse(int statusCode, const std::string& body) {
@@ -218,10 +222,12 @@ class HTTPClient {
   }
 
   int getSize() {
+    if (HttpClientStub::customStream) return HttpClientStub::customSize;
     return static_cast<int>(HttpClientStub::nextResponseBody.size());
   }
 
   Stream* getStreamPtr() {
+    if (HttpClientStub::customStream) return HttpClientStub::customStream;
     return &_stream;
   }
 
