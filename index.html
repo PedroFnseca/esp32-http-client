@@ -106,6 +106,57 @@ function __md_analytics(){
   <link rel="preload" href="assets/stylesheets/main.ec1eaa64.min.css" as="style">
   <link rel="preload" href="assets/stylesheets/palette.ab4e12ef.min.css" as="style">
 
+  <!-- Instant Preference Optimizer (Theme & Language Auto-Detection, 0ms latency) -->
+  <script>
+    (function() {
+      try {
+        var isPtPath = /(?:^|\/)pt(?:\/|$)/.test(window.location.pathname);
+        var storedLang = localStorage.getItem("user_lang_preference");
+        var hasChecked = sessionStorage.getItem("user_lang_checked");
+
+        if (!hasChecked) {
+          sessionStorage.setItem("user_lang_checked", "1");
+          var targetLang = storedLang;
+          if (!targetLang) {
+            var browserLang = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+            targetLang = /^pt\b/i.test(browserLang) ? "pt" : "en";
+          }
+
+          if (targetLang === "pt" && !isPtPath) {
+            var ptUrl = "/pt" + (window.location.pathname.startsWith("/") ? window.location.pathname : "/" + window.location.pathname) + window.location.search + window.location.hash;
+            window.location.replace(ptUrl);
+            return;
+          } else if (targetLang === "en" && isPtPath && storedLang === "en") {
+            var enUrl = window.location.pathname.replace(/(?:^|\/)pt(?:\/|$)/, "/") + window.location.search + window.location.hash;
+            window.location.replace(enUrl.replace(/\/\//g, "/"));
+            return;
+          }
+        }
+      } catch (e) {}
+
+      try {
+        var storedTheme = localStorage.getItem("user_theme_preference");
+        if (!storedTheme && typeof __md_get === "function") {
+          var palette = __md_get("__palette");
+          if (palette && palette.color && palette.color.scheme) {
+            storedTheme = palette.color.scheme;
+          }
+        }
+
+        if (!storedTheme) {
+          var prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+          var scheme = prefersLight ? "default" : "slate";
+          if (typeof __md_set === "function") {
+            __md_set("__palette", {
+              index: prefersLight ? 1 : 0,
+              color: { scheme: scheme, primary: "teal", accent: "orange" }
+            });
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   
 
   <!-- Microsoft Clarity -->
@@ -1358,6 +1409,33 @@ function __md_analytics(){
           </ul>
         </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="practical-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Practical Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 

@@ -2,364 +2,378 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
     <url>
         <loc>https://esp32httpclient.com/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/faq/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/faq/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/faq/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/performance/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/performance/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/performance/"/>
     </url>
     <url>
+        <loc>https://esp32httpclient.com/practical-examples/</loc>
+        <lastmod>2026-09-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/practical-examples/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/practical-examples/"/>
+    </url>
+    <url>
         <loc>https://esp32httpclient.com/privacy/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/privacy/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/privacy/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/api/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/api/esp32httpclient/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/esp32httpclient/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/esp32httpclient/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/api/restrequest/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/restrequest/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/restrequest/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/array-json/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/array-json/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/array-json/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/auth-helpers/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/auth-helpers/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/auth-helpers/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/callbacks-and-errors/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/callbacks-and-errors/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/callbacks-and-errors/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/crud-operations/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/crud-operations/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/crud-operations/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/nested-json/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/nested-json/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/nested-json/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/port-selection/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/port-selection/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/port-selection/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/raw-json/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/raw-json/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/raw-json/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/struct-json/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/struct-json/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/struct-json/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/unix-timestamp/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/unix-timestamp/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/unix-timestamp/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/url-parameters/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/url-parameters/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/url-parameters/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/getting-started/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/getting-started/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/getting-started/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/getting-started/installation/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/getting-started/installation/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/getting-started/installation/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/getting-started/quickstart/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/getting-started/quickstart/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/getting-started/quickstart/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/guide/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/guide/advanced/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/advanced/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/advanced/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/guide/initialization/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/initialization/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/initialization/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/guide/requests/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/requests/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/requests/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/guide/responses/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/responses/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/responses/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/faq/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/faq/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/faq/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/performance/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/performance/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/performance/"/>
     </url>
     <url>
+        <loc>https://esp32httpclient.com/pt/practical-examples/</loc>
+        <lastmod>2026-09-03</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/practical-examples/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/practical-examples/"/>
+    </url>
+    <url>
         <loc>https://esp32httpclient.com/pt/privacy/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/privacy/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/privacy/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/api/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/api/esp32httpclient/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/esp32httpclient/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/esp32httpclient/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/api/restrequest/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/restrequest/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/restrequest/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/array-json/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/array-json/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/array-json/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/auth-helpers/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/auth-helpers/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/auth-helpers/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/callbacks-and-errors/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/callbacks-and-errors/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/callbacks-and-errors/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/crud-operations/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/crud-operations/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/crud-operations/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/nested-json/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/nested-json/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/nested-json/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/port-selection/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/port-selection/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/port-selection/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/raw-json/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/raw-json/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/raw-json/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/struct-json/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/struct-json/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/struct-json/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/unix-timestamp/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/unix-timestamp/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/unix-timestamp/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/url-parameters/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/url-parameters/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/url-parameters/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/getting-started/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/getting-started/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/getting-started/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/getting-started/installation/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/getting-started/installation/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/getting-started/installation/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/getting-started/quickstart/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/getting-started/quickstart/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/getting-started/quickstart/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/guide/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/guide/advanced/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/advanced/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/advanced/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/guide/initialization/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/initialization/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/initialization/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/guide/requests/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/requests/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/requests/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/guide/responses/</loc>
-        <lastmod>2026-08-27</lastmod>
+        <lastmod>2026-09-03</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/guide/responses/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/guide/responses/"/>
