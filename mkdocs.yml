@@ -114,6 +114,7 @@ plugins:
             Privacy Policy: Política de Privacidade
             Repository: Repositório
             Releases: Lançamentos
+            Practical Examples: Exemplos Práticos
   - search:
       lang:
         - en
@@ -160,6 +161,7 @@ nav:
     - api/index.md
     - ESP32HTTPClient: api/esp32httpclient.md
     - RestRequest: api/restrequest.md
+  - Practical Examples: practical-examples.md
   - FAQ: faq.md
   - Performance: performance.md
   - Privacy Policy: privacy.md
