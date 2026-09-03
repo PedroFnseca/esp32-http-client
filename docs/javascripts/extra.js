@@ -1,14 +1,57 @@
+// Persist language and theme preferences across sessions
 document.addEventListener("click", function(e) {
-    var link = e.target.closest("a[href*='/pt/'], a[href$='/pt'], a.md-select__link");
-    if (link) {
-        var href = link.getAttribute("href") || "";
-        if (href.includes("/pt/") || href.endsWith("/pt") || /(?:^|\/)pt(?:\/|$)/.test(href)) {
-            sessionStorage.setItem("user_lang_preference", "pt");
-        } else {
-            sessionStorage.setItem("user_lang_preference", "en");
-        }
+    // Language switcher detection
+    var langLink = e.target.closest("a[href*='/pt/'], a[href$='/pt'], a.md-select__link");
+    if (langLink) {
+        var href = langLink.getAttribute("href") || "";
+        var isPt = href.includes("/pt/") || href.endsWith("/pt") || /(?:^|\/)pt(?:\/|$)/.test(href);
+        var lang = isPt ? "pt" : "en";
+        try {
+            localStorage.setItem("user_lang_preference", lang);
+            sessionStorage.setItem("user_lang_preference", lang);
+            sessionStorage.setItem("user_lang_checked", "1");
+        } catch (err) {}
+    }
+
+    // Palette theme switcher detection
+    var themeToggle = e.target.closest("form[data-md-component='palette'] label, input[name='__palette']");
+    if (themeToggle) {
+        setTimeout(function() {
+            try {
+                var currentScheme = document.body.getAttribute("data-md-color-scheme");
+                if (currentScheme) {
+                    localStorage.setItem("user_theme_preference", currentScheme);
+                }
+            } catch (err) {}
+        }, 50);
     }
 }, { passive: true });
+
+// Live system theme sync if no explicit override is saved
+if (window.matchMedia) {
+    var darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    var handleThemeChange = function(e) {
+        try {
+            if (!localStorage.getItem("user_theme_preference")) {
+                var newScheme = e.matches ? "slate" : "default";
+                if (typeof __md_set === "function") {
+                    __md_set("__palette", {
+                        index: e.matches ? 0 : 1,
+                        color: { scheme: newScheme, primary: "teal", accent: "orange" }
+                    });
+                }
+                if (document.body) {
+                    document.body.setAttribute("data-md-color-scheme", newScheme);
+                }
+            }
+        } catch (err) {}
+    };
+    if (darkModeQuery.addEventListener) {
+        darkModeQuery.addEventListener("change", handleThemeChange);
+    } else if (darkModeQuery.addListener) {
+        darkModeQuery.addListener(handleThemeChange);
+    }
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     var navItems = document.querySelectorAll(".md-nav__item--nested");
