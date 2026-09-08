@@ -59,7 +59,7 @@ Fetches real-time weather metrics such as temperature, relative humidity, and wi
             displayWeather(temperature, humidity, windSpeed);
         } else {
             Serial.printf("Error fetching weather: %s (HTTP %d)\n",
-                          weatherClient.getLastError(), weatherClient.getStatusCode());
+                          weatherClient.getErrorMessage().c_str(), weatherClient.getStatusCode());
         }
 
         delay(600000); // Poll every 10 minutes
@@ -146,7 +146,7 @@ Monitors public statistics of a GitHub repository, tracking stars, forks count, 
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
         // GitHub API requires a User-Agent header
-        githubClient.header("User-Agent", "ESP32HTTPClient-Monitor");
+        githubClient.setHeader("User-Agent", "ESP32HTTPClient-Monitor");
     }
 
     void loop() {
@@ -197,7 +197,7 @@ Checks a GitHub repository for the latest release tag to detect when a firmware 
         WiFi.begin(ssid, password);
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
-        githubClient.header("User-Agent", "ESP32-OTA-Checker");
+        githubClient.setHeader("User-Agent", "ESP32-OTA-Checker");
     }
 
     void loop() {
@@ -526,7 +526,7 @@ Collects sensor readings (soil moisture, temperature, ambient light) and sends t
         WiFi.begin(ssid, password);
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
-        iotClient.bearerAuth("DEVICE_SECRET_TOKEN");
+        iotClient.bearer("DEVICE_SECRET_TOKEN");
     }
 
     void loop() {
@@ -586,8 +586,8 @@ Monitors critical environment threshold conditions (such as smoke, gas leaks, or
 
             char incidentId[32] = {0};
 
+            alertClient.setHeader("X-Priority", "High");
             alertClient.post("/v1/notify")
-                .header("X-Priority", "High")
                 .body("source", "ESP32-Security-Node")
                 .body("level", "CRITICAL")
                 .body("message", "High gas concentration detected!")
