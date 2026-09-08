@@ -59,7 +59,7 @@ Consulta dados meteorológicos em tempo real, como temperatura, umidade relativa
             exibirClima(temperatura, umidade, vento);
         } else {
             Serial.printf("Erro ao consultar clima: %s (HTTP %d)\n",
-                          weatherClient.getLastError(), weatherClient.getStatusCode());
+                          weatherClient.getErrorMessage().c_str(), weatherClient.getStatusCode());
         }
 
         delay(600000); // Consulta a cada 10 minutos
@@ -146,7 +146,7 @@ Monitora métricas públicas de um repositório no GitHub, incluindo número de 
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
         // A API do GitHub exige o cabeçalho User-Agent
-        githubClient.header("User-Agent", "ESP32HTTPClient-Monitor");
+        githubClient.setHeader("User-Agent", "ESP32HTTPClient-Monitor");
     }
 
     void loop() {
@@ -197,7 +197,7 @@ Verifica periodicamente a versão da última release lançada em um repositório
         WiFi.begin(ssid, password);
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
-        githubClient.header("User-Agent", "ESP32-OTA-Checker");
+        githubClient.setHeader("User-Agent", "ESP32-OTA-Checker");
     }
 
     void loop() {
@@ -239,7 +239,7 @@ Acompanha a trajetória orbital e as coordenadas geográficas (latitude e longit
     const char* password = "SUA_SENHA_WIFI";
 
     // --- Assinaturas para lógica de hardware / específica ---
-    void plotarPosicaoISS(float latitude, float longitude); // implementação específica
+    void plotarIssNoMapa(float latitude, float longitude); // implementação específica
 
     ESP32HTTPClient issClient("http://api.open-notify.org");
 
@@ -258,7 +258,7 @@ Acompanha a trajetória orbital e as coordenadas geográficas (latitude e longit
             .getBody("iss_position.longitude", &longitude);
 
         if (issClient.isSuccess()) {
-            plotarPosicaoISS(latitude, longitude);
+            plotarIssNoMapa(latitude, longitude);
         }
 
         delay(10000); // Atualiza a cada 10 segundos
@@ -269,7 +269,7 @@ Acompanha a trajetória orbital e as coordenadas geográficas (latitude e longit
 
 ## 6. Conversor de Moedas
 
-Consulta taxas de câmbio atualizadas em tempo real e calcula conversões monetárias entre pares de moedas (ex: EUR, USD, BRL).
+Consulta taxas de câmbio atualizadas e realiza cálculos de conversão entre moedas base (ex: EUR, USD, BRL).
 
 **API:** [Frankfurter API](https://www.frankfurter.app/) (`https://api.frankfurter.app/latest`)
 
@@ -283,7 +283,7 @@ Consulta taxas de câmbio atualizadas em tempo real e calcula conversões monet�
     const char* password = "SUA_SENHA_WIFI";
 
     // --- Assinaturas para lógica de hardware / específica ---
-    void exibirCotacao(const char* base, const char* destino, float taxa); // implementação específica
+    void exibirTaxaCambio(const char* base, const char* alvo, float taxa); // implementação específica
 
     ESP32HTTPClient fxClient("https://api.frankfurter.app");
 
@@ -304,8 +304,8 @@ Consulta taxas de câmbio atualizadas em tempo real e calcula conversões monet�
             .getBody("rates.BRL", &taxaBRL);
 
         if (fxClient.isSuccess()) {
-            exibirCotacao("EUR", "USD", taxaUSD);
-            exibirCotacao("EUR", "BRL", taxaBRL);
+            exibirTaxaCambio("EUR", "USD", taxaUSD);
+            exibirTaxaCambio("EUR", "BRL", taxaBRL);
         }
 
         delay(1800000); // Atualiza a cada 30 minutos
@@ -316,7 +316,7 @@ Consulta taxas de câmbio atualizadas em tempo real e calcula conversões monet�
 
 ## 7. Curiosidades Aleatórias
 
-Busca e exibe fatos e curiosidades aleatórias para displays de mesa, relógios inteligentes ou painéis interativos.
+Consulta e exibe fatos curiosos e curiosidades aleatórias para widgets de mesa, tickers ou displays inteligentes.
 
 **API:** [Useless Facts API](https://uselessfacts.jsph.pl/) (`https://uselessfacts.jsph.pl/api/v2/facts/random`)
 
@@ -330,7 +330,7 @@ Busca e exibe fatos e curiosidades aleatórias para displays de mesa, relógios 
     const char* password = "SUA_SENHA_WIFI";
 
     // --- Assinaturas para lógica de hardware / específica ---
-    void exibirFatoNoDisplay(const char* textoFato); // implementação específica
+    void exibirFatoCurioso(const char* textoFato); // implementação específica
 
     ESP32HTTPClient factsClient("https://uselessfacts.jsph.pl");
 
@@ -348,18 +348,18 @@ Busca e exibe fatos e curiosidades aleatórias para displays de mesa, relógios 
             .getBody("text", fato, sizeof(fato));
 
         if (factsClient.isSuccess()) {
-            exibirFatoNoDisplay(fato);
+            exibirFatoCurioso(fato);
         }
 
-        delay(60000); // Nova curiosidade a cada minuto
+        delay(60000); // Novo fato a cada minuto
     }
     ```
 
 ---
 
-## 8. Visualizador de Fotos de Cachorros
+## 8. Visualizador de Cachorros Aleatórios
 
-Obtém URLs de fotos aleatórias de cachorros a partir de uma API aberta para exibição em telas TFT, LCD ou painéis e-paper.
+Consulta URLs de imagens aleatórias de cachorros para exibição ou download em telas e-paper ou displays TFT.
 
 **API:** [Dog CEO Dog API](https://dog.ceo/dog-api/) (`https://dog.ceo/api/breeds/image/random`)
 
@@ -385,7 +385,7 @@ Obtém URLs de fotos aleatórias de cachorros a partir de uma API aberta para ex
 
     void loop() {
         char urlImagem[128] = {0};
-        char status[16] = {0};
+        char status[16]     = {0};
 
         dogClient.get("/api/breeds/image/random")
             .getBody("message", urlImagem, sizeof(urlImagem))
@@ -401,9 +401,9 @@ Obtém URLs de fotos aleatórias de cachorros a partir de uma API aberta para ex
 
 ---
 
-## 9. Foto Astronômica do Dia (NASA)
+## 9. Imagem Astronômica do Dia (APOD - NASA)
 
-Consulta metadados da Foto Astronômica do Dia da NASA, incluindo título, data, explicação e a URL direta da imagem.
+Obtém os metadados da Imagem Astronômica do Dia da NASA, incluindo título, data, créditos e a URL da imagem.
 
 **API:** [NASA Open APIs](https://api.nasa.gov/) (`https://api.nasa.gov/planetary/apod`)
 
@@ -413,9 +413,9 @@ Consulta metadados da Foto Astronômica do Dia da NASA, incluindo título, data,
     #include <WiFi.h>
     #include "ESP32HTTPClient.h"
 
-    const char* ssid      = "SUA_REDE_WIFI";
-    const char* password  = "SUA_SENHA_WIFI";
-    const char* chaveNasa = "DEMO_KEY"; // Substitua pela sua chave da NASA
+    const char* ssid     = "SUA_REDE_WIFI";
+    const char* password = "SUA_SENHA_WIFI";
+    const char* nasaKey  = "DEMO_KEY"; // Substitua pela sua chave da API da NASA
 
     // --- Assinaturas para lógica de hardware / específica ---
     void exibirApod(const char* titulo, const char* data, const char* url); // implementação específica
@@ -434,24 +434,24 @@ Consulta metadados da Foto Astronômica do Dia da NASA, incluindo título, data,
         char url[256]    = {0};
 
         nasaClient.get("/planetary/apod")
-            .query("api_key", chaveNasa)
+            .query("api_key", nasaKey)
             .getBody("title", titulo, sizeof(titulo))
-            .getBody("date", data, sizeof(date))
+            .getBody("date", data, sizeof(data))
             .getBody("url", url, sizeof(url));
 
         if (nasaClient.isSuccess()) {
             exibirApod(titulo, data, url);
         }
 
-        delay(86400000); // Consulta diária
+        delay(86400000); // Consulta 1 vez ao dia
     }
     ```
 
 ---
 
-## 10. Pesquisa de Livros
+## 10. Busca de Livros
 
-Consulta o catálogo do Open Library para buscar detalhes de uma publicação através do ISBN ou título (título, autor, número de páginas e ano).
+Pesquisa no catálogo da Open Library para obter informações sobre livros através do código ISBN ou título.
 
 **API:** [Open Library](https://openlibrary.org/developers/api) (`https://openlibrary.org/api/books`)
 
@@ -465,7 +465,7 @@ Consulta o catálogo do Open Library para buscar detalhes de uma publicação at
     const char* password = "SUA_SENHA_WIFI";
 
     // --- Assinaturas para lógica de hardware / específica ---
-    void exibirDetalhesLivro(const char* titulo, int paginas, const char* dataPub); // implementação específica
+    void exibirDetalhesLivro(const char* titulo, int paginas, const char* dataPublicacao); // implementação específica
 
     ESP32HTTPClient libraryClient("https://openlibrary.org");
 
@@ -501,9 +501,9 @@ Consulta o catálogo do Open Library para buscar detalhes de uma publicação at
 
 ## 11. Monitor de Planta Inteligente
 
-Realiza a leitura de múltiplos sensores (umidade do solo, temperatura, luminosidade) e envia telemetria via requisição POST JSON para a nuvem.
+Coleta métricas de sensores (umidade do solo, temperatura ambiente, luminosidade) e envia a telemetria para uma plataforma IoT em nuvem via POST JSON.
 
-**API:** Backend IoT Customizado (`https://api.exemplo-iot.com/v1/telemetry`)
+**API:** API IoT Personalizada (`https://api.exemplo-iot.com/v1/telemetry`)
 
 ??? example "Ver Código"
     ```cpp
@@ -517,7 +517,7 @@ Realiza a leitura de múltiplos sensores (umidade do solo, temperatura, luminosi
     // --- Assinaturas para lógica de hardware / específica ---
     float lerSensorUmidadeSolo();   // implementação específica
     float lerTemperaturaAmbiente(); // implementação específica
-    int   lerNivelLuminosidade();   // implementação específica
+    int   lerNivelLuz();            // implementação específica
 
     ESP32HTTPClient iotClient("https://api.exemplo-iot.com");
 
@@ -526,25 +526,25 @@ Realiza a leitura de múltiplos sensores (umidade do solo, temperatura, luminosi
         WiFi.begin(ssid, password);
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
-        iotClient.bearerAuth("TOKEN_SECRETO_DO_DISPOSITIVO");
+        iotClient.bearer("TOKEN_SECRETO_DO_DISPOSITIVO");
     }
 
     void loop() {
         float umidade = lerSensorUmidadeSolo();
         float temp    = lerTemperaturaAmbiente();
-        int luz       = lerNivelLuminosidade();
+        int luz       = lerNivelLuz();
 
-        bool sucessoEnvio = false;
+        bool sucesso = false;
 
         iotClient.post("/v1/telemetry")
-            .body("deviceId", "planta-sensor-01")
+            .body("deviceId", "plant-node-01")
             .body("soilMoisture", umidade)
             .body("temperature", temp)
             .body("lightLevel", luz)
-            .getBody("success", &sucessoEnvio);
+            .getBody("success", &sucesso);
 
-        if (iotClient.isSuccess() && sucessoEnvio) {
-            Serial.println("Telemetria transmitida com sucesso!");
+        if (iotClient.isSuccess() && sucesso) {
+            Serial.println("Telemetria enviada com sucesso!");
         }
 
         delay(60000); // Publica a cada 60 segundos
@@ -553,11 +553,11 @@ Realiza a leitura de múltiplos sensores (umidade do solo, temperatura, luminosi
 
 ---
 
-## 12. Sistema de Alertas IoT
+## 12. Sistema de Alerta IoT
 
-Monitora condições críticas de segurança (como vazamento de gás, fumaça ou intrusão) e dispara imediatamente uma notificação de emergência via webhook POST.
+Monitora limites críticos de sensores no ambiente (como vazamento de gás, fumaça ou intrusão) e envia imediatamente uma notificação de emergência via webhook.
 
-**API:** Webhook / Gateway de Alertas (`https://api.exemplo-alertas.com/v1/notify`)
+**API:** Gateway de Alertas / Webhook (`https://api.exemplo-alertas.com/v1/notify`)
 
 ??? example "Ver Código"
     ```cpp
@@ -586,8 +586,8 @@ Monitora condições críticas de segurança (como vazamento de gás, fumaça ou
 
             char idIncidente[32] = {0};
 
+            alertClient.setHeader("X-Priority", "High");
             alertClient.post("/v1/notify")
-                .header("X-Priority", "High")
                 .body("source", "ESP32-Seguranca")
                 .body("level", "CRITICAL")
                 .body("message", "Concentracao elevada de gas detectada!")
@@ -604,9 +604,9 @@ Monitora condições críticas de segurança (como vazamento de gás, fumaça ou
 
 ---
 
-## 13. Envio de Dados com Requisição POST
+## 13. Exemplo de POST em API REST
 
-Cria novos registros enviando um payload JSON estruturado via POST para um servidor REST e recebe o ID gerado na resposta.
+Cria e envia objetos JSON estruturados para um serviço RESTful via POST, recebendo o ID gerado e metadados no corpo da resposta.
 
 **API:** [JSONPlaceholder](https://jsonplaceholder.typicode.com/) (`https://jsonplaceholder.typicode.com/posts`)
 
@@ -631,18 +631,18 @@ Cria novos registros enviando um payload JSON estruturado via POST para um servi
     }
 
     void loop() {
-        int novoId = 0;
+        int criadoId = 0;
         char titulo[64] = "Relatorio Sensor IoT ESP32";
 
         restClient.post("/posts")
-            .body("title", title)
-            .body("body", "Dispositivo online com bateria em 98%")
+            .body("title", titulo)
+            .body("body", "Dispositivo online com 98% de bateria")
             .body("userId", 42)
-            .getBody("id", &novoId);
+            .getBody("id", &criadoId);
 
         if (restClient.isSuccess()) {
-            Serial.printf("Recurso criado com sucesso! Novo ID: %d\n", novoId);
-            salvarRegistroCriado(novoId, titulo);
+            Serial.printf("Recurso criado com sucesso! ID: %d\n", criadoId);
+            salvarRegistroCriado(criadoId, titulo);
         }
 
         delay(60000);
@@ -653,9 +653,9 @@ Cria novos registros enviando um payload JSON estruturado via POST para um servi
 
 ## 14. Verificador de Status de API Pública
 
-Verifica periodicamente a disponibilidade, latência e código de status HTTP de um serviço ou API pública remota.
+Verifica periodicamente a saúde e disponibilidade de um serviço ou endpoint externo, avaliando códigos de status HTTP e payloads de resposta.
 
-**API:** Public Healthcheck API (`https://httpbin.org/status/200`)
+**API:** Healthcheck API (`https://httpbin.org/status/200`)
 
 ??? example "Ver Código"
     ```cpp
@@ -667,7 +667,7 @@ Verifica periodicamente a disponibilidade, latência e código de status HTTP de
     const char* password = "SUA_SENHA_WIFI";
 
     // --- Assinaturas para lógica de hardware / específica ---
-    void atualizarIndicadorStatus(bool online, int codigoHttp); // implementação específica
+    void atualizarIndicadorStatus(bool online, int codigo); // implementação específica
 
     ESP32HTTPClient healthClient("https://httpbin.org");
 
