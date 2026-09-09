@@ -8,3 +8,4 @@ site/
 .pio/
 __pycache__/
 *.pyc
+.vscode
