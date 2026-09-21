@@ -59,7 +59,7 @@ Consulta dados meteorológicos em tempo real, como temperatura, umidade relativa
             exibirClima(temperatura, umidade, vento);
         } else {
             Serial.printf("Erro ao consultar clima: %s (HTTP %d)\n",
-                          weatherClient.getLastError(), weatherClient.getStatusCode());
+                          weatherClient.getErrorMessage().c_str(), weatherClient.getStatusCode());
         }
 
         delay(600000); // Consulta a cada 10 minutos
@@ -146,7 +146,7 @@ Monitora métricas públicas de um repositório no GitHub, incluindo número de 
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
         // A API do GitHub exige o cabeçalho User-Agent
-        githubClient.header("User-Agent", "ESP32HTTPClient-Monitor");
+        githubClient.setHeader("User-Agent", "ESP32HTTPClient-Monitor");
     }
 
     void loop() {
@@ -197,7 +197,7 @@ Verifica periodicamente a versão da última release lançada em um repositório
         WiFi.begin(ssid, password);
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
-        githubClient.header("User-Agent", "ESP32-OTA-Checker");
+        githubClient.setHeader("User-Agent", "ESP32-OTA-Checker");
     }
 
     void loop() {
@@ -436,7 +436,7 @@ Consulta metadados da Foto Astronômica do Dia da NASA, incluindo título, data,
         nasaClient.get("/planetary/apod")
             .query("api_key", chaveNasa)
             .getBody("title", titulo, sizeof(titulo))
-            .getBody("date", data, sizeof(date))
+            .getBody("date", data, sizeof(data))
             .getBody("url", url, sizeof(url));
 
         if (nasaClient.isSuccess()) {
@@ -526,7 +526,7 @@ Realiza a leitura de múltiplos sensores (umidade do solo, temperatura, luminosi
         WiFi.begin(ssid, password);
         while (WiFi.status() != WL_CONNECTED) { delay(500); }
 
-        iotClient.bearerAuth("TOKEN_SECRETO_DO_DISPOSITIVO");
+        iotClient.bearer("TOKEN_SECRETO_DO_DISPOSITIVO");
     }
 
     void loop() {
@@ -586,8 +586,8 @@ Monitora condições críticas de segurança (como vazamento de gás, fumaça ou
 
             char idIncidente[32] = {0};
 
+            alertClient.setHeader("X-Priority", "High");
             alertClient.post("/v1/notify")
-                .header("X-Priority", "High")
                 .body("source", "ESP32-Seguranca")
                 .body("level", "CRITICAL")
                 .body("message", "Concentracao elevada de gas detectada!")
@@ -635,7 +635,7 @@ Cria novos registros enviando um payload JSON estruturado via POST para um servi
         char titulo[64] = "Relatorio Sensor IoT ESP32";
 
         restClient.post("/posts")
-            .body("title", title)
+            .body("title", titulo)
             .body("body", "Dispositivo online com bateria em 98%")
             .body("userId", 42)
             .getBody("id", &novoId);
