@@ -1,5 +1,5 @@
 # [ESP32 HTTP Client](https://esp32httpclient.com/) the Easy Way & Low Memory Footprint
-**A versatile, high-performance HTTP client for ESP32 with direct stream-to-variable binding — featuring native patterns for REST APIs, SOAP 1.1/1.2 web services, and extensible HTTP communication.**
+**A lightweight, low-allocation, high-performance HTTP client library for ESP32 with direct stream-to-variable binding.**
 
 ## **[Official Documentation](https://esp32httpclient.com/)** Get started quickly with the [Quick Start Guide](https://esp32httpclient.com/getting-started/quickstart) or explore the [API Reference](https://esp32httpclient.com/api/esp32httpclient/) for detailed usage.
 

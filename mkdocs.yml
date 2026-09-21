@@ -1,6 +1,6 @@
 site_name: ESP32-HTTP-Client
 site_url: https://esp32httpclient.com/
-site_description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, direct JSON handling for REST APIs and streaming XML for SOAP 1.1/1.2 web services.
+site_description: A lightweight, low-allocation, high-performance HTTP client library for ESP32.
 site_author: Pedro Fonseca
 repo_name: PedroFnseca/esp32-http-client
 repo_url: https://github.com/PedroFnseca/esp32-http-client
@@ -128,7 +128,7 @@ plugins:
       cards_layout_options:
         background_color: "#00897B"
         background_image: docs/assets/preview.png
-        description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, direct JSON handling for REST APIs and streaming XML for SOAP 1.1/1.2 web services.
+        description: A lightweight, low-allocation, high-performance HTTP client library for ESP32.
 
 extra_javascript:
   - javascripts/extra.js

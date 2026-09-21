@@ -1,6 +1,6 @@
 ---
 title: Cliente HTTP ESP32 - Biblioteca Cliente HTTP Fluente e Zero Heap
-description: Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++, vínculo direto de respostas para APIs REST, Web Services SOAP 1.1/1.2 e comunicação HTTP extensível.
+description: Uma biblioteca cliente HTTP leve, de baixa alocação e alto desempenho para ESP32 (Arduino e PlatformIO). API fluente C++, vínculo direto de respostas para APIs REST, Web Services SOAP 1.1/1.2 e comunicação HTTP extensível.
 keywords: Cliente HTTP ESP32, API REST Arduino ESP32, Cliente SOAP ESP32, SOAP 1.1 1.2 ESP32, Parser JSON ESP32, Parser XML ESP32, PlatformIO ESP32, biblioteca C++ ESP32
 tags:
   - home
@@ -8,7 +8,7 @@ tags:
 ---
 # Biblioteca ESP32 HTTP Client
 
-> Um cliente HTTP versátil e de alto desempenho para ESP32 que **vincula dados de resposta diretamente às suas variáveis** — contando com mecanismos nativos em streaming e zero heap para **APIs REST**, **Web Services SOAP 1.1 / 1.2** e comunicação HTTP extensível.
+> Uma biblioteca cliente HTTP leve, de baixa alocação e alto desempenho para ESP32 que **vincula dados de resposta diretamente às suas variáveis** — contando com mecanismos nativos em streaming e zero heap para **APIs REST**, **Web Services SOAP 1.1 / 1.2** e comunicação HTTP extensível.
 
 [![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white){: width="120" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
 [![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white){: width="130" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
