@@ -1,19 +1,19 @@
 ---
-title: ESP32 HTTP Client - Fast Zero-Heap REST Library
-description: High-performance, zero-heap ESP32 HTTP client library for Arduino and PlatformIO. Fluent C++ API, direct JSON response binding, low memory footprint.
-keywords: ESP32 HTTP client, ESP32 REST client, Arduino ESP32 HTTP GET POST, ESP32 JSON parser, PlatformIO ESP32, zero heap HTTP client
+title: ESP32 HTTP Client - Fluent, Zero-Heap HTTP Client Library
+description: High-performance, zero-heap HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, and extensible HTTP communication.
+keywords: ESP32 HTTP client, ESP32 REST client, ESP32 SOAP client, Arduino ESP32 HTTP GET POST SOAP, ESP32 API client, PlatformIO ESP32, zero heap HTTP client
 tags:
   - home
   - overview
 ---
 # ESP32 HTTP Client Library
 
-> A fluent, object-oriented HTTP client for ESP32 that **binds JSON response fields directly into your variables** — no `ArduinoJson`, no intermediate strings, no boilerplate.
+> A versatile, high-performance HTTP client for ESP32 that **binds response data directly into your variables** — featuring native zero-heap streaming engines for **REST APIs**, **SOAP 1.1 / 1.2 Web Services**, and extensible HTTP communication.
 
 [![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white){: width="120" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
 [![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white){: width="130" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
 [![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
-[![Coverage](https://img.shields.io/badge/Coverage-99.22%25-brightgreen){: width="116" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
+[![Coverage](https://img.shields.io/badge/Coverage-93.73%25-brightgreen){: width="116" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
 [![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client/blob/main/LICENSE)
 [![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client/stargazers)
 [![Downloads](https://img.shields.io/endpoint?url=https://esp32-http-stats.esp32httpclient.com/downloads)](https://github.com/PedroFnseca/esp32-http-client)
@@ -22,20 +22,57 @@ tags:
 
 ## What is it?
 
-**ESP32-HTTP-Client** is a lightweight Arduino library for the ESP32 that rethinks how you interact with REST APIs. Instead of fetching a raw JSON string and then parsing it, you simply tell the client _where_ to put the data, it handles the rest.
+**ESP32-HTTP-Client** is a modern, modular HTTP client for the ESP32 designed to bridge web services and device memory efficiently. Instead of treating HTTP communication as raw string manipulation followed by heavy DOM document parsing, it streams and extracts response fields directly into your C++ variables on-the-fly.
 
-```cpp
-int userId;
-float temperature;
-char city[32];
+Built on a shared high-efficiency transport core (TLS, connection reuse, authentication, timeouts, and retries), the client provides dedicated, fluent builders tailored for standard web communication patterns:
 
-client.get("/report")
-      .getBody("userId", &userId)
-      .getBody("sensor.temp", &temperature)
-      .getBody("0.address.city", city, sizeof(city));
-```
+=== "REST APIs (JSON)"
 
-One fluent chain. Direct memory binding. Zero heap allocations for the response.
+    Consume modern RESTful endpoints with intuitive verb methods (`get`, `post`, `put`, `patch`, `del`), path/query parameters, and zero-allocation JSON extraction or bidirectional struct mapping:
+
+    ```cpp
+    int userId;
+    float temperature;
+    char city[32];
+
+    client.get("/report")
+          .query("format", "compact")
+          .getBody("userId", &userId)
+          .getBody("sensor.temp", &temperature)
+          .getBody("0.address.city", city, sizeof(city));
+    ```
+
+=== "SOAP Web Services (XML 1.1 & 1.2)"
+
+    Connect to enterprise SOAP web services with automated envelope generation, `SOAPAction` / `Content-Type` handling, streaming XML token parsing, and native SOAP Fault inspection:
+
+    ```cpp
+    float price = 0.0f;
+    SoapFault fault;
+
+    client.soap("/ws")
+          .soapAction("http://example.org/GetPrice")
+          .body("<m:GetPrice xmlns:m=\"http://example.org\"><m:Item>ESP32</m:Item></m:GetPrice>")
+          .getFault(&fault)
+          .getBody("Price", &price);
+    ```
+
+=== "Extensible Core"
+
+    A unified client instance manages persistent configuration across all requests — including TLS security, custom headers, authentication (Bearer, Basic, API Key, Cookies), network retries, and telemetry observability:
+
+    ```cpp
+    ESP32HTTPClient client("https://api.example.com");
+    client.bearer("token_xyz");
+    client.setTimeout(5000);
+    client.setMaxRetry(2);
+
+    // Reuse client seamlessly for REST or SOAP endpoints
+    client.get("/api/v1/health");
+    client.soap("/ws/service");
+    ```
+
+One unified client. Direct memory binding. Minimal RAM footprint.
 
 ---
 
@@ -77,28 +114,59 @@ Benchmarked over **100 consecutive HTTP GET requests** with JSON payloads on a r
 ---
 
 ## 30-Second Quick Start
+ 
+=== "REST API (JSON)"
 
-```cpp
-#include <WiFi.h>
-#include "ESP32HTTPClient.h"
+    ```cpp
+    #include <WiFi.h>
+    #include "ESP32HTTPClient.h"
 
-ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
+    ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
 
-void setup() {
-    Serial.begin(115200);
-    WiFi.begin("YOUR_SSID", "YOUR_PASSWORD");
-    while (WiFi.status() != WL_CONNECTED) delay(100);
+    void setup() {
+        Serial.begin(115200);
+        WiFi.begin("YOUR_SSID", "YOUR_PASSWORD");
+        while (WiFi.status() != WL_CONNECTED) delay(100);
 
-    int userId = 0;
+        int userId = 0;
 
-    // API returns: { "userId": 1, "id": 1, "title": "...", "completed": false }
-    client.get("/todos/1").getBody("userId", &userId);
+        // API returns: { "userId": 1, "id": 1, "title": "...", "completed": false }
+        client.get("/todos/1").getBody("userId", &userId);
 
-    Serial.printf("User ID: %d\n", userId);
-}
+        Serial.printf("User ID: %d\n", userId);
+    }
 
-void loop() {}
-```
+    void loop() {}
+    ```
+
+=== "SOAP Web Service (XML)"
+
+    ```cpp
+    #include <WiFi.h>
+    #include "ESP32HTTPClient.h"
+
+    ESP32HTTPClient client("https://www.dataaccess.com");
+
+    void setup() {
+        Serial.begin(115200);
+        WiFi.begin("YOUR_SSID", "YOUR_PASSWORD");
+        while (WiFi.status() != WL_CONNECTED) delay(100);
+
+        char result[64] = {0};
+
+        // Sends SOAP 1.1 request and extracts <m:NumberToWordsResult> tag directly
+        client.soap("/webservicesserver/NumberConversion.wso")
+              .soapAction("http://www.dataaccess.com/webservicesserver/NumberToWords")
+              .body("<NumberToWords xmlns=\"http://www.dataaccess.com/webservicesserver/\">"
+                    "<ubiNum>500</ubiNum>"
+                    "</NumberToWords>")
+              .getBody("NumberToWordsResult", result, sizeof(result));
+
+        Serial.printf("Result: %s\n", result);
+    }
+
+    void loop() {}
+    ```
 
 → [See all examples](examples/index.md)
 

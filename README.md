@@ -1,12 +1,12 @@
 # [ESP32 HTTP Client](https://esp32httpclient.com/) the Easy Way & Low Memory Footprint
-**A high-performance, fluent, and object-oriented HTTP client for ESP32 with direct JSON binding capabilities.**
+**A versatile, high-performance HTTP client for ESP32 with direct stream-to-variable binding — featuring native patterns for REST APIs, SOAP 1.1/1.2 web services, and extensible HTTP communication.**
 
 ## **[Official Documentation](https://esp32httpclient.com/)** Get started quickly with the [Quick Start Guide](https://esp32httpclient.com/getting-started/quickstart) or explore the [API Reference](https://esp32httpclient.com/api/esp32httpclient/) for detailed usage.
 
 [![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
 [![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
 [![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
-[![Coverage](https://img.shields.io/badge/Coverage-99.22%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
+[![Coverage](https://img.shields.io/badge/Coverage-93.73%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
 [![Hits](https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-http-client/)
 [![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social)](https://github.com/PedroFnseca/esp32-http-client/stargazers)
@@ -30,9 +30,9 @@
 
 ## Why this library?
 
-Writing HTTP requests on embedded systems shouldn't feel like a chore. The standard approach forces you to manage connection states, handle string buffers manually, and allocate large chunks of RAM just to parse a simple JSON response.
+Writing HTTP requests on embedded systems shouldn't feel like a chore. The standard approach forces you to manage connection states, handle string buffers manually, and allocate large chunks of RAM just to parse a simple JSON response or construct complex XML envelopes.
 
-**ESP32-HTTP-Client** acts as a bridge between your variables and your API. You don't "parse" JSON, you tell the client where to put the data.
+**ESP32-HTTP-Client** acts as a bridge between your variables and web services. Built on top of a low-overhead, persistent HTTP/HTTPS networking core, it provides dedicated, fluent builders for common web communication standards (such as **REST APIs** and **SOAP 1.1 / 1.2 Web Services**) while extracting response fields directly into your C++ variables on-the-fly.
 
 ### The problem: the standard approach
 
@@ -42,16 +42,19 @@ A typical request with the Arduino SDK looks like this:
 2. Make the request.
 3. Check error codes.
 4. Call `http.getString()`, allocating a large `String` on the heap.
-5. Create a `DynamicJsonDocument`, allocating even more RAM.
-6. Call `deserializeJson()`.
+5. Create a `DynamicJsonDocument` (or heavy XML DOM tree), allocating even more RAM.
+6. Call deserialization functions.
 7. Extract values manually.
 8. Hope you didn't run out of heap.
 
 ### The solution
 
 ```cpp
-// One line. Zero intermediate strings. Direct memory binding.
+// REST: One line. Zero intermediate strings. Direct memory binding.
 client.get("/sensor").getBody("temperature", &myFloatVariable);
+
+// SOAP: Automatic envelopes, streaming XML extraction, zero DOM allocations.
+client.soap("/ws").soapAction("GetPrice").body("<m:GetPrice/>").getBody("Price", &myPrice);
 ```
 
 ---
@@ -81,12 +84,13 @@ The following data is the result of a benchmark running 100 consecutive HTTP GET
 
 ## Key Features
 
-- **Fluent chaining** — build requests naturally: `.get().query().getBody()`.
-- **Direct injection** — JSON values are written straight into standard C types (`int`, `float`, `bool`, `char*`) or C++ `struct`s.
-- **Zero buffering** — the response stream is parsed in place; the full payload is never stored.
+- **Fluent chaining** — build requests naturally: `.get().query().getBody()` or `.soap().soapAction().body().getBody()`.
+- **Direct injection** — JSON and XML values are written straight into standard C types (`int`, `float`, `bool`, `char*`) or C++ `struct`s.
+- **Zero buffering** — the response stream is parsed in place; the full payload is never stored in memory.
+- **Native SOAP 1.1 & 1.2 support** — automatic envelopes, SOAPAction/Content-Type headers, streaming XML response parsing, and SOAP Fault handling.
 - **Struct <-> JSON mapping** — direct bidirectional struct serialization/deserialization without dynamic document allocations.
 - **Full REST support** — `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` are all first-class citizens.
-- **IoT ready** — designed for connecting ESP32 devices to cloud backends, Firebase, AWS API Gateway, or custom servers.
+- **IoT ready** — designed for connecting ESP32 devices to cloud backends, Firebase, AWS API Gateway, SOAP web services, or custom servers.
 
 ---
 
@@ -111,6 +115,8 @@ lib_deps =
 
 ## Quick Start
 
+### REST API (JSON)
+
 ```cpp
 #include <WiFi.h>
 #include "ESP32HTTPClient.h"
@@ -129,6 +135,36 @@ void setup() {
     client.get("/todos/1").getBody("userId", &userId);
 
     Serial.printf("User ID fetched from API: %d\n", userId);
+}
+
+void loop() {}
+```
+
+### SOAP Web Service (XML)
+
+```cpp
+#include <WiFi.h>
+#include "ESP32HTTPClient.h"
+
+ESP32HTTPClient client("https://www.dataaccess.com");
+
+void setup() {
+    Serial.begin(115200);
+    WiFi.begin("SSID", "PASS");
+
+    while (WiFi.status() != WL_CONNECTED) delay(100);
+
+    char result[64] = {0};
+
+    // Sends SOAP 1.1 request and extracts <NumberToWordsResult>
+    client.soap("/webservicesserver/NumberConversion.wso")
+          .soapAction("http://www.dataaccess.com/webservicesserver/NumberToWords")
+          .body("<NumberToWords xmlns=\"http://www.dataaccess.com/webservicesserver/\">"
+                "<ubiNum>500</ubiNum>"
+                "</NumberToWords>")
+          .getBody("NumberToWordsResult", result, sizeof(result));
+
+    Serial.printf("Result: %s\n", result);
 }
 
 void loop() {}
@@ -292,6 +328,32 @@ client.update("/lights/1").body("state", "OFF");
 client.del("/logs/system_error.log");
 ```
 
+### SOAP 1.1 & SOAP 1.2 Web Services
+
+Consume SOAP web services with automatic envelope generation and streaming XML response extraction:
+
+```cpp
+// SOAP 1.1 request
+String result;
+client.soap("/ws")
+      .soapAction("http://example.org/GetPrice")
+      .body("<m:GetPrice xmlns:m=\"http://example.org\"><m:Item>ESP32</m:Item></m:GetPrice>")
+      .getBody("Price", &result);
+
+// SOAP 1.2 request with SOAP Fault handling
+SoapFault fault;
+float price = 0.0f;
+client.soap("/ws")
+      .version(SOAP_1_2)
+      .action("http://example.org/GetPrice")
+      .body("<m:GetPrice xmlns:m=\"http://example.org\"><m:Item>ESP32</m:Item></m:GetPrice>")
+      .getFault(&fault)
+      .getBody("Price", &price)
+      .onFault([](const SoapFault& f) {
+          Serial.printf("SOAP Fault: [%s] %s\n", f.faultCode.c_str(), f.faultString.c_str());
+      });
+```
+
 ---
 
 ## Examples
@@ -300,6 +362,8 @@ Runnable sketches are available in the `examples/` directory:
 
 | Sketch | Description |
 | :--- | :--- |
+| [SoapBasic](examples/SoapBasic/SoapBasic.ino) | Consuming SOAP 1.1 and SOAP 1.2 web services with automatic envelopes and streaming XML responses. |
+| [SoapFaultHandling](examples/SoapFaultHandling/SoapFaultHandling.ino) | Detecting and handling SOAP 1.1 and SOAP 1.2 faults, inspecting codes, reasons, and callbacks. |
 | [RestCrud](examples/RestCrud/RestCrud.ino) | Full suite of REST CRUD operations (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`) in a single sketch. |
 | [StructJson](examples/StructJson/StructJson.ino) | Bidirectional C++ Struct <-> JSON serialization and HTTP transfer. |
 | [UrlParameters](examples/UrlParameters/UrlParameters.ino) | Path parameters (`/users/{id}`) and query parameters (`?page=2`). |

@@ -1,6 +1,6 @@
 site_name: ESP32-HTTP-Client
 site_url: https://esp32httpclient.com/
-site_description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling.
+site_description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, direct JSON handling for REST APIs and streaming XML for SOAP 1.1/1.2 web services.
 site_author: Pedro Fonseca
 repo_name: PedroFnseca/esp32-http-client
 repo_url: https://github.com/PedroFnseca/esp32-http-client
@@ -106,9 +106,12 @@ plugins:
             Raw JSON: JSON Bruto
             Unix Timestamp: Timestamp Unix
             Custom Port: Porta Personalizada
+            SOAP Web Services: Web Services SOAP
+            SOAP Faults: Tratamento de SOAP Faults
             API Reference: Referência da API
             ESP32HTTPClient: ESP32HTTPClient
             RestRequest: RestRequest
+            SoapRequest: SoapRequest
             FAQ: Perguntas Frequentes
             Performance: Desempenho
             Privacy Policy: Política de Privacidade
@@ -125,7 +128,7 @@ plugins:
       cards_layout_options:
         background_color: "#00897B"
         background_image: docs/assets/preview.png
-        description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, and direct JSON handling.
+        description: ESP32 HTTP client library designed for embedded applications, featuring a fluent API, efficient memory usage, direct JSON handling for REST APIs and streaming XML for SOAP 1.1/1.2 web services.
 
 extra_javascript:
   - javascripts/extra.js
@@ -157,10 +160,13 @@ nav:
     - Raw JSON: examples/raw-json.md
     - Unix Timestamp: examples/unix-timestamp.md
     - Custom Port: examples/port-selection.md
+    - SOAP Web Services: examples/soap-requests.md
+    - SOAP Faults: examples/soap-faults.md
   - API Reference:
     - api/index.md
     - ESP32HTTPClient: api/esp32httpclient.md
     - RestRequest: api/restrequest.md
+    - SoapRequest: api/soaprequest.md
   - Practical Examples: practical-examples.md
   - FAQ: faq.md
   - Performance: performance.md

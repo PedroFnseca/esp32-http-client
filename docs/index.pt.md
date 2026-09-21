@@ -1,19 +1,19 @@
 ---
-title: Cliente HTTP ESP32 - Biblioteca REST Zero Heap
-description: Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++ e vínculo direto de JSON.
-keywords: Cliente HTTP ESP32, API REST Arduino ESP32, Parser JSON ESP32, Requisição GET POST ESP32, PlatformIO ESP32, biblioteca C++ ESP32
+title: Cliente HTTP ESP32 - Biblioteca Cliente HTTP Fluente e Zero Heap
+description: Biblioteca cliente HTTP de alto desempenho e zero alocação de memória na heap para ESP32 (Arduino e PlatformIO). API fluente C++, vínculo direto de respostas para APIs REST, Web Services SOAP 1.1/1.2 e comunicação HTTP extensível.
+keywords: Cliente HTTP ESP32, API REST Arduino ESP32, Cliente SOAP ESP32, SOAP 1.1 1.2 ESP32, Parser JSON ESP32, Parser XML ESP32, PlatformIO ESP32, biblioteca C++ ESP32
 tags:
   - home
   - overview
 ---
 # Biblioteca ESP32 HTTP Client
 
-> Um cliente HTTP fluente e orientado a objetos para ESP32 que **vincula os campos da resposta JSON diretamente às suas variáveis** — sem `ArduinoJson`, sem strings intermediárias, sem código clichê.
+> Um cliente HTTP versátil e de alto desempenho para ESP32 que **vincula dados de resposta diretamente às suas variáveis** — contando com mecanismos nativos em streaming e zero heap para **APIs REST**, **Web Services SOAP 1.1 / 1.2** e comunicação HTTP extensível.
 
 [![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white){: width="120" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
 [![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white){: width="130" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
 [![Idioma](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
-[![Cobertura](https://img.shields.io/badge/Coverage-88.18%25-brightgreen){: width="116" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
+[![Cobertura](https://img.shields.io/badge/Coverage-93.73%25-brightgreen){: width="116" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
 [![Licença](https://img.shields.io/github/license/PedroFnseca/esp32-http-client){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client/blob/main/LICENSE)
 [![Estrelas](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social){: width="80" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client/stargazers)
 [![Downloads](https://img.shields.io/endpoint?url=https://esp32-http-stats.esp32httpclient.com/downloads)](https://github.com/PedroFnseca/esp32-http-client)
@@ -22,20 +22,57 @@ tags:
 
 ## O que é?
 
-**ESP32-HTTP-Client** é uma biblioteca leve do Arduino para o ESP32 que repensa como você interage com APIs REST. Em vez de obter uma string JSON bruta e depois analisá-la, você simplesmente diz ao cliente *onde* colocar os dados, e ele cuida do resto.
+**ESP32-HTTP-Client** é um cliente HTTP moderno e modular para o ESP32 projetado para conectar serviços web e a memória do microcontrolador com máxima eficiência. Em vez de tratar a comunicação HTTP como manipulação manual de strings e processamento pesado de árvores DOM, a biblioteca extrai campos de resposta em tempo real diretamente do fluxo da rede para variáveis C++.
 
-```cpp
-int userId;
-float temperature;
-char city[32];
+Construído sobre um núcleo de transporte compartilhado e eficiente (TLS, reuso de conexão, autenticação, timeouts e retries), o cliente disponibiliza builders dedicados e fluentes para os principais padrões de comunicação web:
 
-client.get("/report")
-      .getBody("userId", &userId)
-      .getBody("sensor.temp", &temperature)
-      .getBody("0.address.city", city, sizeof(city));
-```
+=== "APIs REST (JSON)"
 
-Uma única cadeia fluente. Vinculação direta de memória. Zero alocações na heap para a resposta.
+    Consuma endpoints RESTful com métodos intuitivos (`get`, `post`, `put`, `patch`, `del`), parâmetros de rota/busca e extração direta de JSON ou mapeamento bidirecional de structs:
+
+    ```cpp
+    int userId;
+    float temperature;
+    char city[32];
+
+    client.get("/report")
+          .query("format", "compact")
+          .getBody("userId", &userId)
+          .getBody("sensor.temp", &temperature)
+          .getBody("0.address.city", city, sizeof(city));
+    ```
+
+=== "Web Services SOAP (XML 1.1 & 1.2)"
+
+    Conecte-se a serviços corporativos SOAP com geração automática de envelopes, gerenciamento de `SOAPAction` / `Content-Type`, streaming de tags XML e inspeção nativa de SOAP Faults:
+
+    ```cpp
+    float preco = 0.0f;
+    SoapFault falha;
+
+    client.soap("/ws")
+          .soapAction("http://example.org/GetPrice")
+          .body("<m:GetPrice xmlns:m=\"http://example.org\"><m:Item>ESP32</m:Item></m:GetPrice>")
+          .getFault(&falha)
+          .getBody("Price", &preco);
+    ```
+
+=== "Núcleo Extensível"
+
+    Uma única instância de cliente gerencia configurações persistentes para todas as requisições — incluindo segurança TLS, cabeçalhos customizados, autenticação (Bearer, Basic, API Key, Cookies), retentativas automáticas e métricas de observabilidade:
+
+    ```cpp
+    ESP32HTTPClient client("https://api.example.com");
+    client.bearer("token_xyz");
+    client.setTimeout(5000);
+    client.setMaxRetry(2);
+
+    // Reutilize o mesmo cliente para endpoints REST ou SOAP
+    client.get("/api/v1/health");
+    client.soap("/ws/service");
+    ```
+
+Um cliente unificado. Vinculação direta de memória. Mínimo consumo de RAM.
 
 ---
 
@@ -78,27 +115,58 @@ Comparativo medido em **100 requisições HTTP GET consecutivas** com cargas JSO
 
 ## Início Rápido em 30 Segundos
 
-```cpp
-#include <WiFi.h>
-#include "ESP32HTTPClient.h"
+=== "REST API (JSON)"
 
-ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
+    ```cpp
+    #include <WiFi.h>
+    #include "ESP32HTTPClient.h"
 
-void setup() {
-    Serial.begin(115200);
-    WiFi.begin("SEU_SSID", "SUA_SENHA");
-    while (WiFi.status() != WL_CONNECTED) delay(100);
+    ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
 
-    int userId = 0;
+    void setup() {
+        Serial.begin(115200);
+        WiFi.begin("SEU_SSID", "SUA_SENHA");
+        while (WiFi.status() != WL_CONNECTED) delay(100);
 
-    // A API retorna: { "userId": 1, "id": 1, "title": "...", "completed": false }
-    client.get("/todos/1").getBody("userId", &userId);
+        int userId = 0;
 
-    Serial.printf("ID do Usuário: %d\n", userId);
-}
+        // A API retorna: { "userId": 1, "id": 1, "title": "...", "completed": false }
+        client.get("/todos/1").getBody("userId", &userId);
 
-void loop() {}
-```
+        Serial.printf("ID do Usuário: %d\n", userId);
+    }
+
+    void loop() {}
+    ```
+
+=== "SOAP Web Service (XML)"
+
+    ```cpp
+    #include <WiFi.h>
+    #include "ESP32HTTPClient.h"
+
+    ESP32HTTPClient client("https://www.dataaccess.com");
+
+    void setup() {
+        Serial.begin(115200);
+        WiFi.begin("SEU_SSID", "SUA_SENHA");
+        while (WiFi.status() != WL_CONNECTED) delay(100);
+
+        char result[64] = {0};
+
+        // Envia requisição SOAP 1.1 e extrai diretamente a tag <m:NumberToWordsResult>
+        client.soap("/webservicesserver/NumberConversion.wso")
+              .soapAction("http://www.dataaccess.com/webservicesserver/NumberToWords")
+              .body("<NumberToWords xmlns=\"http://www.dataaccess.com/webservicesserver/\">"
+                    "<ubiNum>500</ubiNum>"
+                    "</NumberToWords>")
+              .getBody("NumberToWordsResult", result, sizeof(result));
+
+        Serial.printf("Resultado: %s\n", result);
+    }
+
+    void loop() {}
+    ```
 
 → [Ver todos os exemplos](examples/index.pt.md)
 

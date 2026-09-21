@@ -22,3 +22,5 @@ All examples are available in the [`examples/`](https://github.com/PedroFnseca/e
 | [Raw JSON](raw-json.md) | Capturing entire objects or sub-arrays into an Arduino `String`. |
 | [Unix Timestamp](unix-timestamp.md) | Fetching a `long` Unix timestamp from a time API. |
 | [Custom Port](port-selection.md) | Connecting to a server running on a non-standard port. |
+| [SOAP Web Services](soap-requests.md) | Consuming SOAP 1.1 and SOAP 1.2 web services with streaming XML responses. |
+| [SOAP Faults](soap-faults.md) | Inspecting SOAP Fault codes, reasons, details, and callbacks. |

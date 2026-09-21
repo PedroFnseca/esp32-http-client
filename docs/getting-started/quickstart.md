@@ -33,63 +33,124 @@ ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
 
 ## Step 4: Make a request
 
-```cpp
-int userId = 0;
-char title[64];
-bool completed;
+=== "REST API (JSON)"
 
-// GET https://jsonplaceholder.typicode.com/todos/1
-// Response: { "userId": 1, "id": 1, "title": "...", "completed": false }
-client.get("/todos/1")
-      .getBody("userId", &userId)
-      .getBody("title", title, sizeof(title))
-      .getBody("completed", &completed);
-```
-
-## Full Sketch
-
-```cpp
-#include <Arduino.h>
-#include <WiFi.h>
-#include "ESP32HTTPClient.h"
-
-const char* ssid     = "YOUR_SSID";
-const char* password = "YOUR_PASSWORD";
-
-ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
-
-void setup() {
-    Serial.begin(115200);
-
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println("\nConnected!");
-}
-
-void loop() {
+    ```cpp
     int userId = 0;
     char title[64];
     bool completed;
 
+    // GET https://jsonplaceholder.typicode.com/todos/1
+    // Response: { "userId": 1, "id": 1, "title": "...", "completed": false }
     client.get("/todos/1")
           .getBody("userId", &userId)
           .getBody("title", title, sizeof(title))
           .getBody("completed", &completed);
+    ```
 
-    if (client.getStatusCode() == 200) {
-        Serial.printf("User ID : %d\n", userId);
-        Serial.printf("Title   : %s\n", title);
-        Serial.printf("Done    : %s\n", completed ? "yes" : "no");
-    } else {
-        Serial.printf("HTTP Error: %d\n", client.getStatusCode());
+=== "SOAP Web Service (XML)"
+
+    ```cpp
+    char result[64] = {0};
+
+    // SOAP 1.1 Request
+    client.soap("/webservicesserver/NumberConversion.wso")
+          .soapAction("http://www.dataaccess.com/webservicesserver/NumberToWords")
+          .body("<NumberToWords xmlns=\"http://www.dataaccess.com/webservicesserver/\">"
+                "<ubiNum>500</ubiNum>"
+                "</NumberToWords>")
+          .getBody("NumberToWordsResult", result, sizeof(result));
+    ```
+
+## Full Sketch
+
+=== "REST API"
+
+    ```cpp
+    #include <Arduino.h>
+    #include <WiFi.h>
+    #include "ESP32HTTPClient.h"
+
+    const char* ssid     = "YOUR_SSID";
+    const char* password = "YOUR_PASSWORD";
+
+    ESP32HTTPClient client("https://jsonplaceholder.typicode.com");
+
+    void setup() {
+        Serial.begin(115200);
+
+        WiFi.begin(ssid, password);
+        while (WiFi.status() != WL_CONNECTED) {
+            delay(500);
+            Serial.print(".");
+        }
+        Serial.println("\nConnected!");
     }
 
-    delay(10000);
-}
-```
+    void loop() {
+        int userId = 0;
+        char title[64];
+        bool completed;
+
+        client.get("/todos/1")
+              .getBody("userId", &userId)
+              .getBody("title", title, sizeof(title))
+              .getBody("completed", &completed);
+
+        if (client.getStatusCode() == 200) {
+            Serial.printf("User ID : %d\n", userId);
+            Serial.printf("Title   : %s\n", title);
+            Serial.printf("Done    : %s\n", completed ? "yes" : "no");
+        } else {
+            Serial.printf("HTTP Error: %d\n", client.getStatusCode());
+        }
+
+        delay(10000);
+    }
+    ```
+
+=== "SOAP Web Service"
+
+    ```cpp
+    #include <Arduino.h>
+    #include <WiFi.h>
+    #include "ESP32HTTPClient.h"
+
+    const char* ssid     = "YOUR_SSID";
+    const char* password = "YOUR_PASSWORD";
+
+    ESP32HTTPClient client("https://www.dataaccess.com");
+
+    void setup() {
+        Serial.begin(115200);
+
+        WiFi.begin(ssid, password);
+        while (WiFi.status() != WL_CONNECTED) {
+            delay(500);
+            Serial.print(".");
+        }
+        Serial.println("\nConnected!");
+    }
+
+    void loop() {
+        char result[64] = {0};
+
+        client.soap("/webservicesserver/NumberConversion.wso")
+              .soapAction("http://www.dataaccess.com/webservicesserver/NumberToWords")
+              .body("<NumberToWords xmlns=\"http://www.dataaccess.com/webservicesserver/\">"
+                    "<ubiNum>500</ubiNum>"
+                    "</NumberToWords>")
+              .getBody("NumberToWordsResult", result, sizeof(result));
+
+        if (client.getStatusCode() == 200) {
+            Serial.printf("SOAP Result: %s\n", result);
+        } else {
+            Serial.printf("HTTP Error: %d\n", client.getStatusCode());
+        }
+
+        delay(10000);
+    }
+    ```
 
 ---
 

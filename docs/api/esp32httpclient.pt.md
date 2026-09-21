@@ -156,6 +156,24 @@ client.del("/sessions/42");
 
 ---
 
+### `soap(path)`
+
+Inicia uma requisição SOAP direcionada para `baseUrl + path`, retornando um builder [`SoapRequest`](soaprequest.pt.md).
+
+```cpp
+SoapRequest soap(const char* path = "");
+```
+
+**Exemplo:**
+```cpp
+client.soap("/ws")
+      .soapAction("http://example.org/GetPrice")
+      .body("<m:GetPrice xmlns:m=\"http://example.org\"><m:Item>Widget</m:Item></m:GetPrice>")
+      .getBody("Price", &preco);
+```
+
+---
+
 ## Métodos de Configuração
 
 ---
