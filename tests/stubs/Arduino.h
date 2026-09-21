@@ -98,6 +98,36 @@ class String {
     return replaced;
   }
 
+  char operator[](size_t index) const {
+    if (index < _data.size()) return _data[index];
+    return '\0';
+  }
+
+  char& operator[](size_t index) {
+    return _data[index];
+  }
+
+  char operator[](int index) const {
+    if (index >= 0 && static_cast<size_t>(index) < _data.size()) return _data[index];
+    return '\0';
+  }
+
+  char& operator[](int index) {
+    return _data[index];
+  }
+
+  void trim() {
+    size_t start = 0;
+    while (start < _data.size() && isspace(static_cast<unsigned char>(_data[start]))) {
+      start++;
+    }
+    size_t end = _data.size();
+    while (end > start && isspace(static_cast<unsigned char>(_data[end - 1]))) {
+      end--;
+    }
+    _data = _data.substr(start, end - start);
+  }
+
   void reserve(size_t size) {
     _data.reserve(size);
   }
