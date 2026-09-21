@@ -151,7 +151,25 @@ RestRequest del(const char* path);
 
 **Example:**
 ```cpp
-client.del("/sessions/42");
+client.del("/users/15");
+```
+
+---
+
+### `soap(path)`
+
+Initiates a SOAP request targeting `baseUrl + path`, returning a [`SoapRequest`](soaprequest.md) builder.
+
+```cpp
+SoapRequest soap(const char* path = "");
+```
+
+**Example:**
+```cpp
+client.soap("/ws")
+      .soapAction("http://example.org/GetPrice")
+      .body("<m:GetPrice xmlns:m=\"http://example.org\"><m:Item>Widget</m:Item></m:GetPrice>")
+      .getBody("Price", &price);
 ```
 
 ---

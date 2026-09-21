@@ -8,6 +8,7 @@ BUILD_DIR="$SCRIPT_DIR/build"
 EXE_PATH="$BUILD_DIR/unit-tests"
 TEST_OBJ="$BUILD_DIR/test_rest_request.o"
 REST_REQUEST_OBJ="$BUILD_DIR/RestRequest.o"
+SOAP_REQUEST_OBJ="$BUILD_DIR/SoapRequest.o"
 HTTP_CLIENT_OBJ="$BUILD_DIR/ESP32HTTPClient.o"
 SHOW_COVERAGE="${SHOW_COVERAGE:-1}"
 
@@ -69,6 +70,13 @@ fi
   $COVERAGE_FLAGS \
   -I"$SCRIPT_DIR/stubs" \
   -I"$REPO_ROOT/src" \
+  -c "$REPO_ROOT/src/SoapRequest.cpp" \
+  -o "$SOAP_REQUEST_OBJ"
+
+"$COMPILER" -std=c++17 \
+  $COVERAGE_FLAGS \
+  -I"$SCRIPT_DIR/stubs" \
+  -I"$REPO_ROOT/src" \
   -c "$REPO_ROOT/src/ESP32HTTPClient.cpp" \
   -o "$HTTP_CLIENT_OBJ"
 
@@ -76,6 +84,7 @@ fi
   $COVERAGE_FLAGS \
   "$TEST_OBJ" \
   "$REST_REQUEST_OBJ" \
+  "$SOAP_REQUEST_OBJ" \
   "$HTTP_CLIENT_OBJ" \
   -o "$EXE_PATH"
 
@@ -126,6 +135,7 @@ if [ "$SHOW_COVERAGE" = "1" ] && command -v gcov >/dev/null 2>&1; then
     gcov -b -c -o "$BUILD_DIR" \
       "$TEST_OBJ" \
       "$REST_REQUEST_OBJ" \
+      "$SOAP_REQUEST_OBJ" \
       "$HTTP_CLIENT_OBJ" 2>/dev/null
   )"
   GCOV_STATUS=$?

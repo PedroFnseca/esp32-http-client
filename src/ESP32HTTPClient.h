@@ -8,9 +8,12 @@
 #include "BufferedStreamReader.h"
 #include "RestRequest.h"
 #include "RestTypes.h"
+#include "SoapRequest.h"
+#include "SoapTypes.h"
 
 class ESP32HTTPClient {
   friend class RestRequest;
+  friend class SoapRequest;
 
  public:
   ESP32HTTPClient(const char* baseUrl, int port = 0);
@@ -21,6 +24,8 @@ class ESP32HTTPClient {
   RestRequest put(const char* path);
   RestRequest patch(const char* path);
   RestRequest del(const char* path);
+
+  SoapRequest soap(const char* path = "");
 
   void setBaseUrl(const char* baseUrl, int port = 0);
   void setUrl(const char* baseUrl, int port = 0);
@@ -41,6 +46,9 @@ class ESP32HTTPClient {
   void apiKey(const char* name, const char* key);
   ESP32HTTPClient& cookie(const char* name, const char* value);
   void end();
+
+  void setSoapVersion(SoapVersion version);
+  SoapVersion getSoapVersion() const;
 
   int getStatusCode() const;
   String getErrorMessage() const;
@@ -85,6 +93,7 @@ class ESP32HTTPClient {
   uint16_t _timeout;
   int _maxRetry;
   const char* _contentType;
+  SoapVersion _soapVersion;
   std::vector<HttpHeader> _headers;
   HTTPClient _http;
 

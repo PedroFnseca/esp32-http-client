@@ -9,6 +9,7 @@ ESP32HTTPClient::ESP32HTTPClient(const char* baseUrl, int port)
       _timeout(60000),
       _maxRetry(1),
       _contentType("application/json"),
+      _soapVersion(SOAP_1_1),
       _onSuccessCb(nullptr),
       _onErrorCb(nullptr),
       _onResponseCb(nullptr),
@@ -230,6 +231,14 @@ void ESP32HTTPClient::onObservability(ObservabilityCallback cb) {
   _observabilityCb = cb;
 }
 
+void ESP32HTTPClient::setSoapVersion(SoapVersion version) {
+  _soapVersion = version;
+}
+
+SoapVersion ESP32HTTPClient::getSoapVersion() const {
+  return _soapVersion;
+}
+
 RestRequest ESP32HTTPClient::get(const char* path) {
   return RestRequest(this, path, HTTP_GET_METHOD);
 }
@@ -253,3 +262,8 @@ RestRequest ESP32HTTPClient::patch(const char* path) {
 RestRequest ESP32HTTPClient::del(const char* path) {
   return RestRequest(this, path, HTTP_DELETE_METHOD);
 }
+
+SoapRequest ESP32HTTPClient::soap(const char* path) {
+  return SoapRequest(this, path, _soapVersion);
+}
+

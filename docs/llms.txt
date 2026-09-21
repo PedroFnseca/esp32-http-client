@@ -1,8 +1,8 @@
 # ESP32 HTTP Client Library
 
-> A fluent, object-oriented HTTP client for ESP32 that **binds JSON response fields directly into your variables** — no `ArduinoJson`, no intermediate strings, no boilerplate.
+> A lightweight, low-allocation, high-performance HTTP client library for ESP32 that **binds response data directly into your variables** — no heavy DOM parsers, no intermediate strings, no boilerplate.
 
-This library acts as a bridge between your variables and your API. You don't "parse" JSON, you tell the client where to put the data.
+This library acts as a bridge between your variables and your API. You don't "parse" payloads manually, you tell the client where to put the data.
 
 ## Key Features
 - **Fluent chaining** — build requests naturally: `.get().query().getBody()`.

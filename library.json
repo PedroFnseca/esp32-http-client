@@ -1,14 +1,16 @@
 {
   "$schema": "https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/schema/library.json",
   "name": "ESP32-HTTP-Client",
-  "version": "1.5.3",
-  "description": "Lightweight HTTP client for ESP32 with direct JSON stream parsing into variables.",
+  "version": "1.6.0",
+  "description": "A lightweight, low-allocation, high-performance HTTP client library for ESP32.",
   "keywords": [
     "esp32",
     "http",
     "https",
     "rest",
+    "soap",
     "json",
+    "xml",
     "api",
     "stream",
     "embedded"
