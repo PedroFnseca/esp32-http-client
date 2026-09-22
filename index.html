@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="A lightweight, low-allocation, high-performance HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, and extensible HTTP communication.">
+        <meta name="description" content="A lightweight, low-allocation, high-performance HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, GraphQL, and extensible HTTP communication.">
       
       
         <meta name="author" content="Pedro Fonseca">
@@ -103,8 +103,6 @@ function __md_analytics(){
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="preconnect" href="https://www.clarity.ms" crossorigin>
   <link rel="preconnect" href="https://c.bing.com" crossorigin>
-  <link rel="preload" href="assets/stylesheets/main.ec1eaa64.min.css" as="style">
-  <link rel="preload" href="assets/stylesheets/palette.ab4e12ef.min.css" as="style">
 
   <!-- Instant Preference Optimizer (Theme & Language Auto-Detection, 0ms latency) -->
   <script>
@@ -181,7 +179,7 @@ function __md_analytics(){
   <link rel="alternate" type="text/plain" href="https://esp32httpclient.com/llms.txt" title="LLMs Context">
   <link rel="alternate" type="text/plain" href="https://esp32httpclient.com/llms-full.txt" title="Full LLMs Context">
 
-  <meta name="keywords" content="ESP32 HTTP client, ESP32 REST client, ESP32 SOAP client, Arduino ESP32 HTTP GET POST SOAP, ESP32 API client, PlatformIO ESP32, zero heap HTTP client">
+  <meta name="keywords" content="ESP32 HTTP client, ESP32 REST client, ESP32 SOAP client, ESP32 GraphQL client, Arduino ESP32 HTTP GET POST SOAP GraphQL, ESP32 API client, PlatformIO ESP32, zero heap HTTP client">
   <meta name="author" content="Pedro Fonseca">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
@@ -189,12 +187,12 @@ function __md_analytics(){
   <meta property="og:site_name" content="ESP32-HTTP-Client Documentation">
   <meta property="og:url" content="https://esp32httpclient.com/">
   <meta property="og:title" content="ESP32 HTTP Client - Fluent, Zero-Heap HTTP Client Library">
-  <meta property="og:description" content="A lightweight, low-allocation, high-performance HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, and extensible HTTP communication.">
+  <meta property="og:description" content="A lightweight, low-allocation, high-performance HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, GraphQL, and extensible HTTP communication.">
   <meta property="og:image" content="https://esp32httpclient.com/assets/preview.png">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ESP32 HTTP Client - Fluent, Zero-Heap HTTP Client Library">
-  <meta name="twitter:description" content="A lightweight, low-allocation, high-performance HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, and extensible HTTP communication.">
+  <meta name="twitter:description" content="A lightweight, low-allocation, high-performance HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, GraphQL, and extensible HTTP communication.">
   <meta name="twitter:image" content="https://esp32httpclient.com/assets/preview.png">
 
   <script type="application/ld+json">
@@ -221,7 +219,7 @@ function __md_analytics(){
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "headline": "ESP32 HTTP Client - Fluent, Zero-Heap HTTP Client Library",
-    "description": "A lightweight, low-allocation, high-performance HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, and extensible HTTP communication.",
+    "description": "A lightweight, low-allocation, high-performance HTTP client library for ESP32 (Arduino and PlatformIO). Fluent C++ API, direct response binding for REST APIs, SOAP 1.1/1.2 web services, GraphQL, and extensible HTTP communication.",
     "url": "https://esp32httpclient.com/",
     "author": {
       "@type": "Person",
@@ -952,6 +950,16 @@ function __md_analytics(){
       
         
       
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
     
     
     
@@ -1337,6 +1345,146 @@ function __md_analytics(){
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="examples/graphql-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Queries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="examples/graphql-variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="examples/graphql-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="examples/graphql-batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Batching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="examples/graphql-streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Streaming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1355,6 +1503,10 @@ function __md_analytics(){
       
         
           
+        
+      
+        
+      
         
       
         
@@ -1483,6 +1635,62 @@ function __md_analytics(){
     
   
     SoapRequest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/graphqlrequest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQLRequest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/graphqlbatchrequest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQLBatchRequest
   
 
     
@@ -1780,7 +1988,7 @@ function __md_analytics(){
 
 <h1 id="esp32-http-client-library">ESP32 HTTP Client Library<a class="headerlink" href="#esp32-http-client-library" title="Permanent link">&para;</a></h1>
 <blockquote>
-<p>A lightweight, low-allocation, high-performance HTTP client library for ESP32 that <strong>binds response data directly into your variables</strong> — featuring native zero-heap streaming engines for <strong>REST APIs</strong>, <strong>SOAP 1.1 / 1.2 Web Services</strong>, and extensible HTTP communication.</p>
+<p>A lightweight, low-allocation, high-performance HTTP client library for ESP32 that <strong>binds response data directly into your variables</strong> featuring native zero-heap streaming engines for <strong>REST APIs</strong>, <strong>SOAP 1.1 / 1.2 Web Services</strong>, <strong>GraphQL Services</strong>, and extensible HTTP communication.</p>
 </blockquote>
 <p><a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="Arduino Library" decoding="async" height="20" loading="lazy" src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&amp;label=Arduino&amp;logo=arduino&amp;logoColor=white" width="120" /></a>
 <a href="https://github.com/PedroFnseca/esp32-http-client"><img alt="PlatformIO Registry" decoding="async" height="20" loading="lazy" src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&amp;label=PlatformIO&amp;logo=platformio&amp;logoColor=white" width="130" /></a>
@@ -1793,7 +2001,7 @@ function __md_analytics(){
 <h2 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h2>
 <p><strong>ESP32-HTTP-Client</strong> is a modern, modular HTTP client for the ESP32 designed to bridge web services and device memory efficiently. Instead of treating HTTP communication as raw string manipulation followed by heavy DOM document parsing, it streams and extracts response fields directly into your C++ variables on-the-fly.</p>
 <p>Built on a shared high-efficiency transport core (TLS, connection reuse, authentication, timeouts, and retries), the client provides dedicated, fluent builders tailored for standard web communication patterns:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">REST APIs (JSON)</label><label for="__tabbed_1_2">SOAP Web Services (XML 1.1 &amp; 1.2)</label><label for="__tabbed_1_3">Extensible Core</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:4"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><input id="__tabbed_1_4" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">REST (JSON)</label><label for="__tabbed_1_2">GraphQL (Queries &amp; Mutations)</label><label for="__tabbed_1_3">SOAP (XML 1.1 / 1.2)</label><label for="__tabbed_1_4">Extensible Core</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <p>Consume modern RESTful endpoints with intuitive verb methods (<code>get</code>, <code>post</code>, <code>put</code>, <code>patch</code>, <code>del</code>), path/query parameters, and zero-allocation JSON extraction or bidirectional struct mapping:</p>
@@ -1809,27 +2017,40 @@ function __md_analytics(){
 </code></pre></div>
 </div>
 <div class="tabbed-block">
-<p>Connect to enterprise SOAP web services with automated envelope generation, <code>SOAPAction</code> / <code>Content-Type</code> handling, streaming XML token parsing, and native SOAP Fault inspection:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">float</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">SoapFault</span><span class="w"> </span><span class="n">fault</span><span class="p">;</span>
+<p>Execute GraphQL operations with typed variables, operation selection, batching (<code>GraphQLBatchRequest</code>), partial data preservation, and <code>@defer</code> streaming:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">client</span><span class="p">.</span><span class="n">soap</span><span class="p">(</span><span class="s">"/ws"</span><span class="p">)</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="p">.</span><span class="n">soapAction</span><span class="p">(</span><span class="s">"http://example.org/GetPrice"</span><span class="p">)</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">"&lt;m:GetPrice xmlns:m=</span><span class="se">\"</span><span class="s">http://example.org</span><span class="se">\"</span><span class="s">&gt;&lt;m:Item&gt;ESP32&lt;/m:Item&gt;&lt;/m:GetPrice&gt;"</span><span class="p">)</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getFault</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fault</span><span class="p">)</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"Price"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">price</span><span class="p">);</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">client</span><span class="p">.</span><span class="n">graphql</span><span class="p">(</span><span class="s">"/graphql"</span><span class="p">)</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"query GetUser($id: ID!) { user(id: $id) { id name } }"</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p">.</span><span class="n">variable</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span><span class="w"> </span><span class="mi">101</span><span class="p">)</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getData</span><span class="p">(</span><span class="s">"user.id"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">id</span><span class="p">)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getData</span><span class="p">(</span><span class="s">"user.name"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">name</span><span class="p">);</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<p>Connect to enterprise SOAP web services with automated envelope generation, <code>SOAPAction</code> / <code>Content-Type</code> handling, streaming XML token parsing, and native SOAP Fault inspection:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kt">float</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0f</span><span class="p">;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">SoapFault</span><span class="w"> </span><span class="n">fault</span><span class="p">;</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">client</span><span class="p">.</span><span class="n">soap</span><span class="p">(</span><span class="s">"/ws"</span><span class="p">)</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="p">.</span><span class="n">soapAction</span><span class="p">(</span><span class="s">"http://example.org/GetPrice"</span><span class="p">)</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">"&lt;m:GetPrice xmlns:m=</span><span class="se">\"</span><span class="s">http://example.org</span><span class="se">\"</span><span class="s">&gt;&lt;m:Item&gt;ESP32&lt;/m:Item&gt;&lt;/m:GetPrice&gt;"</span><span class="p">)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getFault</span><span class="p">(</span><span class="o">&amp;</span><span class="n">fault</span><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"Price"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">price</span><span class="p">);</span>
 </code></pre></div>
 </div>
 <div class="tabbed-block">
 <p>A unified client instance manages persistent configuration across all requests — including TLS security, custom headers, authentication (Bearer, Basic, API Key, Cookies), network retries, and telemetry observability:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://api.example.com"</span><span class="p">);</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">client</span><span class="p">.</span><span class="n">bearer</span><span class="p">(</span><span class="s">"token_xyz"</span><span class="p">);</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">client</span><span class="p">.</span><span class="n">setTimeout</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">client</span><span class="p">.</span><span class="n">setMaxRetry</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1">// Reuse client seamlessly for REST or SOAP endpoints</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/api/v1/health"</span><span class="p">);</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">client</span><span class="p">.</span><span class="n">soap</span><span class="p">(</span><span class="s">"/ws/service"</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://api.example.com"</span><span class="p">);</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">client</span><span class="p">.</span><span class="n">bearer</span><span class="p">(</span><span class="s">"token_xyz"</span><span class="p">);</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">client</span><span class="p">.</span><span class="n">setTimeout</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">client</span><span class="p">.</span><span class="n">setMaxRetry</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1">// Reuse client seamlessly for REST, SOAP, or GraphQL endpoints</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/api/v1/health"</span><span class="p">);</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">client</span><span class="p">.</span><span class="n">soap</span><span class="p">(</span><span class="s">"/ws/service"</span><span class="p">);</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">client</span><span class="p">.</span><span class="n">graphql</span><span class="p">(</span><span class="s">"/graphql"</span><span class="p">);</span>
 </code></pre></div>
 </div>
 </div>
@@ -1879,8 +2100,8 @@ function __md_analytics(){
 </div>
 <div class="tabbed-block">
 <p>Add <code>ESP32-HTTP-Client</code> to your <code>platformio.ini</code>:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="na">lib_deps</span><span class="w"> </span><span class="o">=</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="na">PedroFnseca/ESP32-HTTP-Client@^1.4.0</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="na">lib_deps</span><span class="w"> </span><span class="o">=</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="na">PedroFnseca/ESP32-HTTP-Client@^1.4.0</span>
 </code></pre></div></p>
 </div>
 <div class="tabbed-block">
@@ -1891,55 +2112,80 @@ function __md_analytics(){
 <p>→ <a href="getting-started/installation/">Full installation guide</a></p>
 <hr />
 <h2 id="30-second-quick-start">30-Second Quick Start<a class="headerlink" href="#30-second-quick-start" title="Permanent link">&para;</a></h2>
-<div class="tabbed-set tabbed-alternate" data-tabs="3:2"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">REST API (JSON)</label><label for="__tabbed_3_2">SOAP Web Service (XML)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">REST API (JSON)</label><label for="__tabbed_3_2">SOAP Web Service (XML)</label><label for="__tabbed_3_3">GraphQL API</label></div>
 <div class="tabbed-content">
-<div class="tabbed-block">
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://jsonplaceholder.typicode.com"</span><span class="p">);</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="s">"YOUR_SSID"</span><span class="p">,</span><span class="w"> </span><span class="s">"YOUR_PASSWORD"</span><span class="p">);</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
-<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
-<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
-<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="c1">// API returns: { "userId": 1, "id": 1, "title": "...", "completed": false }</span>
-<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/todos/1"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"userId"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">userId</span><span class="p">);</span>
-<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
-<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"User ID: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">userId</span><span class="p">);</span>
-<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="p">}</span>
-<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
-<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
-</code></pre></div>
-</div>
 <div class="tabbed-block">
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://www.dataaccess.com"</span><span class="p">);</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://jsonplaceholder.typicode.com"</span><span class="p">);</span>
 <a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
 <a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 <a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
 <a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="s">"YOUR_SSID"</span><span class="p">,</span><span class="w"> </span><span class="s">"YOUR_PASSWORD"</span><span class="p">);</span>
 <a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
 <a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">result</span><span class="p">[</span><span class="mi">64</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
 <a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="c1">// Sends SOAP 1.1 request and extracts &lt;m:NumberToWordsResult&gt; tag directly</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="n">soap</span><span class="p">(</span><span class="s">"/webservicesserver/NumberConversion.wso"</span><span class="p">)</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">          </span><span class="p">.</span><span class="n">soapAction</span><span class="p">(</span><span class="s">"http://www.dataaccess.com/webservicesserver/NumberToWords"</span><span class="p">)</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">          </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">"&lt;NumberToWords xmlns=</span><span class="se">\"</span><span class="s">http://www.dataaccess.com/webservicesserver/</span><span class="se">\"</span><span class="s">&gt;"</span>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">                </span><span class="s">"&lt;ubiNum&gt;500&lt;/ubiNum&gt;"</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">                </span><span class="s">"&lt;/NumberToWords&gt;"</span><span class="p">)</span>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">          </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"NumberToWordsResult"</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">result</span><span class="p">));</span>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Result: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="p">}</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">    </span><span class="c1">// API returns: { "userId": 1, "id": 1, "title": "...", "completed": false }</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/todos/1"</span><span class="p">).</span><span class="n">getBody</span><span class="p">(</span><span class="s">"userId"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">userId</span><span class="p">);</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"User ID: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">userId</span><span class="p">);</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="p">}</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://www.dataaccess.com"</span><span class="p">);</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="s">"YOUR_SSID"</span><span class="p">,</span><span class="w"> </span><span class="s">"YOUR_PASSWORD"</span><span class="p">);</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">result</span><span class="p">[</span><span class="mi">64</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">    </span><span class="c1">// Sends SOAP 1.1 request and extracts &lt;m:NumberToWordsResult&gt; tag directly</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="n">soap</span><span class="p">(</span><span class="s">"/webservicesserver/NumberConversion.wso"</span><span class="p">)</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">          </span><span class="p">.</span><span class="n">soapAction</span><span class="p">(</span><span class="s">"http://www.dataaccess.com/webservicesserver/NumberToWords"</span><span class="p">)</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">          </span><span class="p">.</span><span class="n">body</span><span class="p">(</span><span class="s">"&lt;NumberToWords xmlns=</span><span class="se">\"</span><span class="s">http://www.dataaccess.com/webservicesserver/</span><span class="se">\"</span><span class="s">&gt;"</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">                </span><span class="s">"&lt;ubiNum&gt;500&lt;/ubiNum&gt;"</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">                </span><span class="s">"&lt;/NumberToWords&gt;"</span><span class="p">)</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">          </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"NumberToWordsResult"</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">result</span><span class="p">));</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Result: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">result</span><span class="p">);</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="p">}</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="n">ESP32HTTPClient</span><span class="w"> </span><span class="n">client</span><span class="p">(</span><span class="s">"https://countries.trevorblades.com"</span><span class="p">);</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="s">"YOUR_SSID"</span><span class="p">,</span><span class="w"> </span><span class="s">"YOUR_PASSWORD"</span><span class="p">);</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">countryName</span><span class="p">[</span><span class="mi">64</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="c1">// Queries country data with variables and binds directly to variable</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">    </span><span class="n">client</span><span class="p">.</span><span class="n">graphql</span><span class="p">(</span><span class="s">"/graphql"</span><span class="p">)</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">          </span><span class="p">.</span><span class="n">query</span><span class="p">(</span><span class="s">"query GetCountry($code: ID!) { country(code: $code) { name } }"</span><span class="p">)</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">          </span><span class="p">.</span><span class="n">variable</span><span class="p">(</span><span class="s">"code"</span><span class="p">,</span><span class="w"> </span><span class="s">"BR"</span><span class="p">)</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">          </span><span class="p">.</span><span class="n">getData</span><span class="p">(</span><span class="s">"country.name"</span><span class="p">,</span><span class="w"> </span><span class="n">countryName</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">countryName</span><span class="p">));</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Country: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">countryName</span><span class="p">);</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="p">}</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
 </code></pre></div>
 </div>
 </div>
@@ -1969,7 +2215,7 @@ function __md_analytics(){
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 21, 2026 18:49:05 UTC">September 21, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 22, 2026 23:44:40 UTC">September 22, 2026</span>
   </span>
 
     
@@ -2043,10 +2289,12 @@ function __md_analytics(){
       <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-  <script src="assets/javascripts/bundle.d7400e89.min.js" defer></script>
   
-    <script src="javascripts/extra.js" defer></script>
-  
+      <script src="assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="javascripts/extra.js"></script>
+      
+    
 
   </body>
 </html>

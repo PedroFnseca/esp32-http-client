@@ -281,4 +281,147 @@ html {
   }
 }
 
+/* ==========================================================================
+   Tabbed Sets Enhanced Visibility & Horizontal Scroll Controls
+   ========================================================================== */
+
+.md-typeset .tabbed-set {
+  position: relative;
+}
+
+/* Ensure scrollbar is clearly visible instead of hidden */
+.md-typeset .tabbed-labels {
+  scrollbar-width: thin !important;
+  scrollbar-color: var(--md-primary-fg-color, #00796b) rgba(0, 0, 0, 0.05) !important;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px !important;
+  margin-bottom: 2px !important;
+}
+
+.md-typeset .tabbed-labels::-webkit-scrollbar {
+  display: block !important;
+  height: 5px !important;
+}
+
+.md-typeset .tabbed-labels::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 4px !important;
+}
+
+.md-typeset .tabbed-labels::-webkit-scrollbar-thumb {
+  background: var(--md-primary-fg-color, #00796b) !important;
+  border-radius: 4px !important;
+  transition: background 0.2s ease;
+}
+
+.md-typeset .tabbed-labels::-webkit-scrollbar-thumb:hover {
+  background: var(--md-accent-fg-color, #ff9800) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tabbed-labels {
+  scrollbar-color: #4db6ac rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tabbed-labels::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tabbed-labels::-webkit-scrollbar-thumb {
+  background: #00897b !important;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tabbed-labels::-webkit-scrollbar-thumb:hover {
+  background: #ff9800 !important;
+}
+
+/* Interactive Scroll Controls (Fade + Clickable Scroll Buttons) */
+.md-typeset .tab-scroll-btn {
+  position: absolute;
+  top: 0;
+  height: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0 0.4rem;
+  color: var(--md-primary-fg-color, #00796b);
+  border-radius: 4px;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tab-scroll-btn {
+  color: #4db6ac;
+}
+
+.md-typeset .tab-scroll-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Next / Right scroll indicator */
+.md-typeset .tab-scroll-next {
+  right: 0;
+  padding-left: 1.5rem;
+  padding-right: 0.5rem;
+  gap: 0.25rem;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, var(--md-default-bg-color, #fff) 50%);
+  transform: translateX(4px);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tab-scroll-next {
+  background: linear-gradient(to right, rgba(30, 33, 41, 0) 0%, var(--md-default-bg-color, #1e2129) 50%);
+}
+
+.md-typeset .tabbed-set.can-scroll-right .tab-scroll-next {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.md-typeset .tab-scroll-next:hover {
+  color: var(--md-accent-fg-color, #ff9800);
+}
+
+.md-typeset .tab-scroll-next .tab-scroll-arrow {
+  display: inline-flex;
+  animation: tabHintPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes tabHintPulse {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+
+/* Prev / Left scroll indicator */
+.md-typeset .tab-scroll-prev {
+  left: 0;
+  padding-right: 1.5rem;
+  padding-left: 0.5rem;
+  background: linear-gradient(to left, rgba(255, 255, 255, 0) 0%, var(--md-default-bg-color, #fff) 50%);
+  transform: translateX(-4px);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tab-scroll-prev {
+  background: linear-gradient(to left, rgba(30, 33, 41, 0) 0%, var(--md-default-bg-color, #1e2129) 50%);
+}
+
+.md-typeset .tabbed-set.can-scroll-left .tab-scroll-prev {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.md-typeset .tab-scroll-prev:hover {
+  color: var(--md-accent-fg-color, #ff9800);
+}
+
 

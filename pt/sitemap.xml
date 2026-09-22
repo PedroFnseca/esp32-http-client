@@ -50,6 +50,20 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/esp32httpclient/"/>
     </url>
     <url>
+        <loc>https://esp32httpclient.com/api/graphqlbatchrequest/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/graphqlbatchrequest/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/graphqlbatchrequest/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/api/graphqlrequest/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/graphqlrequest/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/graphqlrequest/"/>
+    </url>
+    <url>
         <loc>https://esp32httpclient.com/api/restrequest/</loc>
         <lastmod>2026-09-22</lastmod>
         <changefreq>daily</changefreq>
@@ -97,6 +111,41 @@
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/crud-operations/"/>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/crud-operations/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/examples/graphql-batch/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-batch/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-batch/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/examples/graphql-errors/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-errors/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-errors/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/examples/graphql-queries/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-queries/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-queries/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/examples/graphql-streaming/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-streaming/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-streaming/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/examples/graphql-variables/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-variables/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-variables/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/examples/nested-json/</loc>
@@ -260,6 +309,20 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/esp32httpclient/"/>
     </url>
     <url>
+        <loc>https://esp32httpclient.com/pt/api/graphqlbatchrequest/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/graphqlbatchrequest/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/graphqlbatchrequest/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/pt/api/graphqlrequest/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/api/graphqlrequest/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/api/graphqlrequest/"/>
+    </url>
+    <url>
         <loc>https://esp32httpclient.com/pt/api/restrequest/</loc>
         <lastmod>2026-09-22</lastmod>
         <changefreq>daily</changefreq>
@@ -307,6 +370,41 @@
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/crud-operations/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/crud-operations/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/pt/examples/graphql-batch/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-batch/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-batch/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/pt/examples/graphql-errors/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-errors/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-errors/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/pt/examples/graphql-queries/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-queries/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-queries/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/pt/examples/graphql-streaming/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-streaming/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-streaming/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/pt/examples/graphql-variables/</loc>
+        <lastmod>2026-09-22</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/examples/graphql-variables/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/examples/graphql-variables/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/examples/nested-json/</loc>
