@@ -174,6 +174,59 @@ client.soap("/ws")
 
 ---
 
+### `graphql(path)` / `graphqlPost(path)`
+
+Initiates a GraphQL request targeting `baseUrl + path` (defaults to `POST`), returning a [`GraphQLRequest`](graphqlrequest.md) builder.
+
+```cpp
+GraphQLRequest graphql(const char* path = "/graphql");
+GraphQLRequest graphqlPost(const char* path = "/graphql");
+```
+
+**Example:**
+```cpp
+client.graphql("/graphql")
+      .query("query { user { id name } }")
+      .getData("user.name", &name);
+```
+
+---
+
+### `graphqlGet(path)`
+
+Initiates a GraphQL query targeting `baseUrl + path` via HTTP GET, formatting the query and variables as URL query parameters.
+
+```cpp
+GraphQLRequest graphqlGet(const char* path = "/graphql");
+```
+
+**Example:**
+```cpp
+client.graphqlGet("/graphql")
+      .query("{ systemStatus }")
+      .getData("systemStatus", &status);
+```
+
+---
+
+### `graphqlBatch(path)`
+
+Initiates a batch of multiple GraphQL operations targeting `baseUrl + path` sent in a single HTTP POST request, returning a [`GraphQLBatchRequest`](graphqlbatchrequest.md) builder.
+
+```cpp
+GraphQLBatchRequest graphqlBatch(const char* path = "/graphql");
+```
+
+**Example:**
+```cpp
+auto batch = client.graphqlBatch("/graphql");
+batch.addQuery("query { user { name } }").getData("user.name", &name);
+batch.addQuery("query { config { theme } }").getData("config.theme", &theme);
+batch.execute();
+```
+
+---
+
 ## Configuration Methods
 
 ---

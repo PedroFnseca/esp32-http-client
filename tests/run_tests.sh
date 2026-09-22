@@ -5,11 +5,21 @@ set -eu
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 REPO_ROOT="$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)"
 BUILD_DIR="$SCRIPT_DIR/build"
-EXE_PATH="$BUILD_DIR/unit-tests"
-TEST_OBJ="$BUILD_DIR/test_rest_request.o"
+
+REST_TEST_OBJ="$BUILD_DIR/test_rest_request.o"
+SOAP_TEST_OBJ="$BUILD_DIR/test_soap_request.o"
+GRAPHQL_TEST_OBJ="$BUILD_DIR/test_graphql_request.o"
+
 REST_REQUEST_OBJ="$BUILD_DIR/RestRequest.o"
 SOAP_REQUEST_OBJ="$BUILD_DIR/SoapRequest.o"
+GRAPHQL_REQUEST_OBJ="$BUILD_DIR/GraphQLRequest.o"
+GRAPHQL_BATCH_REQUEST_OBJ="$BUILD_DIR/GraphQLBatchRequest.o"
 HTTP_CLIENT_OBJ="$BUILD_DIR/ESP32HTTPClient.o"
+
+REST_EXE="$BUILD_DIR/unit-tests-rest"
+SOAP_EXE="$BUILD_DIR/unit-tests-soap"
+GRAPHQL_EXE="$BUILD_DIR/unit-tests-graphql"
+
 SHOW_COVERAGE="${SHOW_COVERAGE:-1}"
 
 mkdir -p "$BUILD_DIR"
@@ -46,19 +56,12 @@ fi
 printf "%bCompiling unit tests...%b\n" "$CYAN" "$RESET"
 if [ "$SHOW_COVERAGE" = "1" ]; then
   COVERAGE_FLAGS="--coverage"
-  # Avoid stale counters when running coverage repeatedly.
   rm -f "$BUILD_DIR"/*.gcda "$BUILD_DIR"/*.gcno
 else
   COVERAGE_FLAGS=""
 fi
 
-"$COMPILER" -std=c++17 \
-  $COVERAGE_FLAGS \
-  -I"$SCRIPT_DIR/stubs" \
-  -I"$REPO_ROOT/src" \
-  -c "$SCRIPT_DIR/test_rest_request.cpp" \
-  -o "$TEST_OBJ"
-
+# Compile library objects
 "$COMPILER" -std=c++17 \
   $COVERAGE_FLAGS \
   -I"$SCRIPT_DIR/stubs" \
@@ -77,65 +80,108 @@ fi
   $COVERAGE_FLAGS \
   -I"$SCRIPT_DIR/stubs" \
   -I"$REPO_ROOT/src" \
-  -c "$REPO_ROOT/src/ESP32HTTPClient.cpp" \
-  -o "$HTTP_CLIENT_OBJ"
+  -c "$REPO_ROOT/src/GraphQLRequest.cpp" \
+  -o "$GRAPHQL_REQUEST_OBJ"
 
 "$COMPILER" -std=c++17 \
   $COVERAGE_FLAGS \
-  "$TEST_OBJ" \
+  -I"$SCRIPT_DIR/stubs" \
+  -I"$REPO_ROOT/src" \
+  -c "$REPO_ROOT/src/GraphQLBatchRequest.cpp" \
+  -o "$GRAPHQL_BATCH_REQUEST_OBJ"
+
+"$COMPILER" -std=c++17 \
+  $COVERAGE_FLAGS \
+  -I"$SCRIPT_DIR/stubs" \
+  -I"$REPO_ROOT/src" \
+  -c "$REPO_ROOT/src/ESP32HTTPClient.cpp" \
+  -o "$HTTP_CLIENT_OBJ"
+
+# Compile and link REST tests
+"$COMPILER" -std=c++17 \
+  $COVERAGE_FLAGS \
+  -I"$SCRIPT_DIR/stubs" \
+  -I"$REPO_ROOT/src" \
+  -c "$SCRIPT_DIR/test_rest_request.cpp" \
+  -o "$REST_TEST_OBJ"
+
+"$COMPILER" -std=c++17 \
+  $COVERAGE_FLAGS \
+  "$REST_TEST_OBJ" \
   "$REST_REQUEST_OBJ" \
   "$SOAP_REQUEST_OBJ" \
+  "$GRAPHQL_REQUEST_OBJ" \
+  "$GRAPHQL_BATCH_REQUEST_OBJ" \
   "$HTTP_CLIENT_OBJ" \
-  -o "$EXE_PATH"
+  -o "$REST_EXE"
 
-printf "%bRunning unit tests...%b\n" "$CYAN" "$RESET"
+# Compile and link SOAP tests
+"$COMPILER" -std=c++17 \
+  $COVERAGE_FLAGS \
+  -I"$SCRIPT_DIR/stubs" \
+  -I"$REPO_ROOT/src" \
+  -c "$SCRIPT_DIR/test_soap_request.cpp" \
+  -o "$SOAP_TEST_OBJ"
 
-set +e
-TEST_OUTPUT="$("$EXE_PATH" 2>&1)"
-TEST_STATUS=$?
-set -e
+"$COMPILER" -std=c++17 \
+  $COVERAGE_FLAGS \
+  "$SOAP_TEST_OBJ" \
+  "$REST_REQUEST_OBJ" \
+  "$SOAP_REQUEST_OBJ" \
+  "$GRAPHQL_REQUEST_OBJ" \
+  "$GRAPHQL_BATCH_REQUEST_OBJ" \
+  "$HTTP_CLIENT_OBJ" \
+  -o "$SOAP_EXE"
 
-printf "%s\n" "$TEST_OUTPUT" | while IFS= read -r line; do
-  case "$line" in
-    *"[RUN ]"*)
-      printf "%b%s%b\n" "$CYAN" "$line" "$RESET"
-      ;;
-    *"[PASS]"*)
-      printf "%b%s%b\n" "$GREEN" "$line" "$RESET"
-      ;;
-    *"[FAIL]"*)
-      printf "%b%s%b\n" "$RED" "$line" "$RESET"
-      ;;
-    *"=== Test Summary ==="*)
-      printf "%b%s%b\n" "$CYAN" "$line" "$RESET"
-      ;;
-    *"Pass rate:"*)
-      if [ "$TEST_STATUS" -eq 0 ]; then
-        printf "%b%s%b\n" "$GREEN" "$line" "$RESET"
-      else
-        printf "%b%s%b\n" "$YELLOW" "$line" "$RESET"
-      fi
-      ;;
-    *"All unit tests passed."*)
-      printf "%b%s%b\n" "$GREEN" "$line" "$RESET"
-      ;;
-    *"test(s) failed."*)
-      printf "%b%s%b\n" "$YELLOW" "$line" "$RESET"
-      ;;
-    *)
-      printf "%s\n" "$line"
-      ;;
-  esac
-done
+# Compile and link GraphQL tests
+"$COMPILER" -std=c++17 \
+  $COVERAGE_FLAGS \
+  -I"$SCRIPT_DIR/stubs" \
+  -I"$REPO_ROOT/src" \
+  -c "$SCRIPT_DIR/test_graphql_request.cpp" \
+  -o "$GRAPHQL_TEST_OBJ"
+
+"$COMPILER" -std=c++17 \
+  $COVERAGE_FLAGS \
+  "$GRAPHQL_TEST_OBJ" \
+  "$REST_REQUEST_OBJ" \
+  "$SOAP_REQUEST_OBJ" \
+  "$GRAPHQL_REQUEST_OBJ" \
+  "$GRAPHQL_BATCH_REQUEST_OBJ" \
+  "$HTTP_CLIENT_OBJ" \
+  -o "$GRAPHQL_EXE"
+
+printf "%bRunning unit tests...%b\n\n" "$CYAN" "$RESET"
+
+OVERALL_STATUS=0
+
+run_test_suite() {
+  exe="$1"
+  suite_name="$2"
+  printf "%b>>> Running %s <<<%b\n" "$CYAN" "$suite_name" "$RESET"
+  set +e
+  "$exe"
+  status=$?
+  set -e
+  if [ "$status" -ne 0 ]; then
+    OVERALL_STATUS=1
+  fi
+  printf "\n"
+}
+
+run_test_suite "$REST_EXE" "REST Tests"
+run_test_suite "$SOAP_EXE" "SOAP Tests"
+run_test_suite "$GRAPHQL_EXE" "GraphQL Tests"
 
 if [ "$SHOW_COVERAGE" = "1" ] && command -v gcov >/dev/null 2>&1; then
   set +e
   GCOV_OUTPUT="$(
     cd "$BUILD_DIR" &&
     gcov -b -c -o "$BUILD_DIR" \
-      "$TEST_OBJ" \
       "$REST_REQUEST_OBJ" \
       "$SOAP_REQUEST_OBJ" \
+      "$GRAPHQL_REQUEST_OBJ" \
+      "$GRAPHQL_BATCH_REQUEST_OBJ" \
       "$HTTP_CLIENT_OBJ" 2>/dev/null
   )"
   GCOV_STATUS=$?
@@ -178,25 +224,13 @@ if [ "$SHOW_COVERAGE" = "1" ] && command -v gcov >/dev/null 2>&1; then
         printf "  %b%-30s%b  %6s%%  (%s lines)\n" "$CYAN" "$display_file" "$RESET" "$pct" "$cnt"
       done
     fi
-
-    SRC_LINE_COVERAGE="$(printf "%s\n" "$FILE_COVERAGE_ROWS" | awk -F'|' '
-      {
-        covered += ($2 + 0) * ($3 + 0)
-        total += ($3 + 0)
-      }
-      END {
-        if (total > 0) {
-          printf "%.2f", covered / total
-        }
-      }
-    ')"
-
-    if [ -n "$SRC_LINE_COVERAGE" ]; then
-      printf "%bSource line coverage (src): %s%%%b\n" "$CYAN" "$SRC_LINE_COVERAGE" "$RESET"
-    fi
   fi
-elif [ "$SHOW_COVERAGE" = "1" ]; then
-  printf "%bgcov not found; install gcov to print code coverage.%b\n" "$YELLOW" "$RESET"
 fi
 
-exit "$TEST_STATUS"
+if [ "$OVERALL_STATUS" -eq 0 ]; then
+  printf "%bAll test suites passed successfully!%b\n" "$GREEN" "$RESET"
+else
+  printf "%bSome test suites failed.%b\n" "$RED" "$RESET"
+fi
+
+exit "$OVERALL_STATUS"

@@ -14,8 +14,6 @@
   <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
   <link rel="preconnect" href="https://www.clarity.ms" crossorigin>
   <link rel="preconnect" href="https://c.bing.com" crossorigin>
-  <link rel="preload" href="{{ 'assets/stylesheets/main.ec1eaa64.min.css' | url }}" as="style">
-  <link rel="preload" href="{{ 'assets/stylesheets/palette.ab4e12ef.min.css' | url }}" as="style">
 
   <!-- Instant Preference Optimizer (Theme & Language Auto-Detection, 0ms latency) -->
   <script>
@@ -155,8 +153,5 @@
 {% endblock %}
 
 {% block scripts %}
-  <script src="{{ 'assets/javascripts/bundle.d7400e89.min.js' | url }}" defer></script>
-  {% for script in config.extra_javascript %}
-    <script src="{{ script | url }}" defer></script>
-  {% endfor %}
+  {{ super() }}
 {% endblock %}
