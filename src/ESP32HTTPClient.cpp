@@ -267,3 +267,19 @@ SoapRequest ESP32HTTPClient::soap(const char* path) {
   return SoapRequest(this, path, _soapVersion);
 }
 
+GraphQLRequest ESP32HTTPClient::graphql(const char* path) {
+  return GraphQLRequest(this, path, HTTP_POST_METHOD);
+}
+
+GraphQLRequest ESP32HTTPClient::graphqlGet(const char* path) {
+  return GraphQLRequest(this, path, HTTP_GET_METHOD);
+}
+
+GraphQLRequest ESP32HTTPClient::graphqlPost(const char* path) {
+  return GraphQLRequest(this, path, HTTP_POST_METHOD);
+}
+
+GraphQLBatchRequest ESP32HTTPClient::graphqlBatch(const char* path) {
+  return GraphQLBatchRequest(this, path);
+}
+
