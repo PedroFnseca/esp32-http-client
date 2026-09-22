@@ -100,7 +100,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     initPrivacyConsent();
+    initTabbedScrollIndicators();
 });
+
+if (typeof document$ !== "undefined") {
+    document$.subscribe(initTabbedScrollIndicators);
+}
 
 function initPrivacyConsent() {
     var CONSENT_KEY = "esp32_doc_privacy_consent";
@@ -181,5 +186,84 @@ function initPrivacyConsent() {
             closeBanner("declined");
         });
     }
+}
+
+// Horizontal scroll indicators & smooth scrolling for tabbed sets
+function initTabbedScrollIndicators() {
+    var tabbedSets = document.querySelectorAll(".md-typeset .tabbed-set");
+    tabbedSets.forEach(function(set) {
+        var labels = set.querySelector(".tabbed-labels");
+        if (!labels) return;
+
+        var nextBtn = set.querySelector(".tab-scroll-next");
+        var prevBtn = set.querySelector(".tab-scroll-prev");
+
+        var isPt = /(?:^|\/)pt(?:\/|$)/.test(window.location.pathname) || 
+                   sessionStorage.getItem("user_lang_preference") === "pt" ||
+                   (document.documentElement && document.documentElement.lang === "pt");
+        var moreText = isPt ? "Mais" : "More";
+
+        if (!nextBtn) {
+            nextBtn = document.createElement("button");
+            nextBtn.className = "tab-scroll-btn tab-scroll-next";
+            nextBtn.type = "button";
+            nextBtn.setAttribute("aria-label", isPt ? "Rolar mais abas para a direita" : "Scroll more tabs right");
+            nextBtn.innerHTML = '<span>' + moreText + '</span><span class="tab-scroll-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></span>';
+            set.appendChild(nextBtn);
+
+            nextBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                labels.scrollBy({ left: 180, behavior: "smooth" });
+            });
+        }
+
+        if (!prevBtn) {
+            prevBtn = document.createElement("button");
+            prevBtn.className = "tab-scroll-btn tab-scroll-prev";
+            prevBtn.type = "button";
+            prevBtn.setAttribute("aria-label", isPt ? "Rolar abas para a esquerda" : "Scroll tabs left");
+            prevBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M15.41 7.41L10.83 12l4.58 4.59L14 18l-6-6 6-6 1.41 1.41z"/></svg>';
+            set.appendChild(prevBtn);
+
+            prevBtn.addEventListener("click", function(e) {
+                e.preventDefault();
+                labels.scrollBy({ left: -180, behavior: "smooth" });
+            });
+        }
+
+        function updateScrollState() {
+            var maxScroll = labels.scrollWidth - labels.clientWidth;
+            if (maxScroll > 6) {
+                set.classList.add("has-horizontal-scroll");
+                if (labels.scrollLeft < maxScroll - 6) {
+                    set.classList.add("can-scroll-right");
+                } else {
+                    set.classList.remove("can-scroll-right");
+                }
+                if (labels.scrollLeft > 6) {
+                    set.classList.add("can-scroll-left");
+                } else {
+                    set.classList.remove("can-scroll-left");
+                }
+            } else {
+                set.classList.remove("has-horizontal-scroll", "can-scroll-right", "can-scroll-left");
+            }
+        }
+
+        labels.addEventListener("scroll", updateScrollState, { passive: true });
+        window.addEventListener("resize", updateScrollState, { passive: true });
+
+        labels.querySelectorAll("label").forEach(function(lbl) {
+            lbl.addEventListener("click", function() {
+                setTimeout(function() {
+                    lbl.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+                    updateScrollState();
+                }, 60);
+            });
+        });
+
+        setTimeout(updateScrollState, 100);
+        setTimeout(updateScrollState, 500);
+    });
 }
 

@@ -1,14 +1,14 @@
 ---
 title: Cliente HTTP ESP32 - Biblioteca Cliente HTTP Fluente e Zero Heap
-description: Uma biblioteca cliente HTTP leve, de baixa alocação e alto desempenho para ESP32 (Arduino e PlatformIO). API fluente C++, vínculo direto de respostas para APIs REST, Web Services SOAP 1.1/1.2 e comunicação HTTP extensível.
-keywords: Cliente HTTP ESP32, API REST Arduino ESP32, Cliente SOAP ESP32, SOAP 1.1 1.2 ESP32, Parser JSON ESP32, Parser XML ESP32, PlatformIO ESP32, biblioteca C++ ESP32
+description: Uma biblioteca cliente HTTP leve, de baixa alocação e alto desempenho para ESP32 (Arduino e PlatformIO). API fluente C++, vínculo direto de respostas para APIs REST, Web Services SOAP 1.1/1.2, serviços GraphQL e comunicação HTTP extensível.
+keywords: Cliente HTTP ESP32, API REST Arduino ESP32, Cliente SOAP ESP32, Cliente GraphQL ESP32, GraphQL Arduino ESP32, SOAP 1.1 1.2 ESP32, Parser JSON ESP32, Parser XML ESP32, PlatformIO ESP32, biblioteca C++ ESP32
 tags:
   - home
   - overview
 ---
 # Biblioteca ESP32 HTTP Client
 
-> Uma biblioteca cliente HTTP leve, de baixa alocação e alto desempenho para ESP32 que **vincula dados de resposta diretamente às suas variáveis** — contando com mecanismos nativos em streaming e zero heap para **APIs REST**, **Web Services SOAP 1.1 / 1.2** e comunicação HTTP extensível.
+> Uma biblioteca cliente HTTP leve, de baixa alocação e alto desempenho para ESP32 que **vincula dados de resposta diretamente às suas variáveis** contando com mecanismos nativos em streaming e zero heap para **APIs REST**, **Web Services SOAP 1.1 / 1.2**, **Serviços GraphQL** e comunicação HTTP extensível.
 
 [![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white){: width="120" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
 [![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white){: width="130" height="20" loading="lazy" decoding="async" }](https://github.com/PedroFnseca/esp32-http-client)
@@ -26,7 +26,7 @@ tags:
 
 Construído sobre um núcleo de transporte compartilhado e eficiente (TLS, reuso de conexão, autenticação, timeouts e retries), o cliente disponibiliza builders dedicados e fluentes para os principais padrões de comunicação web:
 
-=== "APIs REST (JSON)"
+=== "REST (JSON)"
 
     Consuma endpoints RESTful com métodos intuitivos (`get`, `post`, `put`, `patch`, `del`), parâmetros de rota/busca e extração direta de JSON ou mapeamento bidirecional de structs:
 
@@ -42,7 +42,22 @@ Construído sobre um núcleo de transporte compartilhado e eficiente (TLS, reuso
           .getBody("0.address.city", city, sizeof(city));
     ```
 
-=== "Web Services SOAP (XML 1.1 & 1.2)"
+=== "GraphQL (Queries e Mutações)"
+
+    Execute operações GraphQL com variáveis tipadas, seleção de operações, requisições em lote (`GraphQLBatchRequest`), preservação de dados parciais e streaming com `@defer`:
+
+    ```cpp
+    String nome;
+    int id = 0;
+
+    client.graphql("/graphql")
+          .query("query GetUser($id: ID!) { user(id: $id) { id name } }")
+          .variable("id", 101)
+          .getData("user.id", &id)
+          .getData("user.name", &nome);
+    ```
+
+=== "SOAP (XML 1.1 / 1.2)"
 
     Conecte-se a serviços corporativos SOAP com geração automática de envelopes, gerenciamento de `SOAPAction` / `Content-Type`, streaming de tags XML e inspeção nativa de SOAP Faults:
 
@@ -67,9 +82,10 @@ Construído sobre um núcleo de transporte compartilhado e eficiente (TLS, reuso
     client.setTimeout(5000);
     client.setMaxRetry(2);
 
-    // Reutilize o mesmo cliente para endpoints REST ou SOAP
+    // Reutilize o mesmo cliente para endpoints REST, SOAP ou GraphQL
     client.get("/api/v1/health");
     client.soap("/ws/service");
+    client.graphql("/graphql");
     ```
 
 Um cliente unificado. Vinculação direta de memória. Mínimo consumo de RAM.
@@ -163,6 +179,33 @@ Comparativo medido em **100 requisições HTTP GET consecutivas** com cargas JSO
               .getBody("NumberToWordsResult", result, sizeof(result));
 
         Serial.printf("Resultado: %s\n", result);
+    }
+
+    void loop() {}
+    ```
+
+=== "API GraphQL"
+
+    ```cpp
+    #include <WiFi.h>
+    #include "ESP32HTTPClient.h"
+
+    ESP32HTTPClient client("https://countries.trevorblades.com");
+
+    void setup() {
+        Serial.begin(115200);
+        WiFi.begin("SEU_SSID", "SUA_SENHA");
+        while (WiFi.status() != WL_CONNECTED) delay(100);
+
+        char countryName[64] = {0};
+
+        // Consulta dados de país com variáveis e vincula diretamente à variável
+        client.graphql("/graphql")
+              .query("query GetCountry($code: ID!) { country(code: $code) { name } }")
+              .variable("code", "BR")
+              .getData("country.name", countryName, sizeof(countryName));
+
+        Serial.printf("País: %s\n", countryName);
     }
 
     void loop() {}
