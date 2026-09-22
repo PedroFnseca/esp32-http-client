@@ -13,3 +13,5 @@ Referência completa para todas as classes e métodos públicos no **ESP32-HTTP-
 - [**ESP32HTTPClient**](esp32httpclient.pt.md) — A classe principal do cliente. Crie uma por servidor.
 - [**RestRequest**](restrequest.pt.md) — O construtor fluente de requisições retornado por todos os métodos HTTP REST.
 - [**SoapRequest**](soaprequest.pt.md) — O construtor fluente de requisições retornado por `.soap()` para web services SOAP 1.1 e 1.2.
+- [**GraphQLRequest**](graphqlrequest.pt.md) — O construtor fluente de requisições retornado por `.graphql()` para consultas e mutações GraphQL.
+- [**GraphQLBatchRequest**](graphqlbatchrequest.pt.md) — O construtor retornado por `.graphqlBatch()` para operações GraphQL em lote.

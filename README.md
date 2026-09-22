@@ -55,6 +55,9 @@ client.get("/sensor").getBody("temperature", &myFloatVariable);
 
 // SOAP: Automatic envelopes, streaming XML extraction, zero DOM allocations.
 client.soap("/ws").soapAction("GetPrice").body("<m:GetPrice/>").getBody("Price", &myPrice);
+
+// GraphQL: Fluent queries, mutations, variables, batching, and partial data preservation.
+client.graphql("/graphql").query("query { user { name } }").getData("user.name", &myName);
 ```
 
 ---
@@ -84,13 +87,14 @@ The following data is the result of a benchmark running 100 consecutive HTTP GET
 
 ## Key Features
 
-- **Fluent chaining** — build requests naturally: `.get().query().getBody()` or `.soap().soapAction().body().getBody()`.
-- **Direct injection** — JSON and XML values are written straight into standard C types (`int`, `float`, `bool`, `char*`) or C++ `struct`s.
+- **Fluent chaining** — build requests naturally: `.get().query().getBody()`, `.soap().soapAction().body().getBody()`, or `.graphql().query().getData()`.
+- **Direct injection** — JSON, XML, and GraphQL values are written straight into standard C types (`int`, `float`, `bool`, `char*`) or C++ `struct`s.
 - **Zero buffering** — the response stream is parsed in place; the full payload is never stored in memory.
+- **Native GraphQL support** — queries, mutations, variables (primitives and structs), operation selection, batching (`GraphQLBatchRequest`), error locations/paths/extensions, partial data preservation, and incremental streaming (`multipart/mixed`, `@defer`).
 - **Native SOAP 1.1 & 1.2 support** — automatic envelopes, SOAPAction/Content-Type headers, streaming XML response parsing, and SOAP Fault handling.
 - **Struct <-> JSON mapping** — direct bidirectional struct serialization/deserialization without dynamic document allocations.
 - **Full REST support** — `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` are all first-class citizens.
-- **IoT ready** — designed for connecting ESP32 devices to cloud backends, Firebase, AWS API Gateway, SOAP web services, or custom servers.
+- **IoT ready** — designed for connecting ESP32 devices to cloud backends, Firebase, AWS API Gateway, GraphQL endpoints, SOAP web services, or custom servers.
 
 ---
 
@@ -165,6 +169,35 @@ void setup() {
           .getBody("NumberToWordsResult", result, sizeof(result));
 
     Serial.printf("Result: %s\n", result);
+}
+
+void loop() {}
+```
+
+### GraphQL API
+
+```cpp
+#include <WiFi.h>
+#include "ESP32HTTPClient.h"
+
+ESP32HTTPClient client("https://api.example.com");
+
+void setup() {
+    Serial.begin(115200);
+    WiFi.begin("SSID", "PASS");
+    while (WiFi.status() != WL_CONNECTED) delay(100);
+
+    String userName;
+    int userId = 0;
+
+    // Fluent GraphQL query with variable and direct field binding
+    client.graphql("/graphql")
+          .query("query GetUser($id: ID!) { user(id: $id) { id name } }")
+          .variable("id", "101")
+          .getData("user.id", &userId)
+          .getData("user.name", &userName);
+
+    Serial.printf("User ID: %d, Name: %s\n", userId, userName.c_str());
 }
 
 void loop() {}

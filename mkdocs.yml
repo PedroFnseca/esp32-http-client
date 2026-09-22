@@ -108,10 +108,17 @@ plugins:
             Custom Port: Porta Personalizada
             SOAP Web Services: Web Services SOAP
             SOAP Faults: Tratamento de SOAP Faults
+            GraphQL Queries: Consultas GraphQL
+            GraphQL Variables: Variáveis GraphQL
+            GraphQL Error Handling: Tratamento de Erros GraphQL
+            GraphQL Batching: Requisições em Lote GraphQL
+            GraphQL Streaming: Streaming e @defer GraphQL
             API Reference: Referência da API
             ESP32HTTPClient: ESP32HTTPClient
             RestRequest: RestRequest
             SoapRequest: SoapRequest
+            GraphQLRequest: GraphQLRequest
+            GraphQLBatchRequest: GraphQLBatchRequest
             FAQ: Perguntas Frequentes
             Performance: Desempenho
             Privacy Policy: Política de Privacidade
@@ -162,11 +169,18 @@ nav:
     - Custom Port: examples/port-selection.md
     - SOAP Web Services: examples/soap-requests.md
     - SOAP Faults: examples/soap-faults.md
+    - GraphQL Queries: examples/graphql-queries.md
+    - GraphQL Variables: examples/graphql-variables.md
+    - GraphQL Error Handling: examples/graphql-errors.md
+    - GraphQL Batching: examples/graphql-batch.md
+    - GraphQL Streaming: examples/graphql-streaming.md
   - API Reference:
     - api/index.md
     - ESP32HTTPClient: api/esp32httpclient.md
     - RestRequest: api/restrequest.md
     - SoapRequest: api/soaprequest.md
+    - GraphQLRequest: api/graphqlrequest.md
+    - GraphQLBatchRequest: api/graphqlbatchrequest.md
   - Practical Examples: practical-examples.md
   - FAQ: faq.md
   - Performance: performance.md
