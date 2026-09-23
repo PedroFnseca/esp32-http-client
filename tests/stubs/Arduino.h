@@ -6,6 +6,14 @@
 #include <cstdio>
 #include <cstring>
 #include <string>
+#ifdef _WIN32
+#include <strings.h>
+#ifndef strcasecmp
+#define strcasecmp _stricmp
+#endif
+#else
+#include <strings.h>
+#endif
 
 inline unsigned long millis() { 
   static unsigned long time_ms = 0;
