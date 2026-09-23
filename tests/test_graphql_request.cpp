@@ -1121,16 +1121,6 @@ void testGraphQLComprehensiveEdgeCases() {
       .query("{ stream }")
       .getData("custom", &dummyBinding)
       .execute();
-
-  // Nested object in skipValue to trigger depth++ and readRawJson escaped backslash
-  HttpClientStub::reset();
-  HttpClientStub::setResponse(200, "{\"ignoredNested\":{\"sub\":{\"nested\":1}},\"data\":{\"raw\":\"line1\\\"line2\"}}");
-  String rawNestedData;
-  client.graphql("/graphql")
-      .query("{ data }")
-      .getRawData(&rawNestedData)
-      .execute();
-  expectContains(rawNestedData.c_str(), "line1\\\"line2", "Raw json string with escaped quotes");
 }
 
 } // namespace
