@@ -1037,24 +1037,37 @@ void GraphQLRequest::parseSingleResponse(BufferedStreamReader& r) {
           skipWhitespace(strReader);
 
           if (key == "data") {
-            if (_rawDataTarget) {
-              char open = (char)strReader.peek();
-              if (open == '{' || open == '[') {
-                strReader.read();
-                readRawJsonFromReader(strReader, _rawDataTarget, open);
-              } else if (open == 'n') {
-                char nbuf[8];
-                size_t ni = 0;
-                while (strReader.available() && isalpha((unsigned char)strReader.peek())) {
-                  if (ni < sizeof(nbuf) - 1) nbuf[ni++] = (char)strReader.read();
-                }
-                nbuf[ni] = 0;
-                *_rawDataTarget = nbuf;
+            char open = (char)strReader.peek();
+            if (open == '{' || open == '[') {
+              strReader.read();
+              String dataStr;
+              readRawJsonFromReader(strReader, &dataStr, open);
+              if (_rawDataTarget) {
+                *_rawDataTarget = dataStr;
               }
-            }
-            if (!_responseBindings.empty()) {
-              BufferedStreamReader dataSubReader(_rawResponseTarget->c_str());
-              RestRequest::parseJsonWithBindings(dataSubReader, _responseBindings);
+              if (!_responseBindings.empty()) {
+                BufferedStreamReader subReader(dataStr.c_str());
+                std::vector<ResponseBinding> strippedBindings;
+                for (const auto& b : _responseBindings) {
+                  if (b.target == _rawDataTarget) continue;
+                  if (strncmp(b.key, "data.", 5) == 0) {
+                    strippedBindings.push_back({b.key + 5, b.target, b.type, b.size});
+                  } else if (strcmp(b.key, "data") == 0) {
+                    strippedBindings.push_back({"", b.target, b.type, b.size});
+                  } else {
+                    strippedBindings.push_back(b);
+                  }
+                }
+                RestRequest::parseJsonWithBindings(subReader, strippedBindings);
+              }
+            } else if (open == 'n') {
+              char nbuf[8];
+              size_t ni = 0;
+              while (strReader.available() && isalpha((unsigned char)strReader.peek())) {
+                if (ni < sizeof(nbuf) - 1) nbuf[ni++] = (char)strReader.read();
+              }
+              nbuf[ni] = 0;
+              if (_rawDataTarget) *_rawDataTarget = nbuf;
             }
           } else if (key == "errors") {
             parseErrors(strReader);
@@ -1099,6 +1112,7 @@ void GraphQLRequest::parseSingleResponse(BufferedStreamReader& r) {
             BufferedStreamReader subReader(_rawDataTarget->c_str());
             std::vector<ResponseBinding> strippedBindings;
             for (const auto& b : _responseBindings) {
+              if (b.target == _rawDataTarget) continue;
               if (strncmp(b.key, "data.", 5) == 0) {
                 strippedBindings.push_back({b.key + 5, b.target, b.type, b.size});
               } else if (strcmp(b.key, "data") == 0) {
