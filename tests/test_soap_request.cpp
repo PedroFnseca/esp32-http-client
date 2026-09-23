@@ -58,6 +58,16 @@ void expectNear(double actual, double expected, double tolerance, const char* me
   passedChecks++;
 }
 
+void expectContains(const std::string& haystack, const std::string& needle, const char* message) {
+  checks++;
+  if (haystack.find(needle) == std::string::npos) {
+    std::cerr << "[FAIL] " << message << " (expected to contain: " << needle << ", got: " << haystack << ")\n";
+    failures++;
+    return;
+  }
+  passedChecks++;
+}
+
 void runSuite(const char* name, void (*suiteFn)()) {
   const int failuresBefore = failures;
   std::cout << "[RUN ] " << name << "\n";
@@ -480,6 +490,192 @@ void testSoapClientSingleParamOnError() {
 
   expectEqInt(capturedCode, 404, "Client single-parameter onError callback fired for SOAP");
 }
+
+void testSoapAllHeaderTypes() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "<Envelope><Body><Val>42</Val></Body></Envelope>");
+  HttpClientStub::setResponseHeaders({
+      {"X-Int", "10"},
+      {"X-Long", "999999"},
+      {"X-Float", "12.34"},
+      {"X-Double", "56.789"},
+      {"X-Bool", "true"},
+      {"X-Char", "TestChar"}
+  });
+
+  ESP32HTTPClient client("https://example.com");
+  int hInt = 0;
+  long hLong = 0;
+  float hFloat = 0.0f;
+  double hDouble = 0.0;
+  bool hBool = false;
+  char hChar[16] = {0};
+
+  client.soap("/headers")
+      .body("<Ping/>")
+      .getHeader("X-Int", &hInt)
+      .getHeader("X-Long", &hLong)
+      .getHeader("X-Float", &hFloat)
+      .getHeader("X-Double", &hDouble)
+      .getHeader("X-Bool", &hBool)
+      .getHeader("X-Char", hChar);
+
+  expectEqInt(hInt, 10, "SOAP getHeader int");
+  expectEqInt(hLong, 999999L, "SOAP getHeader long");
+  expectNear(hFloat, 12.34, 0.01, "SOAP getHeader float");
+  expectNear(hDouble, 56.789, 0.001, "SOAP getHeader double");
+  expectTrue(hBool, "SOAP getHeader bool");
+  expectEq(hChar, "TestChar", "SOAP getHeader char[]");
+}
+
+void testSoapCustomPort() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "<Envelope><Body><R>1</R></Body></Envelope>");
+  ESP32HTTPClient client("http://test.com/ws", 8080);
+  int r = 0;
+  client.soap("/action").body("<P/>").getBody("R", &r);
+
+  expectEq(HttpClientStub::lastUrl, "http://test.com:8080/ws/action", "SOAP url with custom port and base path");
+}
+
+void testSoapCallbacksAndObservability() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "<Envelope><Body><R>OK</R></Body></Envelope>");
+
+  ESP32HTTPClient client("https://example.com");
+  bool clientSuccessFired = false;
+  bool clientResponseFired = false;
+  bool reqSuccessFired = false;
+  bool reqResponseFired = false;
+
+  client.onSuccess([&](int code) { clientSuccessFired = true; });
+  client.onResponse([&](int code) { clientResponseFired = true; });
+
+  client.soap("/test")
+      .body("<Req/>")
+      .onSuccess([&](int code) { reqSuccessFired = true; })
+      .onResponse([&](int code) { reqResponseFired = true; });
+
+  expectTrue(clientSuccessFired, "client onSuccess fired for SOAP");
+  expectTrue(clientResponseFired, "client onResponse fired for SOAP");
+  expectTrue(reqSuccessFired, "request onSuccess fired for SOAP");
+  expectTrue(reqResponseFired, "request onResponse fired for SOAP");
+}
+
+void testSoapExecuteNullClient() {
+  SoapRequest req(nullptr, "/null");
+  req.execute();
+  expectTrue(req._executed, "executing with null client is a safe no-op");
+}
+
+void testSoapEdgeCases() {
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "<Envelope><Body><Data><![CDATA[embedded ] and ]] bracket]]></Data><Hex>&#x42;</Hex><Dec>&#67;</Dec></Body></Envelope>");
+
+  ESP32HTTPClient client("https://example.com");
+  String bodyStr = "<SampleBody/>";
+  String headerStr = "<SampleHeader/>";
+  String rawStr = "<CustomRawEnvelope/>";
+
+  int singleParamCode = 0;
+  String dataVal;
+  String hexVal;
+  String decVal;
+
+  client.soap("/edge")
+      .headerXml(headerStr)
+      .body(bodyStr)
+      .onError([&singleParamCode](int code) { singleParamCode = code; })
+      .getBody("Data", &dataVal)
+      .getBody("Hex", &hexVal)
+      .getBody("Dec", &decVal);
+
+  expectEq(dataVal.str(), "embedded ] and ]] bracket", "CDATA with nested brackets");
+  expectEq(hexVal.str(), "B", "Hex numeric entity &#x42;");
+  expectEq(decVal.str(), "C", "Dec numeric entity &#67;");
+
+  // Test raw envelope with String overload
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "<r/>");
+  client.soap("/rawString").rawEnvelope(rawStr);
+  expectEq(HttpClientStub::lastPayload, "<CustomRawEnvelope/>", "rawEnvelope with String");
+
+  // Test setVersion, timeout, getBody(bool*), getBody(long*), getRawResponse, onError(nullptr)
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE doc SYSTEM \"test.dtd\"><Envelope><Body><Flag>true</Flag><Count>123456789</Count></Body></Envelope>");
+  bool flagVal = false;
+  long countVal = 0;
+  String rawXmlOut;
+  client.soap("/moreEdge")
+      .setVersion(SOAP_1_1)
+      .timeout(2500)
+      .onError(static_cast<HttpResponseCallback>(nullptr))
+      .getBody("Flag", &flagVal)
+      .getBody("Count", &countVal)
+      .getRawResponse(&rawXmlOut);
+
+  expectTrue(flagVal, "Soap getBody bool parsed true");
+  expectEqInt(countVal, 123456789L, "Soap getBody long parsed");
+  expectTrue(rawXmlOut.length() > 0, "Soap getRawResponse non-empty");
+
+  // Test URL port without path
+  ESP32HTTPClient clientPort("http://example.com", 8080);
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "<r/>");
+  clientPort.soap().execute();
+  expectEq(HttpClientStub::lastUrl, "http://example.com:8080", "Soap custom port without path");
+
+  // Test SOAP quoted action in SOAP 1.1 and 1.2, trimString whitespace, Role actor, and exact namespace path
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(500, "<Envelope><Body><Fault><Role>  testRole  </Role><faultcode>Client</faultcode><faultstring>Err</faultstring><ns:Data>123</ns:Data></Fault></Body></Envelope>");
+  SoapFault roleFault;
+  int nsData = 0;
+  client.soap("/quotedAction")
+      .soapAction("\"http://action/quoted\"")
+      .version(SOAP_1_1)
+      .getFault(&roleFault)
+      .getBody("ns:Data", &nsData);
+
+  expectTrue(roleFault.matched, "Role fault matched");
+  expectEq(roleFault.faultActor.c_str(), "testRole", "faultActor trimmed from Role");
+  expectEq(HttpClientStub::lastHeaders[HttpClientStub::lastHeaders.size() - 1].first, "SOAPAction", "SOAPAction header set");
+
+  // SOAP 1.2 with already-quoted action
+  HttpClientStub::reset();
+  HttpClientStub::setResponse(200, "<r/>");
+  client.soap("/soap12Quoted")
+      .version(SOAP_1_2)
+      .soapAction("\"urn:customAction\"");
+  expectContains(HttpClientStub::lastHeaders[HttpClientStub::lastHeaders.size() - 1].second, "action=\"urn:customAction\"", "SOAP 1.2 action parsed");
+
+  // SOAP retry connection failure and path with brace key
+  HttpClientStub::reset();
+  HttpClientStub::queueResponse(-1, "");
+  HttpClientStub::queueResponse(200, "<Envelope><Body><Res>OK</Res></Body></Envelope>");
+  client.setHeader("X-Client-Soap", "HeaderVal");
+  String respRes;
+  String hdrVal;
+  client.soap("/{resPath}")
+      .version(SOAP_1_1)
+      .soapAction("urn:unquotedAction")
+      .path("{resPath}", "actualPath")
+      .getHeader("X-Resp", &hdrVal)
+      .retry(1)
+      .getBody("Res", &respRes);
+  expectEq(respRes.c_str(), "OK", "SOAP retry successfully reconnected");
+
+  // SOAP 1.1 retry with already quoted action
+  HttpClientStub::reset();
+  HttpClientStub::queueResponse(-1, "");
+  HttpClientStub::queueResponse(200, "<Envelope><Body><Res>OKQuoted</Res></Body></Envelope>");
+  String respQuoted;
+  client.soap("/soap11QuotedRetry")
+      .version(SOAP_1_1)
+      .soapAction("\"urn:alreadyQuoted\"")
+      .retry(1)
+      .getBody("Res", &respQuoted);
+  expectEq(respQuoted.c_str(), "OKQuoted", "SOAP 1.1 retry with already quoted action");
+}
 } // namespace
 
 int main() {
@@ -498,6 +694,11 @@ int main() {
   runSuite("SoapRetryAndObservability", testSoapRetryAndObservability);
   runSuite("SoapMoveConstructor", testSoapMoveConstructor);
   runSuite("SoapClientSingleParamOnError", testSoapClientSingleParamOnError);
+  runSuite("SoapAllHeaderTypes", testSoapAllHeaderTypes);
+  runSuite("SoapCustomPort", testSoapCustomPort);
+  runSuite("SoapCallbacksAndObservability", testSoapCallbacksAndObservability);
+  runSuite("SoapExecuteNullClient", testSoapExecuteNullClient);
+  runSuite("SoapEdgeCases", testSoapEdgeCases);
 
   std::cout << "\n=== SOAP Test Summary ===\n";
   std::cout << "Suites: " << suitesRun << " total | " << suitesPassed << " passed | " << failures << " failed\n";

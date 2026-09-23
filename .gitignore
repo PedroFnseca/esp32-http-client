@@ -8,4 +8,5 @@ site/
 .pio/
 __pycache__/
 *.pyc
-.vscode
+.vscode
+test_output.txt
