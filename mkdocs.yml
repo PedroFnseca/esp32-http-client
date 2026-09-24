@@ -122,6 +122,7 @@ plugins:
             FAQ: Perguntas Frequentes
             Performance: Desempenho
             Privacy Policy: Política de Privacidade
+            Contact: Contato
             Repository: Repositório
             Releases: Lançamentos
             Practical Examples: Exemplos Práticos
@@ -185,6 +186,7 @@ nav:
   - FAQ: faq.md
   - Performance: performance.md
   - Privacy Policy: privacy.md
+  - Contact: contact.md
   - Repository: https://github.com/PedroFnseca/esp32-http-client/
   - Releases: https://github.com/PedroFnseca/esp32-http-client/releases
 
