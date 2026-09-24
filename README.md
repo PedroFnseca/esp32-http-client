@@ -585,6 +585,17 @@ if (client.isSuccess()) {
 
 ---
 
+## Support
+
+Need help, have questions, or want to collaborate?
+
+- **Official Support Email**: [`support@esp32httpclient.com`](mailto:support@esp32httpclient.com)
+- **Bug Reports & Issues**: [GitHub Issues](https://github.com/PedroFnseca/esp32-http-client/issues)
+- **Discussions & Questions**: [GitHub Discussions](https://github.com/PedroFnseca/esp32-http-client/discussions)
+- **Documentation**: [esp32httpclient.com](https://esp32httpclient.com/)
+
+---
+
 <p align="center">
   If this library saved you time, consider leaving a star ⭐ on the repository.
 </p>
