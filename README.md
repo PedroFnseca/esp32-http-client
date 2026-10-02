@@ -27,7 +27,11 @@
     <a href="#support">Support</a>
   </p>
 
-  <img src="https://github.com/user-attachments/assets/87d6d955-d13b-4815-8a49-b97e84818e22" alt="ESP32 HTTP Client overview" width="100%" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/96c5ee2f-440c-4de2-98f5-8b7d7e4329e6">
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/87d6d955-d13b-4815-8a49-b97e84818e22">
+    <img src="https://github.com/user-attachments/assets/87d6d955-d13b-4815-8a49-b97e84818e22" alt="ESP32 HTTP Client overview" width="100%">
+  </picture>
 
   <p>
     <a href="https://trendshift.io/repositories/151845?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-151845">
