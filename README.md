@@ -1,22 +1,42 @@
-# [ESP32 HTTP Client](https://esp32httpclient.com/) the Easy Way & Low Memory Footprint
-**A lightweight, low-allocation, high-performance HTTP client library for ESP32 with direct stream-to-variable binding.**
+<div align="center">
+  <h1><a href="https://esp32httpclient.com/">ESP32 HTTP Client</a></h1>
 
-## **[Official Documentation](https://esp32httpclient.com/)** Get started quickly with the [Quick Start Guide](https://esp32httpclient.com/getting-started/quickstart) or explore the [API Reference](https://esp32httpclient.com/api/esp32httpclient/) for detailed usage.
+  <p><b>HTTP for ESP32, the easy way, with a low memory footprint.</b><br />
+  A lightweight, low-allocation HTTP client with direct stream-to-variable binding.</p>
 
-[![Arduino Library](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=00979D&label=Arduino&logo=arduino&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
-[![PlatformIO Registry](https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?color=f58220&label=PlatformIO&logo=platformio&logoColor=white)](https://github.com/PedroFnseca/esp32-http-client)
-[![Language](https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client)](https://github.com/PedroFnseca/esp32-http-client)
-[![Coverage](https://img.shields.io/badge/Coverage-97.76%25-brightgreen)](https://github.com/PedroFnseca/esp32-http-client)
-[![Hits](https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total)](https://hits.sh/github.com/PedroFnseca/esp32-http-client/)
-[![License](https://img.shields.io/github/license/PedroFnseca/esp32-http-client)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=social)](https://github.com/PedroFnseca/esp32-http-client/stargazers)
-[![Downloads](https://img.shields.io/endpoint?url=https://esp32-http-stats.esp32httpclient.com/downloads)](https://github.com/PedroFnseca/esp32-http-client)
+  <p>
+    <a href="https://github.com/PedroFnseca/esp32-http-client/releases"><img src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?style=for-the-badge&label=Release&logo=github&color=00796b&logoColor=ffffff&labelColor=102522" alt="Latest release" /></a>
+    <a href="https://github.com/PedroFnseca/esp32-http-client/stargazers"><img src="https://img.shields.io/github/stars/PedroFnseca/esp32-http-client?style=for-the-badge&logo=github&color=00796b&logoColor=ffffff&labelColor=102522" alt="GitHub stars" /></a>
+    <a href="LICENSE"><img src="https://img.shields.io/github/license/PedroFnseca/esp32-http-client?style=for-the-badge&color=00796b&labelColor=102522" alt="License" /></a>
+  </p>
 
-<a href="https://trendshift.io/repositories/151845?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-151845" target="_blank" rel="noopener noreferrer"><img src="https://trendshift.io/api/badge/trendshift/repositories/151845/daily?language=C%2B%2B" alt="PedroFnseca%2Fesp32-http-client | Trendshift" width="250" height="55"/></a>
+  <p>
+    <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?style=flat-square&label=Arduino&logo=arduino&color=00796b" alt="Arduino Library" /></a>
+    <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?style=flat-square&label=PlatformIO&logo=platformio&color=00796b" alt="PlatformIO Registry" /></a>
+    <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client?style=flat-square&color=00796b" alt="Primary language" /></a>
+    <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/badge/Coverage-97.76%25-00796b?style=flat-square" alt="Coverage: 97.76%" /></a>
+    <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/endpoint?url=https://esp32-http-stats.esp32httpclient.com/downloads&style=flat-square" alt="Downloads" /></a>
+    <a href="https://hits.sh/github.com/PedroFnseca/esp32-http-client/"><img src="https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total" alt="Repository visits" /></a>
+  </p>
 
----
+  <p>
+    <a href="https://esp32httpclient.com/">Documentation</a> •
+    <a href="https://esp32httpclient.com/getting-started/quickstart">Quick Start</a> •
+    <a href="https://esp32httpclient.com/api/esp32httpclient/">API Reference</a> •
+    <a href="#examples">Examples</a> •
+    <a href="#support">Support</a>
+  </p>
 
-## Table of Contents
+  <img src="https://github.com/user-attachments/assets/87d6d955-d13b-4815-8a49-b97e84818e22" alt="ESP32 HTTP Client overview" width="100%" />
+
+  <p>
+    <a href="https://trendshift.io/repositories/151845?utm_source=trendshift-badge&amp;utm_medium=badge&amp;utm_campaign=badge-trendshift-151845">
+      <img src="https://trendshift.io/api/badge/trendshift/repositories/151845/daily?language=C%2B%2B" alt="ESP32 HTTP Client on Trendshift" width="250" height="55" />
+    </a>
+  </p>
+</div>
+
+## Contents
 
 - [Why this library?](#why-this-library)
 - [Performance & Comparison](#performance--comparison)
@@ -27,8 +47,8 @@
 - [Usage](#usage)
 - [Examples](#examples)
 - [API Reference](#api-reference)
-
----
+- [Error Codes and HTTP Status Codes](#error-codes-and-http-status-codes)
+- [Support](#support)
 
 ## Why this library?
 
@@ -65,12 +85,10 @@ client.graphql("/graphql").query("query { user { name } }").getData("user.name",
 client.jsonRpc("/rpc").method("add").param(15).param(27).getResult(&mySum);
 ```
 
----
-
 ## Performance & Comparison
 
 The following data is the result of a benchmark running 100 consecutive HTTP GET requests with JSON payloads on an ESP32 using the public `JSONPlaceholder` `/users` endpoint as the test source.
-[JSONPlaceholder /users endpoint](https://jsonplaceholder.typicode.com/users?utm_source=chatgpt.com)
+[JSONPlaceholder `/users` endpoint](https://jsonplaceholder.typicode.com/users)
 
 
 | Metric / Feature | Standard (HTTPClient + ArduinoJson) | ESP32-HTTP-Client | Comparison |
@@ -86,11 +104,13 @@ The following data is the result of a benchmark running 100 consecutive HTTP GET
 > **Execution Time & Keep-Alive:** Because `ESP32-HTTP-Client` safely reuses the underlying TLS connection and parses the response directly from the network stream (with native `Transfer-Encoding: chunked` decoding), it avoids the massive penalty of repeatedly establishing TLS handshakes. This makes it over **10x faster** than the traditional approach while keeping the memory footprint exceptionally low.
 
 
-<img width="2723" height="1949" alt="image" src="https://github.com/user-attachments/assets/f7b84b01-04f1-44c9-a2d1-334f60cb91b0" />
-
----
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f7b84b01-04f1-44c9-a2d1-334f60cb91b0" alt="ESP32 HTTP Client performance benchmark" width="100%" />
+</p>
 
 ## Key Features
+
+Stream responses into your variables and keep request code short.
 
 - **Fluent chaining** — build requests naturally: `.get().query().getBody()`, `.soap().soapAction().body().getBody()`, or `.graphql().query().getData()`.
 - **Direct injection** — JSON, XML, and GraphQL values are written straight into standard C types (`int`, `float`, `bool`, `char*`) or C++ `struct`s.
@@ -102,9 +122,9 @@ The following data is the result of a benchmark running 100 consecutive HTTP GET
 - **Full REST support** — `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` are all first-class citizens.
 - **IoT ready** — designed for connecting ESP32 devices to cloud backends, Firebase, AWS API Gateway, GraphQL endpoints, SOAP web services, or custom servers.
 
----
-
 ## Installation
+
+Choose the package manager used by your ESP32 project.
 
 ### PlatformIO
 
@@ -121,9 +141,10 @@ lib_deps =
 2. Search for `ESP32-HTTP-Client`.
 3. Click **Install**.
 
----
 
 ## Quick Start
+
+Start with REST, or use the same client for SOAP, GraphQL, and JSON-RPC.
 
 ### REST API (JSON)
 
@@ -238,8 +259,6 @@ void setup() {
 void loop() {}
 ```
 
----
-
 ## Initialization
 
 ### Default port (80 for HTTP, 443 for HTTPS)
@@ -259,6 +278,8 @@ ESP32HTTPClient client("http://my-local-server.local", 8080);
 ---
 
 ## Usage
+
+Build requests, bind response fields, and control connections with the fluent API.
 
 ### Query Parameters
 
@@ -478,8 +499,6 @@ client.jsonRpc("/rpc")
       .param("device", "esp32-node-1");
 ```
 
----
-
 ## Examples
 
 Runnable sketches are available in the `examples/` directory:
@@ -501,9 +520,9 @@ Runnable sketches are available in the `examples/` directory:
 | [RawArrayJSON](examples/RawArrayJSON/RawArrayJSON.ino) | Capturing raw arrays or objects into Arduino Strings. |
 | [UnixTimestamp](examples/UnixTimestamp/UnixTimestamp.ino) | Fetching the current Unix Timestamp from an API. |
 
----
-
 ## API Reference
+
+Methods and examples for the client and its request builders.
 
 ### `ESP32HTTPClient` — Client class
 
@@ -556,8 +575,6 @@ Each method returns a `RestRequest` that can be chained with `.query()`, `.body(
 | `toJson(struct)` | Static utility to serialize a mapped struct into JSON string. | `String json = ESP32HTTPClient::toJson(user);` |
 | `fromJson(json, struct)` | Static utility to populate a struct from a JSON string. | `ESP32HTTPClient::fromJson(json, &user);` |
 | `end()` | Closes the persistent TCP/TLS connection and frees its memory buffers. Useful after a burst of requests. | `client.end();` |
-
----
 
 ### `RestRequest` — Fluent request builder
 
@@ -660,6 +677,8 @@ Returned by `client.jsonRpc(path)`. Provides a fluent builder for JSON-RPC 2.0 s
 
 ## Error Codes and HTTP Status Codes
 
+Inspect the last request with `getStatusCode()`, `isSuccess()`, `hasError()`, or `getErrorMessage()`.
+
 | Code | Meaning | Category |
 | :--- | :--- | :--- |
 | `-1` | Connection Refused | Client error |
@@ -715,19 +734,21 @@ if (client.isSuccess()) {
 }
 ```
 
----
-
 ## Support
 
-Need help, have questions, or want to collaborate?
+Need help, found a bug, or want to contribute?
 
-- **Official Support Email**: [`support@esp32httpclient.com`](mailto:support@esp32httpclient.com)
-- **Bug Reports & Issues**: [GitHub Issues](https://github.com/PedroFnseca/esp32-http-client/issues)
-- **Discussions & Questions**: [GitHub Discussions](https://github.com/PedroFnseca/esp32-http-client/discussions)
-- **Documentation**: [esp32httpclient.com](https://esp32httpclient.com/)
+- [Documentation](https://esp32httpclient.com/) — guides and API reference.
+- [GitHub Issues](https://github.com/PedroFnseca/esp32-http-client/issues) — bugs and feature requests.
+- [GitHub Discussions](https://github.com/PedroFnseca/esp32-http-client/discussions) — questions and ideas.
+- [Email support](mailto:support@esp32httpclient.com) — `support@esp32httpclient.com`.
 
 ---
 
-<p align="center">
-  If this library saved you time, consider leaving a star ⭐ on the repository.
-</p>
+<div align="center">
+  <p><b>Built with the community.</b></p>
+  <a href="https://github.com/PedroFnseca/esp32-http-client/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=PedroFnseca/esp32-http-client" alt="ESP32 HTTP Client contributors" />
+  </a>
+  <p>If this library saved you time, consider <a href="https://github.com/PedroFnseca/esp32-http-client/stargazers">leaving a star</a> ⭐</p>
+</div>
