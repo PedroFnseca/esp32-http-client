@@ -84,6 +84,8 @@ RestRequest& body(const char* key, T value);
 | `double` | `3.14159265` (até 9 dígitos significativos) |
 | `bool` | `true` ou `false` |
 
+> **Tamanho dos valores:** os valores passados para `path()`, `query()` e `body()` são armazenados em memória alocada dinamicamente (`String`). Não há limite fixo de tamanho e os valores nunca são truncados; o único limite é o heap disponível.
+
 **Exemplo:**
 ```cpp
 // Corpo: {"name":"Pedro","age":21,"active":true,"score":9.87}
