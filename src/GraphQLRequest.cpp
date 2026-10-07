@@ -318,8 +318,7 @@ GraphQLRequest& GraphQLRequest::post() {
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, const char* value) {
   KeyValue kv;
   kv.key = key;
-  strncpy(kv.valueBuffer, value ? value : "", sizeof(kv.valueBuffer) - 1);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.value = value ? value : "";
   kv.quoteValue = true;
   list.push_back(kv);
 }
@@ -331,8 +330,7 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, cons
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, bool value) {
   KeyValue kv;
   kv.key = key;
-  strncpy(kv.valueBuffer, value ? "true" : "false", sizeof(kv.valueBuffer) - 1);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.value = value ? "true" : "false";
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -340,8 +338,9 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, bool
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, int value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%d", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%d", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -349,8 +348,9 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, int 
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned int value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%u", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%u", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -358,8 +358,9 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, unsi
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, long value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%ld", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%ld", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -367,8 +368,9 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, long
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned long value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%lu", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%lu", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -376,8 +378,9 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, unsi
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, long long value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%lld", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%lld", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -385,8 +388,9 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, long
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned long long value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%llu", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%llu", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -394,8 +398,9 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, unsi
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, float value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%.5g", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%.5g", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -403,8 +408,9 @@ void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, floa
 void GraphQLRequest::addParam(std::vector<KeyValue>& list, const char* key, double value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%.9g", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%.9g", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -467,8 +473,7 @@ GraphQLRequest& GraphQLRequest::variable(const char* name, double value) {
 GraphQLRequest& GraphQLRequest::rawVariable(const char* name, const char* jsonValue) {
   KeyValue kv;
   kv.key = name;
-  strncpy(kv.valueBuffer, jsonValue ? jsonValue : "null", sizeof(kv.valueBuffer) - 1);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.value = jsonValue ? jsonValue : "null";
   kv.quoteValue = false;
   _variables.push_back(kv);
   return *this;
@@ -702,10 +707,10 @@ String GraphQLRequest::buildRequestBody() const {
       body += "\":";
       if (_variables[i].quoteValue) {
         body += "\"";
-        body += escapeJsonString(String(_variables[i].valueBuffer));
+        body += escapeJsonString(String(_variables[i].value.c_str()));
         body += "\"";
       } else {
-        body += _variables[i].valueBuffer;
+        body += _variables[i].value.c_str();
       }
       if (i < _variables.size() - 1) body += ",";
     }
@@ -737,7 +742,7 @@ String GraphQLRequest::buildGetUrl() const {
   for (const auto& param : _pathParams) {
     if (!param.key) continue;
     String placeholder = (param.key[0] == '{') ? param.key : ("{" + String(param.key) + "}");
-    resolvedPath.replace(placeholder, param.valueBuffer);
+    resolvedPath.replace(placeholder, param.value.c_str());
   }
 
   String url;
@@ -752,7 +757,7 @@ String GraphQLRequest::buildGetUrl() const {
     for (size_t i = 0; i < _queryParams.size(); i++) {
       url += _queryParams[i].key;
       url += "=";
-      url += _queryParams[i].valueBuffer;
+      url += _queryParams[i].value.c_str();
       if (i < _queryParams.size() - 1) url += "&";
     }
   }
@@ -781,10 +786,10 @@ String GraphQLRequest::buildGetUrl() const {
       varsJson += "\":";
       if (_variables[i].quoteValue) {
         varsJson += "\"";
-        varsJson += escapeJsonString(String(_variables[i].valueBuffer));
+        varsJson += escapeJsonString(String(_variables[i].value.c_str()));
         varsJson += "\"";
       } else {
-        varsJson += _variables[i].valueBuffer;
+        varsJson += _variables[i].value.c_str();
       }
       if (i < _variables.size() - 1) varsJson += ",";
     }
@@ -829,7 +834,7 @@ void GraphQLRequest::execute() {
     for (const auto& param : _pathParams) {
       if (!param.key) continue;
       String placeholder = (param.key[0] == '{') ? param.key : ("{" + String(param.key) + "}");
-      resolvedPath.replace(placeholder, param.valueBuffer);
+      resolvedPath.replace(placeholder, param.value.c_str());
     }
     url = urlBase + resolvedPath;
     if (!_queryParams.empty()) {
@@ -837,7 +842,7 @@ void GraphQLRequest::execute() {
       for (size_t i = 0; i < _queryParams.size(); i++) {
         url += _queryParams[i].key;
         url += "=";
-        url += _queryParams[i].valueBuffer;
+        url += _queryParams[i].value.c_str();
         if (i < _queryParams.size() - 1) url += "&";
       }
     }

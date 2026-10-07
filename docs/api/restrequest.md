@@ -84,6 +84,8 @@ RestRequest& body(const char* key, T value);
 | `double` | `3.14159265` (up to 9 significant digits) |
 | `bool` | `true` or `false` |
 
+> **Value length:** values passed to `path()`, `query()` and `body()` are kept in dynamically allocated memory, so there is no fixed size limit and values are never truncated; the only limit is the available heap. This is only about storage: the JSON type is still decided by the C++ type, as shown in the table above (numbers and booleans are sent without quotes, text is sent as a string).
+
 **Example:**
 ```cpp
 // Body: {"name":"Pedro","age":21,"active":true,"score":9.87}

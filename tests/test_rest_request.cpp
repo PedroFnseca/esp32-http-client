@@ -107,16 +107,16 @@ void testAddParamFormatting() {
   req.query("count", 42).query("ratio", 1.5f).query("enabled", true).query("name", "esp32");
 
   expectEqInt(static_cast<long long>(req._queryParams.size()), 4, "query should store 4 params");
-  expectEq(req._queryParams[0].valueBuffer, "42", "int should be formatted without quotes");
+  expectEq(req._queryParams[0].value.c_str(), "42", "int should be formatted without quotes");
   expectTrue(!req._queryParams[0].quoteValue, "int should not be quoted");
 
-  expectEq(req._queryParams[1].valueBuffer, "1.5", "float should use compact format");
+  expectEq(req._queryParams[1].value.c_str(), "1.5", "float should use compact format");
   expectTrue(!req._queryParams[1].quoteValue, "float should not be quoted");
 
-  expectEq(req._queryParams[2].valueBuffer, "true", "bool should serialize to true/false");
+  expectEq(req._queryParams[2].value.c_str(), "true", "bool should serialize to true/false");
   expectTrue(!req._queryParams[2].quoteValue, "bool should not be quoted");
 
-  expectEq(req._queryParams[3].valueBuffer, "esp32", "const char* should be copied to buffer");
+  expectEq(req._queryParams[3].value.c_str(), "esp32", "const char* should be copied to buffer");
   expectTrue(req._queryParams[3].quoteValue, "string should be quoted");
 
   req._executed = true;
@@ -469,8 +469,8 @@ void testAddParamAdvanced() {
   expectEqInt((long long)req._queryParams.size(), 1, "query params size");
   expectEqInt((long long)req._bodyParams.size(), 1, "body params size");
   
-  expectEq(req._queryParams[0].valueBuffer, "3.14159265", "double formatting");
-  expectEq(req._bodyParams[0].valueBuffer, "2.5", "float formatting");
+  expectEq(req._queryParams[0].value.c_str(), "3.14159265", "double formatting");
+  expectEq(req._bodyParams[0].value.c_str(), "2.5", "float formatting");
   req._executed = true;
 }
 
@@ -1360,30 +1360,39 @@ void testStringAndNumericTypesInParams() {
      .body("u64", 99999999999999ULL);
 
   expectEqInt(static_cast<long long>(req._pathParams.size()), 2, "path params count");
-  expectEq(req._pathParams[0].valueBuffer, "items", "String path param route");
-  expectEq(req._pathParams[1].valueBuffer, "42", "String path param id");
+  expectEq(req._pathParams[0].value.c_str(), "items", "String path param route");
+  expectEq(req._pathParams[1].value.c_str(), "42", "String path param id");
 
   expectEqInt(static_cast<long long>(req._queryParams.size()), 5, "query params count");
-  expectEq(req._queryParams[0].valueBuffer, "active", "String query param");
+  expectEq(req._queryParams[0].value.c_str(), "active", "String query param");
   expectTrue(req._queryParams[0].quoteValue, "String query quoteValue is true");
-  expectEq(req._queryParams[1].valueBuffer, "500", "unsigned int query param");
-  expectEq(req._queryParams[2].valueBuffer, "12345678", "unsigned long query param");
-  expectEq(req._queryParams[3].valueBuffer, "9876543210", "long long query param");
-  expectEq(req._queryParams[4].valueBuffer, "18446744073709551615", "unsigned long long query param");
+  expectEq(req._queryParams[1].value.c_str(), "500", "unsigned int query param");
+  expectEq(req._queryParams[2].value.c_str(), "12345678", "unsigned long query param");
+  expectEq(req._queryParams[3].value.c_str(), "9876543210", "long long query param");
+  expectEq(req._queryParams[4].value.c_str(), "18446744073709551615", "unsigned long long query param");
 
   expectEqInt(static_cast<long long>(req._bodyParams.size()), 6, "body params count");
-  expectEq(req._bodyParams[0].valueBuffer, "asd", "String body param");
+  expectEq(req._bodyParams[0].value.c_str(), "asd", "String body param");
   expectTrue(req._bodyParams[0].quoteValue, "String body quoteValue is true");
-  expectEq(req._bodyParams[1].valueBuffer, "inline-string", "temporary String body param");
+  expectEq(req._bodyParams[1].value.c_str(), "inline-string", "temporary String body param");
   expectTrue(req._bodyParams[1].quoteValue, "temporary String body quoteValue is true");
-  expectEq(req._bodyParams[2].valueBuffer, "42", "unsigned int body param");
+  expectEq(req._bodyParams[2].value.c_str(), "42", "unsigned int body param");
   expectTrue(!req._bodyParams[2].quoteValue, "unsigned int body quoteValue is false");
-  expectEq(req._bodyParams[3].valueBuffer, "99999999", "unsigned long body param");
+  expectEq(req._bodyParams[3].value.c_str(), "99999999", "unsigned long body param");
   expectTrue(!req._bodyParams[3].quoteValue, "unsigned long body quoteValue is false");
-  expectEq(req._bodyParams[4].valueBuffer, "12345678901234", "long long body param");
+  expectEq(req._bodyParams[4].value.c_str(), "12345678901234", "long long body param");
   expectTrue(!req._bodyParams[4].quoteValue, "long long body quoteValue is false");
-  expectEq(req._bodyParams[5].valueBuffer, "99999999999999", "unsigned long long body param");
+  expectEq(req._bodyParams[5].value.c_str(), "99999999999999", "unsigned long long body param");
   expectTrue(!req._bodyParams[5].quoteValue, "unsigned long long body quoteValue is false");
+
+  {
+    String longVal = "0123456789012345678901234567890123456789012345678901234567890123456789ABCDEFGHIJ";
+    RestRequest longReq(&client, "/x", HTTP_POST_METHOD);
+    longReq.body("long", longVal).body("longc", longVal.c_str()).query("q", longVal);
+    expectEq(longReq._bodyParams[0].value.c_str(), longVal.c_str(), "long String body param not truncated");
+    expectEq(longReq._bodyParams[1].value.c_str(), longVal.c_str(), "long const char* body param not truncated");
+    expectEq(longReq._queryParams[0].value.c_str(), longVal.c_str(), "long query param not truncated");
+  }
 
   req._executed = true;
 

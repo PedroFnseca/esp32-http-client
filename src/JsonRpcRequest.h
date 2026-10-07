@@ -383,7 +383,7 @@ template <typename T>
 JsonRpcRequest& JsonRpcRequest::path(const char* key, const T& value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%s", String(value).c_str());
+  kv.value = String(value).c_str();
   _pathParams.push_back(kv);
   return *this;
 }
@@ -392,7 +392,7 @@ template <typename T>
 JsonRpcRequest& JsonRpcRequest::queryParam(const char* key, const T& value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%s", String(value).c_str());
+  kv.value = String(value).c_str();
   _queryParams.push_back(kv);
   return *this;
 }

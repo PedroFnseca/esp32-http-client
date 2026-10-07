@@ -16,8 +16,7 @@ typedef std::function<void(int, const char*)> HttpErrorCallback;
 
 struct KeyValue {
   const char* key;
-  const char* value;
-  char valueBuffer[64];
+  String value;
   bool quoteValue;
 };
 
