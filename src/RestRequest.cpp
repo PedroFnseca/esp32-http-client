@@ -275,7 +275,7 @@ void RestRequest::execute() {
     } else {
       placeholder = "{" + String(param.key) + "}";
     }
-    resolvedPath.replace(placeholder, param.valueBuffer);
+    resolvedPath.replace(placeholder, param.value.c_str());
   }
 
   String url;
@@ -288,7 +288,7 @@ void RestRequest::execute() {
     for (size_t i = 0; i < _queryParams.size(); i++) {
       url += _queryParams[i].key;
       url += "=";
-      url += _queryParams[i].valueBuffer;
+      url += _queryParams[i].value.c_str();
       if (i < _queryParams.size() - 1) url += "&";
     }
   }
@@ -328,10 +328,10 @@ void RestRequest::execute() {
 
       if (_bodyParams[i].quoteValue) {
         payload += "\"";
-        payload += _bodyParams[i].valueBuffer;
+        payload += _bodyParams[i].value.c_str();
         payload += "\"";
       } else {
-        payload += _bodyParams[i].valueBuffer;
+        payload += _bodyParams[i].value.c_str();
       }
 
       if (i < _bodyParams.size() - 1) payload += ",";

@@ -177,8 +177,7 @@ RestRequest::getBody(const char* key, T* target) {
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, const char* value) {
   KeyValue kv;
   kv.key = key;
-  strncpy(kv.valueBuffer, value ? value : "", sizeof(kv.valueBuffer) - 1);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.value = value ? value : "";
   kv.quoteValue = true;
   list.push_back(kv);
 }
@@ -186,8 +185,7 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, const String& value) {
   KeyValue kv;
   kv.key = key;
-  strncpy(kv.valueBuffer, value.c_str(), sizeof(kv.valueBuffer) - 1);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.value = value.c_str();
   kv.quoteValue = true;
   list.push_back(kv);
 }
@@ -195,8 +193,7 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, bool value) {
   KeyValue kv;
   kv.key = key;
-  strncpy(kv.valueBuffer, value ? "true" : "false", sizeof(kv.valueBuffer) - 1);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  kv.value = value ? "true" : "false";
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -204,8 +201,9 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, int value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%d", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%d", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -213,8 +211,9 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned int value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%u", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%u", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -222,8 +221,9 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, long value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%ld", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%ld", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -231,8 +231,9 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned long value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%lu", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%lu", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -240,8 +241,9 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, long long value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%lld", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%lld", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -249,8 +251,9 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, unsigned long long value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%llu", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%llu", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -258,8 +261,9 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, float value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%.5g", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%.5g", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
@@ -267,8 +271,9 @@ inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, 
 inline void RestRequest::addParam(std::vector<KeyValue>& list, const char* key, double value) {
   KeyValue kv;
   kv.key = key;
-  snprintf(kv.valueBuffer, sizeof(kv.valueBuffer), "%.9g", value);
-  kv.valueBuffer[sizeof(kv.valueBuffer) - 1] = 0;
+  char numBuf[32];
+  snprintf(numBuf, sizeof(numBuf), "%.9g", value);
+  kv.value = numBuf;
   kv.quoteValue = false;
   list.push_back(kv);
 }
