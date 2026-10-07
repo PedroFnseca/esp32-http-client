@@ -14,7 +14,7 @@
     <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?style=flat-square&label=Arduino&logo=arduino&color=00796b" alt="Arduino Library" /></a>
     <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/github/v/release/PedroFnseca/esp32-http-client?style=flat-square&label=PlatformIO&logo=platformio&color=00796b" alt="PlatformIO Registry" /></a>
     <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/github/languages/top/PedroFnseca/esp32-http-client?style=flat-square&color=00796b" alt="Primary language" /></a>
-    <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/badge/Coverage-97.76%25-brightgreen00796b?style=flat-square" alt="Coverage: 97.76%" /></a>
+    <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/badge/Coverage-97.28%25-brightgreen00796b?style=flat-square" alt="Coverage: 97.76%" /></a>
     <a href="https://github.com/PedroFnseca/esp32-http-client"><img src="https://img.shields.io/endpoint?url=https://esp32-http-stats.esp32httpclient.com/downloads&style=flat-square" alt="Downloads" /></a>
     <a href="https://hits.sh/github.com/PedroFnseca/esp32-http-client/"><img src="https://hits.sh/github.com/PedroFnseca/esp32-http-client.svg?view=today-total" alt="Repository visits" /></a>
   </p>
