@@ -1815,13 +1815,30 @@ function __md_analytics(){
 </li>
       
         <li class="md-nav__item">
-  <a href="#memory-trade-offs" class="md-nav__link">
+  <a href="#memory-trade-offs-tls-heap-lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Memory Trade-offs
+        Memory Trade-offs &amp; TLS Heap Lifecycle
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Memory Trade-offs &amp; TLS Heap Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on-demand-tls-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-Demand TLS Allocation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2051,13 +2068,30 @@ function __md_analytics(){
 </li>
       
         <li class="md-nav__item">
-  <a href="#memory-trade-offs" class="md-nav__link">
+  <a href="#memory-trade-offs-tls-heap-lifecycle" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Memory Trade-offs
+        Memory Trade-offs &amp; TLS Heap Lifecycle
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Memory Trade-offs &amp; TLS Heap Lifecycle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#on-demand-tls-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-Demand TLS Allocation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2184,25 +2218,39 @@ function __md_analytics(){
 <h3 id="chunked-transfer-encoding">Chunked Transfer Encoding<a class="headerlink" href="#chunked-transfer-encoding" title="Permanent link">&para;</a></h3>
 <p>Modern APIs commonly respond with <code>Transfer-Encoding: chunked</code>. The library's <code>BufferedStreamReader</code> automatically decodes chunked responses without requiring the full payload to be buffered first.</p>
 <hr />
-<h2 id="memory-trade-offs">Memory Trade-offs<a class="headerlink" href="#memory-trade-offs" title="Permanent link">&para;</a></h2>
+<h2 id="memory-trade-offs-tls-heap-lifecycle">Memory Trade-offs &amp; TLS Heap Lifecycle<a class="headerlink" href="#memory-trade-offs-tls-heap-lifecycle" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Scenario</th>
+<th style="text-align: center;">Heap allocated during request</th>
 <th style="text-align: left;">RAM freed by <code>end()</code></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Active TLS (HTTPS) connection</td>
-<td style="text-align: left;">~45 KB</td>
+<td style="text-align: left;">Plain HTTP connection (<code>http://</code>)</td>
+<td style="text-align: center;">~15 bytes</td>
+<td style="text-align: left;">~5–10 KB socket buffers</td>
 </tr>
 <tr>
-<td style="text-align: left;">Active plain HTTP connection</td>
-<td style="text-align: left;">~5–10 KB</td>
+<td style="text-align: left;">TLS without config (<code>https://</code> default)</td>
+<td style="text-align: center;">Core default</td>
+<td style="text-align: left;">Core default</td>
+</tr>
+<tr>
+<td style="text-align: left;">Configured TLS (<code>setCACert</code>, bundle, etc.)</td>
+<td style="text-align: center;">~45 KB (mbedTLS buffers)</td>
+<td style="text-align: left;">~45 KB (TLS context + record buffers)</td>
 </tr>
 </tbody>
 </table>
+<h3 id="on-demand-tls-allocation">On-Demand TLS Allocation<a class="headerlink" href="#on-demand-tls-allocation" title="Permanent link">&para;</a></h3>
+<p><code>ESP32HTTPClient</code> uses lazy on-demand allocation for secure connections. The internal secure client is <strong>not</strong> initialized during object construction. Sketches communicating solely over <code>http://</code> incur <strong>zero TLS heap overhead</strong>.</p>
+<p>When an <code>https://</code> connection is established:
+1. <strong>Initial Handshake:</strong> mbedTLS allocates internal SSL contexts and TX/RX record buffers (~45 KB).
+2. <strong>Session Reuse (Keep-Alive):</strong> Subsequent requests to the same server reuse the already established TLS session, incurring no additional heap allocations and executing up to <strong>12× faster</strong>.
+3. <strong>Releasing TLS Memory:</strong> Calling <code>client.end()</code> terminates the TLS session, disconnects the socket, and frees the ~45 KB of mbedTLS buffers back to the heap. Subsequent calls will automatically initiate a fresh handshake when needed.</p>
 <p>Call <code>client.end()</code> after a burst of requests if your sketch enters a long idle period:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Burst of requests</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2236,7 +2284,7 @@ function __md_analytics(){
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 10, 2026 17:36:54 UTC">August 10, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 11, 2026 04:58:02 UTC">October 11, 2026</span>
   </span>
 
     

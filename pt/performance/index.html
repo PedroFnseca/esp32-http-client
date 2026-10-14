@@ -1815,13 +1815,30 @@ function __md_analytics(){
 </li>
       
         <li class="md-nav__item">
-  <a href="#compensacoes-de-memoria-trade-offs" class="md-nav__link">
+  <a href="#compensacoes-de-memoria-e-ciclo-de-vida-do-heap-tls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Compensações de Memória (Trade-offs)
+        Compensações de Memória e Ciclo de Vida do Heap TLS
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Compensações de Memória e Ciclo de Vida do Heap TLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alocacao-de-tls-sob-demanda-lazy-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alocação de TLS Sob Demanda (Lazy Allocation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2051,13 +2068,30 @@ function __md_analytics(){
 </li>
       
         <li class="md-nav__item">
-  <a href="#compensacoes-de-memoria-trade-offs" class="md-nav__link">
+  <a href="#compensacoes-de-memoria-e-ciclo-de-vida-do-heap-tls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Compensações de Memória (Trade-offs)
+        Compensações de Memória e Ciclo de Vida do Heap TLS
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Compensações de Memória e Ciclo de Vida do Heap TLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alocacao-de-tls-sob-demanda-lazy-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alocação de TLS Sob Demanda (Lazy Allocation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -2184,25 +2218,39 @@ function __md_analytics(){
 <h3 id="decodificacao-chunked-chunked-transfer-encoding">Decodificação Chunked (Chunked Transfer Encoding)<a class="headerlink" href="#decodificacao-chunked-chunked-transfer-encoding" title="Permanent link">&para;</a></h3>
 <p>APIs modernas frequentemente respondem com <code>Transfer-Encoding: chunked</code>. O <code>BufferedStreamReader</code> da biblioteca decodifica automaticamente respostas em chunks sem exigir que a carga útil completa seja armazenada em buffer primeiro.</p>
 <hr />
-<h2 id="compensacoes-de-memoria-trade-offs">Compensações de Memória (Trade-offs)<a class="headerlink" href="#compensacoes-de-memoria-trade-offs" title="Permanent link">&para;</a></h2>
+<h2 id="compensacoes-de-memoria-e-ciclo-de-vida-do-heap-tls">Compensações de Memória e Ciclo de Vida do Heap TLS<a class="headerlink" href="#compensacoes-de-memoria-e-ciclo-de-vida-do-heap-tls" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Cenário</th>
+<th style="text-align: center;">Heap alocado durante a requisição</th>
 <th style="text-align: left;">RAM liberada por <code>end()</code></th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: left;">Conexão TLS (HTTPS) ativa</td>
-<td style="text-align: left;">~45 KB</td>
+<td style="text-align: left;">Conexão HTTP simples (<code>http://</code>)</td>
+<td style="text-align: center;">~15 bytes</td>
+<td style="text-align: left;">~5–10 KB buffers de socket</td>
 </tr>
 <tr>
-<td style="text-align: left;">Conexão HTTP simples ativa</td>
-<td style="text-align: left;">~5–10 KB</td>
+<td style="text-align: left;">TLS sem configuração (<code>https://</code> padrão)</td>
+<td style="text-align: center;">Padrão do core</td>
+<td style="text-align: left;">Padrão do core</td>
+</tr>
+<tr>
+<td style="text-align: left;">TLS configurado (<code>setCACert</code>, bundle, etc.)</td>
+<td style="text-align: center;">~45 KB (buffers mbedTLS)</td>
+<td style="text-align: left;">~45 KB (contexto TLS + buffers de registro)</td>
 </tr>
 </tbody>
 </table>
+<h3 id="alocacao-de-tls-sob-demanda-lazy-allocation">Alocação de TLS Sob Demanda (Lazy Allocation)<a class="headerlink" href="#alocacao-de-tls-sob-demanda-lazy-allocation" title="Permanent link">&para;</a></h3>
+<p>O <code>ESP32HTTPClient</code> aloca os recursos seguros sob demanda. O cliente seguro interno <strong>não</strong> é instanciado na construção do objeto. Projetos que se comunicam exclusivamente via <code>http://</code> têm <strong>zero overhead de heap para TLS</strong>.</p>
+<p>Quando uma conexão <code>https://</code> é aberta:
+1. <strong>Handshake Inicial:</strong> O mbedTLS aloca contextos SSL internos e buffers de registro TX/RX (~45 KB).
+2. <strong>Reaproveitamento de Sessão (Keep-Alive):</strong> Requisições consecutivas para o mesmo servidor reutilizam a sessão TLS existente sem alocações adicionais de memória, executando até <strong>12× mais rápido</strong>.
+3. <strong>Liberação de Memória TLS:</strong> Chamar <code>client.end()</code> encerra a sessão TLS, fecha o socket e devolve os ~45 KB de buffers mbedTLS para a heap livre. Requisições posteriores restabelecerão a conexão automaticamente se necessário.</p>
 <p>Chame <code>client.end()</code> após uma rajada de requisições se o seu sketch entrar em um longo período de inatividade:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Rajada de requisições</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -2236,7 +2284,7 @@ function __md_analytics(){
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="10 de agosto de 2026 17:36:54 UTC">10 de agosto de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="11 de outubro de 2026 04:58:02 UTC">11 de outubro de 2026</span>
   </span>
 
     
