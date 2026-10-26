@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+env:
+  GIT_BOT_NAME: "github-actions[bot]"
+  GIT_BOT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+  GIT_BOT_AUTHOR: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -23,6 +28,31 @@ jobs:
           VERSION=$(grep '^version=' library.properties | cut -d'=' -f2 | xargs)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
+      - name: Update Version in Documentation
+        if: github.ref == 'refs/heads/main'
+        run: |
+          VERSION=${{ steps.version.outputs.version }}
+
+          sed -i "s|PedroFnseca/ESP32-HTTP-Client@\^[0-9.]*|PedroFnseca/ESP32-HTTP-Client@^${VERSION}|g" README.md
+          sed -i "s|PedroFnseca/ESP32-HTTP-Client@\^[0-9.]*|PedroFnseca/ESP32-HTTP-Client@^${VERSION}|g" docs/index.md
+          sed -i "s|PedroFnseca/ESP32-HTTP-Client@\^[0-9.]*|PedroFnseca/ESP32-HTTP-Client@^${VERSION}|g" docs/index.pt.md
+          sed -i "s|PedroFnseca/ESP32-HTTP-Client@\^[0-9.]*|PedroFnseca/ESP32-HTTP-Client@^${VERSION}|g" docs/getting-started/installation.md
+          sed -i "s|PedroFnseca/ESP32-HTTP-Client@\^[0-9.]*|PedroFnseca/ESP32-HTTP-Client@^${VERSION}|g" docs/getting-started/installation.pt.md
+          sed -i "s|PedroFnseca/ESP32-HTTP-Client@\^[0-9.]*|PedroFnseca/ESP32-HTTP-Client@^${VERSION}|g" docs/llms-full.txt
+          sed -i "/id: library-version/,/validations:/ s|e.g., [0-9.]* or main branch|e.g., ${VERSION} or main branch|" .github/ISSUE_TEMPLATE/bug_report.yml
+          sed -i "/id: library-version/,/validations:/ s|placeholder: [0-9.]*|placeholder: ${VERSION}|" .github/ISSUE_TEMPLATE/bug_report.yml
+          sed -i "/id: library-version/,/validations:/ s|placeholder: [0-9.]*|placeholder: ${VERSION}|" .github/ISSUE_TEMPLATE/question.yml
+
+      - name: Commit and Push Version Update
+        if: github.ref == 'refs/heads/main'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: auto-update version tag"
+          file_pattern: README.md docs/index.md docs/index.pt.md docs/getting-started/installation.md docs/getting-started/installation.pt.md docs/llms-full.txt .github/ISSUE_TEMPLATE/bug_report.yml .github/ISSUE_TEMPLATE/question.yml
+          commit_user_name: ${{ env.GIT_BOT_NAME }}
+          commit_user_email: ${{ env.GIT_BOT_EMAIL }}
+          commit_author: ${{ env.GIT_BOT_AUTHOR }}
+
       - name: Check if tag exists
         id: tag
         run: |
@@ -39,8 +69,8 @@ jobs:
         run: |
           TAG="v${{ steps.version.outputs.version }}"
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "${{ env.GIT_BOT_NAME }}"
+          git config user.email "${{ env.GIT_BOT_EMAIL }}"
 
           git tag "$TAG"
           git push origin "$TAG"
@@ -123,4 +153,3 @@ jobs:
         run: |
           python -m pip install --upgrade platformio
           pio pkg publish --no-interactive
-

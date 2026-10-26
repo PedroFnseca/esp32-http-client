@@ -4,6 +4,11 @@ on:
   push:
   pull_request:
 
+env:
+  GIT_BOT_NAME: "github-actions[bot]"
+  GIT_BOT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
+  GIT_BOT_AUTHOR: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+
 permissions:
   contents: write
 
@@ -52,6 +57,6 @@ jobs:
         with:
           commit_message: "docs: auto-update coverage badge"
           file_pattern: README.md docs/index.md
-          commit_user_name: "github-actions[bot]"
-          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
-          commit_author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          commit_user_name: ${{ env.GIT_BOT_NAME }}
+          commit_user_email: ${{ env.GIT_BOT_EMAIL }}
+          commit_author: ${{ env.GIT_BOT_AUTHOR }}
