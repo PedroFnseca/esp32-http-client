@@ -134,7 +134,7 @@ Benchmarked over **100 consecutive HTTP GET requests** with JSON payloads on a r
     Add `ESP32-HTTP-Client` to your `platformio.ini`:
     ```ini
     lib_deps =
-        PedroFnseca/ESP32-HTTP-Client@^1.4.0
+        PedroFnseca/ESP32-HTTP-Client@^1.9.0
     ```
 
 === "Manual"

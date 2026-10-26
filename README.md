@@ -136,7 +136,7 @@ Add `ESP32-HTTP-Client` to the `lib_deps` section of your `platformio.ini`:
 
 ```ini
 lib_deps =
-    PedroFnseca/ESP32-HTTP-Client@^1.4.0
+    PedroFnseca/ESP32-HTTP-Client@^1.9.0
 ```
 
 ### Arduino Library Manager

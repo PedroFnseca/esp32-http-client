@@ -134,7 +134,7 @@ Comparativo medido em **100 requisições HTTP GET consecutivas** com cargas JSO
     Adicione `ESP32-HTTP-Client` ao seu `platformio.ini`:
     ```ini
     lib_deps =
-        PedroFnseca/ESP32-HTTP-Client@^1.4.0
+        PedroFnseca/ESP32-HTTP-Client@^1.9.0
     ```
 
 === "Manual"
