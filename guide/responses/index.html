@@ -849,6 +849,23 @@ function __md_analytics(){
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Supported Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scientific-notation-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scientific Notation Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2022,6 +2039,23 @@ function __md_analytics(){
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Supported Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scientific-notation-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scientific Notation Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -2205,12 +2239,12 @@ function __md_analytics(){
 <tr>
 <td style="text-align: left;"><code>getBody(key, float* target)</code></td>
 <td style="text-align: left;">number</td>
-<td style="text-align: left;">Up to 5 significant digits</td>
+<td style="text-align: left;">Up to 5 significant digits. Supports scientific notation (e.g. <code>6.02e+2</code>, <code>-2.5E-3</code>)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>getBody(key, double* target)</code></td>
 <td style="text-align: left;">number</td>
-<td style="text-align: left;">Up to 9 significant digits</td>
+<td style="text-align: left;">Up to 9 significant digits. Supports scientific notation (e.g. <code>6.02e+2</code>, <code>-2.5E-3</code>)</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>getBody(key, long* target)</code></td>
@@ -2234,45 +2268,56 @@ function __md_analytics(){
 </tr>
 </tbody>
 </table>
+<h3 id="scientific-notation-support">Scientific Notation Support<a class="headerlink" href="#scientific-notation-support" title="Permanent link">&para;</a></h3>
+<p>Numbers formatted in scientific / exponential notation are parsed directly into <code>float</code> and <code>double</code> targets:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">float</span><span class="w">  </span><span class="n">positiveExp</span><span class="p">;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kt">double</span><span class="w"> </span><span class="n">negativeExp</span><span class="p">;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1">// Response: { "positive_exp": 6.02e+2, "negative_exp": -2.5E-3 }</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/sensor"</span><span class="p">)</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"positive_exp"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">positiveExp</span><span class="p">)</span><span class="w"> </span><span class="c1">// 602.0</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"negative_exp"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">negativeExp</span><span class="p">);</span><span class="w"> </span><span class="c1">// -0.0025</span>
+</code></pre></div>
+<p>Both lowercase <code>e</code> and uppercase <code>E</code>, with optional positive (<code>+</code>) or negative (<code>-</code>) exponents, are supported.</p>
 <hr />
 <h2 id="dot-notation-for-nested-fields">Dot Notation for Nested Fields<a class="headerlink" href="#dot-notation-for-nested-fields" title="Permanent link">&para;</a></h2>
 <p>Use <code>.</code> as a path separator to reach nested JSON objects:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Response: { "address": { "city": "Gwenborough", "geo": { "lat": "-37.3159" } } }</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kt">char</span><span class="w"> </span><span class="n">lat</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/users/1"</span><span class="p">)</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"address.city"</span><span class="p">,</span><span class="w">    </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">))</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"address.geo.lat"</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w">  </span><span class="k">sizeof</span><span class="p">(</span><span class="n">lat</span><span class="p">));</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Response: { "address": { "city": "Gwenborough", "geo": { "lat": "-37.3159" } } }</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kt">char</span><span class="w"> </span><span class="n">lat</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/users/1"</span><span class="p">)</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"address.city"</span><span class="p">,</span><span class="w">    </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">))</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"address.geo.lat"</span><span class="p">,</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w">  </span><span class="k">sizeof</span><span class="p">(</span><span class="n">lat</span><span class="p">));</span>
 </code></pre></div>
 <p>There is no practical limit on nesting depth.</p>
 <hr />
 <h2 id="numeric-indices-for-arrays">Numeric Indices for Arrays<a class="headerlink" href="#numeric-indices-for-arrays" title="Permanent link">&para;</a></h2>
 <p>Use an integer as a path segment to address a specific element of a JSON array:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Response: [{ "name": "Alice" }, { "name": "Bob" }]</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kt">char</span><span class="w"> </span><span class="n">first</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">second</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"0.name"</span><span class="p">,</span><span class="w"> </span><span class="n">first</span><span class="p">,</span><span class="w">  </span><span class="k">sizeof</span><span class="p">(</span><span class="n">first</span><span class="p">))</span><span class="w">   </span><span class="c1">// first element</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"1.name"</span><span class="p">,</span><span class="w"> </span><span class="n">second</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">second</span><span class="p">));</span><span class="w">  </span><span class="c1">// second element</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Response: [{ "name": "Alice" }, { "name": "Bob" }]</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kt">char</span><span class="w"> </span><span class="n">first</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span><span class="w"> </span><span class="n">second</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"0.name"</span><span class="p">,</span><span class="w"> </span><span class="n">first</span><span class="p">,</span><span class="w">  </span><span class="k">sizeof</span><span class="p">(</span><span class="n">first</span><span class="p">))</span><span class="w">   </span><span class="c1">// first element</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"1.name"</span><span class="p">,</span><span class="w"> </span><span class="n">second</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">second</span><span class="p">));</span><span class="w">  </span><span class="c1">// second element</span>
 </code></pre></div>
 <p>You can combine array indices with dot notation freely:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Response: [{ "address": { "city": "Gwenborough" } }, ...]</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"1.address.city"</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Response: [{ "address": { "city": "Gwenborough" } }, ...]</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"1.address.city"</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
 </code></pre></div>
 <hr />
 <h2 id="capturing-raw-json-with-string">Capturing Raw JSON with <code>String</code><a class="headerlink" href="#capturing-raw-json-with-string" title="Permanent link">&para;</a></h2>
 <p>Bind a <code>String*</code> to capture an entire JSON object or array as a raw string for manual processing:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">String</span><span class="w"> </span><span class="n">entireResponse</span><span class="p">;</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">String</span><span class="w"> </span><span class="n">secondUser</span><span class="p">;</span>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">""</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">entireResponse</span><span class="p">)</span><span class="w"> </span><span class="c1">// captures the root array</span>
-<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"1"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">secondUser</span><span class="p">);</span><span class="w">    </span><span class="c1">// captures the second user object</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">String</span><span class="w"> </span><span class="n">entireResponse</span><span class="p">;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">String</span><span class="w"> </span><span class="n">secondUser</span><span class="p">;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/users"</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">""</span><span class="p">,</span><span class="w">  </span><span class="o">&amp;</span><span class="n">entireResponse</span><span class="p">)</span><span class="w"> </span><span class="c1">// captures the root array</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"1"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">secondUser</span><span class="p">);</span><span class="w">    </span><span class="c1">// captures the second user object</span>
 </code></pre></div>
 <div class="admonition warning">
 <p class="admonition-title">Memory warning</p>
@@ -2281,49 +2326,49 @@ function __md_analytics(){
 <hr />
 <h2 id="reading-response-headers-with-getheader">Reading Response Headers with <code>getHeader()</code><a class="headerlink" href="#reading-response-headers-with-getheader" title="Permanent link">&para;</a></h2>
 <p>In addition to JSON body fields, you can extract HTTP response headers directly using <code>getHeader()</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">;</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kt">char</span><span class="w"> </span><span class="n">contentType</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kt">int</span><span class="w"> </span><span class="n">contentLength</span><span class="p">;</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/auth"</span><span class="p">)</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">"token"</span><span class="p">,</span><span class="w">          </span><span class="o">&amp;</span><span class="n">token</span><span class="p">)</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">"Content-Type"</span><span class="p">,</span><span class="w">   </span><span class="n">contentType</span><span class="p">)</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">"Content-Length"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">contentLength</span><span class="p">)</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">id</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">String</span><span class="w"> </span><span class="n">token</span><span class="p">;</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kt">char</span><span class="w"> </span><span class="n">contentType</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="kt">int</span><span class="w"> </span><span class="n">contentLength</span><span class="p">;</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/auth"</span><span class="p">)</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">"token"</span><span class="p">,</span><span class="w">          </span><span class="o">&amp;</span><span class="n">token</span><span class="p">)</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">"Content-Type"</span><span class="p">,</span><span class="w">   </span><span class="n">contentType</span><span class="p">)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">"Content-Length"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">contentLength</span><span class="p">)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">id</span><span class="p">);</span>
 </code></pre></div>
 <p>Header lookups are <strong>case-insensitive</strong>, so <code>"token"</code>, <code>"TOKEN"</code>, and <code>"Token"</code> all work identically.</p>
 <hr />
 <h2 id="reading-json-rpc-20-responses-with-getresult">Reading JSON-RPC 2.0 Responses with <code>getResult()</code><a class="headerlink" href="#reading-json-rpc-20-responses-with-getresult" title="Permanent link">&para;</a></h2>
 <p>When working with JSON-RPC 2.0 requests, the result payload is extracted using <code>.getResult()</code> rather than <code>.getBody()</code>. This supports root primitives, nested fields, mapped structs, and raw JSON extraction directly:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// 1. Primitive binding to root "result"</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">).</span><span class="n">method</span><span class="p">(</span><span class="s">"add"</span><span class="p">).</span><span class="n">param</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="n">param</span><span class="p">(</span><span class="mi">20</span><span class="p">).</span><span class="n">getResult</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sum</span><span class="p">);</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1">// 2. Nested field inside "result" object</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">).</span><span class="n">method</span><span class="p">(</span><span class="s">"getUser"</span><span class="p">).</span><span class="n">param</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">).</span><span class="n">getResult</span><span class="p">(</span><span class="s">"address.city"</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1">// 3. Mapped struct binding</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="n">User</span><span class="w"> </span><span class="n">profile</span><span class="p">;</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">).</span><span class="n">method</span><span class="p">(</span><span class="s">"getUser"</span><span class="p">).</span><span class="n">param</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">).</span><span class="n">getResult</span><span class="p">(</span><span class="o">&amp;</span><span class="n">profile</span><span class="p">);</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="c1">// 4. Raw JSON result string</span>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="n">String</span><span class="w"> </span><span class="n">rawResult</span><span class="p">;</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">).</span><span class="n">method</span><span class="p">(</span><span class="s">"getMetrics"</span><span class="p">).</span><span class="n">getRawResult</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rawResult</span><span class="p">);</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// 1. Primitive binding to root "result"</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">).</span><span class="n">method</span><span class="p">(</span><span class="s">"add"</span><span class="p">).</span><span class="n">param</span><span class="p">(</span><span class="mi">10</span><span class="p">).</span><span class="n">param</span><span class="p">(</span><span class="mi">20</span><span class="p">).</span><span class="n">getResult</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sum</span><span class="p">);</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1">// 2. Nested field inside "result" object</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="kt">char</span><span class="w"> </span><span class="n">city</span><span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">).</span><span class="n">method</span><span class="p">(</span><span class="s">"getUser"</span><span class="p">).</span><span class="n">param</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">).</span><span class="n">getResult</span><span class="p">(</span><span class="s">"address.city"</span><span class="p">,</span><span class="w"> </span><span class="n">city</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">city</span><span class="p">));</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="c1">// 3. Mapped struct binding</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="n">User</span><span class="w"> </span><span class="n">profile</span><span class="p">;</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">).</span><span class="n">method</span><span class="p">(</span><span class="s">"getUser"</span><span class="p">).</span><span class="n">param</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">).</span><span class="n">getResult</span><span class="p">(</span><span class="o">&amp;</span><span class="n">profile</span><span class="p">);</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="c1">// 4. Raw JSON result string</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="n">String</span><span class="w"> </span><span class="n">rawResult</span><span class="p">;</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">).</span><span class="n">method</span><span class="p">(</span><span class="s">"getMetrics"</span><span class="p">).</span><span class="n">getRawResult</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rawResult</span><span class="p">);</span>
 </code></pre></div>
 <h3 id="inspecting-json-rpc-errors">Inspecting JSON-RPC Errors<a class="headerlink" href="#inspecting-json-rpc-errors" title="Permanent link">&para;</a></h3>
 <p>If the server returns a JSON-RPC 2.0 error object (<code>{"error": {"code": -32601, "message": "Method not found"}}</code>), standard HTTP status codes might still be <code>200 OK</code>. You can detect and inspect JSON-RPC errors using <code>.getError()</code> or <code>.onJsonRpcError()</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">JsonRpcError</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">)</span>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">      </span><span class="p">.</span><span class="n">method</span><span class="p">(</span><span class="s">"unknownMethod"</span><span class="p">)</span>
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">      </span><span class="p">.</span><span class="n">getError</span><span class="p">(</span><span class="o">&amp;</span><span class="n">error</span><span class="p">)</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">      </span><span class="p">.</span><span class="n">onJsonRpcError</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">JsonRpcError</span><span class="o">&amp;</span><span class="w"> </span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">          </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Error code: %d, Message: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">      </span><span class="p">});</span>
-<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
-<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">code</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"JSON-RPC error encountered: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
-<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">JsonRpcError</span><span class="w"> </span><span class="n">error</span><span class="p">;</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">client</span><span class="p">.</span><span class="n">jsonRpc</span><span class="p">(</span><span class="s">"/rpc"</span><span class="p">)</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">      </span><span class="p">.</span><span class="n">method</span><span class="p">(</span><span class="s">"unknownMethod"</span><span class="p">)</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">      </span><span class="p">.</span><span class="n">getError</span><span class="p">(</span><span class="o">&amp;</span><span class="n">error</span><span class="p">)</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="p">.</span><span class="n">onJsonRpcError</span><span class="p">([](</span><span class="k">const</span><span class="w"> </span><span class="n">JsonRpcError</span><span class="o">&amp;</span><span class="w"> </span><span class="n">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">          </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"Error code: %d, Message: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">code</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="p">});</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">error</span><span class="p">.</span><span class="n">code</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">"JSON-RPC error encountered: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">message</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="p">}</span>
 </code></pre></div>
 <hr />
 <h2 id="safety-guarantees">Safety Guarantees<a class="headerlink" href="#safety-guarantees" title="Permanent link">&para;</a></h2>
@@ -2332,13 +2377,13 @@ function __md_analytics(){
 <p>If a JSON key path or response header does not exist in the response, is misspelled, or the type doesn't match, the target variable is <strong>left unchanged</strong>. No exception is thrown, no crash occurs, and the library continues parsing the rest of the response.</p>
 </div>
 <p>This makes it safe to add optional fields or optional headers to your bindings without defensive checks:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">optionalField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="c1">// default value</span>
-<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">String</span><span class="w"> </span><span class="n">optionalToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">;</span>
-<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
-<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/data"</span><span class="p">)</span>
-<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">"token"</span><span class="p">,</span><span class="w">         </span><span class="o">&amp;</span><span class="n">optionalToken</span><span class="p">)</span>
-<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"requiredField"</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="n">myVar</span><span class="p">)</span>
-<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"optionalField"</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="n">optionalField</span><span class="p">);</span><span class="w"> </span><span class="c1">// unchanged if missing</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">optionalField</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="c1">// default value</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">String</span><span class="w"> </span><span class="n">optionalToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">;</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">client</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"/data"</span><span class="p">)</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">      </span><span class="p">.</span><span class="n">getHeader</span><span class="p">(</span><span class="s">"token"</span><span class="p">,</span><span class="w">         </span><span class="o">&amp;</span><span class="n">optionalToken</span><span class="p">)</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"requiredField"</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="n">myVar</span><span class="p">)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">      </span><span class="p">.</span><span class="n">getBody</span><span class="p">(</span><span class="s">"optionalField"</span><span class="p">,</span><span class="w">   </span><span class="o">&amp;</span><span class="n">optionalField</span><span class="p">);</span><span class="w"> </span><span class="c1">// unchanged if missing</span>
 </code></pre></div>
 <hr />
 <h2 id="next-step">Next Step<a class="headerlink" href="#next-step" title="Permanent link">&para;</a></h2>
@@ -2363,7 +2408,7 @@ function __md_analytics(){
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 27, 2026 21:05:56 UTC">September 27, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 3, 2026 12:32:54 UTC">November 3, 2026</span>
   </span>
 
     

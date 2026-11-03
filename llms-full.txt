@@ -86,7 +86,7 @@ Add `ESP32-HTTP-Client` to the `lib_deps` section of your `platformio.ini`:
 
 ```ini
 lib_deps =
-    PedroFnseca/ESP32-HTTP-Client@^1.4.0
+    PedroFnseca/ESP32-HTTP-Client@^1.9.0
 ```
 
 ### Arduino Library Manager
@@ -362,8 +362,8 @@ Returned by every HTTP method on `ESP32HTTPClient`. All builder methods return `
 | Method | Description | Example |
 | :--- | :--- | :--- |
 | `getBody(key, int* target)` | Binds a JSON integer to `*target`. | `client.get("/data").getBody("count", &myInt)` |
-| `getBody(key, float* target)` | Binds a JSON number to a `float`. | `client.get("/sensor").getBody("temp", &myFloat)` |
-| `getBody(key, double* target)` | Binds a JSON number to a `double`. | `client.get("/sensor").getBody("voltage", &myDouble)` |
+| `getBody(key, float* target)` | Binds a JSON number to a `float`. Supports scientific notation (e.g. `6.02e+2`, `-2.5E-3`). | `client.get("/sensor").getBody("temp", &myFloat)` |
+| `getBody(key, double* target)` | Binds a JSON number to a `double`. Supports scientific notation (e.g. `6.02e+2`, `-2.5E-3`). | `client.get("/sensor").getBody("voltage", &myDouble)` |
 | `getBody(key, bool* target)` | Binds a JSON boolean to `*target`. | `client.get("/status").getBody("active", &myBool)` |
 | `getBody(key, long* target)` | Binds a JSON integer to a `long`. | `client.get("/stats").getBody("timestamp", &myLong)` |
 | `getBody(key, char* target, size_t maxLen)` | Copies a JSON string into a char buffer, up to `maxLen` bytes. | `client.get("/user").getBody("name", myChar, sizeof(myChar))` |
