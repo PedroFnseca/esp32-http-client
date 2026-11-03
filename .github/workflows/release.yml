@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: git-branch-write-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   GIT_BOT_NAME: "github-actions[bot]"
   GIT_BOT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
@@ -42,6 +46,13 @@ jobs:
           sed -i "/id: library-version/,/validations:/ s|e.g., [0-9.]* or main branch|e.g., ${VERSION} or main branch|" .github/ISSUE_TEMPLATE/bug_report.yml
           sed -i "/id: library-version/,/validations:/ s|placeholder: [0-9.]*|placeholder: ${VERSION}|" .github/ISSUE_TEMPLATE/bug_report.yml
           sed -i "/id: library-version/,/validations:/ s|placeholder: [0-9.]*|placeholder: ${VERSION}|" .github/ISSUE_TEMPLATE/question.yml
+
+      - name: Pull latest remote changes
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "${{ env.GIT_BOT_NAME }}"
+          git config user.email "${{ env.GIT_BOT_EMAIL }}"
+          git pull --rebase --autostash origin ${{ github.ref_name }}
 
       - name: Commit and Push Version Update
         if: github.ref == 'refs/heads/main'
@@ -114,9 +125,9 @@ jobs:
           create_section "Styles" "style"
 
           CHORES=$(git log $RANGE --pretty=format:"%s (%h)" \
-            | grep "^chore:" \
-            | grep -v "bump version" \
-            | sed 's/^chore: /- /')
+              | grep "^chore:" \
+              | grep -v "bump version" \
+              | sed 's/^chore: /- /')
 
           if [ -n "$CHORES" ]; then
             echo "## Miscellaneous Chores" >> RELEASE_NOTES.md

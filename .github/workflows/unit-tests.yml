@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: git-branch-write-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   GIT_BOT_NAME: "github-actions[bot]"
   GIT_BOT_EMAIL: "41898282+github-actions[bot]@users.noreply.github.com"
@@ -20,6 +24,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Ensure compiler is available
         run: |
@@ -50,6 +56,13 @@ jobs:
           sed -i "s|https://img.shields.io/badge/Coverage-[0-9.]*%25-[a-zA-Z]*|https://img.shields.io/badge/Coverage-${COVERAGE}%25-${COLOR}|g" README.md
 
           sed -i "s|https://img.shields.io/badge/Coverage-[0-9.]*%25-[a-zA-Z]*|https://img.shields.io/badge/Coverage-${COVERAGE}%25-${COLOR}|g" docs/index.md
+
+      - name: Pull latest remote changes
+        if: github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "${{ env.GIT_BOT_NAME }}"
+          git config user.email "${{ env.GIT_BOT_EMAIL }}"
+          git pull --rebase --autostash origin ${{ github.ref_name }}
 
       - name: Commit and Push Badge Update
         if: github.ref == 'refs/heads/main'
