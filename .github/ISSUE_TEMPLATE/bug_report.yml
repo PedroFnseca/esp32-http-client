@@ -99,8 +99,8 @@ body:
     id: library-version
     attributes:
       label: Library Version
-      description: e.g., 1.9.0 or main branch
-      placeholder: 1.9.0
+      description: e.g., 1.9.1 or main branch
+      placeholder: 1.9.1
     validations:
       required: false
 

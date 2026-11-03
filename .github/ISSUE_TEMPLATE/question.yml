@@ -54,7 +54,7 @@ body:
     id: library-version
     attributes:
       label: Library Version
-      placeholder: 1.9.0
+      placeholder: 1.9.1
     validations:
       required: false
 

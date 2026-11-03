@@ -41,7 +41,7 @@ platform = espressif32
 board = esp32dev
 framework = arduino
 lib_deps =
-    PedroFnseca/ESP32-HTTP-Client@^1.9.0
+    PedroFnseca/ESP32-HTTP-Client@^1.9.1
 ```
 
 Alternatively, install it via PlatformIO CLI:
