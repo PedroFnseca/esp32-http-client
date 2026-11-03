@@ -39,12 +39,28 @@ client.get("/sensor")
 | Assinatura do método | Tipo JSON correspondente | Notas |
 | :--- | :--- | :--- |
 | `getBody(chave, int* alvo)` | número | Truncamento inteiro aplicado |
-| `getBody(chave, float* alvo)` | número | Até 5 dígitos significativos |
-| `getBody(chave, double* alvo)` | número | Até 9 dígitos significativos |
+| `getBody(chave, float* alvo)` | número | Até 5 dígitos significativos. Suporta notação científica (ex.: `6.02e+2`, `-2.5E-3`) |
+| `getBody(chave, double* alvo)` | número | Até 9 dígitos significativos. Suporta notação científica (ex.: `6.02e+2`, `-2.5E-3`) |
 | `getBody(chave, long* alvo)` | número | Use para timestamps Unix |
 | `getBody(chave, bool* alvo)` | booleano | Corresponde a `true` / `false` |
 | `getBody(chave, char* alvo, size_t maxLen)` | string | Copia até `maxLen-1` bytes |
 | `getBody(chave, String* alvo)` | string / objeto / array | `String` do Arduino, veja abaixo |
+
+### Suporte a Notação Científica
+
+Números formatados em notação científica / exponencial são convertidos diretamente para destinos `float` e `double`:
+
+```cpp
+float  expoentePositivo;
+double expoenteNegativo;
+
+// Resposta: { "positive_exp": 6.02e+2, "negative_exp": -2.5E-3 }
+client.get("/sensor")
+      .getBody("positive_exp", &expoentePositivo) // 602.0
+      .getBody("negative_exp", &expoenteNegativo); // -0.0025
+```
+
+Tanto `e` minúsculo quanto `E` maiúsculo, com expoentes positivos (`+`) ou negativos (`-`) opcionais, são suportados.
 
 ---
 

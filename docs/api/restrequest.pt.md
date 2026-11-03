@@ -231,8 +231,8 @@ RestRequest& getBody(const char* key, String* target);
 | :--- | :--- | :--- |
 | `int*` | Número inteiro | Trunca decimais se houver |
 | `long*` | Número inteiro | Útil para timestamps Unix e IDs grandes |
-| `float*` | Número de ponto flutuante | Até 5 dígitos significativos |
-| `double*` | Número de ponto flutuante | Até 9 dígitos significativos |
+| `float*` | Número de ponto flutuante | Até 5 dígitos significativos. Suporta notação científica (ex.: `6.02e+2`, `-2.5E-3`) |
+| `double*` | Número de ponto flutuante | Até 9 dígitos significativos. Suporta notação científica (ex.: `6.02e+2`, `-2.5E-3`) |
 | `bool*` | Booleano | `true` ou `false` |
 | `char*`, `size_t` / `char[N]` | String | Copia até `N-1` caracteres com terminador nulo |
 | `String*` | String / Objeto / Array | Copia o valor como texto ou JSON bruto |

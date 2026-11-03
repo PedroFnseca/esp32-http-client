@@ -230,8 +230,8 @@ RestRequest& getBody(const char* key, String* target);
 | :--- | :--- | :--- |
 | `int*` | Integer number | Truncates decimals if present |
 | `long*` | Integer number | Useful for Unix timestamps and large IDs |
-| `float*` | Floating-point number | Up to 5 significant digits |
-| `double*` | Floating-point number | Up to 9 significant digits |
+| `float*` | Floating-point number | Up to 5 significant digits. Supports scientific notation (e.g. `6.02e+2`, `-2.5E-3`) |
+| `double*` | Floating-point number | Up to 9 significant digits. Supports scientific notation (e.g. `6.02e+2`, `-2.5E-3`) |
 | `bool*` | Boolean | `true` or `false` |
 | `char*`, `size_t` / `char[N]` | String | Copies up to `N-1` characters, null-terminated |
 | `String*` | String / Object / Array | Copies value as text or raw JSON |

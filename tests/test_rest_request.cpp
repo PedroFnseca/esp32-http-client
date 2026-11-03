@@ -1570,24 +1570,30 @@ void testRawJsonRootObjectAndEscapedStrings() {
 
 void testParsePrimitiveEdgeCases() {
   HttpClientStub::reset();
-  HttpClientStub::setResponse(200, "{\"d_null\": null, \"l_null\": null, \"str_int\": \"1234\", \"num_str\": 9876}");
+  HttpClientStub::setResponse(200, "{\"d_null\": null, \"l_null\": null, \"str_int\": \"1234\", \"num_str\": 9876, \"positive_exp\": 6.02e+2, \"negative_exp\": -2.5E-3}");
 
   ESP32HTTPClient client("https://example.com");
   double dVal = 123.45;
   long lVal = 999L;
   int strIntVal = 0;
   String numStrVal;
+  float positiveExp = 0.0f;
+  double negativeExp = 0.0;
 
   client.get("/primitives")
         .getBody("d_null", &dVal)
         .getBody("l_null", &lVal)
         .getBody("str_int", &strIntVal)
-        .getBody("num_str", &numStrVal);
+        .getBody("num_str", &numStrVal)
+        .getBody("positive_exp", &positiveExp)
+        .getBody("negative_exp", &negativeExp);
 
   expectNear(dVal, 0.0, 0.001, "null double set to 0.0");
   expectEqInt(lVal, 0L, "null long set to 0L");
   expectEqInt(strIntVal, 1234, "string coerced to int");
   expectEq(numStrVal.c_str(), "9876", "number coerced to Arduino String");
+  expectNear(positiveExp, 602.0, 0.001, "positive exponent parsed as float");
+  expectNear(negativeExp, -0.0025, 0.000001, "negative exponent parsed as double");
 }
 
 void testArrayBindingsAdvanced() {

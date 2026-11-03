@@ -608,7 +608,7 @@ void RestRequest::parsePrimitiveWithBinding(BufferedStreamReader& r, ResponseBin
     size_t nIdx = 0;
     while (r.available()) {
       char b = (char)r.peek();
-      if (isdigit((unsigned char)b) || b == '.' || b == '-') {
+      if (isdigit((unsigned char)b) || b == '.' || b == '-' || b == '+' || b == 'e' || b == 'E') {
         char x = (char)r.read();
         if (nIdx < 63) valueBuffer[nIdx++] = x;
       } else {
