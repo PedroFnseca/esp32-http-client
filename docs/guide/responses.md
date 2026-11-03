@@ -39,12 +39,28 @@ client.get("/sensor")
 | Method signature | JSON type matched | Notes |
 | :--- | :--- | :--- |
 | `getBody(key, int* target)` | number | Integer truncation applied |
-| `getBody(key, float* target)` | number | Up to 5 significant digits |
-| `getBody(key, double* target)` | number | Up to 9 significant digits |
+| `getBody(key, float* target)` | number | Up to 5 significant digits. Supports scientific notation (e.g. `6.02e+2`, `-2.5E-3`) |
+| `getBody(key, double* target)` | number | Up to 9 significant digits. Supports scientific notation (e.g. `6.02e+2`, `-2.5E-3`) |
 | `getBody(key, long* target)` | number | Use for Unix timestamps |
 | `getBody(key, bool* target)` | boolean | Matches `true` / `false` |
 | `getBody(key, char* target, size_t maxLen)` | string | Copies up to `maxLen-1` bytes |
 | `getBody(key, String* target)` | string / object / array | Arduino `String`, see below |
+
+### Scientific Notation Support
+
+Numbers formatted in scientific / exponential notation are parsed directly into `float` and `double` targets:
+
+```cpp
+float  positiveExp;
+double negativeExp;
+
+// Response: { "positive_exp": 6.02e+2, "negative_exp": -2.5E-3 }
+client.get("/sensor")
+      .getBody("positive_exp", &positiveExp) // 602.0
+      .getBody("negative_exp", &negativeExp); // -0.0025
+```
+
+Both lowercase `e` and uppercase `E`, with optional positive (`+`) or negative (`-`) exponents, are supported.
 
 ---
 
