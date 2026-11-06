@@ -398,6 +398,54 @@ int getPort() const;
 
 ---
 
+### `setFollowRedirects(follow)`
+
+Configures whether HTTP redirects are followed. Redirects are disabled by default.
+
+```cpp
+void setFollowRedirects(followRedirects_t follow);
+```
+
+Supported modes are:
+
+- `HTTPC_DISABLE_FOLLOW_REDIRECTS`: do not follow redirects.
+- `HTTPC_STRICT_FOLLOW_REDIRECTS`: follow only redirects for `GET` and `HEAD`
+  requests, using the same method.
+- `HTTPC_FORCE_FOLLOW_REDIRECTS`: follow redirects for every HTTP method,
+  preserving the method, request body, and headers.
+
+**Example:**
+```cpp
+client.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
+```
+
+---
+
+### `setRedirectLimit(limit)`
+
+Sets the maximum number of redirects followed per request. The default is `10`.
+
+```cpp
+void setRedirectLimit(uint16_t limit);
+```
+
+**Example:**
+```cpp
+client.setRedirectLimit(5);
+```
+
+---
+
+### `getRedirectLimit()`
+
+Returns the configured maximum number of redirects.
+
+```cpp
+uint16_t getRedirectLimit() const;
+```
+
+---
+
 ### `setTimeout(timeoutMs)`
 
 Configures the default network timeout in milliseconds for all requests made by this client. Default is `60000` ms (1 minute).
