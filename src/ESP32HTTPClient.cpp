@@ -71,7 +71,12 @@ void ESP32HTTPClient::setFollowRedirects(followRedirects_t follow) {
 }
 
 void ESP32HTTPClient::setRedirectLimit(uint16_t limit) {
+  _redirectLimit = limit;
   _http.setRedirectLimit(limit);
+}
+
+uint16_t ESP32HTTPClient::getRedirectLimit() const {
+  return _redirectLimit;
 }
 
 void ESP32HTTPClient::setContentType(const char* contentType) {

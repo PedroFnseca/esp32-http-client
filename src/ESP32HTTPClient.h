@@ -49,9 +49,7 @@ class ESP32HTTPClient {
 
   void setFollowRedirects(followRedirects_t follow);
   void setRedirectLimit(uint16_t limit);
-  uint16_t getRedirectLimit(void) const {
-    return _redirectLimit;
-  }
+  uint16_t getRedirectLimit() const;
 
   void setTimeout(uint16_t timeoutMs);
   uint16_t getTimeout() const;

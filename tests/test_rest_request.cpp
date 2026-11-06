@@ -864,6 +864,7 @@ void testFollowRedirects() {
 
   expectEqInt(HttpClientStub::followRedirects, HTTPC_STRICT_FOLLOW_REDIRECTS,
               "setFollowRedirects forwards strict mode");
+  expectEqInt(client.getRedirectLimit(), 4, "getRedirectLimit returns the limit");
   expectEqInt(HttpClientStub::redirectLimit, 4, "setRedirectLimit forwards the limit");
 
   client.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
@@ -872,8 +873,6 @@ void testFollowRedirects() {
   expectEqInt(HttpClientStub::followRedirects, HTTPC_FORCE_FOLLOW_REDIRECTS,
               "setFollowRedirects forwards force mode");
   expectEqInt(HttpClientStub::redirectLimit, 0, "HTTPClient redirect limit accepts zero");
-
-  HttpClientStub::reset();
 }
 
 void testErrorHandlingAndMessages() {
