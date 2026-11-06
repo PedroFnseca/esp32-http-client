@@ -8,6 +8,8 @@ ESP32HTTPClient::ESP32HTTPClient(const char* baseUrl, int port)
       _lastStatusCode(0),
       _timeout(60000),
       _maxRetry(1),
+      _followRedirects(HTTPC_DISABLE_FOLLOW_REDIRECTS),
+      _redirectLimit(10),
       _contentType("application/json"),
       _soapVersion(SOAP_1_1),
       _tlsCaCert(nullptr),
@@ -62,6 +64,19 @@ void ESP32HTTPClient::setMaxRetry(int maxRetry) {
 
 int ESP32HTTPClient::getMaxRetry() const {
   return _maxRetry;
+}
+
+void ESP32HTTPClient::setFollowRedirects(followRedirects_t follow) {
+  _http.setFollowRedirects(follow);
+}
+
+void ESP32HTTPClient::setRedirectLimit(uint16_t limit) {
+  _redirectLimit = limit;
+  _http.setRedirectLimit(limit);
+}
+
+uint16_t ESP32HTTPClient::getRedirectLimit() const {
+  return _redirectLimit;
 }
 
 void ESP32HTTPClient::setContentType(const char* contentType) {

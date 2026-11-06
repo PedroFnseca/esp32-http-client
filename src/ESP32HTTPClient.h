@@ -47,6 +47,10 @@ class ESP32HTTPClient {
   const char* getBaseUrl() const;
   int getPort() const;
 
+  void setFollowRedirects(followRedirects_t follow);
+  void setRedirectLimit(uint16_t limit);
+  uint16_t getRedirectLimit() const;
+
   void setTimeout(uint16_t timeoutMs);
   uint16_t getTimeout() const;
 
@@ -136,6 +140,8 @@ class ESP32HTTPClient {
   int _lastStatusCode;
   uint16_t _timeout;
   int _maxRetry;
+  followRedirects_t _followRedirects;
+  uint16_t _redirectLimit;
   const char* _contentType;
   SoapVersion _soapVersion;
   std::vector<HttpHeader> _headers;

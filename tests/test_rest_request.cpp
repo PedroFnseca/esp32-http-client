@@ -850,6 +850,31 @@ void testMaxRetry() {
   expectEqInt(client.getStatusCode(), -1, "status code is -1");
 }
 
+void testFollowRedirects() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://example.com");
+
+  expectEqInt(client.getRedirectLimit(), 10, "default redirect limit is 10");
+  expectEqInt(HttpClientStub::followRedirects, HTTPC_DISABLE_FOLLOW_REDIRECTS,
+              "HTTPClient redirects are disabled by default");
+  expectEqInt(HttpClientStub::redirectLimit, 10, "HTTPClient default redirect limit is 10");
+
+  client.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
+  client.setRedirectLimit(4);
+
+  expectEqInt(HttpClientStub::followRedirects, HTTPC_STRICT_FOLLOW_REDIRECTS,
+              "setFollowRedirects forwards strict mode");
+  expectEqInt(client.getRedirectLimit(), 4, "getRedirectLimit returns the limit");
+  expectEqInt(HttpClientStub::redirectLimit, 4, "setRedirectLimit forwards the limit");
+
+  client.setFollowRedirects(HTTPC_FORCE_FOLLOW_REDIRECTS);
+  client.setRedirectLimit(0);
+
+  expectEqInt(HttpClientStub::followRedirects, HTTPC_FORCE_FOLLOW_REDIRECTS,
+              "setFollowRedirects forwards force mode");
+  expectEqInt(HttpClientStub::redirectLimit, 0, "HTTPClient redirect limit accepts zero");
+}
+
 void testErrorHandlingAndMessages() {
   ESP32HTTPClient client("https://example.com");
 
@@ -2423,6 +2448,7 @@ int main() {
   runSuite("RuntimeUrlChange", testRuntimeUrlChange);
   runSuite("Timeout", testTimeout);
   runSuite("MaxRetry", testMaxRetry);
+  runSuite("FollowRedirects", testFollowRedirects);
   runSuite("ErrorHandlingAndMessages", testErrorHandlingAndMessages);
   runSuite("Callbacks", testCallbacks);
   runSuite("StructSerializationToJson", testStructSerializationToJson);

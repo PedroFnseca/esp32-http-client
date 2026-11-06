@@ -102,6 +102,30 @@ client.del("/sessions")
 
 ---
 
+## Following Redirects
+
+Redirects are disabled by default. Configure the behavior on the client before sending a request:
+
+```cpp
+client.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
+client.setRedirectLimit(5);
+
+client.get("/redirect");
+```
+
+`setFollowRedirects()` accepts the following modes:
+
+| Mode | Behavior |
+| :--- | :--- |
+| `HTTPC_DISABLE_FOLLOW_REDIRECTS` | Do not follow redirects (default). |
+| `HTTPC_STRICT_FOLLOW_REDIRECTS` | Follow only `GET` and `HEAD` redirects, using the same method. |
+| `HTTPC_FORCE_FOLLOW_REDIRECTS` | Follow redirects for every method, preserving the method, body, and headers. |
+
+Use `setRedirectLimit()` to limit the number of redirects followed by a
+request. The default limit is `10`.
+
+---
+
 ## Supported Value Types for `.path()`, `.query()`, and `.body()`
 
 | C Type | JSON output | Example |

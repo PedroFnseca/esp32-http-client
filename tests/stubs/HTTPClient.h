@@ -21,6 +21,12 @@
 #define HTTPC_ERROR_STREAM_WRITE        (-10)
 #define HTTPC_ERROR_READ_TIMEOUT        (-11)
 
+enum followRedirects_t : uint8_t {
+  HTTPC_DISABLE_FOLLOW_REDIRECTS,
+  HTTPC_STRICT_FOLLOW_REDIRECTS,
+  HTTPC_FORCE_FOLLOW_REDIRECTS
+};
+
 namespace HttpClientStub {
 inline std::string lastUrl;
 inline std::string lastPayload;
@@ -38,6 +44,8 @@ inline Stream* customStream = nullptr;
 inline int customSize = 0;
 inline bool usedSecureClient = false;
 inline NetworkClientSecure* lastSecureClient = nullptr;
+inline followRedirects_t followRedirects = HTTPC_DISABLE_FOLLOW_REDIRECTS;
+inline uint16_t redirectLimit = 10;
 
 class InMemoryStream : public Stream {
  public:
@@ -80,6 +88,8 @@ inline void reset() {
   customSize = 0;
   usedSecureClient = false;
   lastSecureClient = nullptr;
+  followRedirects = HTTPC_DISABLE_FOLLOW_REDIRECTS;
+  redirectLimit = 10;
 }
 
 inline void setResponse(int statusCode, const std::string& body) {
@@ -143,6 +153,14 @@ class HTTPClient {
   void useHTTP10(bool usehttp10 = true) {}
 
   void setReuse(bool reuse) {}
+
+  void setFollowRedirects(followRedirects_t follow) {
+    HttpClientStub::followRedirects = follow;
+  }
+
+  void setRedirectLimit(uint16_t limit) {
+    HttpClientStub::redirectLimit = limit;
+  }
 
   void setTimeout(uint16_t timeout) {
     HttpClientStub::lastTimeout = timeout;
