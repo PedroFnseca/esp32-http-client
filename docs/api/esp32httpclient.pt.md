@@ -398,6 +398,52 @@ int getPort() const;
 
 ---
 
+### `setFollowRedirects(follow)`
+
+Configura se redirecionamentos HTTP devem ser seguidos. Redirecionamentos vêm desabilitados por padrão.
+
+```cpp
+void setFollowRedirects(followRedirects_t follow);
+```
+
+Os modos suportados são:
+
+- `HTTPC_DISABLE_FOLLOW_REDIRECTS`: não segue redirecionamentos.
+- `HTTPC_STRICT_FOLLOW_REDIRECTS`: segue apenas redirecionamentos para requisições `GET` e `HEAD`, mantendo o mesmo método.
+- `HTTPC_FORCE_FOLLOW_REDIRECTS`: segue redirecionamentos para qualquer método HTTP, preservando o método, corpo da requisição e cabeçalhos.
+
+**Exemplo:**
+```cpp
+client.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
+```
+
+---
+
+### `setRedirectLimit(limit)`
+
+Define o número máximo de redirecionamentos seguidos por requisição. O padrão é `10`.
+
+```cpp
+void setRedirectLimit(uint16_t limit);
+```
+
+**Exemplo:**
+```cpp
+client.setRedirectLimit(5);
+```
+
+---
+
+### `getRedirectLimit()`
+
+Retorna o número máximo configurado de redirecionamentos.
+
+```cpp
+uint16_t getRedirectLimit() const;
+```
+
+---
+
 ### `setTimeout(timeoutMs)`
 
 Configura o tempo limite (timeout) padrão em milissegundos para todas as requisições deste cliente. O padrão é `60000` ms (1 minuto).

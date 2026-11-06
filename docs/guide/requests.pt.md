@@ -102,6 +102,29 @@ client.del("/sessions")
 
 ---
 
+## Seguindo Redirecionamentos
+
+Redirecionamentos vêm desativados por padrão. Configure o comportamento no cliente antes de enviar a requisição:
+
+```cpp
+client.setFollowRedirects(HTTPC_STRICT_FOLLOW_REDIRECTS);
+client.setRedirectLimit(5);
+
+client.get("/redirect");
+```
+
+`setFollowRedirects()` aceita os seguintes modos:
+
+| Modo | Comportamento |
+| :--- | :--- |
+| `HTTPC_DISABLE_FOLLOW_REDIRECTS` | Não segue redirecionamentos (padrão). |
+| `HTTPC_STRICT_FOLLOW_REDIRECTS` | Segue apenas redirecionamentos `GET` e `HEAD`, mantendo o mesmo método. |
+| `HTTPC_FORCE_FOLLOW_REDIRECTS` | Segue redirecionamentos para qualquer método, preservando o método, corpo e cabeçalhos. |
+
+Use `setRedirectLimit()` para limitar a quantidade de redirecionamentos seguidos por uma requisição. O limite padrão é `10`.
+
+---
+
 ## Tipos de Valores Suportados para `.path()`, `.query()` e `.body()`
 
 | Tipo C | Saída JSON | Exemplo |
