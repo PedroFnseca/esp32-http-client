@@ -292,6 +292,81 @@ client.get("/dashboard").getBody("data.profile", &profile);
 
 ---
 
+### Filtering and collecting arrays
+
+Use `filterArray(path)` with `equals()` or `notEquals()` and `collect()` to keep only the objects of an array whose field matches. The path is relative to each array element and can be nested with dots.
+
+```cpp
+std::vector<Weather> forecasts;
+
+// Response shaped as [{"location": {"countryCode": "..."}}, {...}]
+client.get("/forecast")
+      .filterArray("location.countryCode").equals("CA")
+      .collect(&forecasts);
+```
+
+`collect()` requires a mapped struct (`REST_JSON_MAP`) and appends only matching objects to the target vector. Elements that are not objects are skipped.
+
+`equals()` and `notEquals()` accept `bool`, `int`, `long`, `float`, `double`, `const char*` and `String`.
+
+```cpp
+.filterArray("storm").equals(true)
+.filterArray("temperature").notEquals(0)
+```
+
+`filterArray()` is optional. Without it, `collect()` appends every element of the array:
+
+```cpp
+// Response shaped as [{...}, {...}]
+client.get("/forecast")
+      .collect(&forecasts);
+```
+
+To capture the matching object as raw JSON instead, pass a `String` target:
+
+```cpp
+String forecast;
+
+client.get("/forecast")
+      .filterArray("location.countryCode").equals("CA")
+      .collect(&forecast);
+```
+
+The target contains all matching objects formatted in a JSON `String`.
+
+**Notes**
+
+- Always call `collect()` last in the chain after adding a `filterArray`. Otherwise, the filter is not evaluated.
+- A missing or `null` field never matches, even with `notEquals()`.
+- String filter values are limited to 63 characters.
+- `float` values are compared after rounding to 5 significant digits. Use a `double` for an exact comparison.
+- If nothing matches, or if the response does not have the expected shape (for example, an object at the root without `select()`), the target stays unchanged and no error is reported.
+
+---
+
+### Arrays inside an object
+
+`filterArray(key, arrayPath)` takes an optional second argument: the path of the array that contains the objects. Without it, the array is the response root. The path can be nested with dots, like the key of `getBody()`.
+
+```cpp
+// Response shaped as {"apiType": "rest", "data": [...]}
+client.get("/forecast")
+      .filterArray("location.countryCode", "data").equals("CA")
+      .collect(&forecasts);
+```
+
+To collect every element of a nested array without filtering, use an empty key:
+
+```cpp
+client.get("/forecast")
+      .filterArray("", "data")
+      .collect(&forecasts);
+```
+
+If the path points to an object instead of an array, that object is treated as a single element.
+
+---
+
 ## Extracting Response Headers
 
 `getHeader()` registers the extraction of HTTP response headers. Header lookup is **case-insensitive** (e.g., `"token"`, `"TOKEN"`, and `"Token"` are equivalent). If the header is missing from the response, the target variable **remains unchanged**. All overloads are chainable.
