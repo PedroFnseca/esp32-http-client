@@ -2410,6 +2410,155 @@ static void testTlsKeepAliveSessionReuse() {
   NetworkClientSecureStub::reset();
 }
 
+struct WeatherTestStruct {
+  String city = "";
+  String countryCode = "";
+  int temperature = 0;
+  float windSpeed = 0.0f;
+  bool storm = false;
+
+  REST_JSON_MAP(
+    REST_FIELD_NAMED("location.city", city),
+    REST_FIELD_NAMED("location.countryCode", countryCode),
+    REST_FIELD(temperature),
+    REST_FIELD(windSpeed),
+    REST_FIELD(storm)
+  )
+};
+
+static void testFilterArray() {
+  HttpClientStub::reset();
+
+  ESP32HTTPClient client("https://api.example.com");
+  HttpClientStub::setResponse(200, R"([
+    {"location":{"city":"Toronto","countryCode":"CA"},"temperature":-2,"windSpeed":1.5,"storm":false},
+    {"location":{"city":"Paris","countryCode":"FR"},"temperature":9,"windSpeed":3.0,"storm":true},
+    {"location":{"city":"Montreal","countryCode":"CA"},"temperature":5,"windSpeed":2.0,"storm":false}
+  ])");
+  
+  std::vector<WeatherTestStruct> forecasts = {};
+
+  client.get("")
+        .filterArray("location.countryCode").equals("CA")
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 2, "Collect must return two objects for CA");
+  expectEq(forecasts[0].city.c_str(), "Toronto", "First city must be Toronto");
+  expectEq(forecasts[1].city.c_str(), "Montreal", "Second city must be Montreal");
+
+  forecasts.clear();
+  client.get("")
+        .filterArray("windSpeed").equals(1.5f)
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 1, "Float values must be compared by type");
+  expectEq(forecasts[0].city.c_str(), "Toronto", "Float filter must keep Toronto");
+
+  forecasts.clear();
+  client.get("")
+        .filterArray("windSpeed").equals(1.5)
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 1, "Double values must be compared by type");
+  expectEq(forecasts[0].city.c_str(), "Toronto", "Double filter must keep Toronto");
+
+  forecasts.clear();
+  client.get("")
+        .filterArray("storm").equals(true)
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 1, "Boolean values must be compared by type");
+  expectEq(forecasts[0].city.c_str(), "Paris", "Boolean filter must keep Paris");
+
+  forecasts.clear();
+  client.get("")
+        .filterArray("temperature").equals(-2)
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 1, "Negative numbers must be correctly filtered");
+  expectEqInt(forecasts[0].temperature, -2, "Temperature must be -2");
+
+  forecasts.clear();
+  client.get("")
+        .filterArray("location.countryCode").notEquals("CA")
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 1, "notEquals must exclude matching values");
+  expectEq(forecasts[0].city.c_str(), "Paris", "notEquals must keep Paris");
+
+  forecasts.clear();
+  client.get("")
+        .filterArray("inexistent").notEquals(0)
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 0, "Inexistent field should yield zero results");
+
+  forecasts.clear();
+  client.get("").collect(&forecasts);
+  expectEqInt(forecasts.size(), 3, "Collect without filter must collect every element of a root array");
+
+  forecasts.clear();
+  HttpClientStub::setResponse(200, R"({"apiType": "rest", "data":[
+    {"location":{"city":"Toronto","countryCode":"CA"},"temperature":-2,"windSpeed":1.5,"storm":false},
+    {"location":{"city":"Paris","countryCode":"FR"},"temperature":9,"windSpeed":3.0,"storm":true}
+  ]})");
+  client.get("")
+        .filterArray("location.countryCode", "data").equals("CA")
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 1, "filterArray with array path should collect all elements");
+  expectEq(forecasts[0].city.c_str(), "Toronto", "filterArray with array path should keep Toronto");
+
+  HttpClientStub::setResponse(200, R"([{"id":1,"c":"CA"},{"id":2,"c":"FR"},{"id":3,"c":"CA"}])");
+  String raw;
+  client.get("")
+        .filterArray("c").equals("CA")
+        .collect(&raw);
+
+  expectEq(raw.c_str(), R"([{"id":1,"c":"CA"},{"id":3,"c":"CA"}])", "String collect must return a JSON array of all matches");
+
+  raw = "";
+  client.get("").filterArray("c").equals("XX").collect(&raw);
+  expectEq(raw.c_str(), "[]", "String collect with no match must return an empty array");
+}
+
+static void testFilterArrayEdgeCases() {
+  HttpClientStub::reset();
+  ESP32HTTPClient client("https://api.example.com");
+  std::vector<WeatherTestStruct> forecasts = {};
+
+  HttpClientStub::setResponse(200, R"([
+    {"location":{"city":"Toronto","countryCode":"CA"},"temperature":-2,"windSpeed":1.5,"storm":false,"kind":"a"},
+    {"location":{"city":"Paris","countryCode":"FR"},"temperature":9,"windSpeed":3.0,"storm":true,"kind":"b"},
+    {"location":{"city":"Montreal","countryCode":"CA"},"temperature":5,"windSpeed":2.0,"storm":false,"kind":"a"}
+  ])");
+  client.get("")
+        .filterArray("kind").equals("a")
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 2, "Unmapped filter field placed last must still filter");
+  expectEq(forecasts[0].city.c_str(), "Toronto", "Unmapped filter: first must be Toronto");
+  expectEq(forecasts[1].city.c_str(), "Montreal", "Unmapped filter: second must be Montreal");
+
+  forecasts.clear();
+  client.get("")
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 3, "Collect without filterArray produces the expected objects if array is at root");
+
+  forecasts.clear();
+  HttpClientStub::setResponse(200, R"([
+    {"location":{"city":"Bad,}\"q","countryCode":"CA"},"temperature":1,"windSpeed":0.5,"storm":false},
+    {"location":{"city":"Paris","countryCode":"FR"},"temperature":9,"windSpeed":3.0,"storm":true},
+    {"location":{"city":"Montreal","countryCode":"CA"},"temperature":5,"windSpeed":2.0,"storm":false}
+  ])");
+  client.get("")
+        .filterArray("location.countryCode").equals("CA")
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 2, "Escaped characters must not break filtering");
+  expectEq(forecasts[0].city.c_str(), "Bad,}\"q", "Escaped string must be unescaped");
+  expectEq(forecasts[1].city.c_str(), "Montreal", "Element after escaped string must be parsed");
+
+  forecasts.clear();
+  HttpClientStub::setResponse(200, R"({
+    "data": {"location":{"city":"Toronto","countryCode":"CA"},"temperature":-2,"windSpeed":1.5,"storm":false,"kind":"a"}
+  })");
+  client.get("")
+        .filterArray("location.countryCode", "data").equals("CA")
+        .collect(&forecasts);
+  expectEqInt(forecasts.size(), 1, "If path points object instead of array, that object is treated as single element");
+}
+
 }
 
 int main() {
@@ -2492,6 +2641,8 @@ int main() {
   runSuite("TlsDiagnosticHintsAndNtpClock", testTlsDiagnosticHintsAndNtpClock);
   runSuite("TlsFailClosedAndWarnings", testTlsFailClosedAndWarnings);
   runSuite("TlsKeepAliveSessionReuse", testTlsKeepAliveSessionReuse);
+  runSuite("testFilterArray", testFilterArray);
+  runSuite("testFilterArrayEdgeCases", testFilterArrayEdgeCases);
 
   const int suitesFailed = suitesRun - suitesPassed;
   const double suitePassRate = suitesRun > 0 ? (100.0 * static_cast<double>(suitesPassed) / static_cast<double>(suitesRun)) : 0.0;
