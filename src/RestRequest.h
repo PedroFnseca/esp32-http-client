@@ -73,11 +73,56 @@ class RestRequest {
   template <size_t N>
   RestRequest& getHeader(const char* name, char (&target)[N]);
 
-  static void parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings);
-  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings);
-  static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings);
+  static void parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter* filter = nullptr);
+  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, bool* matched = nullptr, const RestFilter* filter = nullptr);
+  static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, const RestFilter* filter = nullptr);
   static void parsePrimitiveWithBinding(BufferedStreamReader& r, ResponseBinding* match);
   static void readRawJson(BufferedStreamReader& r, String* target, char openingBrace);
+
+  RestRequest& filterArray(const char* key, const char* arrayPath = "");
+
+  RestRequest& equals(bool value);
+  RestRequest& equals(int value);
+  RestRequest& equals(long value);
+  RestRequest& equals(float value);
+  RestRequest& equals(double value);
+  RestRequest& equals(const char* value);
+  RestRequest& equals(const String& v);
+
+  RestRequest& notEquals(bool value);
+  RestRequest& notEquals(int value);
+  RestRequest& notEquals(long value);
+  RestRequest& notEquals(float value);
+  RestRequest& notEquals(double value);
+  RestRequest& notEquals(const char* value);
+  RestRequest& notEquals(const String& v);
+
+  RestRequest& collect(String* targetString);
+
+  template <typename T>
+  typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type collect(std::vector<T>* targetVector) {
+    if (!targetVector) return *this;
+
+    _filter.active = true;
+    const RestFilter filter = _filter;
+    _filter.targetCollector = [targetVector, filter](BufferedStreamReader& reader) {
+      T value{};
+      std::vector<ResponseBinding> bindings;
+      std::vector<String> keyStorage;
+      RestJsonBinder binder(bindings, keyStorage);
+      invokeRestJsonMap(value, binder);
+
+      if (strlen(filter.path) == 0) {
+        RestRequest::parseObjectWithBindings(reader, "", bindings);
+        targetVector->push_back(std::move(value));
+      } else {
+        if (RestRequest::evaluateFilter(reader, bindings, filter)) {
+          targetVector->push_back(std::move(value));
+        }
+      }
+    };
+    return *this;
+  }
 
  private:
   ESP32HTTPClient* _client;
@@ -101,6 +146,8 @@ class RestRequest {
   std::vector<ResponseBinding> _responseBindings;
   std::vector<ResponseBinding> _headerBindings;
 
+  RestFilter _filter;
+
   void execute();
   void parseResponse(BufferedStreamReader& r);
 
@@ -115,6 +162,9 @@ class RestRequest {
   void addParam(std::vector<KeyValue>& list, const char* key, unsigned long long value);
   void addParam(std::vector<KeyValue>& list, const char* key, float value);
   void addParam(std::vector<KeyValue>& list, const char* key, double value);
+
+  RestRequest& applyFilter(FilterOperator op, DataType type, const char* valStr);
+  static bool evaluateFilter(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter& filter);
 };
 
 template <size_t N>

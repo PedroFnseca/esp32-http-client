@@ -7,9 +7,13 @@
 #include <type_traits>
 #include <vector>
 
+class BufferedStreamReader;
+
 enum HttpMethod { HTTP_GET_METHOD, HTTP_POST_METHOD, HTTP_PUT_METHOD, HTTP_DELETE_METHOD, HTTP_PATCH_METHOD };
 
 enum DataType { TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_DOUBLE, TYPE_LONG, TYPE_ARDUINO_STRING };
+
+enum FilterOperator { FILTER_EQUALS, FILTER_NOT_EQUALS };
 
 typedef std::function<void(int)> HttpResponseCallback;
 typedef std::function<void(int, const char*)> HttpErrorCallback;
@@ -111,6 +115,23 @@ template <typename T, typename Visitor>
 inline typename std::enable_if<!HasRestJsonMapMember<T>::value && HasRestJsonMapExternal<T>::value, void>::type invokeRestJsonMap(const T& obj, Visitor& visitor) {
   rest_json_map_external(obj, visitor);
 }
+
+struct RestFilter {
+  bool active = false;
+  char path[128];
+  char targetPath[128];
+  char value[64];
+  FilterOperator op;
+  DataType type;
+  std::function<void(BufferedStreamReader&)> targetCollector;
+
+  RestFilter() : active(false), op(FILTER_EQUALS), type(TYPE_STRING) {
+    path[0] = '\0';
+    targetPath[0] = '\0';
+    value[0] = '\0';
+  }
+};
+
 
 class RestJsonSerializer {
  public:
