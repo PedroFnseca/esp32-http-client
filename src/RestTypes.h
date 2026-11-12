@@ -13,7 +13,7 @@ enum HttpMethod { HTTP_GET_METHOD, HTTP_POST_METHOD, HTTP_PUT_METHOD, HTTP_DELET
 
 enum DataType { TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_DOUBLE, TYPE_LONG, TYPE_ARDUINO_STRING };
 
-enum FilterOperator { FILTER_EQUALS, FILTER_NOT_EQUALS };
+enum FilterOperator { FILTER_NONE, FILTER_EQUALS, FILTER_NOT_EQUALS };
 
 typedef std::function<void(int)> HttpResponseCallback;
 typedef std::function<void(int, const char*)> HttpErrorCallback;
@@ -124,16 +124,20 @@ struct RestFilter {
   double num = 0.0;
   FilterOperator op;
   DataType type;
-  std::function<void(BufferedStreamReader&)> targetCollector;
+  std::function<void(BufferedStreamReader&, const RestFilter&)> targetCollector;
 
-  RestFilter() : active(false), op(FILTER_EQUALS), type(TYPE_STRING) {
+  RestFilter() : active(false), op(FILTER_NONE), type(TYPE_STRING) {
     path[0] = '\0';
     targetPath[0] = '\0';
     value[0] = '\0';
   }
+
+  bool hasPredicate() const {
+    return path[0] != '\0' && op != FILTER_NONE;
+  }
 };
 
-struct FilterSlot {
+struct FilterCapture {
   static constexpr size_t STR_MAX = 65;
 
   const char* key;
@@ -143,7 +147,7 @@ struct FilterSlot {
   bool b = false;
   bool matched = false;
 
-  FilterSlot(const char* k, DataType t) : key(k), type(t) { s[0] = '\0'; }
+  FilterCapture(const char* k, DataType t) : key(k), type(t) { s[0] = '\0'; }
 
   ResponseBinding binding() {
     void* target = type == TYPE_BOOL ? (void*)&b

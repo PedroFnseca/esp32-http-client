@@ -74,8 +74,9 @@ class RestRequest {
   RestRequest& getHeader(const char* name, char (&target)[N]);
 
   static void parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter* filter = nullptr);
-  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterSlot* slot = nullptr, const RestFilter* filter = nullptr);
-  static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, const RestFilter* filter = nullptr);
+  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture = nullptr, const RestFilter* filter = nullptr);
+  static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture = nullptr, const RestFilter* filter = nullptr);
+  static void parseValueWithBindings(BufferedStreamReader& r, const char* fullPath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture, const RestFilter* filter);
   static void parsePrimitiveWithBinding(BufferedStreamReader& r, ResponseBinding* match);
   static void readRawJson(BufferedStreamReader& r, String* target, char openingBrace);
 
@@ -112,21 +113,18 @@ class RestRequest {
     if (!targetVector) return *this;
 
     _filter.active = true;
-    const RestFilter filter = _filter;
-    _filter.targetCollector = [targetVector, filter](BufferedStreamReader& reader) {
+    _filter.targetCollector = [targetVector](BufferedStreamReader& reader, const RestFilter& filter) {
       T value{};
       std::vector<ResponseBinding> bindings;
       std::vector<String> keyStorage;
       RestJsonBinder binder(bindings, keyStorage);
       invokeRestJsonMap(value, binder);
 
-      if (strlen(filter.path) == 0) {
+      if (!filter.hasPredicate()) {
         RestRequest::parseObjectWithBindings(reader, "", bindings);
         targetVector->push_back(std::move(value));
-      } else {
-        if (RestRequest::evaluateFilter(reader, bindings, filter)) {
-          targetVector->push_back(std::move(value));
-        }
+      } else if (RestRequest::evaluateFilter(reader, bindings, filter)) {
+        targetVector->push_back(std::move(value));
       }
     };
     return *this;
