@@ -21,6 +21,9 @@ Integrate ESP32 microcontrollers with cloud AI providers and self-hosted LLMs us
 
 With `ESP32HTTPClient`, connecting your ESP32 to Large Language Models is as straightforward as any standard REST call. The library handles the HTTP transport and extracts response fields directly into your variables using **dot notation** — no heavy vendor SDKs, no manual string parsing, and no memory-hogging DOM trees.
 
+!!! tip "Looking to expose ESP32 hardware as an AI tool server?"
+    While **ESP32-HTTP-Client** is designed for **outbound** AI requests (ESP32 &rarr; Cloud/Local LLMs), explore our companion library [**ESP32-MCP**](related-libraries.md#esp32-mcp) if you want an **inbound** Model Context Protocol (MCP) server that allows AI assistants like **Claude Desktop** and **Cursor** to discover and invoke tools directly on your microcontroller hardware.
+
 ---
 
 ## Cloud AI Providers
@@ -443,6 +446,7 @@ void loop() {
 
 ## Related Documentation
 
+- [Related Libraries: ESP32-MCP](related-libraries.md): Expose ESP32 hardware tools to AI agents using the Model Context Protocol.
 - [Practical Examples](practical-examples.md) — IoT use cases (weather, GitHub, telemetry, REST).
 - [API Reference: ESP32HTTPClient](api/esp32httpclient.md) — Core client constructor, timeout, headers, and authentication.
 - [API Reference: RestRequest](api/restrequest.md) — Fluent request builder, `.body()`, and dot-notation `.getBody()` bindings.

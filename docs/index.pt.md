@@ -260,6 +260,14 @@ Comparativo medido em **100 requisições HTTP GET consecutivas** com cargas JSO
 
 ---
 
+## Bibliotecas Relacionadas
+
+Procurando mais bibliotecas embarcadas com zero alocação de heap?
+
+- [:material-robot-industrial: **ESP32-MCP**](related-libraries.md#esp32-mcp): Servidor leve Model Context Protocol (MCP) para ESP32. Exponha ferramentas de controle de hardware e sensores diretamente para Claude Desktop, Cursor e agentes de IA via HTTP.
+
+---
+
 <p align="center">
   Se esta biblioteca economizou seu tempo, considere deixar uma ⭐ no <a href="https://github.com/PedroFnseca/esp32-http-client">GitHub</a>.
 </p>
