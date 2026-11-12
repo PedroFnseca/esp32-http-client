@@ -126,6 +126,7 @@ plugins:
             Repository: Repositório
             Releases: Lançamentos
             Practical Examples: Exemplos Práticos
+            AI Integrations: Integrações de IA
   - search:
       lang:
         - en
@@ -183,6 +184,7 @@ nav:
     - GraphQLRequest: api/graphqlrequest.md
     - JsonRpcRequest: api/jsonrpcrequest.md
   - Practical Examples: practical-examples.md
+  - AI Integrations: ai-integrations.md
   - FAQ: faq.md
   - Performance: performance.md
   - Privacy Policy: privacy.md
