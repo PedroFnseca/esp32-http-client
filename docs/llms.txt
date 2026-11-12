@@ -22,3 +22,4 @@ This library acts as a bridge between your variables and your API. You don't "pa
 - [Quick Start](https://esp32httpclient.com/getting-started/quickstart)
 - [API Reference](https://esp32httpclient.com/api/esp32httpclient/)
 - [Examples](https://esp32httpclient.com/examples/)
+- [Related Libraries (ESP32-MCP)](https://esp32httpclient.com/related-libraries/)

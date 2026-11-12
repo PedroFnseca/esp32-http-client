@@ -21,6 +21,9 @@ Integre microcontroladores ESP32 com provedores de IA em nuvem e LLMs auto-hospe
 
 Com o `ESP32HTTPClient`, conectar o ESP32 a Modelos de Linguagem (LLMs) é tão simples e direto quanto consumir qualquer API REST convencional. A biblioteca gerencia o transporte HTTP e extrai os campos da resposta diretamente para as suas variáveis usando **notação de ponto** — sem SDKs proprietários pesados, sem manipulação manual de strings e sem árvores DOM consumindo a memória RAM.
 
+!!! tip "Deseja expor o hardware do ESP32 como servidor de ferramentas para IA?"
+    Enquanto o **ESP32-HTTP-Client** é focado em requisições de **saída** (ESP32 &rarr; LLMs na Nuvem/Locais), conheça nossa biblioteca parceira [**ESP32-MCP**](related-libraries.md#esp32-mcp) caso queira um servidor **MCP (Model Context Protocol)** que permita a assistentes como **Claude Desktop** e **Cursor** descobrirem e executarem comandos e leituras de sensores diretamente no seu microcontrolador.
+
 ---
 
 ## Provedores de IA em Nuvem
@@ -443,6 +446,7 @@ void loop() {
 
 ## Documentação Relacionada
 
+- [Bibliotecas Relacionadas: ESP32-MCP](related-libraries.md): Exponha ferramentas de hardware para agentes de IA via Model Context Protocol.
 - [Exemplos Práticos](practical-examples.pt.md) — Exemplos para IoT (estações meteorológicas, monitor GitHub, REST).
 - [Referência da API: ESP32HTTPClient](api/esp32httpclient.pt.md) — Métodos de construtor, timeout, cabeçalhos e autenticação.
 - [Referência da API: RestRequest](api/restrequest.pt.md) — Encadeamento de métodos fluentes, `.body()` e extração `.getBody()`.

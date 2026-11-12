@@ -23,6 +23,7 @@
     <a href="https://esp32httpclient.com/">Documentation</a> •
     <a href="https://esp32httpclient.com/getting-started/quickstart">Quick Start</a> •
     <a href="https://esp32httpclient.com/api/esp32httpclient/">API Reference</a> •
+    <a href="https://esp32httpclient.com/related-libraries/">Related Libraries</a> •
     <a href="#examples">Examples</a> •
     <a href="#support">Support</a>
   </p>
@@ -51,6 +52,7 @@
 - [Examples](#examples)
 - [API Reference](#api-reference)
 - [Error Codes and HTTP Status Codes](#error-codes-and-http-status-codes)
+- [Ecosystem & Related Libraries](#ecosystem--related-libraries)
 - [Support](#support)
 
 ## Why this library?
@@ -808,6 +810,62 @@ if (client.isSuccess()) {
     Serial.println(client.getErrorMessage());
 }
 ```
+
+## Ecosystem & Related Libraries
+
+Complementary open-source libraries designed with the same high-performance, zero-allocation philosophy for ESP32 and Arduino microcontrollers.
+
+### ESP32-MCP: Model Context Protocol Server for ESP32
+
+**ESP32-MCP** turns your microcontroller into a native **Model Context Protocol (MCP)** server over HTTP. Instead of running heavy Python or Node.js bridge scripts on a computer, your ESP32 exposes hardware tools directly to AI assistants such as **Claude Desktop**, **Cursor**, and autonomous LLM agents across your local network.
+
+```cpp
+#include <WiFi.h>
+#include <ESP32MCP.h>
+
+MCPServer server("ESP32-Node", "1.0.0");
+static bool ledState = false;
+
+void setup() {
+    Serial.begin(115200);
+    WiFi.begin("SSID", "PASS");
+    while (WiFi.status() != WL_CONNECTED) delay(500);
+
+    pinMode(LED_BUILTIN, OUTPUT);
+
+    // Register hardware control tool with direct variable binding
+    server.tool("set_led", "Turns onboard LED ON or OFF")
+          .destructive()
+          .param("state", &ledState, "true for ON, false for OFF")
+          .handle([](MCPResult& r) {
+              digitalWrite(LED_BUILTIN, ledState ? HIGH : LOW);
+              r.text("LED is now %s", ledState ? "ON" : "OFF");
+          });
+
+    server.begin(); // Starts server in background FreeRTOS task on Core 1
+}
+
+void loop() {
+    // Arduino loop remains completely free for your application logic
+    delay(1000);
+}
+```
+
+#### Why developers choose ESP32-MCP:
+
+- **Zero Heap Allocations on Hot Path:** Custom static JSON engine with 0 bytes heap drift over 10,000 consecutive requests, preventing RAM fragmentation crashes.
+- **Direct Variable Binding:** Fluent C++ API binds hardware state directly to tool arguments without writing manual JSON schemas.
+- **Autonomous FreeRTOS Background Task:** Runs on Core 1 by default, keeping your primary Arduino `loop()` completely unblocked for real-time tasks.
+- **Built-in Diagnostic Tools:** Ready-to-use tools for system telemetry (`get_status`) and safe GPIO control (`enableGpio`).
+- **Timing-Attack Resistant Security:** Constant-time Bearer token verification and strict origin validation (CORS).
+
+[![GitHub Release](https://img.shields.io/github/v/release/PedroFnseca/esp32-mcp?style=flat-square&color=00796b&label=Release&logo=github)](https://github.com/PedroFnseca/esp32-mcp/releases)
+[![Stars](https://img.shields.io/github/stars/PedroFnseca/esp32-mcp?style=flat-square&color=00796b&logo=github)](https://github.com/PedroFnseca/esp32-mcp/stargazers)
+[![License](https://img.shields.io/github/license/PedroFnseca/esp32-mcp?style=flat-square&color=00796b)](https://github.com/PedroFnseca/esp32-mcp/blob/main/LICENSE)
+
+- **GitHub Repository:** [https://github.com/PedroFnseca/esp32-mcp](https://github.com/PedroFnseca/esp32-mcp)
+- **Latest Releases:** [https://github.com/PedroFnseca/esp32-mcp/releases](https://github.com/PedroFnseca/esp32-mcp/releases)
+- **Detailed Documentation:** [https://esp32httpclient.com/related-libraries/](https://esp32httpclient.com/related-libraries/)
 
 ## Support
 

@@ -16,6 +16,7 @@
 - [Usage](#usage)
 - [Examples](#examples)
 - [API Reference](#api-reference)
+- [Related Libraries (ESP32-MCP)](#related-libraries-esp32-mcp)
 
 ---
 
@@ -454,3 +455,18 @@ if (client.isSuccess()) {
     Serial.println(client.getErrorMessage());
 }
 ```
+
+---
+
+## Related Libraries (ESP32-MCP)
+
+### [ESP32-MCP](https://github.com/PedroFnseca/esp32-mcp): Model Context Protocol Server for ESP32
+
+A lightweight, zero-heap Model Context Protocol (MCP) server for ESP32 and Arduino microcontrollers. Allows AI assistants like **Claude Desktop**, **Cursor**, and autonomous agents to discover, inspect, and invoke physical hardware tools directly over HTTP.
+
+- **Zero-Heap Allocations:** 0 bytes delta across 10,000 consecutive requests.
+- **Direct Variable Binding:** Fluent API (`.param("state", &ledState)`).
+- **FreeRTOS Background Task:** Runs on Core 1 by default, keeping `loop()` free.
+- **Diagnostics & Security:** Built-in telemetry (`get_status`), safe GPIO tools, timing-safe Bearer auth, and strict CORS.
+- **Documentation:** [https://esp32httpclient.com/related-libraries/](https://esp32httpclient.com/related-libraries/)
+- **Repository:** [https://github.com/PedroFnseca/esp32-mcp](https://github.com/PedroFnseca/esp32-mcp)

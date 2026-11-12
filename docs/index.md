@@ -260,6 +260,14 @@ Benchmarked over **100 consecutive HTTP GET requests** with JSON payloads on a r
 
 ---
 
+## Related Libraries
+
+Looking for more zero-allocation embedded tools?
+
+- [:material-robot-industrial: **ESP32-MCP**](related-libraries.md#esp32-mcp): Lightweight Model Context Protocol (MCP) server for ESP32. Expose hardware control and sensor tools directly to Claude Desktop, Cursor, and AI agents over HTTP.
+
+---
+
 <p align="center">
   If this library saved you time, consider leaving a ⭐ on <a href="https://github.com/PedroFnseca/esp32-http-client">GitHub</a>.
 </p>
