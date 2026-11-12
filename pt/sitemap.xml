@@ -50,6 +50,13 @@
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/privacy/"/>
     </url>
     <url>
+        <loc>https://esp32httpclient.com/related-libraries/</loc>
+        <lastmod>2026-11-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/related-libraries/"/>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/related-libraries/"/>
+    </url>
+    <url>
         <loc>https://esp32httpclient.com/api/</loc>
         <lastmod>2026-11-12</lastmod>
         <changefreq>daily</changefreq>
@@ -321,6 +328,13 @@
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/privacy/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/privacy/"/>
+    </url>
+    <url>
+        <loc>https://esp32httpclient.com/pt/related-libraries/</loc>
+        <lastmod>2026-11-12</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="pt" href="https://esp32httpclient.com/pt/related-libraries/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://esp32httpclient.com/related-libraries/"/>
     </url>
     <url>
         <loc>https://esp32httpclient.com/pt/api/</loc>

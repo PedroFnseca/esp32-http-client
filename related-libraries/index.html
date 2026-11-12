@@ -1,0 +1,2620 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Explore high-performance, zero-allocation open-source libraries for the ESP32 and Arduino ecosystem, including ESP32-MCP (Model Context Protocol server for Claude, Cursor, and AI agents).">
+      
+      
+        <meta name="author" content="Pedro Fonseca">
+      
+      
+        <link rel="canonical" href="https://esp32httpclient.com/related-libraries/">
+      
+      
+        <link rel="prev" href="../ai-integrations/">
+      
+      
+        <link rel="next" href="../faq/">
+      
+      
+        
+          <link rel="alternate" href="./" hreflang="en">
+        
+          <link rel="alternate" href="../pt/related-libraries/" hreflang="pt">
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+  
+    <title>ESP32 Ecosystem and Related Libraries - ESP32-MCP | ESP32-HTTP-Client</title>
+  
+
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+<script id="__analytics">
+function __md_analytics(){
+  function e(){dataLayer.push(arguments)}
+  window.dataLayer=window.dataLayer||[];
+  e("js",new Date);
+  e("config","G-TFXJLYGKZM");
+  document.addEventListener("DOMContentLoaded", function(){
+    if (document.forms.search && document.forms.search.query) {
+      document.forms.search.query.addEventListener("blur", function(){
+        if (this.value) e("event", "search", {search_term: this.value});
+      }, {passive: true});
+    }
+    if (typeof location$ !== "undefined") {
+      location$.subscribe(function(t){
+        e("config", "G-TFXJLYGKZM", {page_path: t.pathname});
+      });
+    }
+  });
+  function loadGtag(){
+    var t = document.createElement("script");
+    t.async = true;
+    t.src = "https://www.googletagmanager.com/gtag/js?id=G-TFXJLYGKZM";
+    var el = document.getElementById("__analytics");
+    if (el) el.insertAdjacentElement("afterEnd", t);
+  }
+  if ("requestIdleCallback" in window) {
+    requestIdleCallback(loadGtag, {timeout: 2000});
+  } else {
+    setTimeout(loadGtag, 1000);
+  }
+}
+</script>
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+  <link rel="preconnect" href="https://www.clarity.ms" crossorigin>
+  <link rel="preconnect" href="https://c.bing.com" crossorigin>
+
+  <!-- Instant Preference Optimizer (Theme & Language Auto-Detection, 0ms latency) -->
+  <script>
+    (function() {
+      try {
+        var isPtPath = /(?:^|\/)pt(?:\/|$)/.test(window.location.pathname);
+        var storedLang = localStorage.getItem("user_lang_preference");
+        var hasChecked = sessionStorage.getItem("user_lang_checked");
+
+        if (!hasChecked) {
+          sessionStorage.setItem("user_lang_checked", "1");
+          var targetLang = storedLang;
+          if (!targetLang) {
+            var browserLang = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+            targetLang = /^pt\b/i.test(browserLang) ? "pt" : "en";
+          }
+
+          if (targetLang === "pt" && !isPtPath) {
+            var ptUrl = "/pt" + (window.location.pathname.startsWith("/") ? window.location.pathname : "/" + window.location.pathname) + window.location.search + window.location.hash;
+            window.location.replace(ptUrl);
+            return;
+          } else if (targetLang === "en" && isPtPath && storedLang === "en") {
+            var enUrl = window.location.pathname.replace(/(?:^|\/)pt(?:\/|$)/, "/") + window.location.search + window.location.hash;
+            window.location.replace(enUrl.replace(/\/\//g, "/"));
+            return;
+          }
+        }
+      } catch (e) {}
+
+      try {
+        var storedTheme = localStorage.getItem("user_theme_preference");
+        if (!storedTheme && typeof __md_get === "function") {
+          var palette = __md_get("__palette");
+          if (palette && palette.color && palette.color.scheme) {
+            storedTheme = palette.color.scheme;
+          }
+        }
+
+        if (!storedTheme) {
+          var prefersLight = window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches;
+          var scheme = prefersLight ? "default" : "slate";
+          if (typeof __md_set === "function") {
+            __md_set("__palette", {
+              index: prefersLight ? 1 : 0,
+              color: { scheme: scheme, primary: "teal", accent: "orange" }
+            });
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  
+
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "y7g1nf28ey");
+  </script>
+
+  
+    
+      
+  <link rel="alternate" hreflang="x-default" href="related-libraries/">
+      
+    
+      
+    
+  
+
+  <link rel="alternate" type="text/plain" href="https://esp32httpclient.com/llms.txt" title="LLMs Context">
+  <link rel="alternate" type="text/plain" href="https://esp32httpclient.com/llms-full.txt" title="Full LLMs Context">
+
+  <meta name="keywords" content="ESP32 MCP, Model Context Protocol ESP32, ESP32 AI tools, Claude Desktop ESP32, Cursor ESP32, embedded MCP server, ESP32 AI agent, Arduino MCP, zero heap ESP32 libraries, IoT Model Context Protocol, Pedro Fonseca">
+  <meta name="author" content="Pedro Fonseca">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="ESP32-HTTP-Client Documentation">
+  <meta property="og:url" content="https://esp32httpclient.com/related-libraries/">
+  <meta property="og:title" content="ESP32 Ecosystem and Related Libraries - ESP32-MCP | ESP32-HTTP-Client">
+  <meta property="og:description" content="Explore high-performance, zero-allocation open-source libraries for the ESP32 and Arduino ecosystem, including ESP32-MCP (Model Context Protocol server for Claude, Cursor, and AI agents).">
+  <meta property="og:image" content="https://esp32httpclient.com/assets/preview.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ESP32 Ecosystem and Related Libraries - ESP32-MCP | ESP32-HTTP-Client">
+  <meta name="twitter:description" content="Explore high-performance, zero-allocation open-source libraries for the ESP32 and Arduino ecosystem, including ESP32-MCP (Model Context Protocol server for Claude, Cursor, and AI agents).">
+  <meta name="twitter:image" content="https://esp32httpclient.com/assets/preview.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ESP32-HTTP-Client",
+    "operatingSystem": "ESP32, ESP-IDF, FreeRTOS, Arduino",
+    "applicationCategory": "DeveloperApplication",
+    "programmingLanguage": "C++",
+    "description": "A lightweight, low-allocation, high-performance HTTP client library for ESP32.",
+    "url": "https://esp32httpclient.com/",
+    "codeRepository": "https://github.com/PedroFnseca/esp32-http-client",
+    "license": "https://opensource.org/licenses/MIT",
+    "author": {
+      "@type": "Person",
+      "name": "Pedro Fonseca",
+      "url": "https://github.com/PedroFnseca"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "ESP32 Ecosystem and Related Libraries - ESP32-MCP | ESP32-HTTP-Client",
+    "description": "Explore high-performance, zero-allocation open-source libraries for the ESP32 and Arduino ecosystem, including ESP32-MCP (Model Context Protocol server for Claude, Cursor, and AI agents).",
+    "url": "https://esp32httpclient.com/related-libraries/",
+    "author": {
+      "@type": "Person",
+      "name": "Pedro Fonseca",
+      "url": "https://github.com/PedroFnseca"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ESP32-HTTP-Client",
+      "url": "https://esp32httpclient.com/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ESP32-HTTP-Client Documentation",
+    "url": "https://esp32httpclient.com/"
+  }
+  </script>
+
+  
+<meta property="og:type" content="website" />
+<meta property="og:title" content="ESP32 Ecosystem and Related Libraries - ESP32-MCP | ESP32-HTTP-Client - ESP32-HTTP-Client" />
+<meta property="og:description" content="A lightweight, low-allocation, high-performance HTTP client library for ESP32." />
+<meta property="og:image" content="https://esp32httpclient.com/assets/images/social/related-libraries.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://esp32httpclient.com/related-libraries/" />
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:title" content="ESP32 Ecosystem and Related Libraries - ESP32-MCP | ESP32-HTTP-Client - ESP32-HTTP-Client" />
+<meta property="twitter:description" content="A lightweight, low-allocation, high-performance HTTP client library for ESP32." />
+<meta property="twitter:image" content="https://esp32httpclient.com/assets/images/social/related-libraries.png" />
+</head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#related-libraries-ecosystem" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="ESP32-HTTP-Client" class="md-header__button md-logo" aria-label="ESP32-HTTP-Client" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ESP32-HTTP-Client
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              ESP32 Ecosystem and Related Libraries - ESP32-MCP | ESP32-HTTP-Client
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="orange"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="orange"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="./" hreflang="en" class="md-select__link">
+              🇺🇸 English
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="../pt/related-libraries/" hreflang="pt" class="md-select__link">
+              🇧🇷 Português
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/PedroFnseca/esp32-http-client" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PedroFnseca/esp32-http-client
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="ESP32-HTTP-Client" class="md-nav__button md-logo" aria-label="ESP32-HTTP-Client" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 17H7V7h10m4 4V9h-2V7a2 2 0 0 0-2-2h-2V3h-2v2h-2V3H9v2H7c-1.11 0-2 .89-2 2v2H3v2h2v2H3v2h2v2a2 2 0 0 0 2 2h2v2h2v-2h2v2h2v-2h2a2 2 0 0 0 2-2v-2h2v-2h-2v-2m-6 2h-2v-2h2m2-2H9v6h6z"/></svg>
+
+    </a>
+    ESP32-HTTP-Client
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/PedroFnseca/esp32-http-client" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    PedroFnseca/esp32-http-client
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../getting-started/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Getting Started
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Quick Start
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../guide/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guide
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Guide
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/initialization/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Initialization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Making Requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/responses/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reading Responses
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide/advanced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Advanced Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../examples/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Examples
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/crud-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CRUD Operations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/struct-json/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Struct <-> JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/url-parameters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    URL Parameters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/auth-helpers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/callbacks-and-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Callbacks & Errors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/nested-json/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nested JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/array-json/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Array JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/raw-json/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Raw JSON
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/unix-timestamp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unix Timestamp
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/port-selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Custom Port
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/soap-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOAP Web Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/soap-faults/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOAP Faults
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/graphql-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Queries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/graphql-variables/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Variables
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/graphql-errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Error Handling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/graphql-streaming/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQL Streaming
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../examples/jsonrpc-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JSON-RPC Web Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../api/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/esp32httpclient/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ESP32HTTPClient
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/restrequest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    RestRequest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/soaprequest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SoapRequest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/graphqlrequest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    GraphQLRequest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/jsonrpcrequest/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JsonRpcRequest
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../practical-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Practical Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Integrations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Related Libraries
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Related Libraries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#esp32-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ESP32-MCP: Model Context Protocol Server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ESP32-MCP: Model Context Protocol Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simple-usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simple Usage Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-run-mcp-directly-on-esp32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Run MCP Directly on ESP32?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-architectural-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Architectural Advantages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Architectural Advantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-zero-heap-allocations-on-hot-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Zero-Heap Allocations on Hot Path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fluent-declarative-api-with-direct-variable-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fluent Declarative API with Direct Variable Binding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-autonomous-freertos-execution-core-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Autonomous FreeRTOS Execution (Core 1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-built-in-diagnostics-safe-gpio-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Built-in Diagnostics &amp; Safe GPIO Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-hardened-production-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Hardened Production Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-full-protocol-specification-compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Full Protocol Specification Compliance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-complete-embedded-ai-stack-outbound-inbound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Complete Embedded AI Stack: Outbound &amp; Inbound
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connecting-claude-desktop-or-cursor-to-your-esp32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connecting Claude Desktop or Cursor to Your ESP32
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-links-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Links &amp; Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../performance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Performance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Privacy Policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/PedroFnseca/esp32-http-client/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Repository
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/PedroFnseca/esp32-http-client/releases" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Releases
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#esp32-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ESP32-MCP: Model Context Protocol Server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ESP32-MCP: Model Context Protocol Server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#simple-usage-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simple Usage Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-run-mcp-directly-on-esp32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Run MCP Directly on ESP32?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-architectural-advantages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Architectural Advantages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Architectural Advantages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-zero-heap-allocations-on-hot-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Zero-Heap Allocations on Hot Path
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-fluent-declarative-api-with-direct-variable-binding" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Fluent Declarative API with Direct Variable Binding
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-autonomous-freertos-execution-core-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Autonomous FreeRTOS Execution (Core 1)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-built-in-diagnostics-safe-gpio-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Built-in Diagnostics &amp; Safe GPIO Access
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-hardened-production-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Hardened Production Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-full-protocol-specification-compliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Full Protocol Specification Compliance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-complete-embedded-ai-stack-outbound-inbound" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Complete Embedded AI Stack: Outbound &amp; Inbound
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connecting-claude-desktop-or-cursor-to-your-esp32" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connecting Claude Desktop or Cursor to Your ESP32
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-links-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Links &amp; Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <nav class="md-tags" >
+    
+      
+      
+      
+      
+        <span class="md-tag">ai</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">arduino</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">ecosystem</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">esp32</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">mcp</span>
+      
+    
+      
+      
+      
+      
+        <span class="md-tag">related-libraries</span>
+      
+    
+  </nav>
+
+
+  
+    <a href="https://github.com/PedroFnseca/esp32-http-client/edit/main/docs/related-libraries.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="related-libraries-ecosystem"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 21h8v-8H3m2 2h4v4H5m-2-8h8V3H3m2 2h4v4H5m8-6v8h8V3m-2 6h-4V5h4m-1 11h3v2h-3v3h-2v-3h-3v-2h3v-3h2Z"/></svg></span> Related Libraries &amp; Ecosystem<a class="headerlink" href="#related-libraries-ecosystem" title="Permanent link">&para;</a></h1>
+<p>Welcome to the <strong>ESP32 Ecosystem</strong> showcase. Our libraries share a unified engineering philosophy: <strong>low memory footprint, zero-heap allocations on critical paths, fluent C++ APIs, and production-grade reliability</strong> for microcontrollers.</p>
+<p>Whether your ESP32 needs to consume remote cloud APIs or expose its own physical hardware directly to autonomous AI agents, these complementary libraries provide a modern embedded development experience.</p>
+<hr />
+<h2 id="esp32-mcp"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.41 4 16 6.41v.18L18.41 9H22v2h-4.41L16 9.41V12h-1a2 2 0 0 1-2-2V7.5H9.86c-.09.37-.24.72-.44 1.05L15.18 19H20a2 2 0 0 1 2 2v1H2v-1a2 2 0 0 1 2-2h6.61l-4.69-8.5a4.006 4.006 0 0 1-3.81-3A4 4 0 0 1 5 2.63c2.13-.55 4.31.73 4.86 2.87H13V3a2 2 0 0 1 2-2h1v2.59L17.59 2H22v2zM6 4.5a2 2 0 0 0-2 2 2 2 0 0 0 2 2 2 2 0 0 0 2-2 2 2 0 0 0-2-2"/></svg></span> ESP32-MCP: Model Context Protocol Server<a class="headerlink" href="#esp32-mcp" title="Permanent link">&para;</a></h2>
+<p><strong>ESP32-MCP</strong> transforms your ESP32 into a native, high-performance <strong>Model Context Protocol (MCP)</strong> server over HTTP. Instead of setting up complex Python or Node.js bridge gateways on a separate computer, your microcontroller speaks MCP directly across your local network.</p>
+<p>This means AI assistants like <strong>Claude Desktop</strong>, <strong>Cursor</strong>, and autonomous LLM agents can discover, inspect, and invoke your hardware tools, read live sensors, and control GPIOs with zero intermediate server overhead.</p>
+<h3 id="simple-usage-example">Simple Usage Example<a class="headerlink" href="#simple-usage-example" title="Permanent link">&para;</a></h3>
+<p>Here is how straightforward it is to register a hardware tool and start the MCP server. With fluent variable binding, you never have to write JSON parsers or manual schemas:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;ESP32MCP.h&gt;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">ssid</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="s">"YOUR_WIFI_SSID"</span><span class="p">;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"YOUR_WIFI_PASSWORD"</span><span class="p">;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1">// Initialize server with name and version</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">MCPServer</span><span class="w"> </span><span class="n">server</span><span class="p">(</span><span class="s">"ESP32-Controller"</span><span class="p">,</span><span class="w"> </span><span class="s">"1.0.0"</span><span class="p">);</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">static</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="n">ledState</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="n">pinMode</span><span class="p">(</span><span class="n">LED_BUILTIN</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT</span><span class="p">);</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">ssid</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">);</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="c1">// Register a hardware control tool with direct variable binding</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="n">server</span><span class="p">.</span><span class="n">tool</span><span class="p">(</span><span class="s">"set_led"</span><span class="p">,</span><span class="w"> </span><span class="s">"Turns the onboard LED ON or OFF"</span><span class="p">)</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">          </span><span class="p">.</span><span class="n">destructive</span><span class="p">()</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">          </span><span class="p">.</span><span class="n">param</span><span class="p">(</span><span class="s">"state"</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">ledState</span><span class="p">,</span><span class="w"> </span><span class="s">"true for ON, false for OFF"</span><span class="p">)</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">          </span><span class="p">.</span><span class="n">handle</span><span class="p">([](</span><span class="n">MCPResult</span><span class="o">&amp;</span><span class="w"> </span><span class="n">r</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">              </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED_BUILTIN</span><span class="p">,</span><span class="w"> </span><span class="n">ledState</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">HIGH</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">LOW</span><span class="p">);</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">              </span><span class="n">r</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="s">"LED is now %s"</span><span class="p">,</span><span class="w"> </span><span class="n">ledState</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s">"ON"</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s">"OFF"</span><span class="p">);</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">          </span><span class="p">});</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="c1">// Enables built-in system telemetry tool (uptime, free heap, RSSI)</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="n">server</span><span class="p">.</span><span class="n">enableStatus</span><span class="p">();</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">    </span><span class="c1">// Starts HTTP server and creates FreeRTOS background task on Core 1</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">    </span><span class="n">server</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="p">}</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">    </span><span class="c1">// Your main loop remains 100% free for sensor reading and real-time tasks</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="p">}</span>
+</code></pre></div>
+<hr />
+<h3 id="why-run-mcp-directly-on-esp32">Why Run MCP Directly on ESP32?<a class="headerlink" href="#why-run-mcp-directly-on-esp32" title="Permanent link">&para;</a></h3>
+<p>The <a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> is an open standard created by Anthropic that standardizes how AI applications interact with external tools, contextual data, and execution environments.</p>
+<p>Until now, connecting embedded electronics to MCP required running an intermediary bridge script on a PC. <strong>ESP32-MCP removes the middleman completely</strong>:</p>
+<ul>
+<li><strong>Real-Time Physical Control</strong>: Give AI assistants safe, structured hands to interact with the physical world.</li>
+<li><strong>Natural Language Hardware Debugging</strong>: Ask Claude or Cursor to inspect memory, verify Wi-Fi signal quality, or toggle test pins during firmware bring-up.</li>
+<li><strong>Agentic IoT Automation</strong>: Allow multi-agent systems to query sensor readings on demand without continuously polling your microcontrollers.</li>
+</ul>
+<hr />
+<h3 id="key-architectural-advantages">Key Architectural Advantages<a class="headerlink" href="#key-architectural-advantages" title="Permanent link">&para;</a></h3>
+<h4 id="1-zero-heap-allocations-on-hot-path">1. Zero-Heap Allocations on Hot Path<a class="headerlink" href="#1-zero-heap-allocations-on-hot-path" title="Permanent link">&para;</a></h4>
+<p>Embedded stability depends on deterministic memory. ESP32-MCP contains <strong>zero heap allocations</strong> (<code>malloc</code>, <code>new</code>, <code>free</code>) during tool invocation and discovery.
+All request parsers and response builders operate over fixed-size static buffers. In stress benchmarks of 10,000 consecutive tool invocations, heap drift was measured at <strong>exactly 0 bytes</strong>, completely eliminating memory fragmentation crashes.</p>
+<h4 id="2-fluent-declarative-api-with-direct-variable-binding">2. Fluent Declarative API with Direct Variable Binding<a class="headerlink" href="#2-fluent-declarative-api-with-direct-variable-binding" title="Permanent link">&para;</a></h4>
+<p>Forget writing manual JSON schemas, type validation, or string manipulation. By binding your C++ variables directly with <code>.param("state", &amp;ledState)</code>, the library automatically handles deserialization, bounds checking, and type conversion for <code>bool</code>, <code>int</code>, <code>float</code>, <code>double</code>, and <code>char*</code>.</p>
+<h4 id="3-autonomous-freertos-execution-core-1">3. Autonomous FreeRTOS Execution (Core 1)<a class="headerlink" href="#3-autonomous-freertos-execution-core-1" title="Permanent link">&para;</a></h4>
+<p>When you call <code>server.begin()</code>, ESP32-MCP automatically creates a dedicated FreeRTOS background task pinned to Core 1. Your primary Arduino <code>loop()</code> never blocks, allowing your high-frequency PID loops, display rendering, or sensor sampling to run uninterrupted.</p>
+<h4 id="4-built-in-diagnostics-safe-gpio-access">4. Built-in Diagnostics &amp; Safe GPIO Access<a class="headerlink" href="#4-built-in-diagnostics-safe-gpio-access" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>server.enableStatus()</code>: Instantly registers <code>get_status</code> exposing uptime, free heap, chip revision, firmware version, and Wi-Fi RSSI.</li>
+<li><code>server.enableGpio({12, 13, 14})</code>: Safely exposes hardware pin control restricted exclusively to your pre-approved whitelist.</li>
+</ul>
+<h4 id="5-hardened-production-security">5. Hardened Production Security<a class="headerlink" href="#5-hardened-production-security" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Constant-Time Bearer Authentication</strong>: Prevent side-channel timing attacks with <code>server.bearer("your-secret-token")</code>.</li>
+<li><strong>Strict CORS Policy</strong>: All cross-origin browser requests are rejected by default unless origins are explicitly granted with <code>server.allowOrigin(...)</code>.</li>
+<li><strong>Payload Guard</strong>: Strict request body boundaries return HTTP 413 on buffer overflow attempts.</li>
+</ul>
+<h4 id="6-full-protocol-specification-compliance">6. Full Protocol Specification Compliance<a class="headerlink" href="#6-full-protocol-specification-compliance" title="Permanent link">&para;</a></h4>
+<p>Supports the modern MCP specification (stateless HTTP transport, <code>server/discover</code>, and <code>MCP-Protocol-Version</code> headers) alongside seamless backward compatibility for earlier MCP clients (<code>initialize</code>, <code>notifications/initialized</code>, and <code>ping</code>).</p>
+<hr />
+<h3 id="the-complete-embedded-ai-stack-outbound-inbound">The Complete Embedded AI Stack: Outbound &amp; Inbound<a class="headerlink" href="#the-complete-embedded-ai-stack-outbound-inbound" title="Permanent link">&para;</a></h3>
+<p>Combining <strong>ESP32-HTTP-Client</strong> and <strong>ESP32-MCP</strong> equips your IoT project with a complete, bidirectional AI architecture:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Library</th>
+<th>Traffic Direction</th>
+<th>Primary Objective</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Outbound AI Client</strong></td>
+<td><a href="https://esp32httpclient.com/">ESP32-HTTP-Client</a></td>
+<td>ESP32 &rarr; Remote LLM</td>
+<td>Microcontroller initiates requests to OpenAI, Claude, Gemini, DeepSeek, or Ollama, binding JSON responses directly into variables.</td>
+</tr>
+<tr>
+<td><strong>Inbound AI Tool Server</strong></td>
+<td><a href="https://github.com/PedroFnseca/esp32-mcp">ESP32-MCP</a></td>
+<td>AI Assistant &rarr; ESP32 Hardware</td>
+<td>Claude Desktop, Cursor, or local agents initiate requests to discover tools, read sensor values, and actuate GPIOs.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="connecting-claude-desktop-or-cursor-to-your-esp32">Connecting Claude Desktop or Cursor to Your ESP32<a class="headerlink" href="#connecting-claude-desktop-or-cursor-to-your-esp32" title="Permanent link">&para;</a></h3>
+<p>Configure your local AI client config file (such as <code>claude_desktop_config.json</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">"esp32_device"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">      </span><span class="nt">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npx"</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="nt">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="s2">"-y"</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="s2">"mcp-remote"</span><span class="p">,</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="s2">"http://192.168.1.150/mcp"</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">      </span><span class="p">]</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="p">}</span>
+</code></pre></div>
+<p>Once connected, Claude or Cursor immediately discovers <code>set_led</code> and <code>get_status</code>. You can prompt naturally:</p>
+<blockquote>
+<p><em>"Check if the ESP32 free heap is above 150 KB and turn on the onboard LED."</em></p>
+</blockquote>
+<p>The AI assistant will formulate tool calls and execute them sequentially against your microcontroller in real time.</p>
+<hr />
+<h3 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h3>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">PlatformIO</label><label for="__tabbed_1_2">Arduino IDE</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Add <code>ESP32-MCP</code> to your <code>platformio.ini</code> dependencies:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">[env:esp32dev]</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="na">platform</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">espressif32</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="na">board</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">esp32dev</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="na">framework</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">arduino</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="na">lib_deps</span><span class="w"> </span><span class="o">=</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="na">https</span><span class="o">:</span><span class="s">//github.com/PedroFnseca/esp32-mcp.git</span>
+</code></pre></div>
+</div>
+<div class="tabbed-block">
+<ol>
+<li>In the Arduino IDE, go to <strong>Sketch</strong> &gt; <strong>Include Library</strong> &gt; <strong>Manage Libraries...</strong></li>
+<li>Search for <code>ESP32-MCP</code> and click <strong>Install</strong>.</li>
+<li>Alternatively, download the repository as a ZIP from GitHub and add it via <strong>Sketch</strong> &gt; <strong>Include Library</strong> &gt; <strong>Add .ZIP Library...</strong></li>
+</ol>
+</div>
+</div>
+</div>
+<hr />
+<h3 id="project-links-resources">Project Links &amp; Resources<a class="headerlink" href="#project-links-resources" title="Permanent link">&para;</a></h3>
+<div class="grid cards">
+<ul>
+<li>
+<p><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.33 12.91c.09 1.55-.62 3.04-1.89 3.95l.77 1.49c.23.45.26.98.06 1.45-.19.47-.58.84-1.06 1l-.79.25a1.687 1.687 0 0 1-1.86-.55L14.44 18c-.89-.15-1.73-.53-2.44-1.1-.5.15-1 .23-1.5.23-.88 0-1.76-.27-2.5-.79-.53.16-1.07.23-1.62.22-.79.01-1.57-.15-2.3-.45a4.1 4.1 0 0 1-2.43-3.61c-.08-.72.04-1.45.35-2.11-.29-.75-.32-1.57-.07-2.33C2.3 7.11 3 6.32 3.87 5.82c.58-1.69 2.21-2.82 4-2.7 1.6-1.5 4.05-1.66 5.83-.37.42-.11.86-.17 1.3-.17 1.36-.03 2.65.57 3.5 1.64 2.04.53 3.5 2.35 3.58 4.47.05 1.11-.25 2.2-.86 3.13.07.36.11.72.11 1.09m-5-1.41c.57.07 1.02.5 1.02 1.07a1 1 0 0 1-1 1h-.63c-.32.9-.88 1.69-1.62 2.29.25.09.51.14.77.21 5.13-.07 4.53-3.2 4.53-3.25a2.59 2.59 0 0 0-2.69-2.49 1 1 0 0 1-1-1 1 1 0 0 1 1-1c1.23.03 2.41.49 3.33 1.3.05-.29.08-.59.08-.89-.06-1.24-.62-2.32-2.87-2.53-1.25-2.96-4.4-1.32-4.4-.4-.03.23.21.72.25.75a1 1 0 0 1 1 1c0 .55-.45 1-1 1-.53-.02-1.03-.22-1.43-.56-.48.31-1.03.5-1.6.56-.57.05-1.04-.35-1.07-.9a.97.97 0 0 1 .88-1.1c.16-.02.94-.14.94-.77 0-.66.25-1.29.68-1.79-.92-.25-1.91.08-2.91 1.29C6.75 5 6 5.25 5.45 7.2 4.5 7.67 4 8 3.78 9c1.08-.22 2.19-.13 3.22.25.5.19.78.75.59 1.29-.19.52-.77.78-1.29.59-.73-.32-1.55-.34-2.3-.06-.32.27-.32.83-.32 1.27 0 .74.37 1.43 1 1.83.53.27 1.12.41 1.71.4q-.225-.39-.39-.81a1.038 1.038 0 0 1 1.96-.68c.4 1.14 1.42 1.92 2.62 2.05 1.37-.07 2.59-.88 3.19-2.13.23-1.38 1.34-1.5 2.56-1.5m2 7.47-.62-1.3-.71.16 1 1.25zm-4.65-8.61a1 1 0 0 0-.91-1.03c-.71-.04-1.4.2-1.93.67-.57.58-.87 1.38-.84 2.19a1 1 0 0 0 1 1c.57 0 1-.45 1-1 0-.27.07-.54.23-.76.12-.1.27-.15.43-.15.55.03 1.02-.38 1.02-.92"/></svg></span> <strong>Model Context Protocol (MCP) for ESP32</strong></p>
+<hr />
+<p>Explore the source code, open issues, and join the development of ESP32-MCP on GitHub.</p>
+<p><a class="md-button md-button--primary" href="https://github.com/PedroFnseca/esp32-mcp"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0c4.42 0 8 3.58 8 8a8.01 8.01 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27s-1.36.09-2 .27c-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8"/></svg></span> GitHub Repository</a>
+<a class="md-button" href="https://github.com/PedroFnseca/esp32-mcp/releases"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m21.41 11.58-9-9A2 2 0 0 0 11 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 .59 1.42l9 9A2 2 0 0 0 13 22a2 2 0 0 0 1.41-.59l7-7A2 2 0 0 0 22 13a2 2 0 0 0-.59-1.42M13 20l-9-9V4h7l9 9M6.5 5A1.5 1.5 0 1 1 5 6.5 1.5 1.5 0 0 1 6.5 5"/></svg></span> Latest Releases</a></p>
+</li>
+</ul>
+</div>
+<p><a href="https://github.com/PedroFnseca/esp32-mcp/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/PedroFnseca/esp32-mcp?color=00796b&amp;label=Release&amp;logo=github" /></a>
+<a href="https://github.com/PedroFnseca/esp32-mcp/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/PedroFnseca/esp32-mcp?style=social" /></a>
+<a href="https://github.com/PedroFnseca/esp32-mcp/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/PedroFnseca/esp32-mcp?color=00796b" /></a>
+<a href="https://github.com/PedroFnseca/esp32-mcp"><img alt="C++14 / C++17" src="https://img.shields.io/badge/C%2B%2B-14%20%2F%2017-00796b" /></a></p>
+<ul>
+<li><a href="https://github.com/PedroFnseca/esp32-mcp">ESP32-MCP GitHub Repository</a></li>
+<li><a href="https://github.com/PedroFnseca/esp32-mcp/releases">Releases and Changelog</a></li>
+<li><a href="https://github.com/PedroFnseca/esp32-mcp/issues">Issue Tracker &amp; Bug Reports</a></li>
+<li><a href="https://modelcontextprotocol.io/">Official Model Context Protocol Specification</a></li>
+<li><a href="https://github.com/modelcontextprotocol">Anthropic Model Context Protocol GitHub</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 12, 2026 18:31:59 UTC">November 12, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/PedroFnseca/esp32-http-client/" target="_blank" rel="noopener" title="GitHub Repository" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.action.edit", "toc.follow"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+  
+      <script src="../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+
+  </body>
+</html>

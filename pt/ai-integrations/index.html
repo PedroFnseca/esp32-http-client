@@ -18,7 +18,7 @@
         <link rel="prev" href="../practical-examples/">
       
       
-        <link rel="next" href="../faq/">
+        <link rel="next" href="../related-libraries/">
       
       
         
@@ -1862,6 +1862,33 @@ function __md_analytics(){
   
   
     <li class="md-nav__item">
+      <a href="../related-libraries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bibliotecas Relacionadas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../faq/" class="md-nav__link">
         
   
@@ -2277,6 +2304,10 @@ function __md_analytics(){
 <h1 id="integracoes-de-ia-com-esp32-e-http-client">Integrações de IA com ESP32 e HTTP Client<a class="headerlink" href="#integracoes-de-ia-com-esp32-e-http-client" title="Permanent link">&para;</a></h1>
 <p>Integre microcontroladores ESP32 com provedores de IA em nuvem e LLMs auto-hospedados utilizando o <code>ESP32HTTPClient</code>.</p>
 <p>Com o <code>ESP32HTTPClient</code>, conectar o ESP32 a Modelos de Linguagem (LLMs) é tão simples e direto quanto consumir qualquer API REST convencional. A biblioteca gerencia o transporte HTTP e extrai os campos da resposta diretamente para as suas variáveis usando <strong>notação de ponto</strong> — sem SDKs proprietários pesados, sem manipulação manual de strings e sem árvores DOM consumindo a memória RAM.</p>
+<div class="admonition tip">
+<p class="admonition-title">Deseja expor o hardware do ESP32 como servidor de ferramentas para IA?</p>
+<p>Enquanto o <strong>ESP32-HTTP-Client</strong> é focado em requisições de <strong>saída</strong> (ESP32 &rarr; LLMs na Nuvem/Locais), conheça nossa biblioteca parceira <a href="../related-libraries/#esp32-mcp"><strong>ESP32-MCP</strong></a> caso queira um servidor <strong>MCP (Model Context Protocol)</strong> que permita a assistentes como <strong>Claude Desktop</strong> e <strong>Cursor</strong> descobrirem e executarem comandos e leituras de sensores diretamente no seu microcontrolador.</p>
+</div>
 <hr />
 <h2 id="provedores-de-ia-em-nuvem">Provedores de IA em Nuvem<a class="headerlink" href="#provedores-de-ia-em-nuvem" title="Permanent link">&para;</a></h2>
 <p>Conecte-se diretamente às principais APIs de IA em nuvem. Configure sua chave de API, monte o corpo da requisição com <code>.body()</code> e extraia o texto gerado via <code>.getBody()</code>.</p>
@@ -2644,6 +2675,7 @@ function __md_analytics(){
 <hr />
 <h2 id="documentacao-relacionada">Documentação Relacionada<a class="headerlink" href="#documentacao-relacionada" title="Permanent link">&para;</a></h2>
 <ul>
+<li><a href="../related-libraries/">Bibliotecas Relacionadas: ESP32-MCP</a>: Exponha ferramentas de hardware para agentes de IA via Model Context Protocol.</li>
 <li><a href="../practical-examples/">Exemplos Práticos</a> — Exemplos para IoT (estações meteorológicas, monitor GitHub, REST).</li>
 <li><a href="../api/esp32httpclient/">Referência da API: ESP32HTTPClient</a> — Métodos de construtor, timeout, cabeçalhos e autenticação.</li>
 <li><a href="../api/restrequest/">Referência da API: RestRequest</a> — Encadeamento de métodos fluentes, <code>.body()</code> e extração <code>.getBody()</code>.</li>
@@ -2669,7 +2701,7 @@ function __md_analytics(){
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="12 de novembro de 2026 16:21:56 UTC">12 de novembro de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="12 de novembro de 2026 18:31:59 UTC">12 de novembro de 2026</span>
   </span>
 
     
