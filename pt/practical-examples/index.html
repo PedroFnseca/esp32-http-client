@@ -18,7 +18,7 @@
         <link rel="prev" href="../api/jsonrpcrequest/">
       
       
-        <link rel="next" href="../faq/">
+        <link rel="next" href="../ai-integrations/">
       
       
         
@@ -29,7 +29,7 @@
       
       
       <link rel="icon" href="../../assets/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
   
@@ -1857,6 +1857,33 @@ function __md_analytics(){
   
   
     <li class="md-nav__item">
+      <a href="../ai-integrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integrações de IA
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../faq/" class="md-nav__link">
         
   
@@ -2262,8 +2289,6 @@ function __md_analytics(){
 <h2 id="1-estacao-meteorologica">1. Estação Meteorológica<a class="headerlink" href="#1-estacao-meteorologica" title="Permanent link">&para;</a></h2>
 <p>Consulta dados meteorológicos em tempo real, como temperatura, umidade relativa do ar e velocidade do vento para uma coordenada geográfica.</p>
 <p><strong>API:</strong> <a href="https://open-meteo.com/">Open-Meteo</a> (<code>https://api.open-meteo.com/v1/forecast</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2305,13 +2330,10 @@ function __md_analytics(){
 <a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">600000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Consulta a cada 10 minutos</span>
 <a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="2-terminal-pokemon">2. Terminal Pokémon<a class="headerlink" href="#2-terminal-pokemon" title="Permanent link">&para;</a></h2>
 <p>Pesquisa informações de um Pokémon pelo nome ou identificador, obtendo atributos como experiência base, peso, altura e tipo através de parâmetros de rota fluentes.</p>
 <p><strong>API:</strong> <a href="https://pokeapi.co/">PokéAPI</a> (<code>https://pokeapi.co/api/v2/pokemon/{name}</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2353,13 +2375,10 @@ function __md_analytics(){
 <a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">30000</span><span class="p">);</span>
 <a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="3-monitor-de-repositorio-github">3. Monitor de Repositório GitHub<a class="headerlink" href="#3-monitor-de-repositorio-github" title="Permanent link">&para;</a></h2>
 <p>Monitora métricas públicas de um repositório no GitHub, incluindo número de estrelas, forks e issues abertas.</p>
 <p><strong>API:</strong> <a href="https://docs.github.com/en/rest/repos/repos#get-a-repository">GitHub REST API</a> (<code>https://api.github.com/repos/{owner}/{repo}</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2400,13 +2419,10 @@ function __md_analytics(){
 <a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">300000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Consulta a cada 5 minutos</span>
 <a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="4-verificador-de-releases-do-github">4. Verificador de Releases do GitHub<a class="headerlink" href="#4-verificador-de-releases-do-github" title="Permanent link">&para;</a></h2>
 <p>Verifica periodicamente a versão da última release lançada em um repositório GitHub para detecção de atualizações de firmware (OTA).</p>
 <p><strong>API:</strong> <a href="https://docs.github.com/en/rest/releases/releases#get-the-latest-release">GitHub REST API</a> (<code>https://api.github.com/repos/{owner}/{repo}/releases/latest</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2448,13 +2464,10 @@ function __md_analytics(){
 <a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">3600000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Checa 1 vez por hora</span>
 <a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="5-rastreador-da-iss">5. Rastreador da ISS<a class="headerlink" href="#5-rastreador-da-iss" title="Permanent link">&para;</a></h2>
 <p>Acompanha a trajetória orbital e as coordenadas geográficas (latitude e longitude) da Estação Espacial Internacional em tempo real.</p>
 <p><strong>API:</strong> <a href="http://open-notify.org/">Open Notify</a> (<code>http://api.open-notify.org/iss-now.json</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2488,13 +2501,10 @@ function __md_analytics(){
 <a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Atualiza a cada 10 segundos</span>
 <a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="6-conversor-de-moedas">6. Conversor de Moedas<a class="headerlink" href="#6-conversor-de-moedas" title="Permanent link">&para;</a></h2>
 <p>Consulta taxas de câmbio atualizadas em tempo real e calcula conversões monetárias entre pares de moedas (ex: EUR, USD, BRL).</p>
 <p><strong>API:</strong> <a href="https://www.frankfurter.app/">Frankfurter API</a> (<code>https://api.frankfurter.app/latest</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2531,13 +2541,10 @@ function __md_analytics(){
 <a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">1800000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Atualiza a cada 30 minutos</span>
 <a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="7-curiosidades-aleatorias">7. Curiosidades Aleatórias<a class="headerlink" href="#7-curiosidades-aleatorias" title="Permanent link">&para;</a></h2>
 <p>Busca e exibe fatos e curiosidades aleatórias para displays de mesa, relógios inteligentes ou painéis interativos.</p>
 <p><strong>API:</strong> <a href="https://uselessfacts.jsph.pl/">Useless Facts API</a> (<code>https://uselessfacts.jsph.pl/api/v2/facts/random</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2570,13 +2577,10 @@ function __md_analytics(){
 <a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Nova curiosidade a cada minuto</span>
 <a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="8-visualizador-de-fotos-de-cachorros">8. Visualizador de Fotos de Cachorros<a class="headerlink" href="#8-visualizador-de-fotos-de-cachorros" title="Permanent link">&para;</a></h2>
 <p>Obtém URLs de fotos aleatórias de cachorros a partir de uma API aberta para exibição em telas TFT, LCD ou painéis e-paper.</p>
 <p><strong>API:</strong> <a href="https://dog.ceo/dog-api/">Dog CEO Dog API</a> (<code>https://dog.ceo/api/breeds/image/random</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2610,13 +2614,10 @@ function __md_analytics(){
 <a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">30000</span><span class="p">);</span>
 <a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="9-foto-astronomica-do-dia-nasa">9. Foto Astronômica do Dia (NASA)<a class="headerlink" href="#9-foto-astronomica-do-dia-nasa" title="Permanent link">&para;</a></h2>
 <p>Consulta metadados da Foto Astronômica do Dia da NASA, incluindo título, data, explicação e a URL direta da imagem.</p>
 <p><strong>API:</strong> <a href="https://api.nasa.gov/">NASA Open APIs</a> (<code>https://api.nasa.gov/planetary/apod</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2654,13 +2655,10 @@ function __md_analytics(){
 <a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">86400000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Consulta diária</span>
 <a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="10-pesquisa-de-livros">10. Pesquisa de Livros<a class="headerlink" href="#10-pesquisa-de-livros" title="Permanent link">&para;</a></h2>
 <p>Consulta o catálogo do Open Library para buscar detalhes de uma publicação através do ISBN ou título (título, autor, número de páginas e ano).</p>
 <p><strong>API:</strong> <a href="https://openlibrary.org/developers/api">Open Library</a> (<code>https://openlibrary.org/api/books</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2700,13 +2698,10 @@ function __md_analytics(){
 <a id="__codelineno-9-37" name="__codelineno-9-37" href="#__codelineno-9-37"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
 <a id="__codelineno-9-38" name="__codelineno-9-38" href="#__codelineno-9-38"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="11-monitor-de-planta-inteligente">11. Monitor de Planta Inteligente<a class="headerlink" href="#11-monitor-de-planta-inteligente" title="Permanent link">&para;</a></h2>
 <p>Realiza a leitura de múltiplos sensores (umidade do solo, temperatura, luminosidade) e envia telemetria via requisição POST JSON para a nuvem.</p>
 <p><strong>API:</strong> Backend IoT Customizado (<code>https://api.exemplo-iot.com/v1/telemetry</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2750,13 +2745,10 @@ function __md_analytics(){
 <a id="__codelineno-10-41" name="__codelineno-10-41" href="#__codelineno-10-41"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Publica a cada 60 segundos</span>
 <a id="__codelineno-10-42" name="__codelineno-10-42" href="#__codelineno-10-42"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="12-sistema-de-alertas-iot">12. Sistema de Alertas IoT<a class="headerlink" href="#12-sistema-de-alertas-iot" title="Permanent link">&para;</a></h2>
 <p>Monitora condições críticas de segurança (como vazamento de gás, fumaça ou intrusão) e dispara imediatamente uma notificação de emergência via webhook POST.</p>
 <p><strong>API:</strong> Webhook / Gateway de Alertas (<code>https://api.exemplo-alertas.com/v1/notify</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2797,13 +2789,10 @@ function __md_analytics(){
 <a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Checagem frequente de segurança</span>
 <a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="13-envio-de-dados-com-requisicao-post">13. Envio de Dados com Requisição POST<a class="headerlink" href="#13-envio-de-dados-com-requisicao-post" title="Permanent link">&para;</a></h2>
 <p>Cria novos registros enviando um payload JSON estruturado via POST para um servidor REST e recebe o ID gerado na resposta.</p>
 <p><strong>API:</strong> <a href="https://jsonplaceholder.typicode.com/">JSONPlaceholder</a> (<code>https://jsonplaceholder.typicode.com/posts</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2840,13 +2829,10 @@ function __md_analytics(){
 <a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">60000</span><span class="p">);</span>
 <a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 <hr />
 <h2 id="14-verificador-de-status-de-api-publica">14. Verificador de Status de API Pública<a class="headerlink" href="#14-verificador-de-status-de-api-publica" title="Permanent link">&para;</a></h2>
 <p>Verifica periodicamente a disponibilidade, latência e código de status HTTP de um serviço ou API pública remota.</p>
 <p><strong>API:</strong> Public Healthcheck API (<code>https://httpbin.org/status/200</code>)</p>
-<details class="example">
-<summary>Ver Código</summary>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;Arduino.h&gt;</span>
 <a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
 <a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">"ESP32HTTPClient.h"</span>
@@ -2880,7 +2866,6 @@ function __md_analytics(){
 <a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a><span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">30000</span><span class="p">);</span><span class="w"> </span><span class="c1">// Teste a cada 30 segundos</span>
 <a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a><span class="p">}</span>
 </code></pre></div>
-</details>
 
 
 
@@ -2901,7 +2886,7 @@ function __md_analytics(){
     <span class="md-icon" title="Última atualização">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="21 de setembro de 2026 19:08:21 UTC">21 de setembro de 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="12 de novembro de 2026 16:25:09 UTC">12 de novembro de 2026</span>
   </span>
 
     
@@ -2976,7 +2961,7 @@ function __md_analytics(){
     
     
   
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="../../javascripts/extra.js"></script>
       
