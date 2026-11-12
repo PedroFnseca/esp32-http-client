@@ -2511,7 +2511,7 @@ static void testFilterArray() {
 
   raw = "";
   client.get("").filterArray("c").equals("XX").collect(&raw);
-  expectEq(raw.c_str(), "[]", "String collect with no match must return an empty array");
+  expectEq(raw.c_str(), "", "String collect with no match must not change target String");
 }
 
 static void testFilterArrayEdgeCases() {

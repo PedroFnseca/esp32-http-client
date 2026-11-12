@@ -74,7 +74,7 @@ class RestRequest {
   RestRequest& getHeader(const char* name, char (&target)[N]);
 
   static void parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter* filter = nullptr);
-  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, bool* matched = nullptr, const RestFilter* filter = nullptr);
+  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterSlot* slot = nullptr, const RestFilter* filter = nullptr);
   static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, const RestFilter* filter = nullptr);
   static void parsePrimitiveWithBinding(BufferedStreamReader& r, ResponseBinding* match);
   static void readRawJson(BufferedStreamReader& r, String* target, char openingBrace);
@@ -83,7 +83,11 @@ class RestRequest {
 
   RestRequest& equals(bool value);
   RestRequest& equals(int value);
+  RestRequest& equals(unsigned int value);
   RestRequest& equals(long value);
+  RestRequest& equals(unsigned long value);
+  RestRequest& equals(long long value);
+  RestRequest& equals(unsigned long long value);
   RestRequest& equals(float value);
   RestRequest& equals(double value);
   RestRequest& equals(const char* value);
@@ -91,7 +95,11 @@ class RestRequest {
 
   RestRequest& notEquals(bool value);
   RestRequest& notEquals(int value);
+  RestRequest& notEquals(unsigned int value);
   RestRequest& notEquals(long value);
+  RestRequest& notEquals(unsigned long value);
+  RestRequest& notEquals(long long value);
+  RestRequest& notEquals(unsigned long long value);
   RestRequest& notEquals(float value);
   RestRequest& notEquals(double value);
   RestRequest& notEquals(const char* value);
@@ -163,7 +171,7 @@ class RestRequest {
   void addParam(std::vector<KeyValue>& list, const char* key, float value);
   void addParam(std::vector<KeyValue>& list, const char* key, double value);
 
-  RestRequest& applyFilter(FilterOperator op, DataType type, const char* valStr);
+  RestRequest& applyFilter(FilterOperator op, DataType type, const char* valStr, double num = 0.0);
   static bool evaluateFilter(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter& filter);
 };
 

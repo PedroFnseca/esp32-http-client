@@ -70,6 +70,30 @@ static void skipValue(BufferedStreamReader& r) {
   }
 }
 
+static void readRawPrimitive(BufferedStreamReader& r, char* out, size_t cap) {
+  size_t n = 0;
+  auto put = [&](char c) { if (n < cap - 1) out[n++] = c; };
+
+  if (r.peek() == '"') {
+    put((char)r.read());
+    bool escaped = false;
+    while (r.available()) {
+      char c = (char)r.read();
+      put(c);
+      if (escaped) escaped = false;
+      else if (c == '\\') escaped = true;
+      else if (c == '"') break;
+    }
+  } else {
+    while (r.available()) {
+      char c = (char)r.peek();
+      if (c == ',' || c == '}' || c == ']' || isspace((unsigned char)c)) break;
+      put((char)r.read());
+    }
+  }
+  out[n] = '\0';
+}
+
 static void readStringIntoBuffer(BufferedStreamReader& r, char* buffer, size_t maxLen) {
   r.read();
   size_t idx = 0;
@@ -637,7 +661,7 @@ void RestRequest::parsePrimitiveWithBinding(BufferedStreamReader& r, ResponseBin
   }
 }
 
-void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, bool* matched, const RestFilter* filter) {
+void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterSlot* slot, const RestFilter* filter) {
   char keyBuffer[64];
   char fullPath[128];
 
@@ -682,6 +706,10 @@ void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* b
           }
         }
 
+        if (slot && strncmp(slot->key, fullPath, fpLen) == 0 && slot->key[fpLen] == '.') {
+          hasChildBinding = true;
+        }
+
         const bool filtering = isCollecting(filter);
         const char* tPath = filtering ? filter->targetPath : "";
 
@@ -697,11 +725,11 @@ void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* b
           }
         } else if (filtering && nextChar == '{' && strncmp(tPath, fullPath, fpLen) == 0 && tPath[fpLen] == '.') {
           r.read();
-          parseObjectWithBindings(r, fullPath, bindings, matched, filter);
+          parseObjectWithBindings(r, fullPath, bindings, slot, filter);
         } else if (hasChildBinding) {
           r.read();
           if (nextChar == '{') {
-            parseObjectWithBindings(r, fullPath, bindings, matched, filter);
+            parseObjectWithBindings(r, fullPath, bindings, slot, filter);
           } else {
             parseArrayWithBindings(r, fullPath, bindings);
           }
@@ -717,13 +745,29 @@ void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* b
           }
         }
 
-        if (match) {
-          if (matched && match == &bindings.front()) {
-            bool ok = (nextChar == '"')                      ? match->type == TYPE_ARDUINO_STRING
-                    : (nextChar == 't' || nextChar == 'f')   ? match->type == TYPE_BOOL
-                    : (nextChar != 'n')                      && match->type == TYPE_DOUBLE;
-            if (ok) *matched = true;
+        const bool isSlot = slot && strcmp(fullPath, slot->key) == 0;
+
+        if (isSlot && match) {
+          char raw[256];
+          readRawPrimitive(r, raw, sizeof(raw));
+
+          if (slot->accepts(nextChar)) {
+            ResponseBinding sb = slot->binding();
+            BufferedStreamReader sr(raw);
+            parsePrimitiveWithBinding(sr, &sb);
+            slot->matched = true;
           }
+          BufferedStreamReader mr(raw);
+          parsePrimitiveWithBinding(mr, match);
+        } else if (isSlot) {
+          if (slot->accepts(nextChar)) {
+            ResponseBinding sb = slot->binding();
+            parsePrimitiveWithBinding(r, &sb);
+            slot->matched = true;
+          } else {
+            skipValue(r);
+          }
+        } else if (match) {
           parsePrimitiveWithBinding(r, match);
         } else {
           skipValue(r);
@@ -819,82 +863,6 @@ void RestRequest::parseArrayWithBindings(BufferedStreamReader& r, const char* ba
   }
 }
 
-bool RestRequest::evaluateFilter(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter& filter) {
-  String stringValue;
-  double numValue = 0.0;
-  bool boolValue = false;
-  String filterPath = filter.path;
-
-  void* filterTarget = filter.type == TYPE_BOOL   ? (void*)&boolValue
-                     : filter.type == TYPE_DOUBLE ? (void*)&numValue
-                                                  : (void*)&stringValue;
-
-  ResponseBinding out{};
-  for (const auto& b : bindings) {
-    if (strcmp(b.key, filterPath.c_str()) == 0) {
-      out = b;
-      break;
-    }
-  }
-
-  const DataType filterBindingType = filter.type == TYPE_STRING ? TYPE_ARDUINO_STRING : filter.type;
-  bindings.insert(bindings.begin(), {filterPath.c_str(), filterTarget, filterBindingType, 0});
-
-  bool filterMatched = false;
-  parseObjectWithBindings(r, "", bindings, &filterMatched);
-
-  if (!filterMatched) return false;
-
-  if (out.target) {
-    switch (out.type) {
-      case TYPE_BOOL:
-        *(bool*)out.target = boolValue;
-        break;
-      case TYPE_INT:
-        *(int*)out.target = (int)numValue;
-        break;
-      case TYPE_LONG:
-        *(long*)out.target = (long)numValue;
-        break;
-      case TYPE_FLOAT:
-        *(float*)out.target = (float)numValue;
-        break;
-      case TYPE_DOUBLE:
-        *(double*)out.target = numValue;
-        break;
-      case TYPE_ARDUINO_STRING:
-        *(String*)out.target = stringValue;
-        break;
-      case TYPE_STRING:
-        if (out.size > 0) {
-          strncpy((char*)out.target, stringValue.c_str(), out.size - 1);
-          ((char*)out.target)[out.size - 1] = '\0';
-        }
-        break;
-      default:
-        break;
-    }
-  }
-
-  bool equal = false;
-  switch (filter.type) {
-    case TYPE_BOOL: {
-      equal = (boolValue == (strcmp(filter.value, "true") == 0));
-      break;
-    }
-    case TYPE_DOUBLE: {
-      equal = numValue == std::strtod(filter.value, nullptr);
-      break;
-    }
-    default: {
-      equal = (strcmp(stringValue.c_str(), filter.value) == 0);
-      break;
-    }
-  }
-
-  return filter.op == FILTER_EQUALS ? equal : !equal;
-}
-
 RestRequest& RestRequest::filterArray(const char* key, const char* arrayPath) {
   _filter.active = true;
   strncpy(_filter.path, key ? key : "", sizeof(_filter.path) - 1);
@@ -904,10 +872,11 @@ RestRequest& RestRequest::filterArray(const char* key, const char* arrayPath) {
   return *this;
 }
 
-RestRequest& RestRequest::applyFilter(FilterOperator op, DataType type, const char* valStr) {
+RestRequest& RestRequest::applyFilter(FilterOperator op, DataType type, const char* valStr, double num) {
   _filter.active = true;
   _filter.op = op;
   _filter.type = type;
+  _filter.num = num;
   strncpy(_filter.value, valStr ? valStr : "", sizeof(_filter.value) - 1);
   _filter.value[sizeof(_filter.value) - 1] = '\0';
   return *this;
@@ -917,7 +886,6 @@ RestRequest& RestRequest::collect(String* targetString) {
   if (!targetString) return *this;
 
   _filter.active = true;
-  *targetString = "[]";
   const RestFilter filter = _filter;
   _filter.targetCollector = [targetString, filter](BufferedStreamReader& reader) {
     String rawObject;
@@ -942,32 +910,63 @@ RestRequest& RestRequest::collect(String* targetString) {
   return *this;
 }
 
+bool RestRequest::evaluateFilter(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter& filter) {
+  FilterSlot slot(filter.path, filter.type);
+  parseObjectWithBindings(r, "", bindings, &slot);
+
+  if (!slot.matched) return false;
+
+  bool equal;
+  switch (filter.type) {
+    case TYPE_BOOL:
+      equal = (slot.b == (strcmp(filter.value, "true") == 0));
+      break;
+    case TYPE_DOUBLE:
+      equal = (slot.d == filter.num);
+      break;
+    default:
+      equal = (strcmp(slot.s, filter.value) == 0);
+      break;
+  }
+  return filter.op == FILTER_EQUALS ? equal : !equal;
+}
+
 RestRequest& RestRequest::equals(bool value) {
   return applyFilter(FILTER_EQUALS, TYPE_BOOL, value ? "true" : "false");
 }
 
 RestRequest& RestRequest::equals(int value) {
-  char buf[32];
-  snprintf(buf, sizeof(buf), "%d", value);
-  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, buf);
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(unsigned int value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
 }
 
 RestRequest& RestRequest::equals(long value) {
-  char buf[32];
-  snprintf(buf, sizeof(buf), "%ld", value);
-  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, buf);
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(unsigned long value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(long long value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(unsigned long long value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
 }
 
 RestRequest& RestRequest::equals(float value) {
   char buf[32];
   snprintf(buf, sizeof(buf), "%.5g", value);
-  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, buf);
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", std::strtod(buf, nullptr));
 }
 
 RestRequest& RestRequest::equals(double value) {
-  char buf[32];
-  snprintf(buf, sizeof(buf), "%.9g", value);
-  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, buf);
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", value);
 }
 
 RestRequest& RestRequest::equals(const char* value) {
@@ -983,27 +982,37 @@ RestRequest& RestRequest::notEquals(bool value) {
 }
 
 RestRequest& RestRequest::notEquals(int value) {
-  char buf[32];
-  snprintf(buf, sizeof(buf), "%d", value);
-  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, buf);
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(unsigned int value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
 }
 
 RestRequest& RestRequest::notEquals(long value) {
-  char buf[32];
-  snprintf(buf, sizeof(buf), "%ld", value);
-  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, buf);
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(unsigned long value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(long long value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(unsigned long long value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
 }
 
 RestRequest& RestRequest::notEquals(float value) {
   char buf[32];
   snprintf(buf, sizeof(buf), "%.5g", value);
-  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, buf);
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", std::strtod(buf, nullptr));
 }
 
 RestRequest& RestRequest::notEquals(double value) {
-  char buf[32];
-  snprintf(buf, sizeof(buf), "%.9g", value);
-  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, buf);
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", value);
 }
 
 RestRequest& RestRequest::notEquals(const char* value) {
@@ -1013,4 +1022,3 @@ RestRequest& RestRequest::notEquals(const char* value) {
 RestRequest& RestRequest::notEquals(const String& v) {
   return notEquals(v.c_str());
 }
-

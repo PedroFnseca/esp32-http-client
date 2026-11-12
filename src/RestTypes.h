@@ -121,6 +121,7 @@ struct RestFilter {
   char path[128];
   char targetPath[128];
   char value[64];
+  double num = 0.0;
   FilterOperator op;
   DataType type;
   std::function<void(BufferedStreamReader&)> targetCollector;
@@ -132,6 +133,32 @@ struct RestFilter {
   }
 };
 
+struct FilterSlot {
+  static constexpr size_t STR_MAX = 65;
+
+  const char* key;
+  DataType type;
+  char s[STR_MAX];
+  double d = 0.0;
+  bool b = false;
+  bool matched = false;
+
+  FilterSlot(const char* k, DataType t) : key(k), type(t) { s[0] = '\0'; }
+
+  ResponseBinding binding() {
+    void* target = type == TYPE_BOOL ? (void*)&b
+                 : type == TYPE_DOUBLE ? (void*)&d : (void*)s;
+    return {key, target, type, type == TYPE_STRING ? sizeof(s) : 0};
+  }
+
+  bool accepts(char firstChar) const {
+    if (type == TYPE_STRING) return firstChar != 'n';  // remove null
+    if (firstChar == '"') return false;
+    if (firstChar == 't' || firstChar == 'f') return type == TYPE_BOOL;
+    if (firstChar == 'n') return false;
+    return type == TYPE_DOUBLE;
+  }
+};
 
 class RestJsonSerializer {
  public:
