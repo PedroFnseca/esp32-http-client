@@ -88,6 +88,8 @@ jobs:
 
       - name: Generate Release Notes
         if: steps.tag.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
 
@@ -105,8 +107,10 @@ jobs:
             PREFIX="$2"
 
             COMMITS=$(git log $RANGE --pretty=format:"%s (%h)" \
-              | grep "^$PREFIX:" \
-              | sed "s/^$PREFIX: /- /")
+              | grep -E "^$PREFIX(\([^)]+\))?:" \
+              | grep -v "auto-update coverage badge" \
+              | grep -v "auto-update version tag" \
+              | sed -E "s/^$PREFIX(\([^)]+\))?: /- /" || true)
 
             if [ -n "$COMMITS" ]; then
               echo "## $TITLE" >> RELEASE_NOTES.md
@@ -125,14 +129,34 @@ jobs:
           create_section "Styles" "style"
 
           CHORES=$(git log $RANGE --pretty=format:"%s (%h)" \
-              | grep "^chore:" \
+              | grep -E "^chore(\([^)]+\))?:" \
               | grep -v "bump version" \
-              | sed 's/^chore: /- /')
+              | grep -v "auto-update coverage badge" \
+              | grep -v "auto-update version tag" \
+              | sed -E 's/^chore(\([^)]+\))?: /- /' || true)
 
           if [ -n "$CHORES" ]; then
             echo "## Miscellaneous Chores" >> RELEASE_NOTES.md
             echo "" >> RELEASE_NOTES.md
             echo "$CHORES" >> RELEASE_NOTES.md
+            echo "" >> RELEASE_NOTES.md
+          fi
+
+          CONTRIBUTORS=$( (
+            if [ -n "$PREVIOUS_TAG" ]; then
+              gh api "repos/${{ github.repository }}/compare/${PREVIOUS_TAG}...HEAD" --jq '.commits[] | select(.author.login != null and (.author.login | test("bot") | not)) | .author.login' 2>/dev/null || true
+            fi
+            git log $RANGE --pretty=format:"%s" \
+              | grep -oE "Merge pull request #[0-9]+ from [^/]+" \
+              | sed -E "s/Merge pull request #[0-9]+ from //" || true
+          ) | grep -v -E "github-actions|\[bot\]" | sort -u )
+
+          if [ -n "$CONTRIBUTORS" ]; then
+            echo "## Contributors" >> RELEASE_NOTES.md
+            echo "" >> RELEASE_NOTES.md
+            echo "$CONTRIBUTORS" | while read -r USER; do
+              [ -n "$USER" ] && echo "- @$USER" >> RELEASE_NOTES.md
+            done
             echo "" >> RELEASE_NOTES.md
           fi
 
