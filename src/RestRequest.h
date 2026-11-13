@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include <vector>
+#include <memory>
 
 #include "RestTypes.h"
 
@@ -111,9 +112,9 @@ class RestRequest {
   template <typename T>
   typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type collect(std::vector<T>* targetVector) {
     if (!targetVector) return *this;
+    RestFilter& f = getFilter();
 
-    _filter.active = true;
-    _filter.targetCollector = [targetVector](BufferedStreamReader& reader, const RestFilter& filter) {
+    f.targetCollector = [targetVector](BufferedStreamReader& reader, const RestFilter& filter) {
       T value{};
       std::vector<ResponseBinding> bindings;
       std::vector<String> keyStorage;
@@ -152,7 +153,12 @@ class RestRequest {
   std::vector<ResponseBinding> _responseBindings;
   std::vector<ResponseBinding> _headerBindings;
 
-  RestFilter _filter;
+  std::unique_ptr<RestFilter> _filter;
+
+  RestFilter& getFilter() {
+    if (!_filter) _filter.reset(new RestFilter());
+    return *_filter;
+  }
 
   void execute();
   void parseResponse(BufferedStreamReader& r);

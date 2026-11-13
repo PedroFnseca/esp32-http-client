@@ -117,7 +117,6 @@ inline typename std::enable_if<!HasRestJsonMapMember<T>::value && HasRestJsonMap
 }
 
 struct RestFilter {
-  bool active = false;
   char path[128];
   char targetPath[128];
   char value[64];
@@ -126,7 +125,7 @@ struct RestFilter {
   DataType type;
   std::function<void(BufferedStreamReader&, const RestFilter&)> targetCollector;
 
-  RestFilter() : active(false), op(FILTER_NONE), type(TYPE_STRING) {
+  RestFilter() : op(FILTER_NONE), type(TYPE_STRING) {
     path[0] = '\0';
     targetPath[0] = '\0';
     value[0] = '\0';

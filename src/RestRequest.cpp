@@ -116,7 +116,7 @@ static void readStringIntoBuffer(BufferedStreamReader& r, char* buffer, size_t m
 }
 
 static inline bool isCollecting(const RestFilter* f) {
-  return f && f->active && f->targetCollector;
+  return f && f->targetCollector;
 }
 
 static inline bool isDescendantPath(const char* key, const char* path) {
@@ -526,7 +526,8 @@ void RestRequest::execute() {
 }
 
 void RestRequest::parseResponse(BufferedStreamReader& r) {
-  parseJsonWithBindings(r, _responseBindings, &_filter);
+  RestFilter& f = getFilter();
+  parseJsonWithBindings(r, _responseBindings, &f);
 }
 
 void RestRequest::parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter* filter) {
@@ -541,6 +542,8 @@ void RestRequest::parseJsonWithBindings(BufferedStreamReader& r, std::vector<Res
   ResponseBinding* root = findBinding(bindings, "");
   if (root && root->type == TYPE_ARDUINO_STRING) {
     readRawJson(r, (String*)root->target, opening);
+  } else if (opening == '{' && activeFilter && activeFilter->targetPath[0] == '\0') {
+    activeFilter->targetCollector(r, *activeFilter);
   } else if (opening == '{') {
     parseObjectWithBindings(r, "", bindings, nullptr, activeFilter);
   } else {
@@ -808,29 +811,29 @@ void RestRequest::parseArrayWithBindings(BufferedStreamReader& r, const char* ba
 }
 
 RestRequest& RestRequest::filterArray(const char* key, const char* arrayPath) {
-  _filter.active = true;
-  strncpy(_filter.path, key ? key : "", sizeof(_filter.path) - 1);
-  _filter.path[sizeof(_filter.path) - 1] = '\0';
-  strncpy(_filter.targetPath, arrayPath ? arrayPath : "", sizeof(_filter.targetPath) - 1);
-  _filter.targetPath[sizeof(_filter.targetPath) - 1] = '\0';
+  RestFilter& f = getFilter();
+  strncpy(f.path, key ? key : "", sizeof(f.path) - 1);
+  f.path[sizeof(f.path) - 1] = '\0';
+  strncpy(f.targetPath, arrayPath ? arrayPath : "", sizeof(f.targetPath) - 1);
+  f.targetPath[sizeof(f.targetPath) - 1] = '\0';
   return *this;
 }
 
 RestRequest& RestRequest::applyFilter(FilterOperator op, DataType type, const char* valStr, double num) {
-  _filter.active = true;
-  _filter.op = op;
-  _filter.type = type;
-  _filter.num = num;
-  strncpy(_filter.value, valStr ? valStr : "", sizeof(_filter.value) - 1);
-  _filter.value[sizeof(_filter.value) - 1] = '\0';
+  RestFilter& f = getFilter();
+  f.op = op;
+  f.type = type;
+  f.num = num;
+  strncpy(f.value, valStr ? valStr : "", sizeof(f.value) - 1);
+  f.value[sizeof(f.value) - 1] = '\0';
   return *this;
 }
 
 RestRequest& RestRequest::collect(String* targetString) {
   if (!targetString) return *this;
+  RestFilter& f = getFilter();
 
-  _filter.active = true;
-  _filter.targetCollector = [targetString](BufferedStreamReader& reader, const RestFilter& filter) {
+  f.targetCollector = [targetString](BufferedStreamReader& reader, const RestFilter& filter) {
     String rawObject;
     RestRequest::readRawJson(reader, &rawObject, '{');
 
