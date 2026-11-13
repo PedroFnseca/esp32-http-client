@@ -293,6 +293,90 @@ client.get("/dashboard").getBody("data.profile", &profile);
 
 ---
 
+### Filtrando e coletando arrays
+
+Use `filterArray(path)` com `equals()` ou `notEquals()` e `collect()` para manter apenas os objetos de um array cujo campo corresponda ao critério. O caminho é relativo a cada elemento do array e pode ser aninhado usando pontos.
+
+```cpp
+std::vector<Weather> forecasts;
+
+// Resposta no formato [{"location": {"countryCode": "..."}}, {...}]
+client.get("/forecast")
+      .filterArray("location.countryCode").equals("CA")
+      .collect(&forecasts);
+```
+
+`collect(&vector)` requer uma struct mapeada (`REST_JSON_MAP`) e anexa apenas os objetos correspondentes ao vetor de destino. Elementos que não forem objetos são ignorados.
+
+`equals()` e `notEquals()` aceitam `bool`, `int`, `unsigned int`, `long`, `unsigned long`, `long long`, `unsigned long long`, `float`, `double`, `const char*` e `String`.
+
+```cpp
+.filterArray("storm").equals(true)
+.filterArray("temperature").notEquals(0)
+```
+
+`filterArray()` é opcional. Sem ele, `collect()` anexa todos os elementos do array:
+
+```cpp
+// Resposta no formato [{...}, {...}]
+client.get("/forecast")
+      .collect(&forecasts);
+```
+
+Para capturar os objetos correspondentes como JSON bruto, passe um ponteiro para `String`:
+
+!!! warning "Aviso de Memória"
+    Usar `String` com payloads grandes realiza alocação dinâmica na heap. Prefira tipos primitivos tipados ou structs mapeadas sempre que possível.
+
+```cpp
+String forecast;
+
+client.get("/forecast")
+      .filterArray("location.countryCode").equals("CA")
+      .collect(&forecast);
+```
+
+O alvo conterá todos os objetos correspondentes como um array JSON, mesmo quando a raiz da resposta for um único objeto.
+
+**Notas e limitações**
+
+- Um campo ausente ou `null` nunca corresponde, mesmo com `notEquals()`.
+- Valores de filtro em texto (String) são limitados a 63 caracteres.
+- Um valor de filtro `float` é arredondado para 5 dígitos significativos antes da comparação, e o número JSON é comparado como `double`. Use `double` para uma comparação exata.
+- Se nada corresponder ou se a resposta não tiver o formato esperado (por exemplo, o caminho do array não existir ou apontar para uma string ou número), o alvo permanece inalterado e nenhum erro é reportado.
+
+---
+
+### Arrays dentro de um objeto
+
+`filterArray(key, arrayPath)` aceita o caminho do array que contém os objetos, `arrayPath`, como um segundo argumento opcional. Sem ele, o array considerado é a raiz da resposta. O caminho pode ser aninhado com pontos e índices de array, similar à chave de `getBody()`.
+
+```cpp
+// Resposta no formato {"apiType": "rest", "data": [...]}
+client.get("/forecast")
+      .filterArray("location.countryCode", "data").equals("CA")
+      .collect(&forecasts);
+```
+
+Para coletar todos os elementos de um array aninhado sem filtrar, use uma chave vazia:
+
+```cpp
+client.get("/forecast")
+      .filterArray("", "data")
+      .collect(&forecasts);
+```
+
+Se a raiz da resposta (ou o objeto em `arrayPath`) for um objeto em vez de um array, esse objeto será tratado como um único elemento.
+
+```cpp
+// Resposta no formato {"location": {"countryCode": "CA"}, "temperature": -2}
+client.get("/forecast")
+      .filterArray("location.countryCode").equals("CA")
+      .collect(&forecasts);   // forecasts.size() == 1
+```
+
+---
+
 ## Extraindo Cabeçalhos da Resposta
 
 `getHeader()` registra a extração de cabeçalhos HTTP da resposta. A busca é **não sensível a maiúsculas/minúsculas (case-insensitive)** (ex: `"token"`, `"TOKEN"` e `"Token"` são equivalentes). Se o cabeçalho não estiver presente na resposta, a variável alvo **permanece inalterada**. Todas as sobrecargas são encadeáveis.
