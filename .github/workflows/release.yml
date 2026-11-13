@@ -91,7 +91,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          TAG="v${{ steps.version.outputs.version }}"
+          PREVIOUS_TAG=$(git tag --sort=-v:refname | grep -v "^${TAG}$" | head -n 1 || echo "")
+          if [ -z "$PREVIOUS_TAG" ]; then
+            PREVIOUS_TAG=$(git describe --tags --abbrev=0 "${TAG}^" 2>/dev/null || echo "")
+          fi
 
           if [ -z "$PREVIOUS_TAG" ]; then
             RANGE="HEAD"
