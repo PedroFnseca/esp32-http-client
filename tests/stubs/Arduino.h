@@ -106,6 +106,14 @@ class String {
     return replaced;
   }
 
+  void remove(unsigned int index) {
+    if (index < _data.size()) _data.erase(index);
+  }
+
+  void remove(unsigned int index, unsigned int count) {
+    if (index < _data.size()) _data.erase(index, count);
+  }
+
   char operator[](size_t index) const {
     if (index < _data.size()) return _data[index];
     return '\0';

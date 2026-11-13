@@ -70,6 +70,30 @@ static void skipValue(BufferedStreamReader& r) {
   }
 }
 
+static void readRawPrimitive(BufferedStreamReader& r, char* out, size_t cap) {
+  size_t n = 0;
+  auto put = [&](char c) { if (n < cap - 1) out[n++] = c; };
+
+  if (r.peek() == '"') {
+    put((char)r.read());
+    bool escaped = false;
+    while (r.available()) {
+      char c = (char)r.read();
+      put(c);
+      if (escaped) escaped = false;
+      else if (c == '\\') escaped = true;
+      else if (c == '"') break;
+    }
+  } else {
+    while (r.available()) {
+      char c = (char)r.peek();
+      if (c == ',' || c == '}' || c == ']' || isspace((unsigned char)c)) break;
+      put((char)r.read());
+    }
+  }
+  out[n] = '\0';
+}
+
 static void readStringIntoBuffer(BufferedStreamReader& r, char* buffer, size_t maxLen) {
   r.read();
   size_t idx = 0;
@@ -89,6 +113,37 @@ static void readStringIntoBuffer(BufferedStreamReader& r, char* buffer, size_t m
     }
   }
   buffer[idx] = 0;
+}
+
+static inline bool isCollecting(const RestFilter* f) {
+  return f && f->targetCollector;
+}
+
+static inline bool isDescendantPath(const char* key, const char* path) {
+  const size_t len = strlen(path);
+  return strncmp(key, path, len) == 0 && key[len] == '.';
+}
+
+static ResponseBinding* findBinding(std::vector<ResponseBinding>& bindings, const char* path) {
+  for (auto& binding : bindings) {
+    if (strcmp(binding.key, path) == 0) return &binding;
+  }
+  return nullptr;
+}
+
+static bool hasChildBinding(const std::vector<ResponseBinding>& bindings, const FilterCapture* capture, const char* path) {
+  for (const auto& binding : bindings) {
+    if (isDescendantPath(binding.key, path)) return true;
+  }
+  return capture && isDescendantPath(capture->key, path);
+}
+
+static void joinPath(char* out, size_t cap, const char* base, const char* key) {
+  if (base[0] == '\0') {
+    snprintf(out, cap, "%s", key);
+  } else {
+    snprintf(out, cap, "%s.%s", base, key);
+  }
 }
 
 RestRequest::RestRequest(ESP32HTTPClient* client, const char* path, HttpMethod method)
@@ -111,6 +166,7 @@ RestRequest::RestRequest(RestRequest&& other)
       _executed(other._executed),
       _timeout(other._timeout),
       _maxRetry(other._maxRetry),
+      _filter(std::move(other._filter)),
       _onSuccessCb(std::move(other._onSuccessCb)),
       _onErrorCb(std::move(other._onErrorCb)),
       _onResponseCb(std::move(other._onResponseCb)),
@@ -470,41 +526,28 @@ void RestRequest::execute() {
 }
 
 void RestRequest::parseResponse(BufferedStreamReader& r) {
-  parseJsonWithBindings(r, _responseBindings);
+  RestFilter& f = getFilter();
+  parseJsonWithBindings(r, _responseBindings, &f);
 }
 
-void RestRequest::parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings) {
-  if (bindings.empty()) return;
+void RestRequest::parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter* filter) {
+  if (bindings.empty() && !isCollecting(filter)) return;
+
+  const RestFilter* activeFilter = isCollecting(filter) ? filter : nullptr;
 
   skipWhitespace(r);
-  char c = (char)r.read();
+  const char opening = (char)r.read();
+  if (opening != '{' && opening != '[') return;
 
-  if (c == '{') {
-    ResponseBinding* match = nullptr;
-    for (auto& binding : bindings) {
-      if (binding.key[0] == '\0') {
-        match = &binding;
-        break;
-      }
-    }
-    if (match && match->type == TYPE_ARDUINO_STRING) {
-      readRawJson(r, (String*)match->target, '{');
-    } else {
-      parseObjectWithBindings(r, "", bindings);
-    }
-  } else if (c == '[') {
-    ResponseBinding* match = nullptr;
-    for (auto& binding : bindings) {
-      if (binding.key[0] == '\0') {
-        match = &binding;
-        break;
-      }
-    }
-    if (match && match->type == TYPE_ARDUINO_STRING) {
-      readRawJson(r, (String*)match->target, '[');
-    } else {
-      parseArrayWithBindings(r, "", bindings);
-    }
+  ResponseBinding* root = findBinding(bindings, "");
+  if (root && root->type == TYPE_ARDUINO_STRING) {
+    readRawJson(r, (String*)root->target, opening);
+  } else if (opening == '{' && activeFilter && activeFilter->targetPath[0] == '\0') {
+    activeFilter->targetCollector(r, *activeFilter);
+  } else if (opening == '{') {
+    parseObjectWithBindings(r, "", bindings, nullptr, activeFilter);
+  } else {
+    parseArrayWithBindings(r, "", bindings, nullptr, activeFilter);
   }
 }
 
@@ -630,7 +673,81 @@ void RestRequest::parsePrimitiveWithBinding(BufferedStreamReader& r, ResponseBin
   }
 }
 
-void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings) {
+static void parsePrimitiveValue(BufferedStreamReader& r, const char* fullPath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture) {
+  const char firstChar = (char)r.peek();
+  ResponseBinding* match = findBinding(bindings, fullPath);
+  const bool isCapture = filterCapture && strcmp(fullPath, filterCapture->key) == 0;
+
+  auto capture = [&](BufferedStreamReader& source) {
+    ResponseBinding captureBinding = filterCapture->binding();
+    RestRequest::parsePrimitiveWithBinding(source, &captureBinding);
+    filterCapture->matched = true;
+  };
+
+  if (!isCapture) {
+    if (match) {
+      RestRequest::parsePrimitiveWithBinding(r, match);
+    } else {
+      skipValue(r);
+    }
+  } else if (match) {
+    char raw[256];
+    readRawPrimitive(r, raw, sizeof(raw));
+
+    if (filterCapture->accepts(firstChar)) {
+      BufferedStreamReader forCapture(raw);
+      capture(forCapture);
+    }
+    BufferedStreamReader forBinding(raw);
+    RestRequest::parsePrimitiveWithBinding(forBinding, match);
+  } else if (filterCapture->accepts(firstChar)) {
+    capture(r);
+  } else {
+    skipValue(r);
+  }
+}
+
+static void parseContainerValue(BufferedStreamReader& r, const char* fullPath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture, const RestFilter* filter) {
+  const char opening = (char)r.peek();
+  ResponseBinding* match = findBinding(bindings, fullPath);
+
+  const bool filtering     = isCollecting(filter);
+  const bool isTargetPath  = filtering && strcmp(fullPath, filter->targetPath) == 0;
+  const bool leadsToTarget = filtering && isDescendantPath(filter->targetPath, fullPath);
+  const bool mustDescend   = leadsToTarget || hasChildBinding(bindings, filterCapture, fullPath);
+
+  if (match && match->type == TYPE_ARDUINO_STRING) {
+    r.read();
+    RestRequest::readRawJson(r, (String*)match->target, opening);
+  } else if (isTargetPath) {
+    r.read();
+    if (opening == '[') {
+      RestRequest::parseArrayWithBindings(r, fullPath, bindings, filterCapture, filter);
+    } else {
+      filter->targetCollector(r, *filter);
+    }
+  } else if (mustDescend) {
+    r.read();
+    if (opening == '{') {
+      RestRequest::parseObjectWithBindings(r, fullPath, bindings, filterCapture, filter);
+    } else {
+      RestRequest::parseArrayWithBindings(r, fullPath, bindings, filterCapture, filter);
+    }
+  } else {
+    skipValue(r);
+  }
+}
+
+void RestRequest::parseValueWithBindings(BufferedStreamReader& r, const char* fullPath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture, const RestFilter* filter) {
+  const char nextChar = (char)r.peek();
+  if (nextChar == '{' || nextChar == '[') {
+    parseContainerValue(r, fullPath, bindings, filterCapture, filter);
+  } else {
+    parsePrimitiveValue(r, fullPath, bindings, filterCapture);
+  }
+}
+
+void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture, const RestFilter* filter) {
   char keyBuffer[64];
   char fullPath[128];
 
@@ -639,143 +756,216 @@ void RestRequest::parseObjectWithBindings(BufferedStreamReader& r, const char* b
     char c = (char)r.read();
 
     if (c == '}') break;
-    if (c == '"') {
-      size_t kIdx = 0;
-      while (r.available()) {
-        char k = (char)r.read();
-        if (k == '"') break;
-        if (kIdx < 63) keyBuffer[kIdx++] = k;
-      }
-      keyBuffer[kIdx] = 0;
+    if (c != '"') continue;
 
-      if (basePath[0] == '\0') {
-        strncpy(fullPath, keyBuffer, sizeof(fullPath) - 1);
-        fullPath[sizeof(fullPath) - 1] = 0;
-      } else {
-        snprintf(fullPath, sizeof(fullPath), "%s.%s", basePath, keyBuffer);
-      }
-
-      skipWhitespace(r);
-      if (r.read() != ':') continue;
-
-      skipWhitespace(r);
-      char nextChar = (char)r.peek();
-
-      if (nextChar == '{' || nextChar == '[') {
-        ResponseBinding* match = nullptr;
-        bool hasChildBinding = false;
-        size_t fpLen = strlen(fullPath);
-        for (auto& binding : bindings) {
-          if (strcmp(fullPath, binding.key) == 0) {
-            match = &binding;
-            break;
-          }
-          if (strncmp(binding.key, fullPath, fpLen) == 0 && binding.key[fpLen] == '.') {
-            hasChildBinding = true;
-          }
-        }
-
-        if (match && match->type == TYPE_ARDUINO_STRING) {
-          r.read();
-          readRawJson(r, (String*)match->target, nextChar);
-        } else if (hasChildBinding) {
-          r.read();
-          if (nextChar == '{') {
-            parseObjectWithBindings(r, fullPath, bindings);
-          } else {
-            parseArrayWithBindings(r, fullPath, bindings);
-          }
-        } else {
-          skipValue(r);
-        }
-      } else {
-        ResponseBinding* match = nullptr;
-        for (auto& binding : bindings) {
-          if (strcmp(fullPath, binding.key) == 0) {
-            match = &binding;
-            break;
-          }
-        }
-
-        if (match) {
-          parsePrimitiveWithBinding(r, match);
-        } else {
-          skipValue(r);
-        }
-      }
-
-      skipWhitespace(r);
-      if (r.peek() == ',') r.read();
+    size_t kIdx = 0;
+    while (r.available()) {
+      char k = (char)r.read();
+      if (k == '"') break;
+      if (kIdx < sizeof(keyBuffer) - 1) keyBuffer[kIdx++] = k;
     }
+    keyBuffer[kIdx] = 0;
+
+    skipWhitespace(r);
+    if (r.read() != ':') continue;
+    skipWhitespace(r);
+
+    joinPath(fullPath, sizeof(fullPath), basePath, keyBuffer);
+    parseValueWithBindings(r, fullPath, bindings, filterCapture, filter);
+    
+    skipWhitespace(r);
+    if (r.peek() == ',') r.read();
   }
 }
 
-void RestRequest::parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings) {
-  int  index = 0;
+void RestRequest::parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture, const RestFilter* filter) {
   char fullPath[128];
+  const bool isTarget = isCollecting(filter) && strcmp(basePath, filter->targetPath) == 0;
 
-  while (r.available()) {
+  for (int index = 0; r.available(); index++) {
     skipWhitespace(r);
-    char nextChar = (char)r.peek();
+    const char nextChar = (char)r.peek();
 
     if (nextChar == ']') {
       r.read();
       break;
     }
 
-    if (basePath[0] == '\0') {
-      snprintf(fullPath, sizeof(fullPath), "%d", index);
-    } else {
-      snprintf(fullPath, sizeof(fullPath), "%s.%d", basePath, index);
-    }
-
-    if (nextChar == '{' || nextChar == '[') {
-      ResponseBinding* match = nullptr;
-      bool hasChildBinding = false;
-      size_t fpLen = strlen(fullPath);
-      for (auto& binding : bindings) {
-        if (strcmp(fullPath, binding.key) == 0) {
-          match = &binding;
-          break;
-        }
-        if (strncmp(binding.key, fullPath, fpLen) == 0 && binding.key[fpLen] == '.') {
-          hasChildBinding = true;
-        }
-      }
-
-      if (match && match->type == TYPE_ARDUINO_STRING) {
+    if (isTarget) {
+      if (nextChar == '{') {
         r.read();
-        readRawJson(r, (String*)match->target, nextChar);
-      } else if (hasChildBinding) {
-        r.read();
-        if (nextChar == '{') {
-          parseObjectWithBindings(r, fullPath, bindings);
-        } else {
-          parseArrayWithBindings(r, fullPath, bindings);
-        }
+        filter->targetCollector(r, *filter);
       } else {
         skipValue(r);
       }
     } else {
-      ResponseBinding* match = nullptr;
-      for (auto& binding : bindings) {
-        if (strcmp(fullPath, binding.key) == 0) {
-          match = &binding;
-          break;
-        }
-      }
-
-      if (match) {
-        parsePrimitiveWithBinding(r, match);
-      } else {
-        skipValue(r);
-      }
+      char indexKey[12];
+      snprintf(indexKey, sizeof(indexKey), "%d", index);
+      joinPath(fullPath, sizeof(fullPath), basePath, indexKey);
+      parseValueWithBindings(r, fullPath, bindings, filterCapture, filter);
     }
 
     skipWhitespace(r);
-    if (r.peek() == ',') {
-      r.read();
-    }
-    index++;
+    if (r.peek() == ',') r.read();
   }
+}
+
+RestRequest& RestRequest::filterArray(const char* key, const char* arrayPath) {
+  RestFilter& f = getFilter();
+  strncpy(f.path, key ? key : "", sizeof(f.path) - 1);
+  f.path[sizeof(f.path) - 1] = '\0';
+  strncpy(f.targetPath, arrayPath ? arrayPath : "", sizeof(f.targetPath) - 1);
+  f.targetPath[sizeof(f.targetPath) - 1] = '\0';
+  return *this;
+}
+
+RestRequest& RestRequest::applyFilter(FilterOperator op, DataType type, const char* valStr, double num) {
+  RestFilter& f = getFilter();
+  f.op = op;
+  f.type = type;
+  f.num = num;
+  strncpy(f.value, valStr ? valStr : "", sizeof(f.value) - 1);
+  f.value[sizeof(f.value) - 1] = '\0';
+  return *this;
+}
+
+RestRequest& RestRequest::collect(String* targetString) {
+  if (!targetString) return *this;
+  RestFilter& f = getFilter();
+
+  f.targetCollector = [targetString](BufferedStreamReader& reader, const RestFilter& filter) {
+    String rawObject;
+    RestRequest::readRawJson(reader, &rawObject, '{');
+
+    if (filter.hasPredicate()) {
+      BufferedStreamReader rawReader(rawObject.c_str());
+      rawReader.read();
+      std::vector<ResponseBinding> bindings;
+      if (!RestRequest::evaluateFilter(rawReader, bindings, filter)) return;
+    }
+
+    if (targetString->length() <= 2) {
+      *targetString = "[";
+    } else {
+      targetString->remove(targetString->length() - 1);
+      *targetString += ',';
+    }
+    *targetString += rawObject;
+    *targetString += "]";
+  };
+  return *this;
+}
+
+bool RestRequest::evaluateFilter(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter& filter) {
+  FilterCapture filterCapture(filter.path, filter.type);
+  parseObjectWithBindings(r, "", bindings, &filterCapture);
+
+  if (!filterCapture.matched) return false;
+  if (filter.op == FILTER_NONE) return true;
+
+  bool equal;
+  switch (filter.type) {
+    case TYPE_BOOL:
+      equal = (filterCapture.b == (strcmp(filter.value, "true") == 0));
+      break;
+    case TYPE_DOUBLE:
+      equal = (filterCapture.d == filter.num);
+      break;
+    default:
+      equal = (strcmp(filterCapture.s, filter.value) == 0);
+      break;
+  }
+  return filter.op == FILTER_EQUALS ? equal : !equal;
+}
+
+RestRequest& RestRequest::equals(bool value) {
+  return applyFilter(FILTER_EQUALS, TYPE_BOOL, value ? "true" : "false");
+}
+
+RestRequest& RestRequest::equals(int value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(unsigned int value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(long value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(unsigned long value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(long long value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(unsigned long long value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::equals(float value) {
+  char buf[32];
+  snprintf(buf, sizeof(buf), "%.5g", value);
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", std::strtod(buf, nullptr));
+}
+
+RestRequest& RestRequest::equals(double value) {
+  return applyFilter(FILTER_EQUALS, TYPE_DOUBLE, "", value);
+}
+
+RestRequest& RestRequest::equals(const char* value) {
+  return applyFilter(FILTER_EQUALS, TYPE_STRING, value ? value : "");
+}
+
+RestRequest& RestRequest::equals(const String& v) {
+  return equals(v.c_str());
+}
+
+RestRequest& RestRequest::notEquals(bool value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_BOOL, value ? "true" : "false");
+}
+
+RestRequest& RestRequest::notEquals(int value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(unsigned int value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(long value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(unsigned long value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(long long value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(unsigned long long value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", (double)value);
+}
+
+RestRequest& RestRequest::notEquals(float value) {
+  char buf[32];
+  snprintf(buf, sizeof(buf), "%.5g", value);
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", std::strtod(buf, nullptr));
+}
+
+RestRequest& RestRequest::notEquals(double value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_DOUBLE, "", value);
+}
+
+RestRequest& RestRequest::notEquals(const char* value) {
+  return applyFilter(FILTER_NOT_EQUALS, TYPE_STRING, value ? value : "");
+}
+
+RestRequest& RestRequest::notEquals(const String& v) {
+  return notEquals(v.c_str());
 }

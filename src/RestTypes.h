@@ -7,9 +7,13 @@
 #include <type_traits>
 #include <vector>
 
+class BufferedStreamReader;
+
 enum HttpMethod { HTTP_GET_METHOD, HTTP_POST_METHOD, HTTP_PUT_METHOD, HTTP_DELETE_METHOD, HTTP_PATCH_METHOD };
 
 enum DataType { TYPE_INT, TYPE_FLOAT, TYPE_BOOL, TYPE_STRING, TYPE_DOUBLE, TYPE_LONG, TYPE_ARDUINO_STRING };
+
+enum FilterOperator { FILTER_NONE, FILTER_EQUALS, FILTER_NOT_EQUALS };
 
 typedef std::function<void(int)> HttpResponseCallback;
 typedef std::function<void(int, const char*)> HttpErrorCallback;
@@ -111,6 +115,53 @@ template <typename T, typename Visitor>
 inline typename std::enable_if<!HasRestJsonMapMember<T>::value && HasRestJsonMapExternal<T>::value, void>::type invokeRestJsonMap(const T& obj, Visitor& visitor) {
   rest_json_map_external(obj, visitor);
 }
+
+struct RestFilter {
+  char path[128];
+  char targetPath[128];
+  char value[64];
+  double num = 0.0;
+  FilterOperator op;
+  DataType type;
+  std::function<void(BufferedStreamReader&, const RestFilter&)> targetCollector;
+
+  RestFilter() : op(FILTER_NONE), type(TYPE_STRING) {
+    path[0] = '\0';
+    targetPath[0] = '\0';
+    value[0] = '\0';
+  }
+
+  bool hasPredicate() const {
+    return path[0] != '\0' && op != FILTER_NONE;
+  }
+};
+
+struct FilterCapture {
+  static constexpr size_t STR_MAX = 65;
+
+  const char* key;
+  DataType type;
+  char s[STR_MAX];
+  double d = 0.0;
+  bool b = false;
+  bool matched = false;
+
+  FilterCapture(const char* k, DataType t) : key(k), type(t) { s[0] = '\0'; }
+
+  ResponseBinding binding() {
+    void* target = type == TYPE_BOOL ? (void*)&b
+                 : type == TYPE_DOUBLE ? (void*)&d : (void*)s;
+    return {key, target, type, type == TYPE_STRING ? sizeof(s) : 0};
+  }
+
+  bool accepts(char firstChar) const {
+    if (type == TYPE_STRING) return firstChar != 'n';  // remove null
+    if (firstChar == '"') return false;
+    if (firstChar == 't' || firstChar == 'f') return type == TYPE_BOOL;
+    if (firstChar == 'n') return false;
+    return type == TYPE_DOUBLE;
+  }
+};
 
 class RestJsonSerializer {
  public:

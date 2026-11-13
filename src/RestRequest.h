@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include <vector>
+#include <memory>
 
 #include "RestTypes.h"
 
@@ -73,11 +74,62 @@ class RestRequest {
   template <size_t N>
   RestRequest& getHeader(const char* name, char (&target)[N]);
 
-  static void parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings);
-  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings);
-  static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings);
+  static void parseJsonWithBindings(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter* filter = nullptr);
+  static void parseObjectWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture = nullptr, const RestFilter* filter = nullptr);
+  static void parseArrayWithBindings(BufferedStreamReader& r, const char* basePath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture = nullptr, const RestFilter* filter = nullptr);
+  static void parseValueWithBindings(BufferedStreamReader& r, const char* fullPath, std::vector<ResponseBinding>& bindings, FilterCapture* filterCapture, const RestFilter* filter);
   static void parsePrimitiveWithBinding(BufferedStreamReader& r, ResponseBinding* match);
   static void readRawJson(BufferedStreamReader& r, String* target, char openingBrace);
+
+  RestRequest& filterArray(const char* key, const char* arrayPath = "");
+
+  RestRequest& equals(bool value);
+  RestRequest& equals(int value);
+  RestRequest& equals(unsigned int value);
+  RestRequest& equals(long value);
+  RestRequest& equals(unsigned long value);
+  RestRequest& equals(long long value);
+  RestRequest& equals(unsigned long long value);
+  RestRequest& equals(float value);
+  RestRequest& equals(double value);
+  RestRequest& equals(const char* value);
+  RestRequest& equals(const String& v);
+
+  RestRequest& notEquals(bool value);
+  RestRequest& notEquals(int value);
+  RestRequest& notEquals(unsigned int value);
+  RestRequest& notEquals(long value);
+  RestRequest& notEquals(unsigned long value);
+  RestRequest& notEquals(long long value);
+  RestRequest& notEquals(unsigned long long value);
+  RestRequest& notEquals(float value);
+  RestRequest& notEquals(double value);
+  RestRequest& notEquals(const char* value);
+  RestRequest& notEquals(const String& v);
+
+  RestRequest& collect(String* targetString);
+
+  template <typename T>
+  typename std::enable_if<HasRestJsonMap<T>::value, RestRequest&>::type collect(std::vector<T>* targetVector) {
+    if (!targetVector) return *this;
+    RestFilter& f = getFilter();
+
+    f.targetCollector = [targetVector](BufferedStreamReader& reader, const RestFilter& filter) {
+      T value{};
+      std::vector<ResponseBinding> bindings;
+      std::vector<String> keyStorage;
+      RestJsonBinder binder(bindings, keyStorage);
+      invokeRestJsonMap(value, binder);
+
+      if (!filter.hasPredicate()) {
+        RestRequest::parseObjectWithBindings(reader, "", bindings);
+        targetVector->push_back(std::move(value));
+      } else if (RestRequest::evaluateFilter(reader, bindings, filter)) {
+        targetVector->push_back(std::move(value));
+      }
+    };
+    return *this;
+  }
 
  private:
   ESP32HTTPClient* _client;
@@ -101,6 +153,13 @@ class RestRequest {
   std::vector<ResponseBinding> _responseBindings;
   std::vector<ResponseBinding> _headerBindings;
 
+  std::unique_ptr<RestFilter> _filter;
+
+  RestFilter& getFilter() {
+    if (!_filter) _filter.reset(new RestFilter());
+    return *_filter;
+  }
+
   void execute();
   void parseResponse(BufferedStreamReader& r);
 
@@ -115,6 +174,9 @@ class RestRequest {
   void addParam(std::vector<KeyValue>& list, const char* key, unsigned long long value);
   void addParam(std::vector<KeyValue>& list, const char* key, float value);
   void addParam(std::vector<KeyValue>& list, const char* key, double value);
+
+  RestRequest& applyFilter(FilterOperator op, DataType type, const char* valStr, double num = 0.0);
+  static bool evaluateFilter(BufferedStreamReader& r, std::vector<ResponseBinding>& bindings, const RestFilter& filter);
 };
 
 template <size_t N>
